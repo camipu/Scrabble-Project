@@ -1,4 +1,5 @@
 package edu.upc.prop.clusterxx;
+import java.util.*;
 
 public class Taulell {
     private static final int SIZE = 15;
@@ -37,5 +38,19 @@ public class Taulell {
             }
             System.out.println("+");
         }
+    }
+
+    public boolean colocarFitxa(Fitxa fitxa, int fila, int columna) {
+        if (fila < 0 || fila >= SIZE || columna < 0 || columna >= SIZE) {
+            System.out.println("Error: Posició fora dels límits del taulell.");
+            return false;
+        }
+        if (taulell[fila][columna] != '-') {
+            System.out.println("Error: La posició ja està ocupada.");
+            return false;
+        }
+
+        taulell[fila][columna] = fitxa.getLletra();
+        return true;
     }
 }

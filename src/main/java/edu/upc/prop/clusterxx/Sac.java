@@ -30,6 +30,7 @@ public class Sac{
                 disponibles.add(fitxa);
             }
         }
+        Random random = new Random(); // Add this line to declare random
         Fitxa seleccionada = disponibles.get(random.nextInt(disponibles.size()));
 
         fitxes.put(seleccionada, fitxes.get(seleccionada)-1);
