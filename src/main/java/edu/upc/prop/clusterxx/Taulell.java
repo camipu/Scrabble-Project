@@ -17,5 +17,25 @@ public class Taulell {
         return taulell;
     }
 
-    public void imprimirTaulell()
+    public void imprimirTaulell() {
+        // Imprimir la línia superior
+        for (int i = 0; i < SIZE; ++i) {
+            System.out.print("+---");
+        }
+        System.out.println("+");
+
+        // Imprimir les files del taulell
+        for (int i = 0; i < SIZE; ++i) {
+            for (int j = 0; j < SIZE; ++j) {
+                System.out.print("| " + taulell[i][j] + " ");
+            }
+            System.out.println("|");
+
+            // Imprimir la línia separadora entre files
+            for (int j = 0; j < SIZE; ++j) {
+                System.out.print("+---");
+            }
+            System.out.println("+");
+        }
+    }
 }
