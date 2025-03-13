@@ -10,6 +10,10 @@ public class Faristol {
         fitxes = new Vector<Fitxa>();
     }
 
+    public Vector<Fitxa> obtenirFitxes() {
+        return fitxes;
+    }
+
     public void afegirFitxa(Fitxa fitxa) {
         fitxes.add(fitxa);
     }
@@ -24,5 +28,9 @@ public class Faristol {
 
     public int obtenirNumeroDeFitxes() {
         return fitxes.size();
+    }
+
+    public int barrejarFitxes() {
+        fitxes.shuffle();
     }
 }

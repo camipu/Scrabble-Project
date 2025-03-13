@@ -1,5 +1,7 @@
 //Classe Sac
+
 import java.util.*;
+
 
 public class Sac{
     private Map<Fitxa, Integer> fitxes;
