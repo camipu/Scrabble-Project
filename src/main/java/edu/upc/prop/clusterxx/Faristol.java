@@ -1,5 +1,5 @@
 package edu.upc.prop.clusterxx;
-import java.util.Vector;
+import java.util.*;
 
 //Classe Faristol
 
@@ -31,7 +31,15 @@ public class Faristol {
         return fitxes.size();
     }
 
-//    public int barrejarFitxes() {
-//        fitxes.shuffle();
-//    }
+    public void barrejarFitxes() {
+        Collections.shuffle(fitxes);
+    }
+
+    public void imprimirFaristol() {
+        System.out.print("[");
+        for (Fitxa fitxa : fitxes) {
+            System.out.print(" " + fitxa);
+        }
+        System.out.println(" ]");
+    }
 }
