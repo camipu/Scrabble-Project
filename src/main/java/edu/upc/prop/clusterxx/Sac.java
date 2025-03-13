@@ -6,7 +6,7 @@ import java.util.Random;
 
 
 public class Sac{
-    private Map<Fitxa, Integer> fitxes;
+    private final Map<Fitxa, Integer> fitxes;
 
     public Sac(){
         this.fitxes = new HashMap<>();

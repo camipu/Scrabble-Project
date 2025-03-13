@@ -3,7 +3,7 @@ import java.util.*;
 
 public class Taulell {
     private static final int SIZE = 15;
-    private char[][] taulell;
+    private final char[][] taulell;
 
     public Taulell () {
         taulell = new char[SIZE][SIZE];
@@ -18,6 +18,10 @@ public class Taulell {
         return taulell;
     }
 
+//    // Codis ANSI per a colors
+//    private static final String RESET = "\u001B[0m";
+//    private static final String YELLOW = "\u001B[33m";
+
     public void imprimirTaulell() {
         // Imprimir la línia superior
         for (int i = 0; i < SIZE; ++i) {
@@ -28,7 +32,14 @@ public class Taulell {
         // Imprimir les files del taulell
         for (int i = 0; i < SIZE; ++i) {
             for (int j = 0; j < SIZE; ++j) {
-                System.out.print("| " + taulell[i][j] + " ");
+                char casella = taulell[i][j];
+
+                // Si la casella no és '-', imprimeix-la amb fons vermell
+                if (casella != '-') {
+                    System.out.print("| " + Colors.YELLOW_TEXT + casella + Colors.RESET + " ");
+                } else {
+                    System.out.print("| " + " " + " ");
+                }
             }
             System.out.println("|");
 

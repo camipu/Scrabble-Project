@@ -5,7 +5,7 @@ import java.util.*;
 
 
 public class Faristol {
-    private Vector<Fitxa> fitxes;
+    private final Vector<Fitxa> fitxes;
 
     public Faristol() {
         fitxes = new Vector<Fitxa>();
@@ -37,9 +37,15 @@ public class Faristol {
 
     public void imprimirFaristol() {
         System.out.print("[");
-        for (Fitxa fitxa : fitxes) {
-            System.out.print(" " + fitxa);
+        for (int i = 0; i < fitxes.size(); i++) {
+            Fitxa fitxa = fitxes.get(i);
+            System.out.print("[" + fitxa.getLletra() + " " + Colors.YELLOW_TEXT + fitxa.getPunts() + Colors.RESET + "]");
+
+            if (i < fitxes.size() - 1) {
+                System.out.print(" "); // Espai entre fitxes
+            }
         }
-        System.out.println(" ]");
+        System.out.println("]");
     }
+
 }
