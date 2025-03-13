@@ -1,4 +1,5 @@
 //Classe Jugador
+package edu.upc.prop.clusterxx;
 
 public class Jugador {
     String nom;

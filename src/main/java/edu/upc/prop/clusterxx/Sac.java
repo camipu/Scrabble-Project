@@ -2,6 +2,7 @@
 package edu.upc.prop.clusterxx;
 
 import java.util.*;
+import java.util.Random;
 
 
 public class Sac{
@@ -49,7 +50,7 @@ public class Sac{
         }
         return total;
     }
-    
+
     public boolean esBuit(){
         return fitxes.isEmpty();
     }

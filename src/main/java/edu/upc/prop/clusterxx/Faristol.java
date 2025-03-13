@@ -31,7 +31,7 @@ public class Faristol {
         return fitxes.size();
     }
 
-    public int barrejarFitxes() {
-        fitxes.shuffle();
-    }
+//    public int barrejarFitxes() {
+//        fitxes.shuffle();
+//    }
 }

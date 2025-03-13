@@ -4,11 +4,19 @@ import com.google.gson.Gson;
 
 public class Main {
   public static void main(String[] args) {
-    System.out.println("Hello world!");
-    new Gson();
+//    Fitxa a = new Fitxa('A', 1);
+//    Fitxa b = new Fitxa('B', 2);
+//    Fitxa c = new Fitxa('C', 2);
+//    Fitxa d  = new Fitxa('D', 3);
+//
+//    Sac sac = new Sac();
+//    sac.afegirFitxa(a);
+//    sac.afegirFitxa(b);
+//    sac.afegirFitxa(c);
+//    sac.afegirFitxa(d);
 
-    Main divisioner = new Main();
-    System.out.println("Dividing 10 by 2 is " + divisioner.division(10,2));
+    Taulell t = new Taulell();
+    t.imprimirTaulell();
   }
 
   public float division(int a, int b) throws ArithmeticException {
