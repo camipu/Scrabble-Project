@@ -34,4 +34,12 @@ public class Faristol {
     public int barrejarFitxes() {
         fitxes.shuffle();
     }
+
+    public void imprimirFaristol() {
+        System.print("[")
+        for (int i = 0; i < fitxes.size(); ++i) {
+            System.print(" "+fitxes[i]);
+        }
+        System.println(" ]");
+    }
 }
