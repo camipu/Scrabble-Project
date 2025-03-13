@@ -1,3 +1,4 @@
+package edu.upc.prop.clusterxx;
 import java.util.Vector;
 
 //Classe Faristol

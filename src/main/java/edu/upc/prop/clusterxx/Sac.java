@@ -1,4 +1,5 @@
 //Classe Sac
+package edu.upc.prop.clusterxx;
 
 import java.util.*;
 

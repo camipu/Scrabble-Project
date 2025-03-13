@@ -1,4 +1,5 @@
 //Classe fitxa
+package edu.upc.prop.clusterxx;
 
 public class Fitxa {
     char lletra;

@@ -1,3 +1,5 @@
+package edu.upc.prop.clusterxx;
+
 public class Historial {
     private List<Jugada> jugades;
 

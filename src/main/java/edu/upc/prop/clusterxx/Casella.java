@@ -1,3 +1,4 @@
+package edu.upc.prop.clusterxx;
 //Classe casella
 
 public class Casella {
