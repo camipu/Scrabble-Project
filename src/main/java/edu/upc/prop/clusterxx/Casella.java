@@ -1,10 +1,19 @@
 package edu.upc.prop.clusterxx;
-//Classe casella
 
 public class Casella {
-    int x;
-    int y;
-    Fitxa fitxa;
+    /*
+     * Si marques un atribut com a final, vol dir que només
+     * es pot assignar una vegada i després ja no es pot modificar.
+     */
+    private final int x;  // Coordenades fixes
+    private final int y;
+    private Fitxa fitxa;
+
+    public Casella(int x, int y) {
+        this.x = x;
+        this.y = y;
+        this.fitxa = null; // Inicialment buida
+    }
 
     public int getX() {
         return x;
@@ -22,12 +31,18 @@ public class Casella {
         return fitxa == null;
     }
 
-    public void colocarFitxa(Fitxa fitxa) {
+    public boolean colocarFitxa(Fitxa fitxa) {
         if (esBuida()) {
             this.fitxa = fitxa;
+            return true;
+        } else {
+            return false; // Alternativa a excepció
         }
-        else {
-            throw new IllegalStateException("La casella ja està ocupada."); //??
-        }
+    }
+
+    //Per quan fem string de casella :)
+    @Override
+    public String toString() {
+        return esBuida() ? " " : String.valueOf(fitxa.getLletra());
     }
 }
