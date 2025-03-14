@@ -23,7 +23,7 @@ public class Main {
     t.colocarFitxa(b, 2, 4);
     t.colocarFitxa(c, 2, 5);
     t.colocarFitxa(d, 2, 6);
-
+  //Prova
     t.colocarFitxa(a, 0, 5);
     t.colocarFitxa(b, 1, 5);
     t.colocarFitxa(d, 3, 5);
