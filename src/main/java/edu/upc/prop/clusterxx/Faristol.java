@@ -27,7 +27,7 @@ public class Faristol {
         return fitxes.get(index);
     }
 
-    public int obtenirNumeroDeFitxes() {
+    public int obtenirNumFitxes() {
         return fitxes.size();
     }
 

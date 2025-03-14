@@ -18,9 +18,6 @@ public class Taulell {
         return taulell;
     }
 
-//    // Codis ANSI per a colors
-//    private static final String RESET = "\u001B[0m";
-//    private static final String YELLOW = "\u001B[33m";
 
     public void imprimirTaulell() {
         // Imprimir la línia superior
