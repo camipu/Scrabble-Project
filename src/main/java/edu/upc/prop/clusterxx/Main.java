@@ -14,21 +14,10 @@ public class Main {
     f1.afegirFitxa(d);
     f1.barrejarFitxes();
     f1.imprimirFaristol();
+    Taulell t = new Taulell(5);
 
-
-
-
-    Taulell t = new Taulell();
-    t.colocarFitxa(a, 2, 3);
-    t.colocarFitxa(b, 2, 4);
-    t.colocarFitxa(c, 2, 5);
-    t.colocarFitxa(d, 2, 6);
-  //Prova
-    t.colocarFitxa(a, 0, 5);
-    t.colocarFitxa(b, 1, 5);
-    t.colocarFitxa(d, 3, 5);
-    //t.colocarFitxa(a, 2, 3); //Casella ocupada
-    //t.colocarFitxa(a, 1, 30); //Fora de límits
+    Jugador toni = new Jugador("toni", f1, t);
+    toni.colocarFitxa(a, 2, 3);
     t.imprimirTaulell();
   }
 

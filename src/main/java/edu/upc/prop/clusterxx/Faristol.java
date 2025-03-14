@@ -19,8 +19,8 @@ public class Faristol {
         fitxes.add(fitxa);
     }
 
-    public void eliminarFitxa(Fitxa fitxa) {
-        fitxes.remove(fitxa);
+    public boolean eliminarFitxa(Fitxa fitxa) {
+        return fitxes.remove(fitxa); // `remove` retorna true si es troba i elimina l'element
     }
 
     public Fitxa obtenirFitxa(int index) {

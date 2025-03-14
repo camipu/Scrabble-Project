@@ -1,13 +1,14 @@
 package edu.upc.prop.clusterxx;
 
 public class Taulell {
-    private static final int SIZE = 15;
+    private final int size;
     private final Casella[][] taulell;
 
-    public Taulell() {
-        taulell = new Casella[SIZE][SIZE];
-        for (int i = 0; i < SIZE; i++) {
-            for (int j = 0; j < SIZE; j++) {
+    public Taulell(int size) {
+        this.size = size;
+        taulell = new Casella[size][size];
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size; j++) {
                 taulell[i][j] = new Casella(i, j); // Inicialitza cada casella amb coordenades
             }
         }
@@ -18,8 +19,8 @@ public class Taulell {
     }
 
     public void colocarFitxa(Fitxa fitxa, int fila, int columna) {
-        if (fila < 0 || fila >= SIZE || columna < 0 || columna >= SIZE) {
-            System.out.println("Error: Posició fora dels límits.");
+        if (fila < 0 || fila >= size || columna < 0 || columna >= size) {
+            System.out.println(" Posició fora dels límits.");
         }
         if(!taulell[fila][columna].colocarFitxa(fitxa)) {
             System.out.println("Error: Casella ocupada.");
@@ -27,19 +28,19 @@ public class Taulell {
     }
 
     public void imprimirTaulell() {
-        for (int i = 0; i < SIZE; ++i) {
+        for (int i = 0; i < size; ++i) {
             System.out.print("+---");
         }
         System.out.println("+");
 
-        for (int i = 0; i < SIZE; ++i) {
-            for (int j = 0; j < SIZE; ++j) {
+        for (int i = 0; i < size; ++i) {
+            for (int j = 0; j < size; ++j) {
                 Casella casella = taulell[i][j];
                 System.out.print("| " + Colors.YELLOW_TEXT + casella + Colors.RESET + " ");
             }
             System.out.println("|");
 
-            for (int j = 0; j < SIZE; ++j) {
+            for (int j = 0; j < size; ++j) {
                 System.out.print("+---");
             }
             System.out.println("+");
