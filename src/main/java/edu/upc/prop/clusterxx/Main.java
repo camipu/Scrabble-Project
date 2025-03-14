@@ -27,8 +27,8 @@ public class Main {
     t.colocarFitxa(a, 0, 5);
     t.colocarFitxa(b, 1, 5);
     t.colocarFitxa(d, 3, 5);
-    //t.colocarFitxa(a, 2, 3); Error casella repetida
-    //t.colocarFitxa(a, 1, 30); Error casella NO vàlida
+    //t.colocarFitxa(a, 2, 3); //Casella ocupada
+    //t.colocarFitxa(a, 1, 30); //Fora de límits
     t.imprimirTaulell();
   }
 

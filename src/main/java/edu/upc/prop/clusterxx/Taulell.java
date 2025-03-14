@@ -17,12 +17,13 @@ public class Taulell {
         return taulell;
     }
 
-    public boolean colocarFitxa(Fitxa fitxa, int fila, int columna) {
+    public void colocarFitxa(Fitxa fitxa, int fila, int columna) {
         if (fila < 0 || fila >= SIZE || columna < 0 || columna >= SIZE) {
             System.out.println("Error: Posició fora dels límits.");
-            return false;
         }
-        return taulell[fila][columna].colocarFitxa(fitxa);
+        if(!taulell[fila][columna].colocarFitxa(fitxa)) {
+            System.out.println("Error: Casella ocupada.");
+        }
     }
 
     public void imprimirTaulell() {
