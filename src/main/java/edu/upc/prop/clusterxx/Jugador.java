@@ -5,15 +5,17 @@ public class Jugador {
     String nom;
     int punts;
     Faristol faristol;
+    Joc joc;
     Taulell taulell;
 
 
     public Jugador() {}
-    public Jugador(String nom, Taulell taulell) {
+    public Jugador(String nom, Joc joc, Taulell taulell) {
         this.nom = nom;
         this.punts = 0;
+        this.joc = joc;
+        this.faristol = new Faristol(joc.getSac());
         this.taulell = taulell;
-        this.faristol = new Faristol(taulell.getSac());
     }
 
     public String getNom() {

@@ -2,14 +2,10 @@ package edu.upc.prop.clusterxx;
 
 public class Taulell {
     private final int size;
-    private Diccionari dic;
-    private Sac sac;
     private final Casella[][] taulell;
 
-    public Taulell(int size, String idioma) {
+    public Taulell(int size) {
         this.size = size;
-        this.dic = new Diccionari(idioma);
-        this.sac = new Sac("castellano");
         taulell = new Casella[size][size];
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
@@ -22,18 +18,8 @@ public class Taulell {
         return taulell;
     }
 
-    public Diccionari getDiccionari() {return dic;}
-    public Sac getSac() {return sac;}
-
     public int getSize() {return size;}
 
-    public boolean validarParaula(String paraula) {
-        return dic.esParaulaValida(paraula);
-    }
-
-    public void imprimirSac() {
-        sac.mostrarContingut();
-    }
 
     public void colocarFitxa(Fitxa fitxa, int fila, int columna) {
         if (fila < 0 || fila >= size || columna < 0 || columna >= size) {

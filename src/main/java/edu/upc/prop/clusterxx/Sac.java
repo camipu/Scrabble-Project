@@ -99,6 +99,8 @@ public class Sac {
         return fitxes.isEmpty();
     }
 
+    public Sac getSac() {return this;}
+
     // Mètode per mostrar el contingut del sac (per depuració)
     public void mostrarContingut() {
         fitxes.forEach((fitxa, quantitat) ->
