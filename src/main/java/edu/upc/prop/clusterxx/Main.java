@@ -20,6 +20,9 @@ public class Main {
     toni.colocarFitxa(a, 2, 3);
     toni.colocarFitxa(b, 1, 3);
     t.imprimirTaulell();
+
+    //Nuevo diccionario
+    Diccionari dic = new Diccionari("castellano");
   }
 
 }

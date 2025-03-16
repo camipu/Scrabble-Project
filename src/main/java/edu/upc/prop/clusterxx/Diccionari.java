@@ -1,5 +1,8 @@
 package edu.upc.prop.clusterxx;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -12,18 +15,26 @@ public class Diccionari {
         // Inicializa el conjunto de palabras
         palabras = new HashSet<>();
         // Puedes cargar las palabras desde un archivo o agregar algunas palabras predeterminadas
-        cargarPalabras(String idioma);
+        cargarPalabras(idioma);
     }
 
     // Método para cargar palabras al diccionario (por ejemplo, desde un archivo)
     private void cargarPalabras(String idioma) {
+        String rutaArchivo = "src/main/java/edu/upc/prop/clusterxx/resources/" + idioma + ".txt";
+
+        try (BufferedReader br = new BufferedReader(new FileReader(rutaArchivo))) {
+            String linea;
+            while ((linea = br.readLine()) != null) {
+                // Agregar cada palabra (línea) al Set
+                palabras.add(linea.trim());  // trim() para eliminar posibles espacios extra
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
 
     }
 
-    // Método para agregar una palabra al diccionario
-    public void agregarPalabra(String palabra) {
-        palabras.add(palabra.toLowerCase()); // Asegurarse de que la palabra esté en minúsculas
-    }
 
     // Método para comprobar si una palabra está en el diccionario
     public boolean esPalabraValida(String palabra) {
