@@ -23,6 +23,7 @@ public class Main {
 
     //Nuevo diccionario
     Diccionari dic = new Diccionari("castellano");
+    if (dic.esPalabraValida("amarillo")) System.out.print("| " + Colors.YELLOW_TEXT + "vàlida" + Colors.RESET + " ") ;
   }
 
 }

@@ -38,7 +38,7 @@ public class Diccionari {
 
     // Método para comprobar si una palabra está en el diccionario
     public boolean esPalabraValida(String palabra) {
-        return palabras.contains(palabra.toLowerCase()); // Convierte a minúsculas para comparaciones insensibles a mayúsculas
+        return palabras.contains(palabra.toUpperCase()); // Convierte a minúsculas para comparaciones insensibles a mayúsculas
     }
 
     // Método para obtener el número de palabras en el diccionario
