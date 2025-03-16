@@ -7,49 +7,46 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class Diccionari {
-    // Set para almacenar las palabras válidas del diccionario
-    private Set<String> palabras;
+    // Set per emmagatzemar les paraules vàlides del diccionari
+    private Set<String> paraules;
 
     // Constructor
     public Diccionari(String idioma) {
-        // Inicializa el conjunto de palabras
-        palabras = new HashSet<>();
-        // Puedes cargar las palabras desde un archivo o agregar algunas palabras predeterminadas
-        cargarPalabras(idioma);
+        // Inicialitza el conjunt de paraules
+        paraules = new HashSet<>();
+        // Pots carregar les paraules des d'un fitxer o afegir algunes paraules predeterminades
+        carregarParaules(idioma);
     }
 
-    // Método para cargar palabras al diccionario (por ejemplo, desde un archivo)
-    private void cargarPalabras(String idioma) {
-        String rutaArchivo = "src/main/java/edu/upc/prop/clusterxx/resources/" + idioma + "/" + idioma + ".txt";
+    // Mètode per carregar paraules al diccionari (per exemple, des d'un fitxer)
+    private void carregarParaules(String idioma) {
+        String rutaFitxer = "src/main/java/edu/upc/prop/clusterxx/resources/" + idioma + "/" + idioma + ".txt";
 
-        try (BufferedReader br = new BufferedReader(new FileReader(rutaArchivo))) {
-            String linea;
-            while ((linea = br.readLine()) != null) {
-                // Agregar cada palabra (línea) al Set
-                palabras.add(linea.trim());  // trim() para eliminar posibles espacios extra
+        try (BufferedReader br = new BufferedReader(new FileReader(rutaFitxer))) {
+            String linia;
+            while ((linia = br.readLine()) != null) {
+                // Afegir cada paraula (linia) al Set
+                paraules.add(linia.trim());  // trim() per eliminar espais extra
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-
     }
 
-
-    // Método para comprobar si una palabra está en el diccionario
-    public boolean esPalabraValida(String palabra) {
-        return palabras.contains(palabra.toUpperCase()); // Convierte a minúsculas para comparaciones insensibles a mayúsculas
+    // Mètode per comprovar si una paraula està en el diccionari
+    public boolean esParaulaValida(String paraula) {
+        return paraules.contains(paraula.toUpperCase()); // Converteix a majúscules per comparacions insensibles a majúscules
     }
 
-    // Método para obtener el número de palabras en el diccionario
-    public int obtenerCantidadDePalabras() {
-        return palabras.size();
+    // Mètode per obtenir el nombre de paraules en el diccionari
+    public int obtenirQuantitatDeParaules() {
+        return paraules.size();
     }
 
-    // Método para mostrar todas las palabras en el diccionario (para depuración o pruebas)
-    public void mostrarPalabras() {
-        for (String palabra : palabras) {
-            System.out.println(palabra);
+    // Mètode per mostrar totes les paraules en el diccionari (per depuració o proves)
+    public void mostrarParaules() {
+        for (String paraula : paraules) {
+            System.out.println(paraula);
         }
     }
 }
