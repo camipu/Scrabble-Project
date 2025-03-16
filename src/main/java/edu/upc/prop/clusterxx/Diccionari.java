@@ -20,7 +20,7 @@ public class Diccionari {
 
     // Método para cargar palabras al diccionario (por ejemplo, desde un archivo)
     private void cargarPalabras(String idioma) {
-        String rutaArchivo = "src/main/java/edu/upc/prop/clusterxx/resources/" + idioma + ".txt";
+        String rutaArchivo = "src/main/java/edu/upc/prop/clusterxx/resources/" + idioma + "/" + idioma + ".txt";
 
         try (BufferedReader br = new BufferedReader(new FileReader(rutaArchivo))) {
             String linea;

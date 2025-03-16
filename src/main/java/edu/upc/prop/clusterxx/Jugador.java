@@ -49,7 +49,6 @@ public class Jugador {
 
     public void colocarFitxa(Fitxa fitxa, int fila, int columna) {
         if (faristol.eliminarFitxa(fitxa)) {  // Si la fitxa estava en el faristol i es pot treure
-            System.out.println("Fitxa " + fitxa.getLletra() + " col·locada al taulell.");
             taulell.colocarFitxa(fitxa, fila, columna);
         } else {
             System.out.println("Error: La fitxa no està en el faristol.");

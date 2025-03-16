@@ -44,7 +44,7 @@ public class Casella {
     @Override
     public String toString() {
         if (esBuida()) return "  ";
-        else if (fitxa.lletra == '(') return "CH";
-        return " " + String.valueOf(fitxa.getLletra());
+        if (fitxa.esDigraf()) return  String.valueOf(fitxa);
+        return  " " + String.valueOf(fitxa);
     }
 }

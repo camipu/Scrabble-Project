@@ -6,9 +6,11 @@ import java.util.*;
 
 public class Faristol {
     private final Vector<Fitxa> fitxes;
+    private Sac sac;
 
-    public Faristol() {
+    public Faristol(Sac sac) {
         fitxes = new Vector<Fitxa>();
+        this.sac = sac;
     }
 
     public Vector<Fitxa> obtenirFitxes() {
@@ -39,7 +41,7 @@ public class Faristol {
         System.out.print("[");
         for (int i = 0; i < fitxes.size(); i++) {
             Fitxa fitxa = fitxes.get(i);
-            System.out.print("[" + fitxa.getLletra() + " " + Colors.YELLOW_TEXT + fitxa.getPunts() + Colors.RESET + "]");
+            System.out.print("[" + fitxa + " " + Colors.YELLOW_TEXT + fitxa.getPunts() + Colors.RESET + "]");
 
             if (i < fitxes.size() - 1) {
                 System.out.print(" "); // Espai entre fitxes
