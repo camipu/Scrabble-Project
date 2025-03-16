@@ -3,7 +3,7 @@ package edu.upc.prop.clusterxx;
 public class Main {
   public static void main(String[] args) {
     Fitxa a = new Fitxa('A', 1);
-    Fitxa b = new Fitxa('B', 1);
+    Fitxa b = new Fitxa('(', 1);
     Fitxa c = new Fitxa('C', 2);
     Fitxa d = new Fitxa('D', 3);
     Faristol f1 = new Faristol();
@@ -18,6 +18,7 @@ public class Main {
 
     Jugador toni = new Jugador("toni", f1, t);
     toni.colocarFitxa(a, 2, 3);
+    toni.colocarFitxa(b, 1, 3);
     t.imprimirTaulell();
   }
 

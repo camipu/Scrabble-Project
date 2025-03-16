@@ -43,6 +43,8 @@ public class Casella {
     //Per quan fem string de casella :)
     @Override
     public String toString() {
-        return esBuida() ? " " : String.valueOf(fitxa.getLletra());
+        if (esBuida()) return "  ";
+        else if (fitxa.lletra == '(') return "CH";
+        return " " + String.valueOf(fitxa.getLletra());
     }
 }
