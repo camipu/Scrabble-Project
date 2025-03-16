@@ -8,22 +8,16 @@ public class Diccionari {
     private Set<String> palabras;
 
     // Constructor
-    public Diccionari() {
+    public Diccionari(String idioma) {
         // Inicializa el conjunto de palabras
         palabras = new HashSet<>();
         // Puedes cargar las palabras desde un archivo o agregar algunas palabras predeterminadas
-        cargarPalabras();
+        cargarPalabras(String idioma);
     }
 
     // Método para cargar palabras al diccionario (por ejemplo, desde un archivo)
-    private void cargarPalabras() {
-        // Agrega algunas palabras de ejemplo, o puedes cargar un archivo de texto con muchas palabras
-        palabras.add("hola");
-        palabras.add("mundo");
-        palabras.add("java");
-        palabras.add("programacion");
-        palabras.add("scrabble");
-        // Agrega más palabras según sea necesario...
+    private void cargarPalabras(String idioma) {
+
     }
 
     // Método para agregar una palabra al diccionario
