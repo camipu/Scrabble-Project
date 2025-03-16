@@ -10,6 +10,7 @@ public class Colors {
     public static final String CYAN_BACKGROUND = "\u001B[46m";
     public static final String WHITE_BACKGROUND = "\u001B[47m";
 
+
     public static final String BLACK_TEXT = "\u001B[30m";
     public static final String RED_TEXT = "\u001B[31m";
     public static final String GREEN_TEXT = "\u001B[32m";

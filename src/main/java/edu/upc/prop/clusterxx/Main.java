@@ -2,7 +2,7 @@ package edu.upc.prop.clusterxx;
 
 public class Main {
   public static void main(String[] args) {
-    Taulell t = new Taulell(5);
+    Taulell t = new Taulell(15);
     Joc joc = new Joc(2,"castellano");
 
     Jugador toni = new Jugador("toni", joc, t);
