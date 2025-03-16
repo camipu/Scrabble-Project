@@ -9,11 +9,11 @@ public class Jugador {
 
 
     public Jugador() {}
-    public Jugador(String nom, Sac sac, Taulell taulell) {
+    public Jugador(String nom, Taulell taulell) {
         this.nom = nom;
         this.punts = 0;
-        this.faristol = new Faristol(sac);
         this.taulell = taulell;
+        this.faristol = new Faristol(taulell.getSac());
     }
 
     public String getNom() {
