@@ -49,4 +49,5 @@ public class Taulell {
             System.out.println("+");
         }
     }
+
 }

@@ -25,4 +25,8 @@ public class Joc {
     public Sac getSac() {
         return sac;
     }
+
+    public boolean esParaulaValida(String paraula){
+        return diccionari.esParaulaValida(paraula);
+    }
 }
