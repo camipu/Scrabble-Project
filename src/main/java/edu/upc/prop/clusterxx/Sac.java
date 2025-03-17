@@ -118,7 +118,15 @@ public class Sac {
      * @param fitxa La fitxa a modificar.
      */
     private void reduirQuantitat(Fitxa fitxa) {
-        fitxes.computeIfPresent(fitxa, (k, v) -> (v == 1) ? null : v - 1);
+        if (fitxes.containsKey(fitxa)) {
+            int quantitat = fitxes.get(fitxa);
+            if (quantitat == 1) {
+                fitxes.remove(fitxa);
+            } else {
+                fitxes.put(fitxa, quantitat - 1);
+            }
+        }
+
     }
 
     /**
@@ -151,7 +159,8 @@ public class Sac {
      * @return El nombre de fitxes disponibles amb la lletra donada.
      */
     public int quantitatFitxes(char lletra) {
-        return obtenirFitxa(lletra).map(fitxes::get).orElse(0);
+        Fitxa f = obtenirFitxa(lletra).orElse(null);
+        return (f != null) ? fitxes.get(f) : 0;
     }
 
     /**
