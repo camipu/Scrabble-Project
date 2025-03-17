@@ -26,6 +26,9 @@ java {
         languageVersion = JavaLanguageVersion.of(22)
     }
 }
+test {
+    useJUnit() // Esto indica a Gradle que ejecute las pruebas con JUnit 4
+}
 
 
 repositories {
@@ -36,4 +39,14 @@ dependencies {
     // this is just an example of importing an external library, you do not need to use it in your project
     implementation 'com.google.code.gson:gson:2.8.9'
     testImplementation('junit:junit:4.13.1')
+}
+
+tasks.named('test') {
+    useJUnit()
+}
+
+tasks.register('hello') {
+    doLast {
+        println 'Hola, això és una tasca de Gradle!'
+    }
 }

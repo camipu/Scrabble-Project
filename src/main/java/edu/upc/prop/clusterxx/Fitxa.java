@@ -6,7 +6,7 @@ public class Fitxa {
     int punts;
     boolean digraf;
 
-    Fitxa(char lletra, int punts) {
+    public Fitxa(char lletra, int punts) {
         this.lletra = lletra;
         this.punts = punts;
         if (Character.isLetter(lletra)) digraf = false;
