@@ -41,9 +41,6 @@ dependencies {
     testImplementation('junit:junit:4.13.1')
 }
 
-tasks.named('test') {
-    useJUnit()
-}
 
 tasks.register('hello') {
     doLast {

@@ -7,10 +7,9 @@ public class Fitxa {
     boolean digraf;
 
     public Fitxa(char lletra, int punts) {
-        this.lletra = lletra;
+        this.lletra = Character.toUpperCase(lletra);
         this.punts = punts;
-        if (Character.isLetter(lletra)) digraf = false;
-        else digraf = true;
+        digraf = !Character.isLetter(lletra);
     }
 
     public char getLletra() {
