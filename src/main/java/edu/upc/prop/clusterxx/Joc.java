@@ -4,6 +4,7 @@ public class Joc {
     int numJugadors;
     Jugador[] jugadors;
     Diccionari diccionari;
+    Taulell taulell = new Taulell(15);
     Sac sac;
 
 
@@ -25,6 +26,8 @@ public class Joc {
     public Sac getSac() {
         return sac;
     }
+    public Diccionari getDiccionari() {return diccionari;}
+    public Taulell getTaulell() {return taulell;}
 
     public boolean esParaulaValida(String paraula){
         return diccionari.esParaulaValida(paraula);
