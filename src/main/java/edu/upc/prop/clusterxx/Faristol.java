@@ -1,63 +1,73 @@
 package edu.upc.prop.clusterxx;
+
 import java.util.*;
 
-//Classe Faristol
 public class Faristol {
     private final Vector<Fitxa> fitxes;
     private Sac sac;
 
     public Faristol(Sac sac) {
-        fitxes = new Vector<Fitxa>();
+        this.fitxes = new Vector<>();
         this.sac = sac;
+        inicialitzarFaristol();  // Omplim el faristol amb 7 fitxes
     }
 
-    public Vector<Fitxa> obtenirFitxes() {
-        return fitxes;
-    }
-
-    public void afegirFitxa(Fitxa fitxa) {
-        Fitxa f = sac.agafarFitxa(fitxa);
-        if (f != null) {
-            fitxes.add(f);  // Afegim la fitxa si no és null
+    // Omple el faristol amb 7 fitxes inicials
+    private void inicialitzarFaristol() {
+        while (fitxes.size() < 7 && !sac.esBuit()) {
+            fitxes.add(sac.agafarFitxa());
         }
     }
 
-
-    public boolean eliminarFitxa(Fitxa fitxa) {
-        for (Fitxa f : fitxes) {
-            if (f == fitxa) {
-                return fitxes.remove(f); // Elimina la fitxa trobada
+    // Afegeix una fitxa al faristol des del sac (si hi ha espai)
+    public void afegirFitxa(Fitxa fitxa) {
+        if (fitxes.size() < 7) {
+            Fitxa f = sac.agafarFitxa(fitxa);
+            if (f != null) {
+                fitxes.add(f);
             }
+        }
+    }
+
+    // Elimina una fitxa i la reposa automàticament
+    public boolean eliminarFitxa(Fitxa fitxa) {
+        if (fitxes.remove(fitxa)) {
+            reposarFitxes(); // Reposar si es treu una fitxa
+            return true;
         }
         return false;
     }
 
+    // Garanteix que el faristol sempre tingui 7 fitxes si el sac no està buit
+    private void reposarFitxes() {
+        while (fitxes.size() < 7 && !sac.esBuit()) {
+            fitxes.add(sac.agafarFitxa());
+        }
+    }
 
-    // Mètode per obtenir la fitxa a un índex específic
+    // Altres mètodes auxiliars...
+    public Vector<Fitxa> obtenirFitxes() {
+        return fitxes;
+    }
+
     public Fitxa obtenirFitxa(int index) {
         return fitxes.get(index);
     }
 
-    // Mètode per obtenir el nombre de fitxes al Faristol
     public int obtenirNumFitxes() {
         return fitxes.size();
     }
 
-    // Mètode per barrejar les fitxes al Faristol
     public void barrejarFitxes() {
         Collections.shuffle(fitxes);
     }
 
-    // Mètode per imprimir les fitxes del Faristol
     public void imprimirFaristol() {
         System.out.print("[");
         for (int i = 0; i < fitxes.size(); i++) {
             Fitxa fitxa = fitxes.get(i);
             System.out.print("[" + fitxa + " " + Colors.YELLOW_TEXT + fitxa.getPunts() + Colors.RESET + "]");
-
-            if (i < fitxes.size() - 1) {
-                System.out.print(" "); // Espai entre fitxes
-            }
+            if (i < fitxes.size() - 1) System.out.print(" ");
         }
         System.out.println("]");
     }

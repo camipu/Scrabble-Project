@@ -26,6 +26,10 @@ public class Jugador {
         return faristol;
     }
 
+    public Fitxa obtenirFitxa(int pos) {
+        return faristol.obtenirFitxa(pos);
+    }
+
     public void afegirFitxa(Fitxa fitxa) {
         faristol.afegirFitxa(fitxa);
     }
