@@ -47,3 +47,8 @@ tasks.register('hello') {
         println 'Hola, això és una tasca de Gradle!'
     }
 }
+
+tasks.named('run') {
+    standardInput = System.in
+}
+

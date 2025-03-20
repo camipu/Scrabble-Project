@@ -15,29 +15,23 @@ public class Faristol {
         return fitxes;
     }
 
-    public void afegirFitxa(char lletra) {
-        Fitxa fitxa = sac.agafarFitxa(lletra);
-        if (fitxa != null) {
-            fitxes.add(fitxa);  // Afegim la fitxa si no és null
+    public void afegirFitxa(Fitxa fitxa) {
+        Fitxa f = sac.agafarFitxa(fitxa);
+        if (f != null) {
+            fitxes.add(f);  // Afegim la fitxa si no és null
         }
     }
 
-    public void afegirFitxa(Fitxa fitxa) {
-       fitxes.add(fitxa);
-    }
 
-    public boolean eliminarFitxa(char lletra) {
-        for (Fitxa fitxa : fitxes) {
-            if (fitxa.getLletra() == lletra) {
-                return fitxes.remove(fitxa); // Elimina la fitxa trobada
+    public boolean eliminarFitxa(Fitxa fitxa) {
+        for (Fitxa f : fitxes) {
+            if (f == fitxa) {
+                return fitxes.remove(f); // Elimina la fitxa trobada
             }
         }
         return false;
     }
 
-    public boolean eliminarFitxa(Fitxa fitxa) {
-        return fitxes.remove(fitxa);
-    }
 
     // Mètode per obtenir la fitxa a un índex específic
     public Fitxa obtenirFitxa(int index) {

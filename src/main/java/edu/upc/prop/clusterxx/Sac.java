@@ -71,13 +71,13 @@ public class Sac {
 
     /**
      * Retorna una fitxa específica si està disponible.
-     * @param lletra La lletra de la fitxa que es vol obtenir.
+     * @param fitxa La lletra de la fitxa que es vol obtenir.
      * @return La fitxa corresponent.
      * @throws NoSuchElementException Si la fitxa no està disponible.
      */
-    public Fitxa agafarFitxa(char lletra) {
-        Fitxa fitxa = obtenirFitxa(lletra).orElseThrow(() ->
-                new NoSuchElementException("No hi ha fitxes disponibles amb la lletra '" + lletra + "'"));
+    public Fitxa agafarFitxa(Fitxa fitxa) {
+        Fitxa f = obtenirFitxa(fitxa).orElseThrow(() ->
+                new NoSuchElementException("No hi ha fitxes disponibles amb la lletra '" + fitxa.getLletra() + "'"));
         reduirQuantitat(fitxa);
         return fitxa;
     }
@@ -106,11 +106,11 @@ public class Sac {
 
     /**
      * Retorna una fitxa si existeix.
-     * @param lletra La lletra de la fitxa a cercar.
+     * @param fitxa La lletra de la fitxa a cercar.
      * @return Una instància Optional amb la fitxa si existeix.
      */
-    private Optional<Fitxa> obtenirFitxa(char lletra) {
-        return fitxes.keySet().stream().filter(f -> f.getLletra() == lletra).findFirst();
+    private Optional<Fitxa> obtenirFitxa(Fitxa fitxa) {
+        return fitxes.keySet().stream().filter(f -> f == fitxa).findFirst();
     }
 
     /**
@@ -155,11 +155,11 @@ public class Sac {
 
     /**
      * Retorna la quantitat de fitxes d'una lletra específica.
-     * @param lletra La lletra de les fitxes a comptar.
+     * @param fitxa La lletra de les fitxes a comptar.
      * @return El nombre de fitxes disponibles amb la lletra donada.
      */
-    public int quantitatFitxes(char lletra) {
-        Fitxa f = obtenirFitxa(lletra).orElse(null);
+    public int quantitatFitxes(Fitxa fitxa) {
+        Fitxa f = obtenirFitxa(fitxa).orElse(null);
         return (f != null) ? fitxes.get(f) : 0;
     }
 
