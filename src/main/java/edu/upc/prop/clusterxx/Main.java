@@ -9,5 +9,4 @@ public class Main {
     joc.imprimirInfoJugadors();
 //    joc.imprimirInfoJugadors();
   }
-
 }
