@@ -4,6 +4,7 @@ public class Casella {
     private final int x;
     private final int y;
     private Fitxa fitxa;
+    private boolean casellaJugada;
     private final EstrategiaPuntuacio estrategia;
 
     public Casella(int x, int y, EstrategiaPuntuacio estrategia) {
@@ -11,6 +12,7 @@ public class Casella {
         this.y = y;
         this.fitxa = null;
         this.estrategia = estrategia;
+        this.casellaJugada = false;
     }
 
     public int calcularPunts() {

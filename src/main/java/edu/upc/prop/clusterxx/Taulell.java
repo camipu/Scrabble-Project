@@ -1,5 +1,7 @@
 package edu.upc.prop.clusterxx;
 
+import java.util.HashMap;
+
 public class Taulell {
     private final int size;
     private final Casella[][] taulell;
@@ -100,7 +102,26 @@ public class Taulell {
         }
     }
 
+    public HashMap<String, Integer> buscaPalabrasValidas(int[][] posNuevasLetras){
+        HashMap<String,Integer> nuevasPosiblesPalabras = new HashMap<>();
+        for (int[] posLetra : posNuevasLetras) {
+            int x = posLetra[0];
+            int y = posLetra[1];
+            HashMap<String,Integer> aux =new HashMap<>();
+            aux = buscaPalabras(x, y, 1, 0); //derecha e izquierda
+            nuevasPosiblesPalabras.putAll(aux);
+            aux = buscaPalabras(x,y,0,1); //arriba, abajo
+            nuevasPosiblesPalabras.putAll(aux);
 
+        }
+        return nuevasPosiblesPalabras;
+    }
+
+    private HashMap<String, Integer> buscaPalabras(int x, int y, int horizontal, int vertical){
+        HashMap<String, Integer> aux = new HashMap<>(); // ✅ Ahora aux no es null
+        aux.put("hola", 2); // ✅ Ahora puedes agregar elementos
+        return aux;
+    }
 
 
 }
