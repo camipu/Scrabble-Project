@@ -20,35 +20,38 @@ public class Taulell {
 
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
-                taulell[i][j] = new Casella(i, j, assignarEstrategia(i, j));
+                taulell[i][j] = new Casella(i, j, assignarEstrategia(i, j, size));
             }
         }
     }
 
 
-    private EstrategiaPuntuacio assignarEstrategia(int i, int j) {
+    private EstrategiaPuntuacio assignarEstrategia(int i, int j, int size) {
+        int centro = size / 2;
+        int offset = size / 4;
         // Triple paraula (TW)
-        if ((i == 0 || i == 7 || i == 14) && (j == 0 || j == 7 || j == 14)) {
+        if ((i == 0 || i == centro || i == size - 1) && (j == 0 || j == centro || j == size - 1)) {
             return new EstrategiaMultiplicadorParaula(3);
         }
 
-        // Doble paraula (DW)
-        if (i == j || i + j == 14 || (i == 7 && j == 7)) {
+        // Doble paraula (DW) aqui potser falta afegir que i = centro && j = centro
+        if (i == j || i + j == size - 1) {
             return new EstrategiaMultiplicadorParaula(2);
         }
 
         // Triple lletra (TL)
-        if ((i == 1 || i == 5 || i == 9 || i == 13) && (j == 1 || j == 5 || j == 9 || j == 13)) {
+        if ((i == offset || i == size - 1 - offset) && (j == offset || j == size - 1 - offset)) {
+            return new EstrategiaMultiplicadorLletra(3);
+        }
+        if ((i == offset || i == size - 1 - offset) && j == centro || i == centro && (j == offset || j == size - 1 - offset)) {
             return new EstrategiaMultiplicadorLletra(3);
         }
 
         // Doble lletra (DL)
-        if (((i == 0 || i == 14) && (j == 3 || j == 11)) ||
-                ((i == 2 || i == 12) && (j == 6 || j == 8)) ||
-                ((i == 3 || i == 11) && (j == 0 || j == 7 || j == 14)) ||
-                ((i == 6 || i == 8) && (j == 2 || j == 6 || j == 8 || j == 12)) ||
-                ((i == 7) && (j == 3 || j == 11))) {
-            return new EstrategiaMultiplicadorLletra(2);
+        if (i == centro || j == centro) {
+            if (i != centro || j != centro) {
+                return new EstrategiaMultiplicadorLletra(2);
+            }
         }
 
         return new EstrategiaNormal();
