@@ -10,8 +10,9 @@ public class Main {
     joc.getTaulell().imprimirTaulell();
     joc.imprimirInfoJugadors();
     joc.colocarFitxa(1,joc.getPersona(1).obtenirFitxa(0), 1, 0);
+    joc.colocarFitxa(0,joc.getPersona(0).obtenirFitxa(1), 0, 1);
     joc.getTaulell().imprimirTaulell();
-    int [][] v= {{0 , 0},{0 , 1}};
+    int [][] v= {{1 , 0},{0 , 1}};
     HashMap<String,Integer> palabras = new HashMap<String, Integer>();
     palabras = joc.getTaulell().buscaPalabrasValidas(v);
     System.out.println(palabras);

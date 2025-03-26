@@ -6,7 +6,7 @@ public class Joc {
     int numJugadors;
     Jugador[] jugadors;
     Diccionari diccionari;
-    Taulell taulell = new Taulell(15);
+    Taulell taulell = new Taulell(15, this);
     Sac sac;
 
     public Joc(int numJugadors, String idioma) {

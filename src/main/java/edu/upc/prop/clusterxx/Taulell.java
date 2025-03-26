@@ -7,14 +7,16 @@ import java.util.Queue;
 public class Taulell {
     private final int size;
     private final Casella[][] taulell;
+    private Joc joc;
 
-    public Taulell(int size) {
+    public Taulell(int size, Joc joc) {
         if (size % 2 == 0) {
             throw new IllegalArgumentException("La mida del tauler ha de ser imparella per garantir simetria.");
         }
 
         this.size = size;
         taulell = new Casella[size][size];
+        this.joc = joc;
 
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
@@ -149,7 +151,7 @@ public class Taulell {
                 }
 
                 // Si la palabra es válida, agregarla
-                if (palabra.length() > 1) {
+                if (palabra.length() > 1 && joc.getDiccionari().esParaulaValida(palabra.toString())) {
                     palabras.put(palabra.toString(),puntos);
                 }
             }
