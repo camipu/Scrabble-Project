@@ -1,6 +1,8 @@
 package edu.upc.prop.clusterxx;
 
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.Queue;
 
 public class Taulell {
     private final int size;
@@ -108,20 +110,51 @@ public class Taulell {
             int x = posLetra[0];
             int y = posLetra[1];
             HashMap<String,Integer> aux =new HashMap<>();
-            aux = buscaPalabras(x, y, 1, 0); //derecha e izquierda
+            aux = buscaPalabra(x, y, 1, 0); //derecha e izquierda
             nuevasPosiblesPalabras.putAll(aux);
-            aux = buscaPalabras(x,y,0,1); //arriba, abajo
+            aux = buscaPalabra(x,y,0,1); //arriba, abajo
             nuevasPosiblesPalabras.putAll(aux);
 
         }
         return nuevasPosiblesPalabras;
     }
 
-    private HashMap<String, Integer> buscaPalabras(int x, int y, int horizontal, int vertical){
-        HashMap<String, Integer> aux = new HashMap<>(); // ✅ Ahora aux no es null
-        aux.put("hola", 2); // ✅ Ahora puedes agregar elementos
-        return aux;
-    }
+ private HashMap<String, Integer> buscaPalabra(int x, int y, int dx, int dy) {
+            HashMap<String, Integer> palabras = new HashMap<String, Integer>();
+            Queue<int[]> queue = new LinkedList<>();
+            queue.add(new int[]{x, y});
 
+            while (!queue.isEmpty()) {
+                int[] pos = queue.poll();
+                int i = pos[0], j = pos[1];
+
+                // Formar la palabra recorriendo en la dirección (dx, dy)
+                StringBuilder palabra = new StringBuilder();
+                int puntos = 0;
+                while (i >= 0 && i < size && j >= 0 && j < size && !taulell[i][j].esBuida()) {
+                    palabra.insert(0, taulell[i][j]); // Construir palabra desde atrás
+                    puntos += taulell[i][j].calcularPunts();
+                    i -= dx;
+                    j -= dy;
+                }
+
+                // Ahora ir en la otra dirección para completar la palabra
+                i = pos[0] + dx;
+                j = pos[1] + dy;
+                while (i >= 0 && i < size && j >= 0 && j < size && !taulell[i][j].esBuida()) {
+                    palabra.append(taulell[i][j]);
+                    puntos += taulell[i][j].calcularPunts();
+                    i += dx;
+                    j += dy;
+                }
+
+                // Si la palabra es válida, agregarla
+                if (palabra.length() > 1) {
+                    palabras.put(palabra.toString(),puntos);
+                }
+            }
+
+            return palabras;
+        }
 
 }
