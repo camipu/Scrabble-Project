@@ -5,7 +5,7 @@ package edu.upc.prop.clusterxx;
  * un indicador de si és un dígraf.
  */
 public class Fitxa {
-    private final char lletra;
+    private final String lletra;
     private final int punts;
     private final boolean digraf;
 
@@ -16,10 +16,10 @@ public class Fitxa {
      * @param lletra La lletra de la fitxa.
      * @param punts El valor en punts de la fitxa.
      */
-    public Fitxa(char lletra, int punts) {
-        this.lletra = Character.toUpperCase(lletra);
+    public Fitxa(String lletra, int punts) {
+        this.lletra = lletra.toUpperCase();
         this.punts = punts;
-        this.digraf = !Character.isLetter(this.lletra);
+        this.digraf = lletra.length() > 1;
     }
 
     /**
@@ -27,7 +27,7 @@ public class Fitxa {
      *
      * @return La lletra associada a aquesta fitxa.
      */
-    public char obtenirLletra() {
+    public String obtenirLletra() {
         return lletra;
     }
 
@@ -49,6 +49,7 @@ public class Fitxa {
         return digraf;
     }
 
+
     /**
      * Retorna una representació en cadena de la fitxa.
      * </p>Si la lletra és '(', es representa com "CH". </p>
@@ -57,6 +58,6 @@ public class Fitxa {
      */
     @Override
     public String toString() {
-        return (lletra == '(') ? "CH" : String.valueOf(lletra);
+        return String.valueOf(lletra);
     }
 }

@@ -54,7 +54,7 @@ public class Sac {
             }
 
             try {
-                char lletra = parts[0].charAt(0);
+                String lletra = parts[0]; // Cambiado de char a String
                 int quantitat = Integer.parseInt(parts[1]);
                 int punts = Integer.parseInt(parts[2]);
 
@@ -78,8 +78,8 @@ public class Sac {
     public Fitxa agafarFitxa(Fitxa fitxa) {
         Fitxa f = obtenirFitxa(fitxa).orElseThrow(() ->
                 new NoSuchElementException("No hi ha fitxes disponibles amb la lletra '" + fitxa.obtenirLletra() + "'"));
-        reduirQuantitat(fitxa);
-        return fitxa;
+        reduirQuantitat(f);
+        return f;
     }
 
     /**
@@ -110,7 +110,9 @@ public class Sac {
      * @return Una instància Optional amb la fitxa si existeix.
      */
     private Optional<Fitxa> obtenirFitxa(Fitxa fitxa) {
-        return fitxes.keySet().stream().filter(f -> f == fitxa).findFirst();
+        return fitxes.keySet().stream()
+                .filter(f -> f.obtenirLletra().equals(fitxa.obtenirLletra()))
+                .findFirst();
     }
 
     /**

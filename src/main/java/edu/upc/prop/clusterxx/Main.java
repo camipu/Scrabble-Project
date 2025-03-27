@@ -7,10 +7,10 @@ public class Main {
     Joc joc = new Joc(2, "castellano", new String[]{"María", "Juan"});
     joc.imprimirInfoJugadors();
     joc.colocarFitxa(0,joc.obtenirPersona(0).obtenirFitxa(0), 0, 0);
-    Fitxa f1 = new Fitxa('C', 3);
-    Fitxa f2 = new Fitxa('A', 3);
-    Fitxa f3 = new Fitxa('S', 3);
-    Fitxa f4 = new Fitxa('A', 3);
+    Fitxa f1 = new Fitxa("C", 3);
+    Fitxa f2 = new Fitxa("A", 3);
+    Fitxa f3 = new Fitxa("S", 3);
+    Fitxa f4 = new Fitxa("A", 3);
     joc.colocarFitxa(f1, 3, 3);
     joc.colocarFitxa(f2, 4, 3);
     joc.colocarFitxa(f3, 5, 3);
