@@ -10,7 +10,7 @@ public class Main {
     Fitxa f1 = new Fitxa("C", 3);
     Fitxa f2 = new Fitxa("A", 3);
     Fitxa f3 = new Fitxa("S", 3);
-    Fitxa f4 = new Fitxa("CH", 3);
+    Fitxa f4 = new Fitxa("A", 3);
     joc.colocarFitxa(f1, 3, 3);
     joc.colocarFitxa(f2, 4, 3);
     joc.colocarFitxa(f3, 5, 3);
@@ -18,10 +18,11 @@ public class Main {
     joc.obtenirTaulell().imprimirTaulell();
     joc.imprimirInfoJugadors();
     joc.obtenirTaulell().imprimirTaulell();
-    int [][] v= {{6 , 3}};
+    int [][] v= {{3 , 3},{4, 3},{5 , 3},{6 , 3}};
     HashMap<String,Integer> palabras = new HashMap<String, Integer>();
     palabras = joc.obtenirTaulell().buscaPalabrasValidas(v);
     System.out.println(palabras);
+
 //    joc.imprimirInfoJugadors();
   }
 }

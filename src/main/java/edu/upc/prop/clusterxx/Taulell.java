@@ -154,7 +154,8 @@ public class Taulell {
                 }
 
                 // Si la palabra es válida, agregarla
-                if (palabra.length() > 1 && joc.obtenirDiccionari().esParaulaValida(palabra.toString())) {
+                //boolean aux = joc.obtenirDiccionari().esParaulaValida(palabra.toString().toUpperCase())
+                if (palabra.length() > 2) {
                     palabras.put(palabra.toString(),puntos);
                 }
             }
