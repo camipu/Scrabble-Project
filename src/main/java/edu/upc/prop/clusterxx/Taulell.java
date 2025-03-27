@@ -9,6 +9,7 @@ public class Taulell {
     private final Casella[][] taulell;
     private Joc joc;
 
+
     public Taulell(int size, Joc joc) {
         if (size % 2 == 0) {
             throw new IllegalArgumentException("La mida del tauler ha de ser imparella per garantir simetria.");
@@ -109,6 +110,8 @@ public class Taulell {
         }
     }
 
+    // Pre: un vector con las posiciones de las letras que se están añadiendo al tablero
+    // Post: Un map<string, int> con las palabras nuevas y sus respectivas puntuaciones
     public HashMap<String, Integer> buscaPalabrasValidas(int[][] posNuevasLetras){
         HashMap<String,Integer> nuevasPosiblesPalabras = new HashMap<>();
         for (int[] posLetra : posNuevasLetras) {
@@ -123,6 +126,7 @@ public class Taulell {
         }
         return nuevasPosiblesPalabras;
     }
+
 
  private HashMap<String, Integer> buscaPalabra(int x, int y, int dx, int dy) {
             HashMap<String, Integer> palabras = new HashMap<String, Integer>();

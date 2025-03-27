@@ -21,6 +21,10 @@ public class Casella {
 
     public boolean isCasellaJugada(){return casellaJugada;}
 
+    public void jugarCasella() {
+        casellaJugada = true;
+    }
+
     public int getX() { return x; }
     public int getY() { return y; }
     public Fitxa getFitxa() { return fitxa; }
