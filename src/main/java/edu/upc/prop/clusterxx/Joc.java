@@ -30,12 +30,12 @@ public class Joc {
         sac.mostrarContingut();
     }
 
-    public Sac getSac() {
+    public Sac obtenirSac() {
         return sac;
     }
-    public Diccionari getDiccionari() {return diccionari;}
-    public Taulell getTaulell() {return taulell;}
-    public Jugador getPersona(int i) {return jugadors[i];}
+    public Diccionari obtenirDiccionari() {return diccionari;}
+    public Taulell obtenirTaulell() {return taulell;}
+    public Jugador obtenirPersona(int i) {return jugadors[i];}
 
     public void colocarFitxa(int numJugador, Fitxa fitxa, int i, int j) {
         taulell.colocarFitxa(fitxa, i, j);
