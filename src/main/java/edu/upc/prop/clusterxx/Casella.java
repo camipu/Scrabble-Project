@@ -40,6 +40,8 @@ public class Casella {
 
     @Override
     public String toString() {
-        return esBuida() ? "  " : " " + fitxa;
+        if (esBuida()) return "  ";
+        else if (fitxa.esDigraf()) return "" + fitxa;
+        return " " + fitxa;
     }
 }
