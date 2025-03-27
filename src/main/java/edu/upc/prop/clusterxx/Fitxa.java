@@ -27,7 +27,7 @@ public class Fitxa {
      *
      * @return La lletra associada a aquesta fitxa.
      */
-    public char getLletra() {
+    public char obtenirLletra() {
         return lletra;
     }
 
@@ -36,7 +36,7 @@ public class Fitxa {
      *
      * @return Els punts que val aquesta fitxa.
      */
-    public int getPunts() {
+    public int obtenirPunts() {
         return punts;
     }
 
