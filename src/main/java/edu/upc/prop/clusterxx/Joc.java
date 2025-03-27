@@ -45,6 +45,9 @@ public class Joc {
     public void imprimirInfoJugadors() {
         for (int i = 0; i < numJugadors; i++) {jugadors[i].imprimirInfo();}
     }
+    public void colocarFitxa(Fitxa fitxa, int i, int j) {
+        taulell.colocarFitxa(fitxa, i, j);
+    }
 
     public boolean esParaulaValida(String paraula){
         return diccionari.esParaulaValida(paraula);
