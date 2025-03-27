@@ -9,36 +9,17 @@ public class Joc {
     Taulell taulell = new Taulell(15, this);
     Sac sac;
 
-    public Joc(int numJugadors, String idioma) {
+    public Joc(int numJugadors, String idioma, String[] noms) {
         this.numJugadors = numJugadors;
         this.diccionari = new Diccionari(idioma);
         this.sac = new Sac(idioma);
+        this.taulell = new Taulell(15, this);
+
+        // Inicialización correcta del array de jugadores
         this.jugadors = new Jugador[numJugadors];
-
-        Scanner scanner = new Scanner(System.in);
-
-        System.out.println(Colors.YELLOW_BACKGROUND + Colors.BLACK_TEXT +
-                " 👾 Benvingut a Scrabble 🎲 " + Colors.RESET);
-        System.out.println(Colors.PURPLE_TEXT + "⚡ Es jugarà amb l'idioma: " + idioma.toUpperCase() + Colors.RESET);
-        System.out.println();
-
         for (int i = 0; i < numJugadors; i++) {
-            System.out.print(Colors.CYAN_TEXT + "👉 Jugador " + (i + 1) + ", introdueix el teu nom: " + Colors.RESET);
-
-            if (scanner.hasNextLine()) {
-                String nombre = scanner.nextLine();
-                jugadors[i] = new Jugador(nombre, sac);
-                System.out.println(Colors.GREEN_BACKGROUND + Colors.BLACK_TEXT +
-                        " ✅ " + nombre + " ha sigut afegit al joc. " + Colors.RESET);
-            } else {
-                System.out.println(Colors.RED_TEXT + "❌ Error: No s'ha pogut llegir correctament el nom." + Colors.RESET);
-                return;
-            }
-            System.out.println();
+            jugadors[i] = new Jugador(noms[i], sac);
         }
-
-        System.out.println(Colors.RED_BACKGROUND + Colors.WHITE_TEXT +
-                " 🚀TOTS ELS JUGADORS LLESTOS, QUE COMENCI EL JOC! " + Colors.RESET);
     }
 
     public boolean validarParaula(String paraula) {
