@@ -4,7 +4,7 @@ package edu.upc.prop.clusterxx;
 public class EstrategiaNormal implements EstrategiaPuntuacio {
     @Override
     public int calcularPunts(Fitxa fitxa) {
-        return fitxa != null ? fitxa.getPunts() : 0;
+        return fitxa != null ? fitxa.obtenirPunts() : 0;
     }
 
     public int getMultiplicador() {

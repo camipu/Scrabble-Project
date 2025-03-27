@@ -77,7 +77,7 @@ public class Sac {
      */
     public Fitxa agafarFitxa(Fitxa fitxa) {
         Fitxa f = obtenirFitxa(fitxa).orElseThrow(() ->
-                new NoSuchElementException("No hi ha fitxes disponibles amb la lletra '" + fitxa.getLletra() + "'"));
+                new NoSuchElementException("No hi ha fitxes disponibles amb la lletra '" + fitxa.obtenirLletra() + "'"));
         reduirQuantitat(fitxa);
         return fitxa;
     }
@@ -168,6 +168,6 @@ public class Sac {
      */
     public void mostrarContingut() {
         fitxes.forEach((fitxa, quantitat) ->
-                System.out.println(fitxa.getLletra() + " -> " + quantitat + " fitxes, " + fitxa.getPunts() + " punts"));
+                System.out.println(fitxa.obtenirLletra() + " -> " + quantitat + " fitxes, " + fitxa.obtenirPunts() + " punts"));
     }
 }

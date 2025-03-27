@@ -10,7 +10,7 @@ public class EstrategiaMultiplicadorParaula implements EstrategiaPuntuacio {
 
     @Override
     public int calcularPunts(Fitxa fitxa) {
-        return fitxa != null ? fitxa.getPunts() : 0; // Es multiplica després en el càlcul global
+        return fitxa != null ? fitxa.obtenirPunts() : 0; // Es multiplica després en el càlcul global
     }
 
     public int getMultiplicador() {

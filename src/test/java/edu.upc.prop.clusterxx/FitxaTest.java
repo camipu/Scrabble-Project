@@ -21,30 +21,30 @@ public class FitxaTest {
 
     @Test
     public void testCreacioFitxaLletraA() {
-        assertEquals('A', fitxaA.getLletra());
-        assertEquals(1, fitxaA.getPunts());
+        assertEquals('A', fitxaA.obtenirLletra());
+        assertEquals(1, fitxaA.obtenirPunts());
         assertFalse(fitxaA.esDigraf());
     }
 
     @Test
     public void testCreacioFitxaLletraZ() {
-        assertEquals('Z', fitxaZ.getLletra());
-        assertEquals(5, fitxaZ.getPunts());
+        assertEquals('Z', fitxaZ.obtenirLletra());
+        assertEquals(5, fitxaZ.obtenirPunts());
         assertFalse(fitxaZ.esDigraf());
     }
 
     @Test
     public void testCreacioFitxaLletrab() {
-        assertEquals('B', fitxab.getLletra());
-        assertEquals(2, fitxab.getPunts());
+        assertEquals('B', fitxab.obtenirLletra());
+        assertEquals(2, fitxab.obtenirPunts());
         assertFalse(fitxab.esDigraf());
     }
 
     @Test
     public void testCreacioFitxaDigraf() {
-        assertEquals('(', fitxaDigraf.getLletra());
+        assertEquals('(', fitxaDigraf.obtenirLletra());
         assertEquals("CH", fitxaDigraf.toString());
-        assertEquals(5, fitxaDigraf.getPunts());
+        assertEquals(5, fitxaDigraf.obtenirPunts());
         assertTrue(fitxaDigraf.esDigraf());
     }
 }

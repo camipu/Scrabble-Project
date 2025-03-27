@@ -66,7 +66,7 @@ public class Faristol {
         System.out.print("[");
         for (int i = 0; i < fitxes.size(); i++) {
             Fitxa fitxa = fitxes.get(i);
-            System.out.print("[" + fitxa + " " + Colors.YELLOW_TEXT + fitxa.getPunts() + Colors.RESET + "]");
+            System.out.print("[" + fitxa + " " + Colors.YELLOW_TEXT + fitxa.obtenirPunts() + Colors.RESET + "]");
             if (i < fitxes.size() - 1) System.out.print(" ");
         }
         System.out.println("]");

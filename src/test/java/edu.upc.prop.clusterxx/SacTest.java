@@ -9,86 +9,82 @@ import static org.junit.Assert.*;
 
 public class SacTest {
     private Sac sac;
+    private Fitxa a1, a2, b, x;
 
     @Before
     public void setUp() {
         // Simulem un sac amb fitxes predefinides
         sac = new Sac();
-        sac.afegirFitxa(new Fitxa('A', 1));
-        sac.afegirFitxa(new Fitxa('A', 1));
-        sac.afegirFitxa(new Fitxa('B', 1));
+        a1 = new Fitxa('A', 1);
+        a2 = new Fitxa('A', 1);
+        b = new Fitxa('B', 2);
+        x = new Fitxa('X', 5);
+
+        sac.afegirFitxa(a1);
+        sac.afegirFitxa(a2);
+        sac.afegirFitxa(b);
     }
 
     @Test
     public void testAgafarFitxaA() {
-        Fitxa f = sac.agafarFitxa('A');
+        Fitxa f = sac.agafarFitxa(a1);
         assertNotNull(f);
-        assertEquals('A', f.getLletra());
-        assertEquals(2, sac.getNumFitxes()); // Abans 3, ara 2
+        assertEquals('A', f.obtenirLletra());
+        assertEquals(2, sac.getNumFitxes());
         assertFalse(sac.esBuit());
     }
 
     @Test
     public void testSacBuit() {
-        Fitxa f = sac.agafarFitxa('A');
+        Fitxa f = sac.agafarFitxa(a1);
         assertNotNull(f);
-        assertEquals('A', f.getLletra());
-        f = sac.agafarFitxa('A');
+        assertEquals('A', f.obtenirLletra());
+        f = sac.agafarFitxa(a2);
         assertNotNull(f);
-        assertEquals('A', f.getLletra());
-        f = sac.agafarFitxa('B');
+        assertEquals('A', f.obtenirLletra());
+        f = sac.agafarFitxa(b);
         assertNotNull(f);
-        assertEquals('B', f.getLletra());
+        assertEquals('B', f.obtenirLletra());
 
-        assertEquals(0, sac.getNumFitxes()); // Abans 3, ara 2
+        assertEquals(0, sac.getNumFitxes());
         assertTrue(sac.esBuit());
     }
 
     @Test(expected = NoSuchElementException.class)
     public void testAgafarFitxaInexistent() {
-        sac.agafarFitxa('Z'); // La lletra 'Z' no està al sac, ha de llençar excepció
+        sac.agafarFitxa(x);
     }
 
     @Test
     public void testAgafarFitxaAleatoria() {
-        // Intentem agafar una fitxa del sac (hauria de ser A o B)
         Fitxa f = sac.agafarFitxa();
         assertNotNull(f);
-        assertTrue(f.getLletra() == 'A' || f.getLletra() == 'B');
+        assertTrue(f.obtenirLletra() == 'A' || f.obtenirLletra() == 'B');
 
-        // Verifiquem que el nombre de fitxes ha disminuït
-        assertEquals(2, sac.getNumFitxes()); // De 3 hem passat a 2
+        assertEquals(2, sac.getNumFitxes());
     }
 
     @Test(expected = IllegalStateException.class)
     public void testAgafarFitxaSacBuit() {
-        // Buidem el sac
         sac.agafarFitxa();
         sac.agafarFitxa();
-        sac.agafarFitxa(); // Aquí el sac queda buit
+        sac.agafarFitxa();
 
-        // Ara hauria de llençar excepció
         sac.agafarFitxa();
     }
 
     @Test
     public void testAfegirFitxaNova() {
-        Fitxa fitxa = new Fitxa('X', 5);
+        sac.afegirFitxa(x);
 
-        sac.afegirFitxa(fitxa);
-
-        assertEquals(1, sac.quantitatFitxes('X'));
+        assertEquals(1, sac.quantitatFitxes(x));
     }
 
     @Test
     public void testAfegirFitxaRepetida() {
-        Fitxa fitxa = new Fitxa('X', 5);
+        sac.afegirFitxa(x);
+        sac.afegirFitxa(x);
 
-        sac.afegirFitxa(fitxa);
-        sac.afegirFitxa(fitxa);
-
-        assertEquals(2, sac.quantitatFitxes('X'));
+        assertEquals(2, sac.quantitatFitxes(x));
     }
-
-
 }
