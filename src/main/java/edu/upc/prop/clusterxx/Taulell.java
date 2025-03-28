@@ -128,43 +128,43 @@ public class Taulell {
     }
 
 
- private HashMap<String, Integer> buscaPalabra(int x, int y, int dx, int dy) {
-            HashMap<String, Integer> palabras = new HashMap<String, Integer>();
-            Queue<int[]> queue = new LinkedList<>();
-            queue.add(new int[]{x, y});
+     private HashMap<String, Integer> buscaPalabra(int x, int y, int dx, int dy) {
+         HashMap<String, Integer> palabras = new HashMap<>();
+         Queue<int[]> queue = new LinkedList<>();
+         queue.add(new int[]{x, y});
 
-            while (!queue.isEmpty()) {
-                int[] pos = queue.poll();
-                int i = pos[0], j = pos[1];
+         while (!queue.isEmpty()) {
+             int[] pos = queue.poll();
+             int i = pos[0], j = pos[1];
 
-                // Formar la palabra recorriendo en la dirección (dx, dy)
-                StringBuilder palabra = new StringBuilder();
-                int puntos = 0;
-                while (i >= 0 && i < size && j >= 0 && j < size && !taulell[i][j].esBuida()) {
-                    palabra.insert(0, taulell[i][j]); // Construir palabra desde atrás
-                    puntos += taulell[i][j].calcularPunts();
-                    i -= dx;
-                    j -= dy;
-                }
+             // Formar la palabra recorriendo en la dirección (dx, dy)
+             StringBuilder palabra = new StringBuilder();
+             int puntos = 0;
+             while (i >= 0 && i < size && j >= 0 && j < size && !taulell[i][j].esBuida()) {
+                 palabra.insert(0, taulell[i][j].toString().trim()); // Eliminar espacios antes de insertar
+                 puntos += taulell[i][j].calcularPunts();
+                 i -= dx;
+                 j -= dy;
+             }
 
-                // Ahora ir en la otra dirección para completar la palabra
-                i = pos[0] + dx;
-                j = pos[1] + dy;
-                while (i >= 0 && i < size && j >= 0 && j < size && !taulell[i][j].esBuida()) {
-                    palabra.append(taulell[i][j]);
-                    puntos += taulell[i][j].calcularPunts();
-                    i += dx;
-                    j += dy;
-                }
+             // Ahora ir en la otra dirección para completar la palabra
+             i = pos[0] + dx;
+             j = pos[1] + dy;
+             while (i >= 0 && i < size && j >= 0 && j < size && !taulell[i][j].esBuida()) {
+                 palabra.append(taulell[i][j].toString().trim()); // Eliminar espacios antes de agregar
+                 puntos += taulell[i][j].calcularPunts();
+                 i += dx;
+                 j += dy;
+             }
+             String palabraFinal = palabra.toString().replaceAll("\\s+", ""); // Eliminar cualquier espacio extra
+             // Si la palabra es válida, agregarla
+             if (palabra.length() > 2 && joc.obtenirDiccionari().esParaulaValida(palabraFinal)) {
+                 palabras.put(palabraFinal, puntos);
+             }
+         }
 
-                // Si la palabra es válida, agregarla
-                //boolean aux = joc.obtenirDiccionari().esParaulaValida(palabra.toString().toUpperCase())
-                if (palabra.length() > 2) {
-                    palabras.put(palabra.toString(),puntos);
-                }
-            }
+         return palabras;
+     }
 
-            return palabras;
-        }
 
 }

@@ -21,10 +21,8 @@ public class CtrDomini {
         Joc joc = new Joc(numJugadors, idioma, noms);
         taulell = joc.obtenirTaulell();
         diccionari = joc.obtenirDiccionari();
-        jugadors = joc.obtenirJugadors();
-        jugadorActual = 0;
+
     }
 
 }
-
 
