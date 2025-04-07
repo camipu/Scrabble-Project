@@ -58,6 +58,6 @@ public class Fitxa {
      */
     @Override
     public String toString() {
-        return String.valueOf(lletra);
+        return lletra;
     }
 }
