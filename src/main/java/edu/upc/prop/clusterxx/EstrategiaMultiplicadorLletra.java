@@ -13,7 +13,9 @@ public class EstrategiaMultiplicadorLletra implements EstrategiaPuntuacio {
         return fitxa != null ? fitxa.obtenirPunts() * multiplicador : 0;
     }
 
-    public int getMultiplicador() {
+    public int obtenirMultiplicador() {
         return multiplicador;
     }
+
+    public boolean esMultiplicadorParaula() {return false;}
 }

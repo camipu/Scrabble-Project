@@ -3,23 +3,22 @@ package edu.upc.prop.clusterxx;
 import java.util.*;
 
 public class Faristol {
-    private final Vector<Fitxa> fitxes;
+    private final ArrayList<Fitxa> fitxes;
     private Sac sac;
 
     public Faristol(Sac sac) {
-        this.fitxes = new Vector<>();
+        // Prealocatem capacitat per 7 elements per evitar redimensionaments
+        this.fitxes = new ArrayList<>(7);
         this.sac = sac;
-        inicialitzarFaristol();  // Omplim el faristol amb 7 fitxes
+        inicialitzarFaristol();
     }
 
-    // Omple el faristol amb 7 fitxes inicials
     private void inicialitzarFaristol() {
         while (fitxes.size() < 7 && !sac.esBuit()) {
             fitxes.add(sac.agafarFitxa());
         }
     }
 
-    // Afegeix una fitxa al faristol des del sac (si hi ha espai)
     public void afegirFitxa(Fitxa fitxa) {
         if (fitxes.size() < 7) {
             Fitxa f = sac.agafarFitxa(fitxa);
@@ -29,24 +28,22 @@ public class Faristol {
         }
     }
 
-    // Elimina una fitxa i la reposa automàticament
     public boolean eliminarFitxa(Fitxa fitxa) {
         if (fitxes.remove(fitxa)) {
-            reposarFitxes(); // Reposar si es treu una fitxa
+            reposarFitxes();
             return true;
         }
         return false;
     }
 
-    // Garanteix que el faristol sempre tingui 7 fitxes si el sac no està buit
     private void reposarFitxes() {
         while (fitxes.size() < 7 && !sac.esBuit()) {
             fitxes.add(sac.agafarFitxa());
         }
     }
 
-    // Altres mètodes auxiliars...
-    public Vector<Fitxa> obtenirFitxes() {
+    // Per compatibilitat, mantenim el tipus de retorn Vector, però podem considerar canviar-lo
+    public ArrayList<Fitxa> obtenirFitxes() {
         return fitxes;
     }
 

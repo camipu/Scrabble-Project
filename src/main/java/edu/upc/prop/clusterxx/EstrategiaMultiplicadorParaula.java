@@ -13,7 +13,9 @@ public class EstrategiaMultiplicadorParaula implements EstrategiaPuntuacio {
         return fitxa != null ? fitxa.obtenirPunts() : 0; // Es multiplica després en el càlcul global
     }
 
-    public int getMultiplicador() {
+    public int obtenirMultiplicador() {
         return multiplicador;
     }
+
+    public boolean esMultiplicadorParaula() {return true;}
 }

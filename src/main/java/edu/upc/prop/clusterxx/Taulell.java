@@ -98,12 +98,12 @@ public class Taulell {
 
 
     private String obtenirColorFons(Casella casella) {
-        if (casella.getEstrategia() instanceof EstrategiaMultiplicadorParaula) {
-            EstrategiaMultiplicadorParaula estrategia = (EstrategiaMultiplicadorParaula) casella.getEstrategia();
-            return estrategia.getMultiplicador() == 3 ? Colors.RED_BACKGROUND : Colors.PURPLE_BACKGROUND;
-        } else if (casella.getEstrategia() instanceof EstrategiaMultiplicadorLletra) {
-            EstrategiaMultiplicadorLletra estrategia = (EstrategiaMultiplicadorLletra) casella.getEstrategia();
-            return estrategia.getMultiplicador() == 3 ? Colors.BLUE_BACKGROUND : Colors.CYAN_BACKGROUND;
+        if (casella.obtenirEstrategia() instanceof EstrategiaMultiplicadorParaula) {
+            EstrategiaMultiplicadorParaula estrategia = (EstrategiaMultiplicadorParaula) casella.obtenirEstrategia();
+            return estrategia.obtenirMultiplicador() == 3 ? Colors.RED_BACKGROUND : Colors.PURPLE_BACKGROUND;
+        } else if (casella.obtenirEstrategia() instanceof EstrategiaMultiplicadorLletra) {
+            EstrategiaMultiplicadorLletra estrategia = (EstrategiaMultiplicadorLletra) casella.obtenirEstrategia();
+            return estrategia.obtenirMultiplicador() == 3 ? Colors.BLUE_BACKGROUND : Colors.CYAN_BACKGROUND;
         } else {
             // Caselles normals -> Blanc brillant (si el terminal ho suporta)
             return "\033[107m";  // Alternativa més brillant per a WHITE_BACKGROUND

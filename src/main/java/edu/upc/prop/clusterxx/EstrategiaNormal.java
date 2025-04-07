@@ -7,7 +7,10 @@ public class EstrategiaNormal implements EstrategiaPuntuacio {
         return fitxa != null ? fitxa.obtenirPunts() : 0;
     }
 
-    public int getMultiplicador() {
+    public int obtenirMultiplicador() {
         return 1;
     }
+
+    public boolean esMultiplicadorParaula() {return false;}
+
 }

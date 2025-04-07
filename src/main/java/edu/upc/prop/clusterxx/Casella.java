@@ -1,12 +1,33 @@
 package edu.upc.prop.clusterxx;
 
+/**
+ * Representa una casella del tauler de joc.
+ * Cada casella té una posició definida per coordenades (x,y), pot contenir una fitxa
+ * i té associada una estratègia de puntuació.
+ */
 public class Casella {
+    /** Coordenada x de la casella al tauler */
     private final int x;
+
+    /** Coordenada y de la casella al tauler */
     private final int y;
+
+    /** Fitxa col·locada en aquesta casella, o null si està buida */
     private Fitxa fitxa;
+
+    /** Indica si la casella ha estat jugada en el torn actual */
     private boolean casellaJugada;
+
+    /** Estratègia de puntuació associada a aquesta casella */
     private final EstrategiaPuntuacio estrategia;
 
+    /**
+     * Constructor que crea una nova casella buida.
+     *
+     * @param x Coordenada x de la casella
+     * @param y Coordenada y de la casella
+     * @param estrategia Estratègia de puntuació que s'aplicarà a aquesta casella
+     */
     public Casella(int x, int y, EstrategiaPuntuacio estrategia) {
         this.x = x;
         this.y = y;
@@ -15,27 +36,91 @@ public class Casella {
         this.casellaJugada = false;
     }
 
+    /**
+     * Calcula els punts que aporta la fitxa en aquesta casella segons l'estratègia assignada.
+     *
+     * @return Punts calculats per a la fitxa en aquesta casella
+     */
     public int calcularPunts() {
         return estrategia.calcularPunts(fitxa);
     }
 
-    public boolean isCasellaJugada(){return casellaJugada;}
+    /**
+     * Comprova si la casella ha estat jugada en el torn actual.
+     *
+     * @return true si la casella ha estat jugada, false en cas contrari
+     */
+    public boolean casellaJugada() {
+        return casellaJugada;
+    }
 
+    /**
+     * Marca la casella com a jugada en el torn actual.
+     */
     public void jugarCasella() {
         casellaJugada = true;
     }
 
-    public int getX() { return x; }
-    public int getY() { return y; }
-    public Fitxa getFitxa() { return fitxa; }
-    public EstrategiaPuntuacio getEstrategia() {return estrategia;}
-    public int getMultiplicador() {
-        return estrategia.getMultiplicador();
+    /**
+     * Obté la coordenada x de la casella.
+     *
+     * @return Coordenada x
+     */
+    public int obtenirX() {
+        return x;
     }
 
+    /**
+     * Obté la coordenada y de la casella.
+     *
+     * @return Coordenada y
+     */
+    public int obtenirY() {
+        return y;
+    }
 
-    public boolean esBuida() { return fitxa == null; }
+    /**
+     * Obté la fitxa col·locada en aquesta casella.
+     *
+     * @return La fitxa col·locada o null si la casella està buida
+     */
+    public Fitxa obtenirFitxa() {
+        return fitxa;
+    }
 
+    /**
+     * Obté l'estratègia de puntuació associada a aquesta casella.
+     *
+     * @return L'estratègia de puntuació
+     */
+    public EstrategiaPuntuacio obtenirEstrategia() {
+        return estrategia;
+    }
+
+    /**
+     * Obté el multiplicador de punts associat a l'estratègia de la casella.
+     *
+     * @return Valor del multiplicador
+     */
+    public int obtenirMultiplicador() {
+        return estrategia.obtenirMultiplicador();
+    }
+
+    /**
+     * Comprova si la casella està buida (no té fitxa).
+     *
+     * @return true si la casella està buida, false si conté una fitxa
+     */
+    public boolean esBuida() {
+        return fitxa == null;
+    }
+
+    /**
+     * Intenta col·locar una fitxa a la casella si està buida.
+     *
+     * @param fitxa Fitxa a col·locar
+     * @return true si s'ha pogut col·locar la fitxa, false si la casella ja estava ocupada
+     */
     public boolean colocarFitxa(Fitxa fitxa) {
         if (esBuida()) {
             this.fitxa = fitxa;
@@ -44,6 +129,14 @@ public class Casella {
         return false;
     }
 
+    /**
+     * Retorna una representació en text de la casella.
+     * Si està buida, retorna dos espais en blanc.
+     * Si conté un dígraf, retorna la representació de la fitxa.
+     * Si conté una lletra simple, retorna un espai seguit de la lletra.
+     *
+     * @return Representació textual de la casella
+     */
     @Override
     public String toString() {
         if (esBuida()) return "  ";
