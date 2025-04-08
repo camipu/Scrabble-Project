@@ -1,5 +1,5 @@
 package edu.upc.prop.clusterxx;
-
+import java.util.Objects;
 /**
  * Representa una fitxa del joc, amb una lletra, un valor en punts i 
  * un indicador de si és un dígraf.
@@ -59,5 +59,24 @@ public class Fitxa {
     @Override
     public String toString() {
         return lletra;
+    }
+
+    // Implementació de equals
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true; //mateix objecte
+        }
+        if (obj == null || getClass() != obj.getClass()) { //null o diferent classe
+            return false;
+        }
+        Fitxa fitxa = (Fitxa) obj; //cast
+        return punts == fitxa.punts && Objects.equals(lletra, fitxa.lletra);
+    }
+
+    // Implementació de hashCode
+    @Override
+    public int hashCode() {
+        return Objects.hash(lletra, punts); // Generem un hash basat en les propietats de la fitxa
     }
 }

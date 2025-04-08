@@ -143,7 +143,7 @@ public class Sac {
      * Retorna el nombre total de fitxes al sac.
      * @return El nombre total de fitxes.
      */
-    public int getNumFitxes() {
+    public int obtenirNumFitxes() {
         return fitxes.values().stream().mapToInt(Integer::intValue).sum();
     }
 
