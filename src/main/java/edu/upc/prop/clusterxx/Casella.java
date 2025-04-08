@@ -6,19 +6,10 @@ package edu.upc.prop.clusterxx;
  * i té associada una estratègia de puntuació.
  */
 public class Casella {
-    /** Coordenada x de la casella al tauler */
     private final int x;
-
-    /** Coordenada y de la casella al tauler */
     private final int y;
-
-    /** Fitxa col·locada en aquesta casella, o null si està buida */
     private Fitxa fitxa;
-
-    /** Indica si la casella ha estat jugada en el torn actual */
     private boolean casellaJugada;
-
-    /** Estratègia de puntuació associada a aquesta casella */
     private final EstrategiaPuntuacio estrategia;
 
     /**
@@ -139,8 +130,8 @@ public class Casella {
      */
     @Override
     public String toString() {
-        if (esBuida()) return "  ";
-        else if (fitxa.esDigraf()) return "" + fitxa;
-        return " " + fitxa;
+        if (esBuida()) return "  "; // Casella buida, es retorna un espai
+        return fitxa.esDigraf() ? fitxa.toString() : " " + fitxa.toString();
     }
+
 }
