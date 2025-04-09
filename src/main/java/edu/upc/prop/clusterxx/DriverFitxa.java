@@ -2,8 +2,12 @@ package edu.upc.prop.clusterxx;
 
 public class DriverFitxa {
     public static void main(String[] args) {
-        System.out.println("Hola des de DriverFitxa");
-        Fitxa f1 = new Fitxa("A", 1);
-        System.out.println("Casella creada: " + f1 + " " + f1.obtenirPunts());
+        System.out.println(Colors.WHITE_BACKGROUND + Colors.BLACK_TEXT + "Driver Fitxa" + Colors.RESET);
+        Sac sac = new Sac("driverFitxa");
+        Faristol faristol = new Faristol(sac);
+        System.out.println("El teu sac: ");
+        sac.mostrarContingut();
+        System.out.println("El teu faristol: ");
+        faristol.imprimirFaristol();
     }
 }
