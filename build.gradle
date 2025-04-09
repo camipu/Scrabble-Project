@@ -42,10 +42,11 @@ dependencies {
 }
 
 
-tasks.register('hello') {
-    doLast {
-        println 'Hola, això és una tasca de Gradle!'
-    }
+tasks.register('DriverFitxa', JavaExec) {
+    group = 'drivers'
+    description = 'Ejecuta el driver de Casella'
+    classpath = sourceSets.main.runtimeClasspath
+    mainClass = 'edu.upc.prop.clusterxx.DriverFitxa'
 }
 
 tasks.named('run') {
