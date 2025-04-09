@@ -14,8 +14,8 @@ public class CasellaTest {
     @Before
     public void setUp() {
         // Inicialitzar les fitxes per als tests
-        fitxaA = new Fitxa("A", 1);  // Fitxa "A" amb 1 punt
-        fitxaB = new Fitxa("B", 3);  // Fitxa "B" amb 3 punts
+        fitxaA = new Fitxa("A", 1);
+        fitxaB = new Fitxa("B", 3);
 
         // Inicialitzar les caselles amb diferents estratègies
         casellaNormal = new Casella(0, 0, new EstrategiaNormal());
