@@ -11,7 +11,7 @@ public class Fitxa {
 
     /**
      * Crea una nova fitxa amb una lletra i un valor de punts.
-     * Si la lletra no és una lletra de l'alfabet, es considera un dígraf.
+     * Si la lletra te mida > 1, es considera dígraf.
      *
      * @param lletra La lletra de la fitxa.
      * @param punts El valor en punts de la fitxa.
@@ -41,7 +41,7 @@ public class Fitxa {
     }
 
     /**
-     * Indica si la fitxa representa un dígraf (és a dir, si no és una lletra).
+     * Indica si la fitxa representa un dígraf.
      *
      * @return Cert si la fitxa és un dígraf, fals en cas contrari.
      */
@@ -52,7 +52,6 @@ public class Fitxa {
 
     /**
      * Retorna una representació en cadena de la fitxa.
-     * </p>Si la lletra és '(', es representa com "CH". </p>
      *
      * @return Una cadena que representa la fitxa.
      */

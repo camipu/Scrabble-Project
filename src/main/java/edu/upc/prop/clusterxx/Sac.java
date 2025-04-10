@@ -24,14 +24,6 @@ public class Sac {
     }
 
     /**
-     * Crea un sac amb un conjunt inicial de fitxes.
-     * @param fitxesini El conjunt inicial de fitxes amb les seves quantitats.
-     */
-    public Sac(Map<Fitxa, Integer> fitxesini) {
-        this.fitxes = new LinkedHashMap<>(fitxesini);
-    }
-
-    /**
      * Crea un sac buit.
      */
     public Sac() {
@@ -136,15 +128,29 @@ public class Sac {
      * @param f La fitxa a afegir.
      */
     public void afegirFitxa(Fitxa f) {
-        fitxes.put(f, fitxes.getOrDefault(f, 0) + 1);
+        if (fitxes.containsKey(f)) {
+            int actuals = fitxes.get(f);
+            fitxes.put(f, actuals + 1);
+        } else {
+            // Si no hi és, l'afegim amb valor 1 (primera vegada que es posa)
+            fitxes.put(f, 1);
+        }
     }
+
 
     /**
      * Retorna el nombre total de fitxes al sac.
      * @return El nombre total de fitxes.
      */
     public int obtenirNumFitxes() {
-        return fitxes.values().stream().mapToInt(Integer::intValue).sum();
+        Collection<Integer> quantitats = fitxes.values();
+
+        int sumaTotal = 0;
+        for (Integer q : quantitats) {
+            sumaTotal += q;
+        }
+
+        return sumaTotal;
     }
 
     /**
