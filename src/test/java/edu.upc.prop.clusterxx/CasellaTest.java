@@ -1,46 +1,57 @@
 package edu.upc.prop.clusterxx;
+
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import static org.mockito.Mockito.*;
 
 public class CasellaTest {
 
     private Casella casellaNormal;
     private Casella casellaMultiplicadorLletra;
     private Casella casellaMultiplicadorParaula;
-    private Fitxa fitxaA;
-    private Fitxa fitxaB;
+
+    // Mocks de la classe Fitxa
+    private Fitxa fitxaAMock;
+    private Fitxa fitxaBMock;
 
     @Before
     public void setUp() {
-        // Inicialitzar les fitxes per als tests
-        fitxaA = new Fitxa("A", 1);
-        fitxaB = new Fitxa("B", 3);
+        // Crear mocks de la classe Fitxa
+        fitxaAMock = mock(Fitxa.class);
+        fitxaBMock = mock(Fitxa.class);
 
-        // Inicialitzar les caselles amb diferents estratègies
+        // Simular els valors dels punts per a les fitxes mockejades
+        when(fitxaAMock.obtenirPunts()).thenReturn(1);  // Fitxa A té un valor de 1
+        when(fitxaBMock.obtenirPunts()).thenReturn(3);  // Fitxa B té un valor de 3
+
+        // Inicialitzar les caselles amb les estratègies
         casellaNormal = new Casella(0, 0, new EstrategiaNormal());
-        casellaMultiplicadorLletra = new Casella(1, 1, new EstrategiaMultiplicadorLletra(2)); // Multiplicador de lletra per 2
-        casellaMultiplicadorParaula = new Casella(2, 2, new EstrategiaMultiplicadorParaula(3)); // Multiplicador de paraula per 3
+        casellaMultiplicadorLletra = new Casella(1, 1, new EstrategiaMultiplicadorLletra(2));
+        casellaMultiplicadorParaula = new Casella(2, 2, new EstrategiaMultiplicadorParaula(3));
     }
 
     @Test
     public void testCalcularPuntsCasellaNormal() {
-        // Col·locar la fitxa "A" a la casella normal
-        casellaNormal.colocarFitxa(fitxaA);
+        // Col·locar la fitxa "A" a la casella normal (utilitzant el mock)
+        casellaNormal.colocarFitxa(fitxaAMock);
+        // Comprovem que els punts de la casella normal són els esperats (el valor de la fitxa)
         assertEquals("Els punts de la casella normal han de ser 1", 1, casellaNormal.calcularPunts());
     }
 
     @Test
     public void testCalcularPuntsMultiplicadorLletra() {
-        // Col·locar la fitxa "B" a la casella amb multiplicador de lletra
-        casellaMultiplicadorLletra.colocarFitxa(fitxaB);
+        // Col·locar la fitxa "B" a la casella amb multiplicador de lletra (utilitzant el mock)
+        casellaMultiplicadorLletra.colocarFitxa(fitxaBMock);
+        // Comprovem que els punts de la casella amb multiplicador de lletra són els esperats (multiplicat per 2)
         assertEquals("Els punts de la casella amb multiplicador de lletra han de ser 6", 6, casellaMultiplicadorLletra.calcularPunts());
     }
 
     @Test
     public void testCalcularPuntsMultiplicadorParaula() {
-        // Col·locar la fitxa "A" a la casella amb multiplicador de paraula
-        casellaMultiplicadorParaula.colocarFitxa(fitxaA);
+        // Col·locar la fitxa "A" a la casella amb multiplicador de paraula (utilitzant el mock)
+        casellaMultiplicadorParaula.colocarFitxa(fitxaAMock);
+        // Comprovem que els punts de la casella amb multiplicador de paraula són els esperats (sense multiplicar, només el valor de la fitxa)
         assertEquals("Els punts de la casella amb multiplicador de paraula han de ser 1", 1, casellaMultiplicadorParaula.calcularPunts());
     }
 
@@ -66,15 +77,15 @@ public class CasellaTest {
 
     @Test
     public void testColocarFitxa() {
-        // Col·locar una fitxa a una casella buida
-        assertTrue("S'ha de poder col·locar una fitxa en una casella buida", casellaNormal.colocarFitxa(fitxaA));
+        // Col·locar una fitxa a una casella buida (utilitzant el mock)
+        assertTrue("S'ha de poder col·locar una fitxa en una casella buida", casellaNormal.colocarFitxa(fitxaAMock));
     }
 
     @Test
     public void testNoColocarFitxaSiJaEstàOcupada() {
-        // Intentar col·locar una fitxa en una casella ja ocupada
-        casellaNormal.colocarFitxa(fitxaA);
-        assertFalse("No s'ha de poder col·locar una fitxa en una casella ja ocupada", casellaNormal.colocarFitxa(fitxaB));
+        // Intentar col·locar una fitxa en una casella ja ocupada (utilitzant el mock)
+        casellaNormal.colocarFitxa(fitxaAMock);
+        assertFalse("No s'ha de poder col·locar una fitxa en una casella ja ocupada", casellaNormal.colocarFitxa(fitxaBMock));
     }
 
     @Test
