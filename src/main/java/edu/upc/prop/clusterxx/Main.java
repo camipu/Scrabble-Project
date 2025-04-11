@@ -1,5 +1,7 @@
 package edu.upc.prop.clusterxx;
 
+import edu.upc.prop.clusterxx.exceptions.ExcepcioCasellaOcupada;
+
 import java.util.HashMap;
 
 public class Main {
@@ -35,6 +37,8 @@ public class Main {
     joc.colocarFitxa(f10, 7, 8);
     joc.colocarFitxa(f11, 7, 1);
     joc.colocarFitxa(f12, 7, 2);
+    //PER A CAUSAR EXCEPCIÓ
+    //DESCOMENTAR// joc.colocarFitxa(f12, 7, 2);
 
 
 

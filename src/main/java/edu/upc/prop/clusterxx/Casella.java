@@ -1,5 +1,7 @@
 package edu.upc.prop.clusterxx;
 
+import edu.upc.prop.clusterxx.exceptions.ExcepcioCasellaOcupada;
+
 /**
  * Representa una casella del tauler de joc.
  * Cada casella té una posició definida per coordenades (x,y), pot contenir una fitxa
@@ -110,14 +112,13 @@ public class Casella {
      * Intenta col·locar una fitxa a la casella si està buida.
      *
      * @param fitxa Fitxa a col·locar
-     * @return true si s'ha pogut col·locar la fitxa, false si la casella ja estava ocupada
+     *
      */
-    public boolean colocarFitxa(Fitxa fitxa) {
+    public void colocarFitxa(Fitxa fitxa) {
         if (esBuida()) {
             this.fitxa = fitxa;
-            return true;
         }
-        return false;
+        else throw new ExcepcioCasellaOcupada("La casella " + obtenirX() + " y " + obtenirY() + " esta ocupada");
     }
 
     /**
