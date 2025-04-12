@@ -1,7 +1,5 @@
 package edu.upc.prop.clusterxx;
 
-import edu.upc.prop.clusterxx.exceptions.ExcepcioCasellaOcupada;
-
 import java.util.HashMap;
 
 public class Main {
@@ -51,5 +49,8 @@ public class Main {
     System.out.println(palabras);
 
 //    joc.imprimirInfoJugadors();
+
+
+
   }
 }
