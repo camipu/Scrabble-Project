@@ -17,7 +17,7 @@ public class Fitxa {
      * @param punts El valor en punts de la fitxa.
      */
     public Fitxa(String lletra, int punts) {
-        this.lletra = lletra.toUpperCase();
+        this.lletra = lletra;
         this.punts = punts;
         this.digraf = lletra.length() > 1;
     }
