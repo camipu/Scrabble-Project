@@ -8,7 +8,6 @@ public class DAWG {
     private static class Node {
         Map<String, Node> fills = new HashMap<>();
         boolean esFinal = false;
-        // Possibilitat de que el node tingui id
 
         @Override
         public boolean equals(Object o) {
@@ -165,7 +164,7 @@ private List<String> tokenitzar(String paraula) {
             // Si no s'ha trobat cap token corresponent, tractar com a caràcter individual
             if (!trobat) {
                 resultat.add(paraula.substring(i, i + 1));
-                i += 1;
+                ++i;
             }
         }
         
@@ -236,6 +235,50 @@ private List<String> tokenitzar(String paraula) {
             }
         }
         return actual.esFinal;
+    }
+
+        /**
+     * Comprova si una cadena és prefix d'alguna paraula vàlida al DAWG.
+     * @param prefix La cadena a comprovar si és prefix d'alguna paraula vàlida.
+     * @return true si la cadena és prefix d'alguna paraula vàlida, false altrament.
+     */
+    public boolean esPrefix(String prefix) {
+        if (prefix.isEmpty()) return true; // La cadena buida és prefix de qualsevol paraula
+        
+        List<String> tokensPrefix = tokenitzar(prefix);
+        Node actual = arrel;
+        
+        // Recorrem el DAWG seguint els tokens del prefix
+        for (String token : tokensPrefix) {
+            if (!actual.fills.containsKey(token)) {
+                return false; // Si no trobem un camí per aquest token, no és prefix
+            }
+            actual = actual.fills.get(token);
+        }
+        
+        // Hem arribat al final del prefix, ara hem de comprovar si existeix algun camí
+        // que porti a un node final a partir d'aquí
+        return actual.esFinal || teDescendentFinal(actual);
+    }
+    
+    /**
+     * Comprova si un node té algun descendent que sigui un node final.
+     * @param node El node a partir del qual es comença la comprovació.
+     * @return true si hi ha algun descendent que és un node final, false altrament.
+     */
+    private boolean teDescendentFinal(Node node) {
+        if (node.esFinal) {
+            return true;
+        }
+        
+        // Recorrem tots els fills recursivament
+        for (Node fill : node.fills.values()) {
+            if (teDescendentFinal(fill)) {
+                return true;
+            }
+        }
+        
+        return false;
     }
     
     /**
