@@ -10,6 +10,9 @@ public class FitxaTest {
     private Fitxa fitxaZ;
     private Fitxa fitxaDigraf;
     private Fitxa fitxaB;
+    private Fitxa fitxaCH2;
+    private Fitxa fitxaA2;
+
 
     @Before
     public void setUp() {
@@ -17,6 +20,9 @@ public class FitxaTest {
         fitxaZ = new Fitxa("Z", 5);
         fitxaDigraf = new Fitxa("CH", 5);
         fitxaB = new Fitxa("B", 2);
+
+        fitxaCH2 = new Fitxa("CH", 5);
+        fitxaA2 = new Fitxa("A", 1);
     }
 
     @Test
@@ -58,7 +64,6 @@ public class FitxaTest {
 
     @Test
     public void testEqualsMateixaLletra() {
-        Fitxa fitxaA2 = new Fitxa("A", 1);
         assertTrue(fitxaA.equals(fitxaA2));
     }
 
@@ -70,7 +75,6 @@ public class FitxaTest {
 
     @Test
     public void testEqualsDiferentDigraf() {
-        Fitxa fitxaCH2 = new Fitxa("CH", 5);
         assertTrue(fitxaDigraf.equals(fitxaCH2)); // Dos dígrafs iguals han de ser iguals
     }
 
