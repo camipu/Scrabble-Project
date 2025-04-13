@@ -33,8 +33,9 @@ public class Jugador {
     public void afegirFitxa(Fitxa fitxa) {
         faristol.afegirFitxa(fitxa);
     }
-    public boolean eliminarFitxa(Fitxa fitxa) {
-        return faristol.eliminarFitxa(fitxa);
+
+    public void eliminarFitxa(Fitxa fitxa) {
+        faristol.eliminarFitxa(fitxa);
     }
 
     public void afegirPunts(int nousPunts) {

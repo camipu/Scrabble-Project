@@ -1,13 +1,18 @@
 package edu.upc.prop.clusterxx;
 
-import java.util.*;
+import edu.upc.prop.clusterxx.exceptions.ExcepcioFaristolNoConteLaFitxa;
+import edu.upc.prop.clusterxx.exceptions.ExcepcioFaristolPle;
+import edu.upc.prop.clusterxx.exceptions.ExcepcioSacBuit;
+import edu.upc.prop.clusterxx.exceptions.ExcepcioSacNoConteLaFitxa;
+
+import java.util.ArrayList;
+import java.util.Collections;
 
 public class Faristol {
     private final ArrayList<Fitxa> fitxes;
-    private Sac sac;
+    private final Sac sac;
 
     public Faristol(Sac sac) {
-        // Prealocatem capacitat per 7 elements per evitar redimensionaments
         this.fitxes = new ArrayList<>(7);
         this.sac = sac;
         inicialitzarFaristol();
@@ -22,18 +27,24 @@ public class Faristol {
     public void afegirFitxa(Fitxa fitxa) {
         if (fitxes.size() < 7) {
             Fitxa f = sac.agafarFitxa(fitxa);
-            if (f != null) {
-                fitxes.add(f);
-            }
+            fitxes.add(f);
         }
+        else throw new ExcepcioFaristolPle("El faristol està ple, no es pot afegir la fitxa" + fitxa);
     }
 
-    public boolean eliminarFitxa(Fitxa fitxa) {
+    public void afegirFitxa() {
+        if (fitxes.size() < 7) {
+            Fitxa f = sac.agafarFitxa();
+            fitxes.add(f);
+        }
+        else throw new ExcepcioFaristolPle("El faristol està ple, no es pot afegir cap fitxa");
+    }
+
+    public void eliminarFitxa(Fitxa fitxa) {
         if (fitxes.remove(fitxa)) {
             reposarFitxes();
-            return true;
         }
-        return false;
+        else throw new ExcepcioFaristolNoConteLaFitxa("No es pot eliminar fitxa " + fitxa + ", el faristol no la conté.");
     }
 
     private void reposarFitxes() {
@@ -42,12 +53,14 @@ public class Faristol {
         }
     }
 
-    // Per compatibilitat, mantenim el tipus de retorn Vector, però podem considerar canviar-lo
     public ArrayList<Fitxa> obtenirFitxes() {
         return fitxes;
     }
 
     public Fitxa obtenirFitxa(int index) {
+        if (index < 0 || index >= fitxes.size()) {
+            throw new IndexOutOfBoundsException("Índex fora de rang al faristol.");
+        }
         return fitxes.get(index);
     }
 
