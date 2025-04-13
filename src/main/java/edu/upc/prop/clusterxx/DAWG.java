@@ -44,21 +44,32 @@ public class DAWG {
         tokens.sort((a, b) -> Integer.compare(b.length(), a.length()));
     }
 
-    private void carregar(String idioma) throws IOException {
-        inicialitzarTokens(idioma);
-        String ruta = "src/main/java/edu/upc/prop/clusterxx/resources/" + idioma + "/" + idioma + ".txt";
-        List<String> paraules = Files.readAllLines(Paths.get(ruta));
-        paraules.sort(Comparator.naturalOrder());
+        private void carregar(String idioma) throws IOException {
+            System.out.println("Carregant el DAWG per a l'idioma: " + idioma);
+            inicialitzarTokens(idioma);
+            System.out.println("Tokens carregats: " + tokens);
+            String ruta = "src/main/java/edu/upc/prop/clusterxx/resources/" + idioma + "/" + idioma + ".txt";
+            List<String> paraules = Files.readAllLines(Paths.get(ruta));
+            paraules.sort(Comparator.naturalOrder());
 
-        String paraulaAnterior = "";
-        for (String paraula : paraules) {
-            if (!paraula.isEmpty()) {
-                afegirParaula(paraula, paraulaAnterior);
-                paraulaAnterior = paraula;
+            String paraulaAnterior = "";
+            int totalParaules = paraules.size();
+            int progressInterval = totalParaules / 10; // Cada 10%
+
+            for (int i = 0; i < totalParaules; i++) {
+                String paraula = paraules.get(i);
+                if (!paraula.isEmpty()) {
+                    afegirParaula(paraula, paraulaAnterior);
+                    paraulaAnterior = paraula;
+                }
+                if (progressInterval > 0 && i % progressInterval == 0) {
+                    System.out.println("Progress: " + (i * 100 / totalParaules) + "% completat.");
+                }
             }
+            System.out.println("Carregament complet. Minimitzant el DAWG...");
+            minimitzarFinal();
+            System.out.println("DAWG carregat i minimitzat amb èxit.");
         }
-        minimitzarFinal();
-    }
 
     private void afegirParaula(String paraula, String paraulaAnterior) {
         List<String> tokensActual = tokenitzar(paraula);
