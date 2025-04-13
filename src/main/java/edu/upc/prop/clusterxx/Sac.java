@@ -1,19 +1,15 @@
 package edu.upc.prop.clusterxx;
 
+import edu.upc.prop.clusterxx.exceptions.ExcepcioSacBuit;
+import edu.upc.prop.clusterxx.exceptions.ExcepcioSacNoConteLaFitxa;
+
 import java.util.*;
 import java.io.*;
 import java.nio.file.*;
 
-/**
- * Classe que representa un sac de fitxes utilitzat en el joc.
- */
 public class Sac {
     private final Map<Fitxa, Integer> fitxes;
 
-    /**
-     * Crea un sac i l'inicialitza amb fitxes d'un idioma especificat.
-     * @param idioma L'idioma per carregar les fitxes.
-     */
     public Sac(String idioma) {
         this.fitxes = new LinkedHashMap<>();
         try {
@@ -23,18 +19,10 @@ public class Sac {
         }
     }
 
-    /**
-     * Crea un sac buit.
-     */
     public Sac() {
         this.fitxes = new LinkedHashMap<>();
     }
 
-    /**
-     * Inicialitza el sac llegint fitxes des d'un fitxer segons l'idioma.
-     * @param idioma L'idioma a carregar.
-     * @throws IOException Si hi ha un error en la lectura del fitxer.
-     */
     private void inicialitzarSac(String idioma) throws IOException {
         String ruta = "src/main/java/edu/upc/prop/clusterxx/resources/" + idioma + "/fitxes" + idioma + ".txt";
         List<String> lines = Files.readAllLines(Paths.get(ruta));
@@ -46,7 +34,7 @@ public class Sac {
             }
 
             try {
-                String lletra = parts[0]; // Cambiado de char a String
+                String lletra = parts[0];
                 int quantitat = Integer.parseInt(parts[1]);
                 int punts = Integer.parseInt(parts[2]);
 
@@ -61,34 +49,20 @@ public class Sac {
         }
     }
 
-    /**
-     * Retorna una fitxa específica si està disponible.
-     * @param fitxa La lletra de la fitxa que es vol obtenir.
-     * @return La fitxa corresponent.
-     * @throws NoSuchElementException Si la fitxa no està disponible.
-     */
     public Fitxa agafarFitxa(Fitxa fitxa) {
-        Fitxa f = obtenirFitxa(fitxa).orElseThrow(() ->
-                new NoSuchElementException("No hi ha fitxes disponibles amb la lletra '" + fitxa.obtenirLletra() + "'"));
+        Fitxa f = obtenirFitxa(fitxa);
         reduirQuantitat(f);
         return f;
     }
 
-    /**
-     * Retorna una fitxa aleatòria si el sac no està buit.
-     * @return Una fitxa aleatòria.
-     * @throws IllegalStateException Si el sac està buit.
-     */
     public Fitxa agafarFitxa() {
         if (esBuit()) {
-            throw new IllegalStateException("No es pot agafar una fitxa: el sac està buit.");
+            throw new ExcepcioSacBuit("No es pot agafar una fitxa: el sac està buit.");
         }
 
         List<Fitxa> disponibles = new ArrayList<>();
         for (Map.Entry<Fitxa, Integer> entry : fitxes.entrySet()) {
-            Fitxa fitxa = entry.getKey();
-            int quant = entry.getValue();
-            disponibles.addAll(Collections.nCopies(quant, fitxa));
+            disponibles.addAll(Collections.nCopies(entry.getValue(), entry.getKey()));
         }
 
         Fitxa seleccionada = disponibles.get(new Random().nextInt(disponibles.size()));
@@ -96,84 +70,45 @@ public class Sac {
         return seleccionada;
     }
 
-    /**
-     * Retorna una fitxa si existeix.
-     * @param fitxa La lletra de la fitxa a cercar.
-     * @return Una instància Optional amb la fitxa si existeix.
-     */
-    private Optional<Fitxa> obtenirFitxa(Fitxa fitxa) {
-        return fitxes.keySet().stream()
-                .filter(f -> f.obtenirLletra().equals(fitxa.obtenirLletra()))
-                .findFirst();
-    }
-
-    /**
-     * Redueix la quantitat d'una fitxa i l'elimina si arriba a 0.
-     * @param fitxa La fitxa a modificar.
-     */
-    private void reduirQuantitat(Fitxa fitxa) {
-        if (fitxes.containsKey(fitxa)) {
-            int quantitat = fitxes.get(fitxa);
-            if (quantitat == 1) {
-                fitxes.remove(fitxa);
-            } else {
-                fitxes.put(fitxa, quantitat - 1);
+    private Fitxa obtenirFitxa(Fitxa fitxa) {
+        for (Fitxa f : fitxes.keySet()) {
+            if (f.obtenirLletra().equals(fitxa.obtenirLletra())) {
+                return f;
             }
         }
-
+        throw new ExcepcioSacNoConteLaFitxa("No hi ha fitxes disponibles amb la lletra '" + fitxa.obtenirLletra() + "'");
     }
 
-    /**
-     * Afegeix una fitxa al sac.
-     * @param f La fitxa a afegir.
-     */
-    public void afegirFitxa(Fitxa f) {
-        if (fitxes.containsKey(f)) {
-            int actuals = fitxes.get(f);
-            fitxes.put(f, actuals + 1);
+    private void reduirQuantitat(Fitxa fitxa) {
+        int quantitat = fitxes.getOrDefault(fitxa, 0);
+        if (quantitat <= 1) {
+            fitxes.remove(fitxa);
         } else {
-            // Si no hi és, l'afegim amb valor 1 (primera vegada que es posa)
-            fitxes.put(f, 1);
+            fitxes.put(fitxa, quantitat - 1);
         }
     }
 
+    public void afegirFitxa(Fitxa f) {
+        fitxes.put(f, fitxes.getOrDefault(f, 0) + 1);
+    }
 
-    /**
-     * Retorna el nombre total de fitxes al sac.
-     * @return El nombre total de fitxes.
-     */
     public int obtenirNumFitxes() {
-        Collection<Integer> quantitats = fitxes.values();
-
         int sumaTotal = 0;
-        for (Integer q : quantitats) {
+        for (Integer q : fitxes.values()) {
             sumaTotal += q;
         }
-
         return sumaTotal;
     }
 
-    /**
-     * Comprova si el sac està buit.
-     * @return true si està buit, false en cas contrari.
-     */
     public boolean esBuit() {
         return fitxes.isEmpty();
     }
 
-    /**
-     * Retorna la quantitat de fitxes d'una lletra específica.
-     * @param fitxa La lletra de les fitxes a comptar.
-     * @return El nombre de fitxes disponibles amb la lletra donada.
-     */
     public int quantitatFitxes(Fitxa fitxa) {
-        Fitxa f = obtenirFitxa(fitxa).orElse(null);
-        return (f != null) ? fitxes.get(f) : 0;
+        return fitxes.getOrDefault(fitxa, 0);
     }
 
-    /**
-     * Mostra el contingut del sac per pantalla.
-     */
+
     public void mostrarContingut() {
         fitxes.forEach((fitxa, quantitat) ->
                 System.out.println(fitxa.obtenirLletra() + " -> " + quantitat + " fitxes, " + fitxa.obtenirPunts() + " punts"));
