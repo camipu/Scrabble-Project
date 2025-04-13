@@ -17,7 +17,6 @@ public class CasellaTest {
 
     @Before
     public void setUp() {
-        // Crear mocks de la classe Fitxa
         fitxaAMock = mock(Fitxa.class);
         fitxaBMock = mock(Fitxa.class);
 
