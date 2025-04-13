@@ -195,7 +195,6 @@ public class Bot extends Jugador {
             String novaParaula = paraulaActual + lletra;
             
             // Si la paraula no pot ser el prefix de cap paraula vàlida, no continuem
-            // Aquí utilitzaríem una funció específica del DAWG per verificar prefixos
             if (!dawg.esPrefix(novaParaula)) {
                 continue;
             }
