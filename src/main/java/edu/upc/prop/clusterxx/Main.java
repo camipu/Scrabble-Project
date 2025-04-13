@@ -1,58 +1,52 @@
 package edu.upc.prop.clusterxx;
 
 import java.util.HashMap;
+import java.io.IOException;
 
 public class Main {
-  public static void main(String[] args) {
-    Joc joc = new Joc(2, "castellano", new String[]{"María", "Juan"});
+  public static void main(String[] args) throws IOException {
+    // Crear partida
+    String idioma = "castellano";
+    String[] noms = {"Bot", "Joan"};
+    Joc joc = new Joc(noms.length, idioma, noms);
+
+    // Substituir el jugador pel bot amb dificultat màxima (3)
+    Bot bot = new Bot("Bot", joc.obtenirSac(), 3);
+    joc.jugadors[0] = bot; // sobrescriu el jugador inicial
+
+    // Crear el DAWG a partir del fitxer de paraules
+    DAWG dawg = new DAWG(idioma);
+
+    // COMENÇAR PARTIDA
     joc.imprimirInfoJugadors();
-    joc.colocarFitxa(0,joc.obtenirPersona(0).obtenirFitxa(0), 0, 0);
     Fitxa f1 = new Fitxa("C", 3);
     Fitxa f2 = new Fitxa("A", 3);
     Fitxa f3 = new Fitxa("S", 3);
     Fitxa f4 = new Fitxa("A", 3);
     Fitxa f5 = new Fitxa("S", 3);
-
-    Fitxa f6 = new Fitxa("A", 3);
-    Fitxa f7 = new Fitxa("L", 3);
-    Fitxa f8 = new Fitxa("A", 3);
-    Fitxa f9 = new Fitxa("D", 3);
-    Fitxa f10 = new Fitxa("A", 3);
-    Fitxa f11 = new Fitxa("E", 3);
-    Fitxa f12 = new Fitxa("N", 3);
-    //Col·locar SALA (vertical)
-    joc.colocarFitxa(f1, 3, 3);
-    joc.colocarFitxa(f2, 4, 3);
-    joc.colocarFitxa(f3, 5, 3);
-    joc.colocarFitxa(f4, 6, 3);
-    //Col·locar la S connectora
-    joc.colocarFitxa(f5, 7, 3);
-    //Col·locar ALAS (horitzontal)
-    joc.colocarFitxa(f6, 7, 4);
-    joc.colocarFitxa(f7, 7, 5);
-    joc.colocarFitxa(f8, 7, 6);
-    joc.colocarFitxa(f9, 7, 7);
-    joc.colocarFitxa(f10, 7, 8);
-    joc.colocarFitxa(f11, 7, 1);
-    joc.colocarFitxa(f12, 7, 2);
-    //PER A CAUSAR EXCEPCIÓ
-    //DESCOMENTAR// joc.colocarFitxa(f12, 7, 2);
-
-
+    //Col·locar CASAS (vertical)
+    joc.colocarFitxa(f1, 7, 3);
+    joc.colocarFitxa(f2, 7, 4);
+    joc.colocarFitxa(f3, 7, 5);
+    joc.colocarFitxa(f4, 7, 6);
+    joc.colocarFitxa(f5, 7, 7);
 
     joc.obtenirTaulell().imprimirTaulell();
-    joc.imprimirInfoJugadors();
-    joc.obtenirTaulell().imprimirTaulell();
-    int [][] v= {{7 , 3}};
-    HashMap<String,Integer> palabras = new HashMap<String, Integer>();
-    palabras = joc.obtenirTaulell().buscaPalabrasValidas(v);
-    System.out.println(palabras);
+    // Mostrar faristol del bot abans de jugar
+    System.out.println("\nFaristol inicial del bot:");
+    bot.imprimirFaristol();
 
-//    joc.imprimirInfoJugadors();
+      // Executar el torn del bot
+    boolean haJugat = bot.executarTorn(joc.obtenirTaulell(), dawg, joc.obtenirSac());
 
-
-
-
-
+    // Mostrar resultat
+    if (haJugat) {
+        System.out.println("\nTauler després del torn del bot:");
+        joc.obtenirTaulell().imprimirTaulell();
+        System.out.println("\nInformació del bot després de jugar:");
+        bot.imprimirInfo();
+    } else {
+        System.out.println("El bot no ha pogut fer cap jugada.");
+    }
   }
 }
