@@ -58,11 +58,4 @@ public class Jugador {
         faristol.imprimirFaristol(); // Crida directament la funció de Faristol
         System.out.println(Colors.YELLOW_BACKGROUND + Colors.BLACK_TEXT + "========================================" + Colors.RESET);
     }
-
-
-
-
-
-
-
 }
