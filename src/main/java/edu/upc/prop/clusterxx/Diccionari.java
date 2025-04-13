@@ -20,17 +20,23 @@ public class Diccionari {
 
     // Mètode per carregar paraules al diccionari (per exemple, des d'un fitxer)
     private void carregarParaules(String idioma) {
-        String rutaFitxer = "src/main/java/edu/upc/prop/clusterxx/resources/" + idioma + "/" + idioma + ".txt";
-
-        try (BufferedReader br = new BufferedReader(new FileReader(rutaFitxer))) {
-            String linia;
-            while ((linia = br.readLine()) != null) {
-                // Afegir cada paraula (linia) al Set
-                paraules.add(linia.trim());  // trim() per eliminar espais extra
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
+        if (idioma != "castellano" && idioma != "catalan" && idioma != "english") {
+            System.out.print("Idioma no suportat. Només es permeten 'english', 'castellano' o 'catalan'.");
         }
+        else {
+            String rutaFitxer = "src/main/java/edu/upc/prop/clusterxx/resources/" + idioma + "/" + idioma + ".txt";
+
+            try (BufferedReader br = new BufferedReader(new FileReader(rutaFitxer))) {
+                String linia;
+                while ((linia = br.readLine()) != null) {
+                    // Afegir cada paraula (linia) al Set
+                    paraules.add(linia.trim());  // trim() per eliminar espais extra
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
     }
 
     // Mètode per comprovar si una paraula està en el diccionari
