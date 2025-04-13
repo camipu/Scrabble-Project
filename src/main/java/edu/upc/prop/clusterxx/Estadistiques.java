@@ -21,16 +21,23 @@ public class Estadistiques {
     }
 
     public void afegirPuntuacio(int puntuacio, String jugador) {
-        this.puntuacioTotal += puntuacio;
-
-        if (puntuacio < this.puntuacioMinima) {
-            this.puntuacioMinima = puntuacio;
+        if (puntuacio < 0) {
+            System.out.print("La puntuació no pot ser negativa.");
         }
+        else {
+            this.puntuacioTotal += puntuacio;
 
-        // Crear un par y añadirlo a la PriorityQueue
-        SimpleEntry<String, Integer> puntuacioJugador = new SimpleEntry<>(jugador, puntuacio);
-        puntuacions.add(puntuacioJugador);
+            if (puntuacio < this.puntuacioMinima) {
+                this.puntuacioMinima = puntuacio;
+            }
+
+            // Crear un par y añadirlo a la PriorityQueue
+            SimpleEntry<String, Integer> puntuacioJugador = new SimpleEntry<>(jugador, puntuacio);
+            puntuacions.add(puntuacioJugador);
+            }
     }
+
+
 
     public void calcularPuntuacioMitjana() {
         if (!puntuacions.isEmpty()) {

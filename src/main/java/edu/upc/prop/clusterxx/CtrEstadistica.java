@@ -9,7 +9,7 @@ public class CtrEstadistica {
         this.estadistiques = new Estadistiques();
     }
 
-    // Agregar una puntuación para un jugador
+    // Agregar una puntuación para un jugador???
     public void afegirPuntuacio(String jugador, int puntuacio) {
         estadistiques.afegirPuntuacio(puntuacio, jugador);
     }
