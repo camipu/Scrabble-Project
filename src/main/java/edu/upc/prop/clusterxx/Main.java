@@ -33,20 +33,24 @@ public class Main {
 
     joc.obtenirTaulell().imprimirTaulell();
     // Mostrar faristol del bot abans de jugar
-    System.out.println("\nFaristol inicial del bot:");
-    bot.imprimirFaristol();
+
+    while (true) {
+      System.out.println("\nFaristol inicial del bot:");
+      bot.imprimirFaristol();
 
       // Executar el torn del bot
-    boolean haJugat = bot.executarTorn(joc.obtenirTaulell(), dawg, joc.obtenirSac());
+      boolean haJugat = bot.executarTorn(joc.obtenirTaulell(), dawg, joc.obtenirSac());
 
-    // Mostrar resultat
-    if (haJugat) {
+      // Mostrar resultat
+      if (haJugat) {
         System.out.println("\nTauler després del torn del bot:");
         joc.obtenirTaulell().imprimirTaulell();
         System.out.println("\nInformació del bot després de jugar:");
         bot.imprimirInfo();
-    } else {
+      } else {
         System.out.println("El bot no ha pogut fer cap jugada.");
+        break; // Sortir del bucle si el bot no pot fer més jugades
+      }
     }
   }
 }
