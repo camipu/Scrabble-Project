@@ -163,6 +163,15 @@ public class Taulell {
 
          return palabras;
      }
-
+    public boolean esBuit() {
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size; j++) {
+                if (!taulell[i][j].esBuida()) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
 
 }

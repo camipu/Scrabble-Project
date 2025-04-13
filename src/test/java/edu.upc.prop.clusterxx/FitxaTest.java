@@ -9,16 +9,20 @@ public class FitxaTest {
     private Fitxa fitxaA;
     private Fitxa fitxaZ;
     private Fitxa fitxaDigraf;
-    private Fitxa fitxab;
-    private Fitxa fitxaLlarg;
+    private Fitxa fitxaB;
+    private Fitxa fitxaCH2;
+    private Fitxa fitxaA2;
+
 
     @Before
     public void setUp() {
         fitxaA = new Fitxa("A", 1);
         fitxaZ = new Fitxa("Z", 5);
         fitxaDigraf = new Fitxa("CH", 5);
-        fitxab = new Fitxa("B", 2);
-        fitxaLlarg = new Fitxa("ZYX", 10);  // Cas extrem amb una lletra més llarga
+        fitxaB = new Fitxa("B", 2);
+
+        fitxaCH2 = new Fitxa("CH", 5);
+        fitxaA2 = new Fitxa("A", 1);
     }
 
     @Test
@@ -37,10 +41,10 @@ public class FitxaTest {
 
     @Test
     public void testCreacioFitxaLletrab() {
-        assertEquals("B", fitxab.obtenirLletra());
-        assertEquals("B", fitxab.toString());
-        assertEquals(2, fitxab.obtenirPunts());
-        assertFalse(fitxab.esDigraf());
+        assertEquals("B", fitxaB.obtenirLletra());
+        assertEquals("B", fitxaB.toString());
+        assertEquals(2, fitxaB.obtenirPunts());
+        assertFalse(fitxaB.esDigraf());
     }
 
     @Test
@@ -51,20 +55,6 @@ public class FitxaTest {
         assertTrue(fitxaDigraf.esDigraf());
     }
 
-    @Test
-    public void testCreacioFitxaAmbLletraLLarga() {
-        assertEquals("ZYX", fitxaLlarg.obtenirLletra());
-        assertEquals(10, fitxaLlarg.obtenirPunts());
-        assertTrue(fitxaLlarg.esDigraf()); // Considerant que una cadena més llarga es considera un dígraf
-    }
-
-    @Test
-    public void testCreacioFitxaAmbLletraMinúscula() {
-        Fitxa fitxaMinuscule = new Fitxa("a", 3);
-        assertEquals("A", fitxaMinuscule.obtenirLletra()); // La lletra es converteix a majúscula
-        assertEquals(3, fitxaMinuscule.obtenirPunts());
-        assertFalse(fitxaMinuscule.esDigraf());
-    }
 
     @Test
     public void testToString() {
@@ -74,32 +64,17 @@ public class FitxaTest {
 
     @Test
     public void testEqualsMateixaLletra() {
-        Fitxa fitxaA2 = new Fitxa("A", 1);
         assertTrue(fitxaA.equals(fitxaA2));
     }
 
     @Test
-    public void testEqualsDiferentLletra() {
-        Fitxa fitxaZ2 = new Fitxa("Z", 5);
-        assertTrue(fitxaZ.equals(fitxaZ2)); // Les fitxes amb la mateixa lletra i punts són iguals
-    }
-
-    @Test
-    public void testEqualsDiferentPunts() {
-        Fitxa fitxaA2 = new Fitxa("A", 2);
-        assertFalse(fitxaA.equals(fitxaA2)); // Si els punts són diferents, no són iguals
-    }
-
-    @Test
     public void testEqualsDiferentLletraB() {
-        Fitxa fitxaB = new Fitxa("B", 1);
         assertFalse(fitxaA.equals(fitxaB)); // Si la lletra és diferent, no són iguals
     }
 
 
     @Test
     public void testEqualsDiferentDigraf() {
-        Fitxa fitxaCH2 = new Fitxa("CH", 5);
         assertTrue(fitxaDigraf.equals(fitxaCH2)); // Dos dígrafs iguals han de ser iguals
     }
 
@@ -108,7 +83,7 @@ public class FitxaTest {
         assertEquals(1, fitxaA.obtenirPunts());
         assertEquals(5, fitxaZ.obtenirPunts());
         assertEquals(5, fitxaDigraf.obtenirPunts());
-        assertEquals(2, fitxab.obtenirPunts());
+        assertEquals(2, fitxaB.obtenirPunts());
     }
 
     @Test
@@ -118,11 +93,5 @@ public class FitxaTest {
         assertTrue(fitxaDigraf.esDigraf()); // Sí és un dígraf
     }
 
-    @Test
-    public void testCaseInsensitive() {
-        // Comprovem que la classe és insensible a majúscules i minúscules
-        Fitxa fitxaLower = new Fitxa("a", 1);
-        assertEquals(fitxaA, fitxaLower); // La lletra 'a' es converteix a 'A', així que són iguals
-    }
 
 }

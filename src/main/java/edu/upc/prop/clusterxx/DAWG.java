@@ -1,3 +1,4 @@
+
 package edu.upc.prop.clusterxx;
 
 import java.util.*;
@@ -8,253 +9,152 @@ public class DAWG {
     private static class Node {
         Map<String, Node> fills = new HashMap<>();
         boolean esFinal = false;
-        // Possibilitat de que el node tingui id
 
         @Override
         public boolean equals(Object o) {
-            // Retorna true si tots dos nodes són final + tenen els fills iguals
             if (this == o) return true;
             if (o == null || getClass() != o.getClass()) return false;
             Node node = (Node) o;
             return esFinal == node.esFinal && fills.equals(node.fills);
         }
-        
+
         @Override
         public int hashCode() {
             return Objects.hash(esFinal, fills);
         }
     }
-    
-    private Node arrel;
-    private Map<Node, Node> nodesUnics = new HashMap<>();
-    private Set<String> tokens;
 
-    /**
-     * Constructor que inicialitza i carrega el DAWG per a l'idioma especificat.
-     * @param idioma L'idioma pel qual es carregarà el DAWG.
-     * @throws IOException Si hi ha un error en la lectura dels fitxers.
-     */
+    private final Node arrel;
+    private final Map<Node, Node> cache = new HashMap<>();
+    private final List<String> tokens = new ArrayList<>();
+    private final List<Node> pathAnterior = new ArrayList<>();
+
     public DAWG(String idioma) throws IOException {
         arrel = new Node();
-        tokens = new HashSet<>();
         carregar(idioma);
     }
 
-     /**
-     * Inicialitza els tokens (lletres i dígrafs) llegint des del fitxer de fitxes.
-     * @param idioma L'idioma a carregar.
-     * @throws IOException Si hi ha un error en la lectura del fitxer.
-     */
     private void inicialitzarTokens(String idioma) throws IOException {
         String ruta = "src/main/java/edu/upc/prop/clusterxx/resources/" + idioma + "/fitxes" + idioma + ".txt";
         List<String> lines = Files.readAllLines(Paths.get(ruta));
-        
-        // Saltem la primera línia si conté capçaleres
         for (int i = 1; i < lines.size(); i++) {
-            String line = lines.get(i);
-            String[] parts = line.trim().split("\\s+");
-            if (parts.length >= 1) {
-                // Agafem només la primera columna que conté la lletra o dígraf
-                tokens.add(parts[0]);
-            }
+            String[] parts = lines.get(i).trim().split("\s+");
+            if (parts.length >= 1) tokens.add(parts[0]);
         }
-        
-        // Ordenem els tokens per longitud (descendent) per a la tokenització correcta
-        System.out.println("Tokens carregats: " + tokens);
+        tokens.sort((a, b) -> Integer.compare(b.length(), a.length()));
     }
-    
-    /**
-     * Carrega el DAWG a partir d'un fitxer de paraules ordenades alfabèticament.
-     * @param idioma L'idioma del fitxer a carregar.
-     * @throws IOException Si hi ha un error en la lectura del fitxer.
-     */
-    private void carregar(String idioma) throws IOException {
-        System.out.println("Carregant DAWG en "+idioma);
-        inicialitzarTokens(idioma);
 
-        System.out.println("Carregant paraules...");
+    private void carregar(String idioma) throws IOException {
+        inicialitzarTokens(idioma);
         String ruta = "src/main/java/edu/upc/prop/clusterxx/resources/" + idioma + "/" + idioma + ".txt";
         List<String> paraules = Files.readAllLines(Paths.get(ruta));
-        
-        int comptador = 0;
-        int totalParaules = paraules.size();
-        System.out.println("Construint DAWG amb " + totalParaules + " paraules...");
-        
+        paraules.sort(Comparator.naturalOrder());
+
         String paraulaAnterior = "";
         for (String paraula : paraules) {
-            comptador++;
-            if (comptador % (totalParaules/20) == 0) {
-                System.out.println("Processant paraula " + comptador + "/" + totalParaules +
-                                  " (" + (comptador * 100 / totalParaules) + "%)");
-            }
             if (!paraula.isEmpty()) {
                 afegirParaula(paraula, paraulaAnterior);
                 paraulaAnterior = paraula;
             }
         }
-        
-        // Minimitzar el DAWG després de carregar totes les paraules
-        System.out.println("Minimització final del DAWG...");
-        minimitzar(arrel);
-        System.out.println("DAWG Carregat! Nodes únics: " + nodesUnics.size());
+        minimitzarFinal();
     }
-    
-    /**
-     * Afegeix una paraula al DAWG, considerant els dígrafs.
-     * @param paraula La paraula a afegir.
-     * @param paraulaAnterior La paraula anterior afegida al DAWG.
-     */
+
     private void afegirParaula(String paraula, String paraulaAnterior) {
-        // Convertir la paraula en llista de dígrafs i caràcters
-        List<String> tokensParaula = tokenitzar(paraula);
-        List<String> tokensAnteriors = tokenitzar(paraulaAnterior);
-        
-        // Trobar el prefix comú amb la paraula anterior
-        int i = 0;
-        while (i < tokensParaula.size() && i < tokensAnteriors.size() && 
-               tokensParaula.get(i).equals(tokensAnteriors.get(i))) {
-            i++;
+        List<String> tokensActual = tokenitzar(paraula);
+        List<String> tokensAnt = tokenitzar(paraulaAnterior);
+
+        int prefix = 0;
+        while (prefix < tokensActual.size() && prefix < tokensAnt.size()
+                && tokensActual.get(prefix).equals(tokensAnt.get(prefix))) {
+            prefix++;
         }
-        
-        // Minimitzar la part que no es comparteix amb la paraula actual
-        if (!paraulaAnterior.isEmpty()) {
-            minimitzarSufix(arrel, tokensAnteriors, i);
+
+        minimitzarSufix(prefix);
+
+        Node nodeActual = (prefix == 0) ? arrel : pathAnterior.get(prefix - 1);
+        while (pathAnterior.size() > prefix) pathAnterior.remove(pathAnterior.size() - 1);
+
+        for (int i = prefix; i < tokensActual.size(); i++) {
+            Node nou = new Node();
+            nodeActual.fills.put(tokensActual.get(i), nou);
+            nodeActual = nou;
+            pathAnterior.add(nodeActual);
         }
-        // MIRAR
-        
-        // Afegir la part nova de la paraula actual
-        Node actual = arrel;
-        for (int j = i; j < tokensParaula.size(); j++) {
-            String token = tokensParaula.get(j);
-            if (!actual.fills.containsKey(token)) {
-                actual.fills.put(token, new Node());
-            }
-            actual = actual.fills.get(token);
-        }
-        actual.esFinal = true;
+        nodeActual.esFinal = true;
     }
-    
-    /**
-     * Converteix una paraula en una llista de tokens (caràcters o dígrafs).
-     * @param paraula La paraula a tokenitzar.
-     * @return Llista de tokens.
-     */
-private List<String> tokenitzar(String paraula) {
-        List<String> resultat = new ArrayList<>();
-        if (paraula.isEmpty()) return resultat;
-        
-        int i = 0;
-        while (i < paraula.length()) {
-            boolean trobat = false;
-            
-            // Examinar els tokens més llargs primer
-            for (String token : tokens) {
-                int tokenLen = token.length();
-                if (i + tokenLen <= paraula.length()) {
-                    String subStr = paraula.substring(i, i + tokenLen);
-                    // Busquem el token normalitzat (més ràpid que equalsIgnoreCase)
-                    if (tokens.contains(subStr)) {
-                        resultat.add(token); // Usem el token original
-                        i += tokenLen;
-                        trobat = true;
+
+    private void minimitzarSufix(int desDe) {
+        for (int i = pathAnterior.size() - 1; i >= desDe; i--) {
+            Node node = pathAnterior.get(i);
+            Node min = minimitzar(node);
+            if (i > 0) {
+                Node pare = pathAnterior.get(i - 1);
+                for (Map.Entry<String, Node> entry : pare.fills.entrySet()) {
+                    if (entry.getValue() == node) {
+                        pare.fills.put(entry.getKey(), min);
+                        break;
+                    }
+                }
+            } else {
+                for (Map.Entry<String, Node> entry : arrel.fills.entrySet()) {
+                    if (entry.getValue() == node) {
+                        arrel.fills.put(entry.getKey(), min);
                         break;
                     }
                 }
             }
-            
-            // Si no s'ha trobat cap token corresponent, tractar com a caràcter individual
+        }
+    }
+
+    private void minimitzarFinal() {
+        minimitzarSufix(0);
+    }
+
+    private Node minimitzar(Node node) {
+        if (!cache.containsKey(node)) cache.put(node, node);
+        return cache.get(node);
+    }
+
+    private List<String> tokenitzar(String paraula) {
+        List<String> resultat = new ArrayList<>();
+        int i = 0;
+        while (i < paraula.length()) {
+            boolean trobat = false;
+            for (String token : tokens) {
+                int len = token.length();
+                if (i + len <= paraula.length() && paraula.substring(i, i + len).equals(token)) {
+                    resultat.add(token);
+                    i += len;
+                    trobat = true;
+                    break;
+                }
+            }
             if (!trobat) {
                 resultat.add(paraula.substring(i, i + 1));
-                i += 1;
+                i++;
             }
         }
-        
         return resultat;
     }
-    
-    /**
-     * Minimitza el sufix d'una paraula que comença en l'índex donat.
-     * @param node El node actual en el recorregut.
-     * @param tokens Els tokens que estem processant.
-     * @param index L'índex on comença el sufix.
-     */
-    private void minimitzarSufix(Node node, List<String> tokens, int index) {
-        if (index == tokens.size()) {
-            return;
-        }
-        
-        String token = tokens.get(index);
-        if (node.fills.containsKey(token)) {
-            minimitzarSufix(node.fills.get(token), tokens, index + 1);
-            minimitzar(node.fills.get(token));
-        }
-    }
-    
-    /**
-     * Minimitza el DAWG identificant nodes duplicats.
-     * @param node El node actual a minimitzar.
-     * @return El node minimitzat.
-     */
-    private Node minimitzar(Node node) {
-        if (node.fills.isEmpty()) {
-            return node;
-        }
-        
-        // Minimitzar cada fill
-        for (String token : new ArrayList<>(node.fills.keySet())) {
-            Node fill = node.fills.get(token);
-            // Minimitzar recursivament primer
-            minimitzar(fill);
-            
-            // Buscar un node equivalent existent
-            Node fillMinimitzat = nodesUnics.get(fill);
-            if (fillMinimitzat != null) {
-                node.fills.put(token, fillMinimitzat);
-            } else {
-                nodesUnics.put(fill, fill);
-            }
-        }
-        
-        return node;
-    }
-    
-    /**
-     * Comprova si una paraula està al DAWG.
-     * @param paraula La paraula a comprovar.
-     * @return true si la paraula està al DAWG, false altrament.
-     */
+
     public boolean conteParaula(String paraula) {
         List<String> tokensParaula = tokenitzar(paraula);
         Node actual = arrel;
-        
         for (String token : tokensParaula) {
-            // Intentem primer amb el token tal qual
-            if (!actual.fills.containsKey(token)) {
-                return false;
-            } else {
-                actual = actual.fills.get(token);
-            }
+            if (!actual.fills.containsKey(token)) return false;
+            actual = actual.fills.get(token);
         }
         return actual.esFinal;
     }
-    
-    /**
-     * Obté una llista de totes les paraules al DAWG.
-     * @return Llista de paraules.
-     */
-    public List<String> getParaules() {
-        List<String> paraules = new ArrayList<>();
-        recorregutProfunditat(arrel, "", paraules);
-        return paraules;
-    }
-    
-    private void recorregutProfunditat(Node node, String prefix, List<String> paraules) {
-        if (node.esFinal) {
-            paraules.add(prefix);
+
+    public boolean esPrefix(String prefix) {
+        List<String> tokensPrefix = tokenitzar(prefix);
+        Node actual = arrel;
+        for (String token : tokensPrefix) {
+            if (!actual.fills.containsKey(token)) return false;
+            actual = actual.fills.get(token);
         }
-        
-        for (Map.Entry<String, Node> entrada : node.fills.entrySet()) {
-            recorregutProfunditat(entrada.getValue(), prefix + entrada.getKey(), paraules);
-        }
+        return true;
     }
 }
