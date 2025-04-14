@@ -3,13 +3,11 @@ package edu.upc.prop.clusterxx;
 public class Joc {
     int numJugadors;
     Jugador[] jugadors;
-    Diccionari diccionari;
     Taulell taulell = new Taulell(15);
     Sac sac;
 
     public Joc(int numJugadors, String idioma, String[] noms) {
         this.numJugadors = numJugadors;
-        this.diccionari = new Diccionari(idioma);
         this.sac = new Sac(idioma);
         this.taulell = new Taulell(15);
 
@@ -20,9 +18,6 @@ public class Joc {
         }
     }
 
-    public boolean validarParaula(String paraula) {
-        return diccionari.esParaulaValida(paraula);
-    }
 
     public void imprimirSac() {
         sac.mostrarContingut();
@@ -31,7 +26,6 @@ public class Joc {
     public Sac obtenirSac() {
         return sac;
     }
-    public Diccionari obtenirDiccionari() {return diccionari;}
     public Taulell obtenirTaulell() {return taulell;}
     public Jugador obtenirPersona(int i) {return jugadors[i];}
 
@@ -45,9 +39,5 @@ public class Joc {
     }
     public void colocarFitxa(Fitxa fitxa, int i, int j) {
         taulell.colocarFitxa(fitxa, i, j);
-    }
-
-    public boolean esParaulaValida(String paraula){
-        return diccionari.esParaulaValida(paraula);
     }
 }
