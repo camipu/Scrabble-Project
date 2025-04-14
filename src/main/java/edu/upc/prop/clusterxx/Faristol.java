@@ -9,48 +9,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 public class Faristol {
-    private static final int MAX_FITXES = 7;
+    private final int size;
     private final ArrayList<Fitxa> fitxes;
-    private final Sac sac;
 
-    public Faristol(Sac sac) {
-        this.fitxes = new ArrayList<>(MAX_FITXES);
-        this.sac = sac;
-        reposarFitxes();  // Iniciem faristol amb fitxes del sac
-    }
-
-    public void afegirFitxa(Fitxa fitxa) {
-        if (fitxes.size() >= MAX_FITXES) {
-            throw new ExcepcioFaristolPle("El faristol està ple, no es pot afegir la fitxa " + fitxa);
-        }
-
-        Fitxa f = sac.agafarFitxa(fitxa);
-        fitxes.add(f);
-    }
-
-    public void afegirFitxa() {
-        if (fitxes.size() >= MAX_FITXES) {
-            throw new ExcepcioFaristolPle("El faristol està ple, no es pot afegir cap fitxa");
-        }
-
-        Fitxa f = sac.agafarFitxa();
-        fitxes.add(f);
-    }
-
-    public void eliminarFitxa(Fitxa fitxa) {
-        if (!fitxes.remove(fitxa)) {
-            throw new ExcepcioFaristolNoConteLaFitxa("No es pot eliminar fitxa " + fitxa + ", el faristol no la conté.");
-        }
-        reposarFitxes();
-    }
-
-    /**
-     * Omple el faristol fins al màxim amb fitxes del sac (si n'hi ha disponibles).
-     */
-    private void reposarFitxes() {
-        while (fitxes.size() < MAX_FITXES && !sac.esBuit()) {
-            fitxes.add(sac.agafarFitxa());
-        }
+    public Faristol(int size) {
+        this.fitxes = new ArrayList<>(size);
+        this.size = size;
     }
 
     public ArrayList<Fitxa> obtenirFitxes() {
@@ -66,6 +30,21 @@ public class Faristol {
 
     public int obtenirNumFitxes() {
         return fitxes.size();
+    }
+
+
+    public void afegirFitxa(Fitxa fitxa) {
+        if (fitxes.size() >= size) {
+            throw new ExcepcioFaristolPle("El faristol està ple, no es pot afegir la fitxa " + fitxa);
+        }
+        fitxes.add(fitxa);
+    }
+
+
+    public void eliminarFitxa(Fitxa fitxa) {
+        if (!fitxes.remove(fitxa)) {
+            throw new ExcepcioFaristolNoConteLaFitxa("No es pot eliminar fitxa " + fitxa + ", el faristol no la conté.");
+        }
     }
 
     public void barrejarFitxes() {
