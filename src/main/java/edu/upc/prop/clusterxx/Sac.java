@@ -12,17 +12,12 @@ public class Sac {
 
     public Sac(String idioma) {
         this.fitxes = new LinkedHashMap<>();
-        try {
-            inicialitzarSac(idioma);
-        } catch (IOException e) {
-            throw new IllegalArgumentException("Format incorrecte o idioma no registrat");
-        }
     }
 
     public Sac() {
         this.fitxes = new LinkedHashMap<>();
     }
-
+/*
     private void inicialitzarSac(String idioma) throws IOException {
         String ruta = "src/main/java/edu/upc/prop/clusterxx/resources/" + idioma + "/fitxes" + idioma + ".txt";
         List<String> lines = Files.readAllLines(Paths.get(ruta));
@@ -47,6 +42,10 @@ public class Sac {
                 throw new IllegalArgumentException("Error de format numèric a la línia: " + line, e);
             }
         }
+    }
+*/
+    public void afegirFitxaAmbQuantitat(Fitxa fitxa, int quantitat) {
+        fitxes.put(fitxa, quantitat);
     }
 
     public Fitxa agafarFitxa(Fitxa fitxa) {
@@ -107,7 +106,6 @@ public class Sac {
     public boolean esBuit() {
         return fitxes.isEmpty();
     }
-
 
     public void mostrarContingut() {
         fitxes.forEach((fitxa, quantitat) ->
