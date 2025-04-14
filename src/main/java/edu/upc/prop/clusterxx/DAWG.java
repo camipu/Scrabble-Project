@@ -1,4 +1,3 @@
-
 package edu.upc.prop.clusterxx;
 
 import java.util.*;
@@ -30,8 +29,14 @@ public class DAWG {
     private final List<Node> pathAnterior = new ArrayList<>();
 
     public DAWG(String idioma) throws IOException {
+        System.out.println("Carregant el DAWG per a l'idioma: " + idioma);
+        inicialitzarTokens(idioma);
+        List<String> paraules = llegirParaules(idioma);
+        // SI AL TXT LES PARAULES ESTAN ORDENADES NO CAL
+        // paraules.sort(Comparator.naturalOrder());
         arrel = new Node();
-        carregar(idioma);
+        generarDAWG(idioma, paraules);
+        System.out.println("DAWG carregat i minimitzat amb èxit.");
     }
 
     private void inicialitzarTokens(String idioma) throws IOException {
@@ -42,34 +47,32 @@ public class DAWG {
             if (parts.length >= 1) tokens.add(parts[0]);
         }
         tokens.sort((a, b) -> Integer.compare(b.length(), a.length()));
+        System.out.println("Tokens carregats: " + tokens);
     }
 
-        private void carregar(String idioma) throws IOException {
-            System.out.println("Carregant el DAWG per a l'idioma: " + idioma);
-            inicialitzarTokens(idioma);
-            System.out.println("Tokens carregats: " + tokens);
-            String ruta = "src/main/java/edu/upc/prop/clusterxx/resources/" + idioma + "/" + idioma + ".txt";
-            List<String> paraules = Files.readAllLines(Paths.get(ruta));
-            paraules.sort(Comparator.naturalOrder());
+    private List<String> llegirParaules(String idioma) throws IOException {
+        String ruta = "src/main/java/edu/upc/prop/clusterxx/resources/" + idioma + "/" + idioma + ".txt";
+        System.out.println("Llegint paraules del fitxer: " + ruta);
+        return Files.readAllLines(Paths.get(ruta));
+    }
 
-            String paraulaAnterior = "";
-            int totalParaules = paraules.size();
-            int progressInterval = totalParaules / 10; // Cada 10%
+    private void generarDAWG(String idioma, List<String> paraules) throws IOException {
+        String paraulaAnterior = "";
+        int totalParaules = paraules.size();
+        int progressInterval = totalParaules / 10; // Cada 10%
 
-            for (int i = 0; i < totalParaules; i++) {
-                String paraula = paraules.get(i);
-                if (!paraula.isEmpty()) {
-                    afegirParaula(paraula, paraulaAnterior);
-                    paraulaAnterior = paraula;
-                }
-                if (progressInterval > 0 && i % progressInterval == 0) {
-                    System.out.println("Progress: " + (i * 100 / totalParaules) + "% completat.");
-                }
+        for (int i = 0; i < totalParaules; i++) {
+            String paraula = paraules.get(i);
+            if (!paraula.isEmpty()) {
+                afegirParaula(paraula, paraulaAnterior);
+                paraulaAnterior = paraula;
             }
-            System.out.println("Carregament complet. Minimitzant el DAWG...");
-            minimitzarFinal();
-            System.out.println("DAWG carregat i minimitzat amb èxit.");
+            if (progressInterval > 0 && i % progressInterval == 0) {
+                System.out.println("Progres: " + (i * 100 / totalParaules) + "% completat.");
+            }
         }
+        minimitzarSufix(0);        
+    }
 
     private void afegirParaula(String paraula, String paraulaAnterior) {
         List<String> tokensActual = tokenitzar(paraula);
@@ -98,7 +101,8 @@ public class DAWG {
     private void minimitzarSufix(int desDe) {
         for (int i = pathAnterior.size() - 1; i >= desDe; i--) {
             Node node = pathAnterior.get(i);
-            Node min = minimitzar(node);
+            if (!cache.containsKey(node)) cache.put(node, node);
+            Node min = cache.get(node);
             if (i > 0) {
                 Node pare = pathAnterior.get(i - 1);
                 for (Map.Entry<String, Node> entry : pare.fills.entrySet()) {
@@ -116,15 +120,6 @@ public class DAWG {
                 }
             }
         }
-    }
-
-    private void minimitzarFinal() {
-        minimitzarSufix(0);
-    }
-
-    private Node minimitzar(Node node) {
-        if (!cache.containsKey(node)) cache.put(node, node);
-        return cache.get(node);
     }
 
     private List<String> tokenitzar(String paraula) {
