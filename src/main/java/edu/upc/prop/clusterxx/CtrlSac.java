@@ -28,7 +28,7 @@ public class CtrlSac {
     }
 
     public int quantitatFitxes(Fitxa fitxa) {
-        return sac.quantitatFitxes(fitxa);
+        return sac.obtenirNumFitxes(fitxa);
     }
 
     public int obtenirNumFitxes() {
