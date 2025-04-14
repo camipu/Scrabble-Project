@@ -72,7 +72,7 @@ public class FaristolTest {
         });
 
         // Crear el Faristol amb el mock de Sac
-        faristol = new Faristol(sacMock);
+        faristol = new Faristol(7);
     }
 
     @Test

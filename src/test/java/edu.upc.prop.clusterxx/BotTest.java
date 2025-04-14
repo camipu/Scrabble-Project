@@ -39,6 +39,7 @@ public class BotTest {
         f3.afegirFitxa(new Fitxa("C", 3));
         f3.afegirFitxa(new Fitxa("A", 1));
         f3.afegirFitxa(new Fitxa("S", 1));
+        f3.afegirFitxa(new Fitxa("A", 1));
 
         // Crear bots amb diferents nivells de dificultat
         botFacil = new Bot("BotFacil", f1, 1);
@@ -65,6 +66,6 @@ public class BotTest {
         Jugada jugada = botDificil.calcularJugada(taulell, dawg);
         assertNotNull(jugada);
         System.out.println("Bot difícil ha triat: " + jugada.getParaula());
-        assertEquals("CAS", jugada.getParaula()); // assumim que és la millor
+        assertEquals("CASA", jugada.getParaula()); // assumim que és la millor
     }
 }
