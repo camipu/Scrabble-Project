@@ -28,50 +28,19 @@ public class DAWG {
     private final List<String> tokens = new ArrayList<>();
     private final List<Node> pathAnterior = new ArrayList<>();
 
-    public DAWG(String idioma) throws IOException {
-        System.out.println("Carregant el DAWG per a l'idioma: " + idioma);
-        inicialitzarTokens(idioma);
-        List<String> paraules = llegirParaules(idioma);
+    public DAWG(List<String> tokens, List<String> paraules) {
         // SI AL TXT LES PARAULES ESTAN ORDENADES NO CAL
         // paraules.sort(Comparator.naturalOrder());
         arrel = new Node();
-        generarDAWG(idioma, paraules);
-        System.out.println("DAWG carregat i minimitzat amb èxit.");
-    }
-
-    private void inicialitzarTokens(String idioma) throws IOException {
-        String ruta = "src/main/java/edu/upc/prop/clusterxx/resources/" + idioma + "/fitxes" + idioma + ".txt";
-        List<String> lines = Files.readAllLines(Paths.get(ruta));
-        for (int i = 1; i < lines.size(); i++) {
-            String[] parts = lines.get(i).trim().split("\s+");
-            if (parts.length >= 1) tokens.add(parts[0]);
-        }
-        tokens.sort((a, b) -> Integer.compare(b.length(), a.length()));
-        System.out.println("Tokens carregats: " + tokens);
-    }
-
-    private List<String> llegirParaules(String idioma) throws IOException {
-        String ruta = "src/main/java/edu/upc/prop/clusterxx/resources/" + idioma + "/" + idioma + ".txt";
-        System.out.println("Llegint paraules del fitxer: " + ruta);
-        return Files.readAllLines(Paths.get(ruta));
-    }
-
-    private void generarDAWG(String idioma, List<String> paraules) throws IOException {
         String paraulaAnterior = "";
-        int totalParaules = paraules.size();
-        int progressInterval = totalParaules / 10; // Cada 10%
-
-        for (int i = 0; i < totalParaules; i++) {
-            String paraula = paraules.get(i);
+        for (String paraula : paraules) {
             if (!paraula.isEmpty()) {
                 afegirParaula(paraula, paraulaAnterior);
                 paraulaAnterior = paraula;
             }
-            if (progressInterval > 0 && i % progressInterval == 0) {
-                System.out.println("Progres: " + (i * 100 / totalParaules) + "% completat.");
-            }
         }
-        minimitzarSufix(0);        
+        minimitzarSufix(0);
+        System.out.println("DAWG carregat i minimitzat amb èxit.");
     }
 
     private void afegirParaula(String paraula, String paraulaAnterior) {

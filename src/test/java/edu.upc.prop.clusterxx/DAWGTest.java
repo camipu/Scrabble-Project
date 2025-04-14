@@ -2,56 +2,64 @@ package edu.upc.prop.clusterxx;
 
 import org.junit.Before;
 import org.junit.Test;
+
+import java.util.Arrays;
+import java.util.List;
+
 import static org.junit.Assert.*;
 
 public class DAWGTest {
+
     private DAWG dawg;
 
-        @Before
-        public void setUp() {
-            List<String> tokensCatalan = [];
-            List<String> tokensCastellano = [];
-            List<String> tokensEnglish = [];
-        }
+    @Before
+    public void setUp() {
+        // Exemple de tokens (incloent un dígraf com "CH")
+        List<String> tokens = Arrays.asList("CH", "A", "B", "C", "S");
+        List<String> paraules = Arrays.asList("CASA", "CAS", "CHIC", "CHIP", "SABATA", "CH");
 
-        @Test
-        public void inicialitzacióTokens() {
-            assertEquals(dawg.inicialitzacióTokens("catalan").tokens(), tokensCatalan);
-        }
-
-        @Override
-        protected void carregar(String idioma) {
-            this.tokens.addAll(Arrays.asList("ch", "ll", "ny", "a", "b", "c", "s")); // tokens comuns
-            this.tokens.sort((a, b) -> Integer.compare(b.length(), a.length())); // ordre descendent
-
-            afegirParaula("casa", "");  // paraula 1
-            afegirParaula("casament", "casa");  // paraula 2
-            afegirParaula("castell", "casament");  // paraula 3
-            minimitzarFinal();
-        }
-
-        @Override
-        protected void inicialitzarTokens(String idioma) {
-            // ja afegits manualment
-        }
-    }
-
-    @BeforeEach
-    void setUp() throws IOException {
-        dawg = new DAWGProva();
+        dawg = new DAWG(tokens, paraules);
     }
 
     @Test
-    void testConteParaula() {
-        assertTrue(dawg.conteParaula("casa"));
-        assertTrue(dawg.conteParaula("casament"));
-        assertFalse(dawg.conteParaula("caseta"));
+    public void testParaulaSimpleValida() {
+        assertTrue(dawg.conteParaula("CASA"));
+        assertTrue(dawg.conteParaula("CAS"));
+        assertTrue(dawg.conteParaula("SABATA"));
     }
 
     @Test
-    void testEsPrefix() {
-        assertTrue(dawg.esPrefix("cas"));
-        assertTrue(dawg.esPrefix("casa"));
-        assertFalse(dawg.esPrefix("cab"));
+    public void testParaulaInexistent() {
+        assertFalse(dawg.conteParaula("CASO"));
+        assertFalse(dawg.conteParaula("SABA"));
+        assertFalse(dawg.conteParaula("CHICO"));
+    }
+
+    @Test
+    public void testPrefixValid() {
+        assertTrue(dawg.esPrefix("CAS"));
+        assertTrue(dawg.esPrefix("SA"));
+        assertTrue(dawg.esPrefix("CHI")); // Prefix de CHIC i CHIP
+    }
+
+    @Test
+    public void testPrefixInvalid() {
+        assertFalse(dawg.esPrefix("XO"));
+        assertFalse(dawg.esPrefix("BA"));
+        assertFalse(dawg.esPrefix("XCH"));
+    }
+
+    @Test
+    public void testParaulaAmbDigraf() {
+        assertTrue(dawg.conteParaula("CHIC"));
+        assertTrue(dawg.conteParaula("CH"));
+        assertFalse(dawg.conteParaula("C")); // no existeix sola
+    }
+
+    @Test
+    public void testPrefixAmbDigraf() {
+        assertTrue(dawg.esPrefix("CH"));
+        assertTrue(dawg.esPrefix("CHI"));
+        assertFalse(dawg.esPrefix("CI"));
     }
 }

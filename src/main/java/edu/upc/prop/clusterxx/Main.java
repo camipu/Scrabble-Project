@@ -15,7 +15,7 @@ public class Main {
     joc.jugadors[0] = bot; // sobrescriu el jugador inicial
 
     // Crear el DAWG a partir del fitxer de paraules
-    DAWG dawg = new DAWG(idioma);
+    DAWG dawg = new CtrlDiccionari(idioma).obtenirDAWG();
 
     // COMENÇAR PARTIDA
     joc.imprimirInfoJugadors();
