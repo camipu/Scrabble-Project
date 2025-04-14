@@ -17,7 +17,7 @@ public class DAWGTest {
         // Exemple de tokens (incloent un dígraf com "CH")
         List<String> tokens = Arrays.asList("CH", "A", "B", "C", "S");
         List<String> paraules = Arrays.asList("CASA", "CAS", "CHIC", "CHIP", "SABATA", "CH");
-
+        paraules.sort(String::compareTo);
         dawg = new DAWG(tokens, paraules);
     }
 

@@ -11,7 +11,7 @@ public class Jugador {
     public Jugador(String nom, Sac sac) {
         this.nom = nom;
         this.punts = 0;
-        this.faristol = new Faristol(sac);
+        this.faristol = new Faristol(7);
     }
 
     public String getNom() {
