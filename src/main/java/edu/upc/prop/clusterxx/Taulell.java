@@ -1,10 +1,6 @@
 package edu.upc.prop.clusterxx;
 
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.Queue;
-import java.util.List;
-import java.util.ArrayList;
+import java.util.*;
 
 public class Taulell {
     private final int size;
@@ -26,9 +22,6 @@ public class Taulell {
             }
         }
     }
-
-
-
 
     public Casella[][] getTaulell() {
         return taulell;
@@ -97,43 +90,55 @@ public class Taulell {
     }
 
 
-     private HashMap<String, Integer> buscaPalabra(int x, int y, int dx, int dy) {
-         HashMap<String, Integer> palabras = new HashMap<>();
-         Queue<int[]> queue = new LinkedList<>();
-         queue.add(new int[]{x, y});
+    private HashMap<String, Integer> buscaPalabra(int x, int y, int dx, int dy) {
+        HashMap<String, Integer> palabras = new HashMap<>();
+        Queue<int[]> queue = new LinkedList<>();
+        queue.add(new int[]{x, y});
 
-         while (!queue.isEmpty()) {
-             int[] pos = queue.poll();
-             int i = pos[0], j = pos[1];
+        while (!queue.isEmpty()) {
+            int[] pos = queue.poll();
+            int i = pos[0], j = pos[1];
+            Vector<Fitxa> vectorDeFichas = new Vector<>();
 
-             // Formar la palabra recorriendo en la dirección (dx, dy)
-             StringBuilder palabra = new StringBuilder();
-             int puntos = 0;
-             while (i >= 0 && i < size && j >= 0 && j < size && !taulell[i][j].esBuida()) {
-                 palabra.insert(0, taulell[i][j].toString().trim()); // Eliminar espacios antes de insertar
-                 puntos += taulell[i][j].calcularPunts();
-                 i -= dx;
-                 j -= dy;
-             }
+            // Formar la palabra recorriendo en la dirección inversa (dx, dy)
+            StringBuilder palabra = new StringBuilder();
+            int puntos = 0;
+            Stack<Fitxa> fichasInversas = new Stack<>();
 
-             // Ahora ir en la otra dirección para completar la palabra
-             i = pos[0] + dx;
-             j = pos[1] + dy;
-             while (i >= 0 && i < size && j >= 0 && j < size && !taulell[i][j].esBuida()) {
-                 palabra.append(taulell[i][j].toString().trim()); // Eliminar espacios antes de agregar
-                 puntos += taulell[i][j].calcularPunts();
-                 i += dx;
-                 j += dy;
-             }
-             String palabraFinal = palabra.toString().replaceAll("\\s+", ""); // Eliminar cualquier espacio extra
-             // Si la palabra es válida, agregarla
-             if (palabra.length() > 2) {
-                 palabras.put(palabraFinal, puntos);
-             }
-         }
+            while (i >= 0 && i < size && j >= 0 && j < size && !taulell[i][j].esBuida()) {
+                palabra.insert(0, taulell[i][j].toString().trim()); // Insertar letra al inicio
+                fichasInversas.push(taulell[i][j].obtenirFitxa()); // Guardar ficha en orden inverso
+                i -= dx;
+                j -= dy;
+            }
 
-         return palabras;
-     }
+            // Agregar las fichas inversas al vector en orden correcto
+            while (!fichasInversas.isEmpty()) {
+                vectorDeFichas.add(fichasInversas.pop());
+            }
+
+            // Ahora ir en la dirección normal para completar la palabra
+            i = pos[0] + dx;
+            j = pos[1] + dy;
+            while (i >= 0 && i < size && j >= 0 && j < size && !taulell[i][j].esBuida()) {
+                palabra.append(taulell[i][j].toString().trim()); // Agregar letra al final
+                vectorDeFichas.add(taulell[i][j].obtenirFitxa()); // Guardar ficha en orden correcto
+                i += dx;
+                j += dy;
+            }
+
+            String palabraFinal = palabra.toString().replaceAll("\\s+", ""); // Eliminar espacios extra
+            // Si la palabra es válida, agregarla
+            if (palabra.length() > 2) {
+                puntos = calcularPuntuacioParaula(palabraFinal,vectorDeFichas,x,y,dx==1);
+                palabras.put(palabraFinal, puntos);
+            }
+        }
+
+        return palabras;
+    }
+
+
     public boolean esBuit() {
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
