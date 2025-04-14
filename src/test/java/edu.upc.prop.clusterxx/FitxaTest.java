@@ -19,6 +19,7 @@ public class FitxaTest {
         fitxaZ = new Fitxa("Z", 5);
         fitxaDigraf = new Fitxa("CH", 5);
         fitxaB = new Fitxa("B", 2);
+        
         fitxaCH2 = new Fitxa("CH", 5);
         fitxaA2 = new Fitxa("A", 1);
     }
