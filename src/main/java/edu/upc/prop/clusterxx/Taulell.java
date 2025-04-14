@@ -71,18 +71,24 @@ public class Taulell {
             return "\033[107m";  // Alternativa més brillant per a WHITE_BACKGROUND
         }
     }
+    public static class BooleanWrapper {
+        public boolean value;
+        public BooleanWrapper(boolean value) {
+            this.value = value;
+        }
+    }
 
     // Pre: un vector con las posiciones de las letras que se están añadiendo al tablero
     // Post: Un map<string, int> con las palabras nuevas y sus respectivas puntuaciones
-    public HashMap<String, Integer> buscaPalabrasValidas(int[][] posNuevasLetras){
+    public HashMap<String, Integer> buscaPalabrasValidas(int[][] posNuevasLetras, BooleanWrapper conexa) {
         HashMap<String,Integer> nuevasPosiblesPalabras = new HashMap<>();
         for (int[] posLetra : posNuevasLetras) {
             int x = posLetra[0];
             int y = posLetra[1];
             HashMap<String,Integer> aux =new HashMap<>();
-            aux = buscaPalabra(x, y, 1, 0); //derecha e izquierda
+            aux = buscaPalabra(x, y, 1, 0,conexa); //derecha e izquierda
             nuevasPosiblesPalabras.putAll(aux);
-            aux = buscaPalabra(x,y,0,1); //arriba, abajo
+            aux = buscaPalabra(x,y,0,1,conexa); //arriba, abajo
             nuevasPosiblesPalabras.putAll(aux);
 
         }
@@ -90,49 +96,47 @@ public class Taulell {
     }
 
 
-    private HashMap<String, Integer> buscaPalabra(int x, int y, int dx, int dy) {
+    private HashMap<String, Integer> buscaPalabra(int x, int y, int dx, int dy, BooleanWrapper conexa) {
         HashMap<String, Integer> palabras = new HashMap<>();
-        Queue<int[]> queue = new LinkedList<>();
-        queue.add(new int[]{x, y});
+        Vector<Fitxa> vectorDeFichas = new Vector<>();
+        StringBuilder palabra = new StringBuilder();
+        Stack<Fitxa> fichasInversas = new Stack<>();
 
-        while (!queue.isEmpty()) {
-            int[] pos = queue.poll();
-            int i = pos[0], j = pos[1];
-            Vector<Fitxa> vectorDeFichas = new Vector<>();
+        int i = x, j = y;
 
-            // Formar la palabra recorriendo en la dirección inversa (dx, dy)
-            StringBuilder palabra = new StringBuilder();
-            int puntos = 0;
-            Stack<Fitxa> fichasInversas = new Stack<>();
+        // Dirección inversa
+        while (i >= 0 && i < size && j >= 0 && j < size && !taulell[i][j].esBuida()) {
+            if (taulell[i][j].esJugada()) conexa.value = true;
+            palabra.insert(0, taulell[i][j].toString().trim());
+            fichasInversas.push(taulell[i][j].obtenirFitxa());
+            i -= dx;
+            j -= dy;
+        }
 
-            while (i >= 0 && i < size && j >= 0 && j < size && !taulell[i][j].esBuida()) {
-                palabra.insert(0, taulell[i][j].toString().trim()); // Insertar letra al inicio
-                fichasInversas.push(taulell[i][j].obtenirFitxa()); // Guardar ficha en orden inverso
-                i -= dx;
-                j -= dy;
-            }
+        int inicioX = i + dx;
+        int inicioY = j + dy;
 
-            // Agregar las fichas inversas al vector en orden correcto
-            while (!fichasInversas.isEmpty()) {
-                vectorDeFichas.add(fichasInversas.pop());
-            }
+        // Fichas en orden correcto
+        while (!fichasInversas.isEmpty()) {
+            vectorDeFichas.add(fichasInversas.pop());
+        }
 
-            // Ahora ir en la dirección normal para completar la palabra
-            i = pos[0] + dx;
-            j = pos[1] + dy;
-            while (i >= 0 && i < size && j >= 0 && j < size && !taulell[i][j].esBuida()) {
-                palabra.append(taulell[i][j].toString().trim()); // Agregar letra al final
-                vectorDeFichas.add(taulell[i][j].obtenirFitxa()); // Guardar ficha en orden correcto
-                i += dx;
-                j += dy;
-            }
+        // Dirección normal
+        i = x + dx;
+        j = y + dy;
+        while (i >= 0 && i < size && j >= 0 && j < size && !taulell[i][j].esBuida()) {
+            if (taulell[i][j].esJugada()) conexa.value = true;
+            palabra.append(taulell[i][j].toString().trim());
+            vectorDeFichas.add(taulell[i][j].obtenirFitxa());
 
-            String palabraFinal = palabra.toString().replaceAll("\\s+", ""); // Eliminar espacios extra
-            // Si la palabra es válida, agregarla
-            if (palabra.length() > 2) {
-                puntos = calcularPuntuacioParaula(palabraFinal,vectorDeFichas,x,y,dx==1);
-                palabras.put(palabraFinal, puntos);
-            }
+            i += dx;
+            j += dy;
+        }
+
+        String palabraFinal = palabra.toString().replaceAll("\\s+", "");
+        if (palabraFinal.length() > 2) {
+            int puntos = calcularPuntuacioParaula(palabraFinal, vectorDeFichas, inicioX, inicioY, dx == 1);
+            palabras.put(palabraFinal, puntos);
         }
 
         return palabras;
