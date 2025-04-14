@@ -14,15 +14,15 @@ public class Jugador {
         this.faristol = faristol;
     }
 
-    public String getNom() {
+    public String obtenirNom() {
         return nom;
     }
 
-    public int getPunts() {
+    public int obtenirPunts() {
         return punts;
     }
 
-    public Faristol getFaristol() {
+    public Faristol obtenirFaristol() {
         return faristol;
     }
 
