@@ -1,6 +1,7 @@
 package edu.upc.prop.clusterxx;
 
 import edu.upc.prop.clusterxx.exceptions.ExcepcioCasellaOcupada;
+import edu.upc.prop.clusterxx.exceptions.ExcepcioCasellaBuida;
 
 /**
  * Representa una casella del tauler de joc.
@@ -19,7 +20,6 @@ public class Casella {
      *
      * @param x Coordenada x de la casella
      * @param y Coordenada y de la casella
-     * @param estrategia Estratègia de puntuació que s'aplicarà a aquesta casella
      */
     public Casella(int x, int y, int size) {
         this.x = x;
@@ -151,6 +151,19 @@ public class Casella {
             this.fitxa = fitxa;
         }
         else throw new ExcepcioCasellaOcupada("La casella " + obtenirX() + " y " + obtenirY() + " esta ocupada");
+    }
+
+    /**
+     * Retira la fitxa de la casella, si en conté.
+     *
+     * @param fitxa Fitxa a col·locar
+     *
+     */
+    public void retirarFitxa(Fitxa fitxa) {
+        if (!esBuida()) {
+            this.fitxa = null;
+        }
+        else throw new ExcepcioCasellaBuida("La casella " + obtenirX() + " y " + obtenirY() + " esta buida");
     }
 
     /**
