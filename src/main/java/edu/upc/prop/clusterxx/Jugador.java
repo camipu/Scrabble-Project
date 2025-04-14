@@ -8,10 +8,10 @@ public class Jugador {
 
 
     public Jugador() {}
-    public Jugador(String nom, Sac sac) {
+    public Jugador(String nom, Faristol faristol) {
         this.nom = nom;
         this.punts = 0;
-        this.faristol = new Faristol(7);
+        this.faristol = faristol;
     }
 
     public String getNom() {
@@ -26,18 +26,6 @@ public class Jugador {
         return faristol;
     }
 
-    public Fitxa obtenirFitxa(int pos) {
-        return faristol.obtenirFitxa(pos);
-    }
-
-    public void afegirFitxa(Fitxa fitxa) {
-        faristol.afegirFitxa(fitxa);
-    }
-
-    public void eliminarFitxa(Fitxa fitxa) {
-        faristol.eliminarFitxa(fitxa);
-    }
-
     public void afegirPunts(int nousPunts) {
         this.punts += nousPunts;
     }
@@ -45,12 +33,12 @@ public class Jugador {
         this.punts -= nousPunts;
     }
 
-    /** Crida la funció imprimirFaristol de Faristol */
+    /*
+    Driver
+     */
     public void imprimirFaristol() {
         faristol.imprimirFaristol();
     }
-
-    /** Imprimeix tota la informació del jugador amb colors */
     public void imprimirInfo() {
         System.out.println(Colors.YELLOW_BACKGROUND + Colors.BLACK_TEXT + "======== INFORMACIÓ DEL JUGADOR ========" + Colors.RESET);
         System.out.println(Colors.CYAN_TEXT + "Nom: " + Colors.RESET + nom);
