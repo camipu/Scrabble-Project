@@ -11,13 +11,13 @@ public class Bot extends Jugador {
      * @param sac Sac de fitxes
      * @param nivellDificultat Nivell de dificultat del bot (1-3)
      */
-    public Bot(String nom, Sac sac, int nivellDificultat) {
-        super(nom, sac);
-        if (nivellDificultat >= 1 && nivellDificultat <= 3) {
-            this.nivellDificultat = nivellDificultat;
-        } else {
-            this.nivellDificultat = 3; // Valor per defecte si el nivell no és vàlid
+    public Bot(String nom, int nivellDificultat) {
+        super(nom);
+
+        if (nivellDificultat < 1 || nivellDificultat > 3) {
+            throw new ExcepcioNivellDificultatInvalid(nivellDificultat);
         }
+        this.nivellDificultat = nivellDificultat;
     }
 
     /**
@@ -26,7 +26,7 @@ public class Bot extends Jugador {
      * @param dawg El DAWG amb les paraules vàlides
      * @return Un objecte Jugada amb la millor jugada trobada
      */
-    public Jugada calcularMillorJugada(Taulell taulell, DAWG dawg) {
+    public Jugada calcularJugada(Taulell taulell, DAWG dawg) {
         List<Jugada> jugadesPossibles = generarJugadesPossibles(taulell, dawg);
 
         if (jugadesPossibles.isEmpty()) return null;
@@ -34,16 +34,12 @@ public class Bot extends Jugador {
         jugadesPossibles.sort((j1, j2) -> Integer.compare(j2.getPuntuacio(), j1.getPuntuacio()));
 
         int mida = jugadesPossibles.size();
-        int indiceAleatori;
-
         switch (nivellDificultat) {
-            case 1: // Fàcil: escull una jugada aleatòria entre les 70% pitjors
-                int limitInferior = (int) (mida * 0.3);
-                indiceAleatori = limitInferior + new Random().nextInt(mida - limitInferior);
-                return jugadesPossibles.get(Math.min(indiceAleatori, mida - 1));
-            case 2: // Mitjà: escull una jugada aleatòria entre les 50% millors
-                indiceAleatori = new Random().nextInt(mida / 2);
-                return jugadesPossibles.get(indiceAleatori);
+            case 1: // Fàcil: escull la pitjor jugada
+                return jugadesPossibles.get(mida-1);
+            case 2: // Mitjà: escull una jugada aleatòria
+                int indexAleatori = new Random().nextInt(mida);
+                return jugadesPossibles.get(indexAleatori);
             default: // Difícil: escull sempre la millor jugada
                 return jugadesPossibles.get(0);
         }
@@ -132,7 +128,7 @@ public class Bot extends Jugador {
         List<Jugada> jugadesGenerades = new ArrayList<>();
         
         // Generar les paraules possibles
-        generarParaulesRecursiu(paraulaInicial.toString(), faristol.obtenirFitxes(), new ArrayList<>(), fila, columna, horitzontal, jugadesGenerades, taulell, dawg);
+        generarParaulesRecursiu(paraulaInicial.toString(), this.obtenirFaristol().obtenirFitxes(), new ArrayList<>(), fila, columna, horitzontal, jugadesGenerades, taulell, dawg);
 
         for (Jugada j : jugadesGenerades) {
             // Construir la paraula real que es formarà al taulell
@@ -141,7 +137,7 @@ public class Bot extends Jugador {
             // Verificar si és una paraula vàlida en el diccionari
             if (dawg.conteParaula(paraulaFinal) &&
                 (taulerBuit || tocaCasellaOcupada(j, taulell)) &&
-                paraulesPerpendicularesValides(j, taulell, dawg)) {
+                taulell.paraulesPerpendicularesValides(j, dawg)) {
                 jugades.add(j);
             }
         }
@@ -149,7 +145,7 @@ public class Bot extends Jugador {
         return jugades;
     }
 
-        /**
+    /**
      * Comprova si una jugada toca alguna casella ja ocupada (per fer-la vàlida en partides no buides)
      * @param jugada Jugada proposada
      * @param taulell El taulell actual
@@ -238,7 +234,7 @@ public class Bot extends Jugador {
                 novesUtilitzades.add(fitxa);
 
                 if (novaParaula.length() > 2 && dawg.conteParaula(novaParaula)) {
-                    int puntuacio = calcularPuntuacioParaula(novaParaula, novesUtilitzades, fila, columna, horitzontal, taulell);
+                    int puntuacio = taulell.calcularPuntuacioParaula(novaParaula, novesUtilitzades, fila, columna, horitzontal);
                     jugades.add(new Jugada(novaParaula, new ArrayList<>(novesUtilitzades), fila, columna, horitzontal, puntuacio));
                 }
 
@@ -246,48 +242,6 @@ public class Bot extends Jugador {
                                          fila, columna, horitzontal, jugades, taulell, dawg);
             }
         }
-    }
-
-    /**
-     * Calcula la puntuació d'una paraula segons les fitxes utilitzades i la posició al tauler
-     * @param paraula Paraula formada
-     * @param fitxesUtilitzades Fitxes utilitzades per formar la paraula
-     * @param fila Fila inicial
-     * @param columna Columna inicial
-     * @param horitzontal Direcció de la paraula
-     * @param taulell El taulell actual
-     * @return Puntuació total de la jugada
-     */
-    private int calcularPuntuacioParaula(String paraula, List<Fitxa> fitxesUtilitzades, int fila, int columna, boolean horitzontal, Taulell taulell) {
-        Casella[][] caselles = taulell.getTaulell();
-        int mida = taulell.getSize();
-        int puntuacioTotal = 0;
-        int multiplicadorParaula = 1;
-        int indexFitxa = 0;
-
-        for (int i = 0; i < paraula.length(); i++) {
-            int filaActual = horitzontal ? fila : fila + i;
-            int columnaActual = horitzontal ? columna + i : columna;
-            if (filaActual >= mida || columnaActual >= mida) return 0;
-
-            Casella casella = caselles[filaActual][columnaActual];
-            int punts = 0;
-
-            if (casella.esBuida()) {
-                if (indexFitxa >= fitxesUtilitzades.size()) return 0;
-                Fitxa fitxa = fitxesUtilitzades.get(indexFitxa++);
-                punts = fitxa.obtenirPunts();
-
-                if (casella.obtenirEstrategia() instanceof EstrategiaMultiplicadorLletra)
-                    punts *= ((EstrategiaMultiplicadorLletra) casella.obtenirEstrategia()).obtenirMultiplicador();
-                else if (casella.obtenirEstrategia() instanceof EstrategiaMultiplicadorParaula)
-                    multiplicadorParaula *= ((EstrategiaMultiplicadorParaula) casella.obtenirEstrategia()).obtenirMultiplicador();
-            }
-            puntuacioTotal += punts;
-        }
-        puntuacioTotal *= multiplicadorParaula;
-        if (fitxesUtilitzades.size() == 7) puntuacioTotal += 50;
-        return puntuacioTotal;
     }
 
     /**
@@ -323,169 +277,5 @@ public class Bot extends Jugador {
 
         afegirPunts(millor.getPuntuacio());
         return true;
-    }
-
-    /**
-     * Comprova si totes les paraules perpendiculars creades són vàlides
-     */
-   private boolean paraulesPerpendicularesValides(Jugada jugada, Taulell taulell, DAWG dawg) {
-        Casella[][] caselles = taulell.getTaulell();
-        int fila = jugada.getFila();
-        int columna = jugada.getColumna();
-        boolean horitzontal = jugada.esHoritzontal();
-        String paraula = jugada.getParaula();
-        int mida = taulell.getSize();
-        List<Fitxa> fitxesUtilitzades = jugada.getFitxesUtilitzades();
-        int indexFitxa = 0;
-
-        for (int i = 0; i < paraula.length(); i++) {
-            int f = horitzontal ? fila : fila + i;
-            int c = horitzontal ? columna + i : columna;
-            
-            if (f >= mida || c >= mida) continue;
-            Casella casella = caselles[f][c];
-
-            if (casella.esBuida()) {
-                // Verificar si tenim prou fitxes abans d'intentar accedir
-                if (indexFitxa >= fitxesUtilitzades.size()) {
-                    return false; // No hi ha prou fitxes per completar la paraula
-                }
-                
-                // Verificar paraula perpendicular només on col·loquem fitxa nova
-                StringBuilder perpendicular = new StringBuilder();
-                String lletraActual = fitxesUtilitzades.get(indexFitxa++).obtenirLletra();
-
-                // Comprovar cap amunt/esquerra
-                int df = horitzontal ? -1 : 0;
-                int dc = horitzontal ? 0 : -1;
-                int nf = f + df;
-                int nc = c + dc;
-                
-                while (nf >= 0 && nc >= 0 && !caselles[nf][nc].esBuida()) {
-                    perpendicular.insert(0, caselles[nf][nc].obtenirFitxa().obtenirLletra());
-                    nf += df;
-                    nc += dc;
-                }
-                
-                // Afegir la lletra actual que estem col·locant
-                perpendicular.append(lletraActual);
-                
-                // Comprovar cap avall/dreta
-                df = horitzontal ? 1 : 0;
-                dc = horitzontal ? 0 : 1;
-                nf = f + df;
-                nc = c + dc;
-                
-                while (nf < mida && nc < mida && !caselles[nf][nc].esBuida()) {
-                    perpendicular.append(caselles[nf][nc].obtenirFitxa().obtenirLletra());
-                    nf += df;
-                    nc += dc;
-                }
-                
-                // Si només és la lletra que estem col·locant, no cal comprovar
-                // Si té més lletres, ha de ser una paraula vàlida
-                if (perpendicular.length() > 1 && !dawg.conteParaula(perpendicular.toString())) {
-                    return false;
-                }
-            }
-        }
-        return true;
-    }
-
-    /**
-     * Calcula la puntuació total d'una jugada, incloent paraula principal i perpendiculars
-     * @param jugada Jugada a avaluar
-     * @param paraulaPrincipal Paraula principal formada
-     * @param taulell El taulell actual
-     * @param dawg El DAWG amb les paraules vàlides
-     * @return Puntuació total
-     */
-    private int calcularPuntuacioTotal(Jugada jugada, String paraulaPrincipal, Taulell taulell, DAWG dawg) {
-        // Calculem la puntuació de la paraula principal
-        int puntuacioTotal = calcularPuntuacioParaula(
-            paraulaPrincipal, 
-            jugada.getFitxesUtilitzades(), 
-            jugada.getFila(), 
-            jugada.getColumna(), 
-            jugada.esHoritzontal(), 
-            taulell
-        );
-        
-        // Afegim les puntuacions de les paraules perpendiculars
-        puntuacioTotal += calcularPuntuacioParaulesPerp(jugada, taulell, dawg);
-        
-        return puntuacioTotal;
-    }
-
-    /**
-     * Calcula la puntuació de les paraules perpendiculars formades
-     * @param jugada Jugada a avaluar
-     * @param taulell El taulell actual
-     * @param dawg El DAWG amb paraules vàlides
-     * @return Puntuació total de les paraules perpendiculars
-     */
-    private int calcularPuntuacioParaulesPerp(Jugada jugada, Taulell taulell, DAWG dawg) {
-        Casella[][] caselles = taulell.getTaulell();
-        int fila = jugada.getFila();
-        int columna = jugada.getColumna();
-        boolean horitzontal = jugada.esHoritzontal();
-        String paraula = jugada.getParaula();
-        int mida = taulell.getSize();
-        List<Fitxa> fitxesUtilitzades = jugada.getFitxesUtilitzades();
-        int puntuacioTotal = 0;
-        int indexFitxa = 0;
-
-        for (int i = 0; i < paraula.length(); i++) {
-            int f = horitzontal ? fila : fila + i;
-            int c = horitzontal ? columna + i : columna;
-            
-            if (f >= mida || c >= mida) continue;
-            Casella casella = caselles[f][c];
-
-            if (casella.esBuida()) {
-                // Verificar paraula perpendicular només on col·loquem fitxa nova
-                StringBuilder perpendicular = new StringBuilder();
-                Fitxa fitxaActual = fitxesUtilitzades.get(indexFitxa++);
-                List<Fitxa> fitxaUnica = new ArrayList<>();
-                fitxaUnica.add(fitxaActual);
-                
-                // Obtenir la paraula perpendicular sencera
-                int df = horitzontal ? -1 : 0;
-                int dc = horitzontal ? 0 : -1;
-                int nf = f + df;
-                int nc = c + dc;
-                while (nf >= 0 && nc >= 0 && !caselles[nf][nc].esBuida()) {
-                    perpendicular.insert(0, caselles[nf][nc].obtenirFitxa().obtenirLletra());
-                    nf += df;
-                    nc += dc;
-                }
-                
-                perpendicular.append(fitxaActual.obtenirLletra());
-                
-                df = horitzontal ? 1 : 0;
-                dc = horitzontal ? 0 : 1;
-                nf = f + df;
-                nc = c + dc;
-                while (nf < mida && nc < mida && !caselles[nf][nc].esBuida()) {
-                    perpendicular.append(caselles[nf][nc].obtenirFitxa().obtenirLletra());
-                    nf += df;
-                    nc += dc;
-                }
-                
-                // Si és una paraula perpendicular vàlida (amb més d'una lletra), calculem la puntuació
-                if (perpendicular.length() > 1) {
-                    int puntuacioPerp = calcularPuntuacioParaula(
-                        perpendicular.toString(),
-                        fitxaUnica,
-                        horitzontal ? f : nf - df,
-                        horitzontal ? nc - dc : c,
-                        !horitzontal,
-                        taulell
-                    );
-                    puntuacioTotal += puntuacioPerp;
-                }
-            }
-        }
-        return puntuacioTotal;
     }
 }
