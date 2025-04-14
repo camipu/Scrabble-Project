@@ -354,4 +354,9 @@ public class Taulell {
         
         return puntuacioTotal;
     }
+
+    public void marcarComoJugada(int fila, int columna) {
+        taulell[fila][columna].jugarCasella();
+    }
 }
+
