@@ -15,7 +15,7 @@ public class Sac {
         try {
             inicialitzarSac(idioma);
         } catch (IOException e) {
-            System.err.println("Error en llegir el fitxer de fitxes: " + e.getMessage());
+            throw new IllegalArgumentException("Format incorrecte o idioma no registrat");
         }
     }
 
@@ -100,12 +100,12 @@ public class Sac {
         return sumaTotal;
     }
 
-    public boolean esBuit() {
-        return fitxes.isEmpty();
+    public int obtenirNumFitxes(Fitxa fitxa) {
+        return fitxes.getOrDefault(fitxa, 0);
     }
 
-    public int quantitatFitxes(Fitxa fitxa) {
-        return fitxes.getOrDefault(fitxa, 0);
+    public boolean esBuit() {
+        return fitxes.isEmpty();
     }
 
 

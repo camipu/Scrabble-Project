@@ -1,5 +1,6 @@
 package edu.upc.prop.clusterxx;
 
+import edu.upc.prop.clusterxx.exceptions.ExcepcioCasellaOcupada;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -11,83 +12,119 @@ public class CasellaTest {
     private Casella casellaMultiplicadorLletra;
     private Casella casellaMultiplicadorParaula;
 
-    // Mocks de la classe Fitxa
     private Fitxa fitxaAMock;
     private Fitxa fitxaBMock;
+    private Fitxa fitxaCHMock;
 
     @Before
     public void setUp() {
         fitxaAMock = mock(Fitxa.class);
         fitxaBMock = mock(Fitxa.class);
+        fitxaCHMock = mock(Fitxa.class);
 
-        // Simular els valors dels punts per a les fitxes mockejades
-        when(fitxaAMock.obtenirPunts()).thenReturn(1);  // Fitxa A té un valor de 1
-        when(fitxaBMock.obtenirPunts()).thenReturn(3);  // Fitxa B té un valor de 3
+        when(fitxaAMock.obtenirPunts()).thenReturn(1);
+        when(fitxaBMock.obtenirPunts()).thenReturn(3);
 
-        // Inicialitzar les caselles amb les estratègies
+        when(fitxaAMock.esDigraf()).thenReturn(false);
+        when(fitxaAMock.toString()).thenReturn("A");
+
+        when(fitxaCHMock.esDigraf()).thenReturn(true);
+        when(fitxaCHMock.toString()).thenReturn("CH");
+
         casellaNormal = new Casella(0, 0, new EstrategiaNormal());
-        casellaMultiplicadorLletra = new Casella(1, 1, new EstrategiaMultiplicadorLletra(2));
-        casellaMultiplicadorParaula = new Casella(2, 2, new EstrategiaMultiplicadorParaula(3));
+        casellaMultiplicadorLletra = new Casella(1, 3, new EstrategiaMultiplicadorLletra(2));
+        casellaMultiplicadorParaula = new Casella(2, 5, new EstrategiaMultiplicadorParaula(3));
     }
 
     @Test
-    public void testCalcularPuntsCasellaNormal() {
+    public void testColocarFitxa() {
         casellaNormal.colocarFitxa(fitxaAMock);
-        assertEquals("Els punts de la casella normal han de ser 1", 1, casellaNormal.calcularPunts());
+        assertEquals(fitxaAMock, casellaNormal.obtenirFitxa());
+    }
+
+    @Test
+    public void testCasellaBuidaInicialment() {
+        assertTrue(casellaNormal.esBuida());
+    }
+
+    @Test
+    public void testObtenirPosicio() {
+        assertEquals(0, casellaNormal.obtenirX());
+        assertEquals(0, casellaNormal.obtenirY());
+
+        assertEquals(1, casellaMultiplicadorLletra.obtenirX());
+        assertEquals(3, casellaMultiplicadorLletra.obtenirY());
+
+        assertEquals(2, casellaMultiplicadorParaula.obtenirX());
+        assertEquals(5, casellaMultiplicadorParaula.obtenirY());
+    }
+
+    @Test
+    public void testObtenirEstrategia() {
+        assertEquals(EstrategiaNormal.class, casellaNormal.obtenirEstrategia().getClass());
+        assertEquals(EstrategiaMultiplicadorLletra.class, casellaMultiplicadorLletra.obtenirEstrategia().getClass());
+        assertEquals(EstrategiaMultiplicadorParaula.class, casellaMultiplicadorParaula.obtenirEstrategia().getClass());
+    }
+
+    @Test
+    public void testCasellaJugada() {
+        assertFalse(casellaNormal.esJugada());
+        casellaNormal.jugarCasella();
+        assertTrue(casellaNormal.esJugada());
+    }
+
+    @Test
+    public void testCalcularPuntsNormal() {
+        casellaNormal.colocarFitxa(fitxaAMock);
+        assertEquals(1, casellaNormal.calcularPunts());
     }
 
     @Test
     public void testCalcularPuntsMultiplicadorLletra() {
         casellaMultiplicadorLletra.colocarFitxa(fitxaBMock);
-        assertEquals("Els punts de la casella amb multiplicador de lletra han de ser 6", 6, casellaMultiplicadorLletra.calcularPunts());
+        assertEquals(6, casellaMultiplicadorLletra.calcularPunts());
     }
 
     @Test
     public void testCalcularPuntsMultiplicadorParaula() {
         casellaMultiplicadorParaula.colocarFitxa(fitxaAMock);
-        assertEquals("Els punts de la casella amb multiplicador de paraula han de ser 1", 1, casellaMultiplicadorParaula.calcularPunts());
+        assertEquals(1, casellaMultiplicadorParaula.calcularPunts());
     }
 
     @Test
-    public void testMultiplicadorParaula() {
-        assertEquals("El multiplicador de paraula ha de ser 3", 3, casellaMultiplicadorParaula.obtenirMultiplicador());
+    public void testObtenirMultiplicadorParaula() {
+        assertEquals(1, casellaNormal.obtenirMultiplicador());
+        assertEquals(2, casellaMultiplicadorLletra.obtenirMultiplicador());
+        assertEquals(3, casellaMultiplicadorParaula.obtenirMultiplicador());
     }
 
     @Test
-    public void testMultiplicadorLletra() {
-        assertEquals("El multiplicador de lletra ha de ser 2", 2, casellaMultiplicadorLletra.obtenirMultiplicador());
+    public void testCalcularPuntsCasellaBuida() {
+        assertTrue(casellaNormal.esBuida());
+        assertEquals(0, casellaNormal.calcularPunts());
     }
 
     @Test
-    public void testCasellaBuida() {
-        // Comprovem que una casella buida retorna 0 punts
-        assertTrue("La casella ha d'estar buida", casellaNormal.esBuida());
-        assertEquals("Els punts de la casella buida han de ser 0", 0, casellaNormal.calcularPunts());
-    }
-
-    /*
-    @Test
-    public void testColocarFitxa() {
-        assertTrue("S'ha de poder col·locar una fitxa en una casella buida", casellaNormal.colocarFitxa(fitxaAMock));
-    }
-     */
-
-//    @Test
-//    public void testNoColocarFitxaSiJaEstaOcupada() {
-//        casellaNormal.colocarFitxa(fitxaAMock);
-//        assertFalse("No s'ha de poder col·locar una fitxa en una casella ja ocupada", casellaNormal.colocarFitxa(fitxaBMock));
-//    }
-
-    @Test
-    public void testCasellaJugada() {
-        // Comprovem si la casella es marca com a jugada
-        casellaNormal.jugarCasella();
-        assertTrue("La casella hauria de ser marcada com a jugada", casellaNormal.casellaJugada());
+    public void testToStringCasellaBuida() {
+        assertEquals("  ", casellaNormal.toString());
     }
 
     @Test
-    public void testCasellaNoJugadaInicialment() {
-        // Comprovem que la casella inicialment no ha estat jugada
-        assertFalse("La casella no hauria de ser jugada inicialment", casellaNormal.casellaJugada());
+    public void testToStringCasellaAmbFitxaNoDigraf() {
+        casellaNormal.colocarFitxa(fitxaAMock);
+        assertEquals(" A", casellaNormal.toString());
+    }
+
+    @Test
+    public void testToStringCasellaAmbFitxaDigraf() {
+        casellaNormal.colocarFitxa(fitxaCHMock);
+        assertEquals("CH", casellaNormal.toString());
+    }
+
+    @Test(expected = Exception.class)
+    public void testSobreescriureFitxa() throws ExcepcioCasellaOcupada {
+        casellaNormal.colocarFitxa(fitxaAMock);
+        casellaNormal.colocarFitxa(fitxaBMock);
+        assertEquals(fitxaAMock, casellaNormal.obtenirFitxa());
     }
 }

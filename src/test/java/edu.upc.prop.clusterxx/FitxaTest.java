@@ -13,7 +13,6 @@ public class FitxaTest {
     private Fitxa fitxaCH2;
     private Fitxa fitxaA2;
 
-
     @Before
     public void setUp() {
         fitxaA = new Fitxa("A", 1);
