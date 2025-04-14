@@ -6,7 +6,7 @@ import java.io.IOException;
 public class Main {
   public static void main(String[] args) throws IOException {
     // Crear partida
-    String idioma = "castellano";
+    String idioma = "english";
     String[] noms = {"Bot", "Joan"};
     Joc joc = new Joc(noms.length, idioma, noms);
 
