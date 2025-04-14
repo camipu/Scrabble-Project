@@ -1,6 +1,7 @@
 package edu.upc.prop.clusterxx;
 
-import java.util.HashMap;
+import edu.upc.prop.clusterxx.controladors.CtrlDiccionari;
+
 import java.io.IOException;
 
 public class Main {

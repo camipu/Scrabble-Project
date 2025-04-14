@@ -1,4 +1,7 @@
-package edu.upc.prop.clusterxx;
+package edu.upc.prop.clusterxx.controladors;
+
+import edu.upc.prop.clusterxx.Fitxa;
+import edu.upc.prop.clusterxx.Sac;
 
 public class CtrlSac {
     private final Sac sac;

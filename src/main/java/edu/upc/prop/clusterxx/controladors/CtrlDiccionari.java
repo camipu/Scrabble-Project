@@ -1,4 +1,6 @@
-package edu.upc.prop.clusterxx;
+package edu.upc.prop.clusterxx.controladors;
+
+import edu.upc.prop.clusterxx.DAWG;
 
 import java.io.IOException;
 import java.nio.file.Files;

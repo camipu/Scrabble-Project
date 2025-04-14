@@ -1,4 +1,8 @@
-package edu.upc.prop.clusterxx;
+package edu.upc.prop.clusterxx.controladors;
+
+import edu.upc.prop.clusterxx.Joc;
+import edu.upc.prop.clusterxx.Jugador;
+import edu.upc.prop.clusterxx.Taulell;
 
 import java.util.List;
 
