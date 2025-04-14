@@ -39,15 +39,6 @@ public class Casella {
     }
 
     /**
-     * Comprova si la casella ha estat jugada en el torn actual.
-     *
-     * @return true si la casella ha estat jugada, false en cas contrari
-     */
-    public boolean casellaJugada() {
-        return casellaJugada;
-    }
-
-    /**
      * Marca la casella com a jugada en el torn actual.
      */
     public void jugarCasella() {
@@ -106,6 +97,15 @@ public class Casella {
      */
     public boolean esBuida() {
         return fitxa == null;
+    }
+
+    /**
+     * Comprova si la casella està jugada.
+     *
+     * @return true si la casella està jugada, false altrament.
+     */
+    public boolean esJugada() {
+        return casellaJugada;
     }
 
     /**

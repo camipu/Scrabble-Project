@@ -9,52 +9,52 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 public class Faristol {
+    private static final int MAX_FITXES = 7;
     private final ArrayList<Fitxa> fitxes;
     private final Sac sac;
 
     public Faristol(Sac sac) {
-        this.fitxes = new ArrayList<>(7);
+        this.fitxes = new ArrayList<>(MAX_FITXES);
         this.sac = sac;
-        inicialitzarFaristol();
-    }
-
-    private void inicialitzarFaristol() {
-        while (fitxes.size() < 7 && !sac.esBuit()) {
-            fitxes.add(sac.agafarFitxa());
-        }
+        reposarFitxes();  // Iniciem faristol amb fitxes del sac
     }
 
     public void afegirFitxa(Fitxa fitxa) {
-        if (fitxes.size() < 7) {
-            Fitxa f = sac.agafarFitxa(fitxa);
-            fitxes.add(f);
+        if (fitxes.size() >= MAX_FITXES) {
+            throw new ExcepcioFaristolPle("El faristol està ple, no es pot afegir la fitxa " + fitxa);
         }
-        else throw new ExcepcioFaristolPle("El faristol està ple, no es pot afegir la fitxa" + fitxa);
+
+        Fitxa f = sac.agafarFitxa(fitxa);
+        fitxes.add(f);
     }
 
     public void afegirFitxa() {
-        if (fitxes.size() < 7) {
-            Fitxa f = sac.agafarFitxa();
-            fitxes.add(f);
+        if (fitxes.size() >= MAX_FITXES) {
+            throw new ExcepcioFaristolPle("El faristol està ple, no es pot afegir cap fitxa");
         }
-        else throw new ExcepcioFaristolPle("El faristol està ple, no es pot afegir cap fitxa");
+
+        Fitxa f = sac.agafarFitxa();
+        fitxes.add(f);
     }
 
     public void eliminarFitxa(Fitxa fitxa) {
-        if (fitxes.remove(fitxa)) {
-            reposarFitxes();
+        if (!fitxes.remove(fitxa)) {
+            throw new ExcepcioFaristolNoConteLaFitxa("No es pot eliminar fitxa " + fitxa + ", el faristol no la conté.");
         }
-        else throw new ExcepcioFaristolNoConteLaFitxa("No es pot eliminar fitxa " + fitxa + ", el faristol no la conté.");
+        reposarFitxes();
     }
 
+    /**
+     * Omple el faristol fins al màxim amb fitxes del sac (si n'hi ha disponibles).
+     */
     private void reposarFitxes() {
-        while (fitxes.size() < 7 && !sac.esBuit()) {
+        while (fitxes.size() < MAX_FITXES && !sac.esBuit()) {
             fitxes.add(sac.agafarFitxa());
         }
     }
 
     public ArrayList<Fitxa> obtenirFitxes() {
-        return fitxes;
+        return new ArrayList<>(fitxes); // Retornem còpia per evitar modificació externa
     }
 
     public Fitxa obtenirFitxa(int index) {
