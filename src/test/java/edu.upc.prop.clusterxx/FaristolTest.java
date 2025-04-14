@@ -41,14 +41,35 @@ public class FaristolTest {
         // Simulant els punts de les fitxes
         when(fitxaMockA.obtenirPunts()).thenReturn(1);
         when(fitxaMockB.obtenirPunts()).thenReturn(3);
+        when(fitxaMockC.obtenirPunts()).thenReturn(2);
+        when(fitxaMockD.obtenirPunts()).thenReturn(4);
+        when(fitxaMockE.obtenirPunts()).thenReturn(5);
+        when(fitxaMockF.obtenirPunts()).thenReturn(6);
+        when(fitxaMockG.obtenirPunts()).thenReturn(7);
+        when(fitxaMockH.obtenirPunts()).thenReturn(8);
+        when(fitxaMockI.obtenirPunts()).thenReturn(9);
+        when(fitxaMockJ.obtenirPunts()).thenReturn(10);
 
         // Crear mock de sac
         sacMock = mock(Sac.class);
 
-        // Simulant que el sac té fitxes
-        when(sacMock.agafarFitxa(fitxaMockA)).thenReturn(fitxaMockA);
-        when(sacMock.agafarFitxa(fitxaMockB)).thenReturn(fitxaMockB);
-        when(sacMock.agafarFitxa()).thenReturn(fitxaMockA, fitxaMockB, fitxaMockC, fitxaMockD, fitxaMockE, fitxaMockF, fitxaMockG, fitxaMockH, fitxaMockI, fitxaMockJ);
+        // Crear una llista amb totes les fitxes
+        ArrayList<Fitxa> fitxes = new ArrayList<>();
+        fitxes.add(fitxaMockA);
+        fitxes.add(fitxaMockB);
+        fitxes.add(fitxaMockC);
+        fitxes.add(fitxaMockD);
+        fitxes.add(fitxaMockE);
+        fitxes.add(fitxaMockF);
+        fitxes.add(fitxaMockG);
+        fitxes.add(fitxaMockH);
+        fitxes.add(fitxaMockI);
+        fitxes.add(fitxaMockJ);
+
+        // Simula la crida a agafarFitxa() utilitzant un iterador per retornar les fitxes de manera seqüencial
+        when(sacMock.agafarFitxa()).thenAnswer(invocation -> {
+            return fitxes.size() > 0 ? fitxes.remove(0) : null;  // Si no hi ha més fitxes, retorna null
+        });
 
         // Crear el Faristol amb el mock de Sac
         faristol = new Faristol(sacMock);
@@ -56,8 +77,31 @@ public class FaristolTest {
 
     @Test
     public void test1() {
-        System.out.println(sacMock.agafarFitxa(fitxaMockA));
+        // Primer crida
+        System.out.println(sacMock.agafarFitxa().obtenirPunts()); // Esperem 1 (fitxaMockA)
+
+        // Segona crida
+        System.out.println(sacMock.agafarFitxa().obtenirPunts()); // Esperem 3 (fitxaMockB)
+
+        // Tercera crida
+        System.out.println(sacMock.agafarFitxa().obtenirPunts()); // Esperem 2 (fitxaMockC)
+
+        // Quarta crida
+        System.out.println(sacMock.agafarFitxa().obtenirPunts()); // Esperem 4 (fitxaMockD)
+
+        // Cinquena crida
+        System.out.println(sacMock.agafarFitxa().obtenirPunts()); // Esperem 5 (fitxaMockE)
+
+        // Sisena crida
+        System.out.println(sacMock.agafarFitxa().obtenirPunts()); // Esperem 6 (fitxaMockF)
+
+        // Setena crida
+        System.out.println(sacMock.agafarFitxa().obtenirPunts()); // Esperem 7 (fitxaMockG)
+
+        // Vuitena crida
+        System.out.println(sacMock.agafarFitxa().obtenirPunts()); // Esperem 8 (fitxaMockH)
     }
+
 
 //    @Test
 //    public void testInicialitzarFaristol() {
