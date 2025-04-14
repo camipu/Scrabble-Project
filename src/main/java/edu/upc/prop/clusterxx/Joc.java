@@ -1,19 +1,17 @@
 package edu.upc.prop.clusterxx;
 
-import java.util.*;
-
 public class Joc {
     int numJugadors;
     Jugador[] jugadors;
     Diccionari diccionari;
-    Taulell taulell = new Taulell(15, this);
+    Taulell taulell = new Taulell(15);
     Sac sac;
 
     public Joc(int numJugadors, String idioma, String[] noms) {
         this.numJugadors = numJugadors;
         this.diccionari = new Diccionari(idioma);
         this.sac = new Sac(idioma);
-        this.taulell = new Taulell(15, this);
+        this.taulell = new Taulell(15);
 
         // Inicialización correcta del array de jugadores
         this.jugadors = new Jugador[numJugadors];
