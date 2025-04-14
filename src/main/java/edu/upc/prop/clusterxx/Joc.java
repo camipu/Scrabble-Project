@@ -14,7 +14,8 @@ public class Joc {
         // Inicialización correcta del array de jugadores
         this.jugadors = new Jugador[numJugadors];
         for (int i = 0; i < numJugadors; i++) {
-            jugadors[i] = new Jugador(noms[i], sac);
+            Faristol f = new Faristol(7);
+            jugadors[i] = new Jugador(noms[i], f);
         }
     }
 

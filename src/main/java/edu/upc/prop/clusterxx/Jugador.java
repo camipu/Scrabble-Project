@@ -32,6 +32,9 @@ public class Jugador {
     public void eliminarPunts(int nousPunts) {
         this.punts -= nousPunts;
     }
+    public void eliminarFitxa(Fitxa fitxa) {
+        faristol.eliminarFitxa(fitxa);
+    }
 
     /*
     Driver

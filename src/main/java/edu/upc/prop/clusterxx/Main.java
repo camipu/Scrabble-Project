@@ -12,7 +12,8 @@ public class Main {
     Joc joc = new Joc(noms.length, idioma, noms);
 
     // Substituir el jugador pel bot amb dificultat màxima (3)
-    Bot bot = new Bot("Bot", joc.obtenirSac(), 3);
+    Faristol faristol_Bot = new Faristol(7);
+    Bot bot = new Bot("Bot", faristol_Bot, 3);
     joc.jugadors[0] = bot; // sobrescriu el jugador inicial
 
     // Crear el DAWG a partir del fitxer de paraules

@@ -1,6 +1,9 @@
 package edu.upc.prop.clusterxx;
 
 import java.util.*;
+import edu.upc.prop.clusterxx.exceptions.ExcepcioNivellDificultatInvalid;
+import edu.upc.prop.clusterxx.Taulell;
+
 
 public class Bot extends Jugador {
     private int nivellDificultat; // 1: fàcil, 2: mitjà, 3: difícil
@@ -11,8 +14,8 @@ public class Bot extends Jugador {
      * @param sac Sac de fitxes
      * @param nivellDificultat Nivell de dificultat del bot (1-3)
      */
-    public Bot(String nom, int nivellDificultat) {
-        super(nom);
+    public Bot(String nom, Faristol faristol, int nivellDificultat) {
+        super(nom, faristol);
 
         if (nivellDificultat < 1 || nivellDificultat > 3) {
             throw new ExcepcioNivellDificultatInvalid(nivellDificultat);
@@ -255,7 +258,7 @@ public class Bot extends Jugador {
      */
      public boolean executarTorn(Taulell taulell, DAWG dawg, Sac sac) {
         System.out.println("== TORN DEL BOT: " + nom + " ==");
-        Jugada millor = calcularMillorJugada(taulell, dawg);
+        Jugada millor = calcularJugada(taulell, dawg);
         if (millor == null) return false;
 
         System.out.println("El bot col·loca: " + millor.getParaula());
