@@ -8,7 +8,7 @@ import java.util.List;
 
 import static org.junit.Assert.*;
 
-public class BotTest2 {
+public class BotTest {
 
     private Bot botFacil;
     private Bot botMig;
