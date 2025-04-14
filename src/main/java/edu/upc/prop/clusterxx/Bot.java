@@ -234,8 +234,10 @@ public class Bot extends Jugador {
                 novesUtilitzades.add(fitxa);
 
                 if (novaParaula.length() > 2 && dawg.conteParaula(novaParaula)) {
-                    int puntuacio = taulell.calcularPuntuacioParaula(novaParaula, novesUtilitzades, fila, columna, horitzontal);
-                    jugades.add(new Jugada(novaParaula, new ArrayList<>(novesUtilitzades), fila, columna, horitzontal, puntuacio));
+                    Jugada jugada = new Jugada(novaParaula, new ArrayList<>(novesUtilitzades), fila, columna, horitzontal, 0);
+                    int puntuacio = taulell.calcularPuntuacioTotal(jugada, novaParaula, dawg);                    jugades.add(new Jugada(novaParaula, new ArrayList<>(novesUtilitzades), fila, columna, horitzontal, puntuacio));
+                    jugada.setPuntuacio(puntuacio);
+                    jugades.add(jugada);
                 }
 
                 generarParaulesRecursiu(novaParaula, novesRestants, novesUtilitzades,
