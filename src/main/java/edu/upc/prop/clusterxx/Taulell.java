@@ -25,9 +25,24 @@ public class Taulell {
         }
     }
 
+    public Taulell(Taulell copiaTaulell) {
+        this.size = copiaTaulell.getSize();
+        this.taulell = new Casella[size][size];
+
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size; j++) {
+                Casella original = copiaTaulell.getCasella(i, j);
+                this.taulell[i][j] = new Casella(original); // copia profunda
+            }
+        }
+    }
+
+
     public Casella[][] getTaulell() {
         return taulell;
     }
+
+    public Casella getCasella(int x, int y) {return taulell[x][y];}
 
     public int getSize() {
         return size;

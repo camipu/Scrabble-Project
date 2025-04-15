@@ -13,6 +13,10 @@ public class Sac {
         this.fitxes = new LinkedHashMap<>();
     }
 
+    public Sac(Sac copiaSac) {
+        this.fitxes = copiaSac.obtenirSac();
+    }
+
     public void afegirFitxa(Fitxa f) {
         fitxes.put(f, fitxes.getOrDefault(f, 0) + 1);
     }
