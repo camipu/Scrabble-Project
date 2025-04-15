@@ -4,6 +4,7 @@ import edu.upc.prop.clusterxx.*;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -23,7 +24,10 @@ public class CtrlPartida {
         return instance;
     }
 
-    public CtrlPartida(int midaTaulell, int midaFaristol, int dificultat, String idioma, String[] nomsJugadors) {
+    private CtrlPartida() {
+    }
+
+    public void inicialitzarPartida(int midaTaulell, int midaFaristol, int dificultat, String idioma, String[] nomsJugadors) {
         acabada = false;
         taulell = new Taulell(midaTaulell);
         sac = new Sac();
@@ -94,13 +98,35 @@ public class CtrlPartida {
         }
     }
 
-    public void colocarFitxa(Fitxa fitxa, int fila, int columna) {
+    public boolean colocarFitxa(Fitxa fitxa, int fila, int columna) {
         jugadors[torn].obtenirFaristol().eliminarFitxa(fitxa);
         taulell.colocarFitxa(fitxa, fila, columna);
+
+
+        int[][] pos = {{fila, columna}};
+        HashMap<String,Integer> nuevasPosiblesPalabras = new HashMap<>();
+        Taulell.BooleanWrapper connex = new Taulell.BooleanWrapper(false);
+        nuevasPosiblesPalabras = taulell.buscaPalabrasValidas(pos,connex);
+        if (connex.getValue()) {
+            for (String palabra : nuevasPosiblesPalabras.keySet()) {
+                if (!dawg.conteParaula(palabra)) {
+                    return false;
+                }
+            }
+            return true;
+        } else {
+            return taulell.esBuit() && dawg.conteParaula(fitxa.obtenirLletra());
+        }
+    }
+
+    public void retirarFitxa(int x, int y) {
+        taulell.retirarFitxa(x,y);
     }
 
     public void mostrarContingutSac() {
         sac.obtenirSac().forEach((fitxa, quantitat) ->
                 System.out.println(fitxa.obtenirLletra() + " -> " + quantitat + " fitxes, " + fitxa.obtenirPunts() + " punts"));
     }
+
+
 }
