@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class CtrlPartida {
+    private static CtrlPartida instance = null;
     private Sac sac;
     private Taulell taulell;
     private Jugador[] jugadors;
@@ -15,6 +16,12 @@ public class CtrlPartida {
     private boolean acabada;
     private int torn;
 
+    public static CtrlPartida getInstance() {
+        if (instance == null) {
+            instance = new CtrlPartida();
+        }
+        return instance;
+    }
 
     public CtrlPartida(int midaTaulell, int midaFaristol, int dificultat, String idioma, String[] nomsJugadors) {
         acabada = false;
