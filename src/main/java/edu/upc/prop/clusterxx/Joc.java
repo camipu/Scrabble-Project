@@ -8,7 +8,7 @@ public class Joc {
 
     public Joc(int numJugadors, String idioma, String[] noms) {
         this.numJugadors = numJugadors;
-        this.sac = new Sac(idioma);
+        this.sac = new Sac();
         this.taulell = new Taulell(15);
 
         // Inicialización correcta del array de jugadores
@@ -19,10 +19,6 @@ public class Joc {
         }
     }
 
-
-    public void imprimirSac() {
-        sac.mostrarContingut();
-    }
 
     public Sac obtenirSac() {
         return sac;

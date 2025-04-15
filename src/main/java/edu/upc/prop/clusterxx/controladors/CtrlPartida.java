@@ -1,11 +1,11 @@
 package edu.upc.prop.clusterxx.controladors;
 import edu.upc.prop.clusterxx.*;
 
-import java.io.IOException;
-import java.lang.reflect.Array;
-import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class CtrlPartida {
     private Sac sac;
@@ -54,13 +54,14 @@ public class CtrlPartida {
     }
 
     private void inicialitzarSac(String idioma) {
-        String ruta = "src/main/java/edu/upc/prop/clusterxx/resources/" + idioma + "/fitxes" + idioma + ".txt";
-        List<String> lines = null;
-        try {
-            lines = Files.readAllLines(Paths.get(ruta));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+        String nomFitxer = "/" + idioma + "/fitxes" + idioma + ".txt";
+        InputStream input = getClass().getResourceAsStream(nomFitxer);
+        if (input == null) {
+            throw new RuntimeException("No s'ha pogut trobar el fitxer: " + nomFitxer);
         }
+        List<String> lines = new BufferedReader(new InputStreamReader(input))
+                .lines().collect(Collectors.toList());
+
 
         for (String line : lines) {
             String[] parts = line.trim().split("\\s+");
@@ -85,8 +86,14 @@ public class CtrlPartida {
             }
         }
     }
+
     public void colocarFitxa(Fitxa fitxa, int fila, int columna) {
         jugadors[torn].obtenirFaristol().eliminarFitxa(fitxa);
         taulell.colocarFitxa(fitxa, fila, columna);
+    }
+
+    public void mostrarContingutSac() {
+        sac.obtenirSac().forEach((fitxa, quantitat) ->
+                System.out.println(fitxa.obtenirLletra() + " -> " + quantitat + " fitxes, " + fitxa.obtenirPunts() + " punts"));
     }
 }

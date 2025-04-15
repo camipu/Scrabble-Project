@@ -52,9 +52,7 @@ public class Casella {
 
         // Doble lletra (DL)
         if (i == centro || j == centro) {
-            if (i != centro || j != centro) {
-                return new EstrategiaMultiplicadorLletra(2);
-            }
+            return new EstrategiaMultiplicadorLletra(2);
         }
 
         return new EstrategiaNormal();
