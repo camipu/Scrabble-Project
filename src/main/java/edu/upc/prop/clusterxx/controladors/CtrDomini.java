@@ -4,7 +4,7 @@
 //import edu.upc.prop.clusterxx.Jugador;
 //import edu.upc.prop.clusterxx.Taulell;
 //
-//import java.util.List;
+//import java.util.List; toni el mojor
 //
 //public class CtrDomini {
 //    private Taulell taulell;          // El tablero de Scrabble
