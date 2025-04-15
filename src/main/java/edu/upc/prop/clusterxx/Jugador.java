@@ -14,6 +14,12 @@ public class Jugador {
         this.faristol = faristol;
     }
 
+    public Jugador(Jugador copiaJugador) {
+        this.nom = copiaJugador.obtenirNom();
+        this.punts = copiaJugador.obtenirPunts();
+        this.faristol = new Faristol(copiaJugador.obtenirFaristol());
+    }
+
     public String obtenirNom() {
         return nom;
     }

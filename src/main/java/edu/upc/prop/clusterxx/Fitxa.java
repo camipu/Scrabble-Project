@@ -22,6 +22,12 @@ public class Fitxa {
         this.digraf = lletra.length() > 1;
     }
 
+    public Fitxa(Fitxa copiaFitxa) {
+        this.lletra = copiaFitxa.obtenirLletra();
+        this.punts = copiaFitxa.obtenirPunts();
+        this.digraf = copiaFitxa.esDigraf();
+    }
+
     /**
      * Retorna la lletra de la fitxa.
      *

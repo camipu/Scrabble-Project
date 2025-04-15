@@ -33,6 +33,29 @@ public class Casella {
         this.casellaJugada = false;
     }
 
+    public Casella(Casella c) {
+        this.x = c.x;
+        this.y = c.y;
+
+        this.fitxa = c.obtenirFitxa() != null ? new Fitxa(c.obtenirFitxa()) : null;
+
+        // Clonar l'estratègia segons el tipus concret
+        if (c.obtenirEstrategia() instanceof EstrategiaPuntuacio.EstrategiaNormal) {
+            this.estrategia = new EstrategiaPuntuacio.EstrategiaNormal();
+        } else if (c.obtenirEstrategia() instanceof EstrategiaPuntuacio.EstrategiaMultiplicadorLletra) {
+            int m = c.obtenirEstrategia().obtenirMultiplicador();
+            this.estrategia = new EstrategiaPuntuacio.EstrategiaMultiplicadorLletra(m);
+        } else if (c.obtenirEstrategia() instanceof EstrategiaPuntuacio.EstrategiaMultiplicadorParaula) {
+            int m = c.obtenirEstrategia().obtenirMultiplicador();
+            this.estrategia = new EstrategiaPuntuacio.EstrategiaMultiplicadorParaula(m);
+        } else {
+            // Per si afegeixes noves estratègies en el futur
+            throw new IllegalArgumentException("Estratègia de puntuació desconeguda");
+        }
+
+        this.casellaJugada = c.casellaJugada;
+    }
+
     private EstrategiaPuntuacio assignarEstrategia(int i, int j, int size) {
         int centro = size / 2;
         int offset = size / 4;

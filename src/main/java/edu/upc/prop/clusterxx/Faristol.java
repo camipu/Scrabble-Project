@@ -16,6 +16,18 @@ public class Faristol {
         this.size = size;
     }
 
+    public Faristol(Faristol copiaFaristol) {
+        ArrayList<Fitxa> fitxesOriginals = copiaFaristol.obtenirFitxes();
+        this.fitxes = new ArrayList<>();
+
+        for (Fitxa f : fitxesOriginals) {
+            this.fitxes.add(new Fitxa(f));
+        }
+
+        this.size = copiaFaristol.obtenirSize();
+    }
+
+
     public boolean esPle(){
         return fitxes.size() >= size;
     }
@@ -24,6 +36,7 @@ public class Faristol {
         return new ArrayList<>(fitxes); // Retornem còpia per evitar modificació externa
     }
 
+    public int obtenirSize() {return size;}
     public Fitxa obtenirFitxa(int index) {
         if (index < 0 || index >= fitxes.size()) {
             throw new IndexOutOfBoundsException("Índex fora de rang al faristol.");
