@@ -36,7 +36,7 @@ public class Faristol {
         return fitxes.size();
     }
 
-    
+
     public void afegirFitxa(Fitxa fitxa) {
         if (esPle()) {
             throw new ExcepcioFaristolPle("El faristol està ple, no es pot afegir la fitxa " + fitxa);

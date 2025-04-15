@@ -1,130 +1,130 @@
-//package edu.upc.prop.clusterxx;
-//
-//import edu.upc.prop.clusterxx.exceptions.ExcepcioCasellaOcupada;
-//import org.junit.Before;
-//import org.junit.Test;
-//import static org.junit.Assert.*;
-//import static org.mockito.Mockito.*;
-//
-//public class CasellaTest {
-//
-//    private Casella casellaNormal;
-//    private Casella casellaMultiplicadorLletra;
-//    private Casella casellaMultiplicadorParaula;
-//
-//    private Fitxa fitxaAMock;
-//    private Fitxa fitxaBMock;
-//    private Fitxa fitxaCHMock;
-//
-//    @Before
-//    public void setUp() {
-//        fitxaAMock = mock(Fitxa.class);
-//        fitxaBMock = mock(Fitxa.class);
-//        fitxaCHMock = mock(Fitxa.class);
-//
-//        when(fitxaAMock.obtenirPunts()).thenReturn(1);
-//        when(fitxaBMock.obtenirPunts()).thenReturn(3);
-//
-//        when(fitxaAMock.esDigraf()).thenReturn(false);
-//        when(fitxaAMock.toString()).thenReturn("A");
-//
-//        when(fitxaCHMock.esDigraf()).thenReturn(true);
-//        when(fitxaCHMock.toString()).thenReturn("CH");
-//
-//        casellaNormal = new Casella(0, 0, new EstrategiaNormal());
-//        casellaMultiplicadorLletra = new Casella(1, 3, new EstrategiaMultiplicadorLletra(2));
-//        casellaMultiplicadorParaula = new Casella(2, 5, new EstrategiaMultiplicadorParaula(3));
-//    }
-//
-//    @Test
-//    public void testColocarFitxa() {
-//        casellaNormal.colocarFitxa(fitxaAMock);
-//        assertEquals(fitxaAMock, casellaNormal.obtenirFitxa());
-//    }
-//
-//    @Test
-//    public void testCasellaBuidaInicialment() {
-//        assertTrue(casellaNormal.esBuida());
-//    }
-//
-//    @Test
-//    public void testObtenirPosicio() {
-//        assertEquals(0, casellaNormal.obtenirX());
-//        assertEquals(0, casellaNormal.obtenirY());
-//
-//        assertEquals(1, casellaMultiplicadorLletra.obtenirX());
-//        assertEquals(3, casellaMultiplicadorLletra.obtenirY());
-//
-//        assertEquals(2, casellaMultiplicadorParaula.obtenirX());
-//        assertEquals(5, casellaMultiplicadorParaula.obtenirY());
-//    }
-//
-//    @Test
-//    public void testObtenirEstrategia() {
-//        assertEquals(EstrategiaNormal.class, casellaNormal.obtenirEstrategia().getClass());
-//        assertEquals(EstrategiaMultiplicadorLletra.class, casellaMultiplicadorLletra.obtenirEstrategia().getClass());
-//        assertEquals(EstrategiaMultiplicadorParaula.class, casellaMultiplicadorParaula.obtenirEstrategia().getClass());
-//    }
-//
-//    @Test
-//    public void testCasellaJugada() {
-//        assertFalse(casellaNormal.esJugada());
-//        casellaNormal.jugarCasella();
-//        assertTrue(casellaNormal.esJugada());
-//    }
-//
-//    @Test
-//    public void testCalcularPuntsNormal() {
-//        casellaNormal.colocarFitxa(fitxaAMock);
-//        assertEquals(1, casellaNormal.calcularPunts());
-//    }
-//
-//    @Test
-//    public void testCalcularPuntsMultiplicadorLletra() {
-//        casellaMultiplicadorLletra.colocarFitxa(fitxaBMock);
-//        assertEquals(6, casellaMultiplicadorLletra.calcularPunts());
-//    }
-//
-//    @Test
-//    public void testCalcularPuntsMultiplicadorParaula() {
-//        casellaMultiplicadorParaula.colocarFitxa(fitxaAMock);
-//        assertEquals(1, casellaMultiplicadorParaula.calcularPunts());
-//    }
-//
-//    @Test
-//    public void testObtenirMultiplicadorParaula() {
-//        assertEquals(1, casellaNormal.obtenirMultiplicador());
-//        assertEquals(2, casellaMultiplicadorLletra.obtenirMultiplicador());
-//        assertEquals(3, casellaMultiplicadorParaula.obtenirMultiplicador());
-//    }
-//
-//    @Test
-//    public void testCalcularPuntsCasellaBuida() {
-//        assertTrue(casellaNormal.esBuida());
-//        assertEquals(0, casellaNormal.calcularPunts());
-//    }
-//
-//    @Test
-//    public void testToStringCasellaBuida() {
-//        assertEquals("  ", casellaNormal.toString());
-//    }
-//
-//    @Test
-//    public void testToStringCasellaAmbFitxaNoDigraf() {
-//        casellaNormal.colocarFitxa(fitxaAMock);
-//        assertEquals(" A", casellaNormal.toString());
-//    }
-//
-//    @Test
-//    public void testToStringCasellaAmbFitxaDigraf() {
-//        casellaNormal.colocarFitxa(fitxaCHMock);
-//        assertEquals("CH", casellaNormal.toString());
-//    }
-//
-//    @Test(expected = Exception.class)
-//    public void testSobreescriureFitxa() throws ExcepcioCasellaOcupada {
-//        casellaNormal.colocarFitxa(fitxaAMock);
-//        casellaNormal.colocarFitxa(fitxaBMock);
-//        assertEquals(fitxaAMock, casellaNormal.obtenirFitxa());
-//    }
-//}
+package edu.upc.prop.clusterxx;
+
+import edu.upc.prop.clusterxx.exceptions.ExcepcioCasellaBuida;
+import edu.upc.prop.clusterxx.exceptions.ExcepcioCasellaOcupada;
+import org.junit.Before;
+import org.junit.Test;
+import org.mockito.Mockito;
+
+import static org.junit.Assert.*;
+import static org.mockito.Mockito.*;
+
+public class CasellaTest {
+
+    private Casella casella;
+    private Fitxa mockFitxaA;
+    private Fitxa mockFitxaB;
+
+    @Before
+    public void setUp() {
+        casella = new Casella(3, 3, 15);
+        mockFitxaA = mock(Fitxa.class);
+        when(mockFitxaA.toString()).thenReturn("A");
+        when(mockFitxaA.obtenirLletra()).thenReturn("A");
+        when(mockFitxaA.obtenirPunts()).thenReturn(1);
+        when(mockFitxaA.esDigraf()).thenReturn(false);
+
+        mockFitxaB = mock(Fitxa.class);
+        when(mockFitxaB.toString()).thenReturn("B");
+        when(mockFitxaB.obtenirLletra()).thenReturn("B");
+        when(mockFitxaB.obtenirPunts()).thenReturn(3);
+        when(mockFitxaB.esDigraf()).thenReturn(false);
+    }
+
+    @Test
+    public void testCasellaInicialBuida() {
+        assertTrue(casella.esBuida());
+        assertFalse(casella.esJugada());
+        assertNull(casella.obtenirFitxa());
+    }
+
+    @Test
+    public void testColocarFitxaCorrectament() {
+        casella.colocarFitxa(mockFitxaA);
+        assertFalse(casella.esBuida());
+        assertEquals(mockFitxaA, casella.obtenirFitxa());
+    }
+
+    @Test(expected = ExcepcioCasellaOcupada.class)
+    public void testColocarFitxaCasellaOcupada() {
+        casella.colocarFitxa(mockFitxaA);
+        casella.colocarFitxa(mockFitxaB); // ha de fallar
+    }
+
+    @Test
+    public void testRetirarFitxaCorrectament() {
+        casella.colocarFitxa(mockFitxaA);
+        casella.retirarFitxa(mockFitxaA);
+        assertTrue(casella.esBuida());
+    }
+
+    @Test(expected = ExcepcioCasellaBuida.class)
+    public void testRetirarFitxaCasellaBuida() {
+        casella.retirarFitxa(mockFitxaA);
+    }
+
+    @Test
+    public void testJugarCasella() {
+        casella.jugarCasella();
+        assertTrue(casella.esJugada());
+    }
+
+    @Test
+    public void testToStringCasellaBuida() {
+        assertEquals("  ", casella.toString());
+    }
+
+    @Test
+    public void testToStringFitxaSimple() {
+        casella.colocarFitxa(mockFitxaA);
+        assertEquals(" A", casella.toString());
+    }
+
+    @Test
+    public void testToStringFitxaDigraf() {
+        when(mockFitxaA.esDigraf()).thenReturn(true);
+        casella.colocarFitxa(mockFitxaA);
+        assertEquals("A", casella.toString()); // retorna directament toString()
+    }
+
+    @Test
+    public void testEstrategiaTripleParaula() {
+        Casella tripleParaula = new Casella(0, 0, 15);
+        tripleParaula.colocarFitxa(mockFitxaA);
+        assertEquals(3, tripleParaula.obtenirMultiplicador());
+        assertTrue(tripleParaula.obtenirEstrategia() instanceof EstrategiaMultiplicadorParaula);
+    }
+
+    @Test
+    public void testEstrategiaDobleParaula() {
+        Casella dobleParaula = new Casella(2, 2, 15); // i == j
+        dobleParaula.colocarFitxa(mockFitxaA);
+        assertEquals(2, dobleParaula.obtenirMultiplicador());
+        assertTrue(dobleParaula.obtenirEstrategia() instanceof EstrategiaMultiplicadorParaula);
+    }
+
+    @Test
+    public void testEstrategiaTripleLletra() {
+        Casella tripleLletra = new Casella(3, 3, 15); // 3,3
+        tripleLletra.colocarFitxa(mockFitxaA);
+        assertEquals(3, tripleLletra.obtenirMultiplicador());
+        assertTrue(tripleLletra.obtenirEstrategia() instanceof EstrategiaMultiplicadorLletra);
+    }
+
+    @Test
+    public void testEstrategiaDobleLletra() {
+        Casella dobleLletra = new Casella(7, 4, 15); // 7 == centre, j != centre
+        dobleLletra.colocarFitxa(mockFitxaA);
+        assertEquals(2, dobleLletra.obtenirMultiplicador());
+        assertTrue(dobleLletra.obtenirEstrategia() instanceof EstrategiaMultiplicadorLletra);
+    }
+
+    @Test
+    public void testEstrategiaNormal() {
+        Casella normal = new Casella(1, 2, 15); // No coincideix amb cap altra
+        normal.colocarFitxa(mockFitxaA);
+        assertEquals(1, normal.obtenirMultiplicador());
+        assertTrue(normal.obtenirEstrategia() instanceof EstrategiaNormal);
+    }
+
+}
