@@ -31,13 +31,13 @@ public class CtrlPartida {
     private CtrlPartida() {
     }
 
-    public void inicialitzarPartida(int midaTaulell, int midaFaristol, int dificultat, String idioma, String[] nomsJugadors,int[] difficultatsBots) {
+    public void inicialitzarPartida(int midaTaulell, int midaFaristol, String idioma, String[] nomsJugadors,int[] dificultatsBots) {
         acabada = false;
         taulell = new Taulell(midaTaulell);
         sac = new Sac();
         inicialitzarSac(idioma);
-        jugadors = new Jugador[nomsJugadors.length];
-        int i = 0;
+        jugadors = new Jugador[nomsJugadors.length + dificultatsBots.length];
+        int i;
         for (i = 0; i < nomsJugadors.length; i++) {
             Faristol faristolJugador = new Faristol(midaFaristol);
             while(faristolJugador.obtenirNumFitxes() < midaFaristol) {
@@ -46,14 +46,14 @@ public class CtrlPartida {
             }
             jugadors[i] = new Jugador(nomsJugadors[i], faristolJugador);
         }
-        for (int j = i; j < difficultatsBots.length + i; ++j) {
+        for (int j = i; j < dificultatsBots.length + i; ++j) {
             Faristol faristolBot = new Faristol(midaFaristol);
             while(faristolBot.obtenirNumFitxes() < midaFaristol) {
                 Fitxa novaFitxa = sac.agafarFitxa();
                 faristolBot.afegirFitxa(novaFitxa);
             }
-            jugadors[j + nomsJugadors.length] = new Bot("bot" + (j - i + 1), faristolBot, difficultatsBots[j-i]) ;
-            System.out.println("Bot " + (j - i + 1) + " creat amb dificultat " + difficultatsBots[j-i]);
+            jugadors[j] = new Bot("bot" + (j - i + 1), faristolBot, dificultatsBots[j-i]) ;
+            System.out.println("Bot " + (j - i + 1) + " creat amb dificultat " + dificultatsBots[j-i]);
         }
     }
 
@@ -111,15 +111,15 @@ public class CtrlPartida {
             }
         }
     }
-
-    public boolean colocarFitxa(Fitxa fitxa, int fila, int columna) {
-        jugadors[torn%jugadors.length].eliminarFitxa(fitxa);
-        taulell.colocarFitxa(fitxa, fila, columna);
-        fitxesTorn.add(taulell.obtenirFitxa(fila, columna));
-
-
-        int[][] pos = {{fila, columna}};
-        return true;
+//
+//    public boolean colocarFitxa(Fitxa fitxa, int fila, int columna) {
+//        jugadors[torn%jugadors.length].eliminarFitxa(fitxa);
+//        taulell.colocarFitxa(fitxa, fila, columna);
+//        fitxesTorn.add(taulell.obtenirFitxa(fila, columna));
+//
+//
+//        int[][] pos = {{fila, columna}};
+//        return true;
 //        HashMap<String,Integer> nuevasPosiblesPalabras = new HashMap<>();
 //        Taulell.BooleanWrapper connex = new Taulell.BooleanWrapper(false);
 //        nuevasPosiblesPalabras = taulell.buscaPalabrasValidas(pos,connex);
@@ -133,18 +133,18 @@ public class CtrlPartida {
 //        } else {
 //            return taulell.esBuit() && dawg.conteParaula(fitxa.obtenirLletra());
 //        }
-    }
-
-    public void retirarFitxa(int fila, int columna) {
-        jugadors[torn%jugadors.length].afegirFitxa(taulell.obtenirFitxa(fila, columna));
-        fitxesTorn.remove(taulell.obtenirFitxa(fila, columna));
-        taulell.retirarFitxa(fila, columna);
-    }
-
-    public void mostrarContingutSac() {
-        sac.obtenirSac().forEach((fitxa, quantitat) ->
-                System.out.println(fitxa.obtenirLletra() + " -> " + quantitat + " fitxes, " + fitxa.obtenirPunts() + " punts"));
-    }
+//    }
+//
+//    public void retirarFitxa(int fila, int columna) {
+//        jugadors[torn%jugadors.length].afegirFitxa(taulell.obtenirFitxa(fila, columna));
+//        fitxesTorn.remove(taulell.obtenirFitxa(fila, columna));
+//        taulell.retirarFitxa(fila, columna);
+//    }
+//
+//    public void mostrarContingutSac() {
+//        sac.obtenirSac().forEach((fitxa, quantitat) ->
+//                System.out.println(fitxa.obtenirLletra() + " -> " + quantitat + " fitxes, " + fitxa.obtenirPunts() + " punts"));
+//    }
 
 
 }

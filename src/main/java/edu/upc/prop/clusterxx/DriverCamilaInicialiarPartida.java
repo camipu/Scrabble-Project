@@ -8,14 +8,14 @@ public class DriverCamilaInicialiarPartida {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
 
-        System.out.print("Introdueix la mida del taulell: ");
-        int midaTaulell = sc.nextInt();
-
-        System.out.print("Introdueix la mida del faristol: ");
-        int midaFaristol = sc.nextInt();
-
-        System.out.print("Introdueix quants bots vols");
-        int numBots = sc.nextInt();
+//        System.out.print("Introdueix la mida del taulell: ");
+        int midaTaulell = 7;
+//
+//        System.out.print("Introdueix la mida del faristol: ");
+        int midaFaristol = 5;
+//
+//        System.out.print("Introdueix quants bots vols");
+        int numBots = 1;
 
         int[] dificultats = new int[numBots];
         for (int i = 0; i < dificultats.length; ++i) {
@@ -28,8 +28,8 @@ public class DriverCamilaInicialiarPartida {
         System.out.print("Introdueix l'idioma (ex: catala): ");
         String idioma = sc.nextLine();
 
-        System.out.print("Introdueix el nombre de jugadors: ");
-        int numJugadors = sc.nextInt();
+//        System.out.print("Introdueix el nombre de jugadors: ");
+        int numJugadors = 1;
         sc.nextLine(); // Netegem el salt de línia
 
         String[] nomsJugadors = new String[numJugadors];
@@ -39,6 +39,7 @@ public class DriverCamilaInicialiarPartida {
         }
 
         CtrlPartida ctrlPartida = CtrlPartida.getInstance();
-        ctrlPartida.inicialitzarPartida(midaTaulell, midaFaristol, 1, idioma, nomsJugadors, dificultats);
-    }
+        ctrlPartida.inicialitzarPartida(midaTaulell, midaFaristol, idioma, nomsJugadors,dificultats);
+
+        }
 }
