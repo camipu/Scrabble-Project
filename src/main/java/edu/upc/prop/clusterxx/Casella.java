@@ -3,6 +3,10 @@ package edu.upc.prop.clusterxx;
 import edu.upc.prop.clusterxx.exceptions.ExcepcioCasellaOcupada;
 import edu.upc.prop.clusterxx.exceptions.ExcepcioCasellaBuida;
 
+import edu.upc.prop.clusterxx.EstrategiaPuntuacio.EstrategiaMultiplicadorParaula;
+import edu.upc.prop.clusterxx.EstrategiaPuntuacio.EstrategiaMultiplicadorLletra;
+import edu.upc.prop.clusterxx.EstrategiaPuntuacio.EstrategiaNormal;
+
 /**
  * Representa una casella del tauler de joc.
  * Cada casella té una posició definida per coordenades (x,y), pot contenir una fitxa
