@@ -85,8 +85,14 @@ public class CtrlPartida {
             }
         }
     }
+
     public void colocarFitxa(Fitxa fitxa, int fila, int columna) {
         jugadors[torn].obtenirFaristol().eliminarFitxa(fitxa);
         taulell.colocarFitxa(fitxa, fila, columna);
+    }
+
+    public void mostrarContingutSac() {
+        sac.obtenirSac().forEach((fitxa, quantitat) ->
+                System.out.println(fitxa.obtenirLletra() + " -> " + quantitat + " fitxes, " + fitxa.obtenirPunts() + " punts"));
     }
 }

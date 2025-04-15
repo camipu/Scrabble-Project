@@ -22,10 +22,6 @@ public class CtrlSac {
         sac.afegirFitxa(fitxa);
     }
 
-    public void mostrarContingut() {
-        sac.mostrarContingut();
-    }
-
     public boolean esBuit() {
         return sac.esBuit();
     }
