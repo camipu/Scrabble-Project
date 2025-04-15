@@ -29,6 +29,15 @@ task jarProvaParida(type: Jar) {
     dependsOn classes
 }
 
+task jarProvaIni(type: Jar) {
+    archiveBaseName.set('ProvaIni')
+    manifest {
+        attributes 'Main-Class': 'edu.upc.prop.clusterxx.DriverCamilaInicialiarPartida'
+    }
+    from sourceSets.main.output
+    dependsOn classes
+}
+
 // Apply a specific Java toolchain to ease working on different environments.
 java {
     toolchain {

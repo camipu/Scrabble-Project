@@ -1,13 +1,16 @@
 package edu.upc.prop.clusterxx.controladors;
+
 import edu.upc.prop.clusterxx.*;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class CtrlPartida {
+    private static CtrlPartida instance = null;
     private Sac sac;
     private Taulell taulell;
     private Jugador[] jugadors;
@@ -15,20 +18,42 @@ public class CtrlPartida {
     private boolean acabada;
     private int torn;
 
+    // Lista de caselles que conté les fitxes del torn actual
+    private List<Casella> fitxesTorn = new ArrayList<>();
 
-    public CtrlPartida(int midaTaulell, int midaFaristol, int dificultat, String idioma, String[] nomsJugadors) {
+    public static CtrlPartida getInstance() {
+        if (instance == null) {
+            instance = new CtrlPartida();
+        }
+        return instance;
+    }
+
+    private CtrlPartida() {
+    }
+
+    public void inicialitzarPartida(int midaTaulell, int midaFaristol, String idioma, String[] nomsJugadors,int[] dificultatsBots) {
         acabada = false;
         taulell = new Taulell(midaTaulell);
         sac = new Sac();
         inicialitzarSac(idioma);
-        jugadors = new Jugador[nomsJugadors.length];
-        for (int i = 0; i < nomsJugadors.length; i++) {
+        jugadors = new Jugador[nomsJugadors.length + dificultatsBots.length];
+        int i;
+        for (i = 0; i < nomsJugadors.length; i++) {
             Faristol faristolJugador = new Faristol(midaFaristol);
             while(faristolJugador.obtenirNumFitxes() < midaFaristol) {
                 Fitxa novaFitxa = sac.agafarFitxa();
                 faristolJugador.afegirFitxa(novaFitxa);
             }
             jugadors[i] = new Jugador(nomsJugadors[i], faristolJugador);
+        }
+        for (int j = i; j < dificultatsBots.length + i; ++j) {
+            Faristol faristolBot = new Faristol(midaFaristol);
+            while(faristolBot.obtenirNumFitxes() < midaFaristol) {
+                Fitxa novaFitxa = sac.agafarFitxa();
+                faristolBot.afegirFitxa(novaFitxa);
+            }
+            jugadors[j] = new Bot("bot" + (j - i + 1), faristolBot, dificultatsBots[j-i]) ;
+            System.out.println("Bot " + (j - i + 1) + " creat amb dificultat " + dificultatsBots[j-i]);
         }
     }
 
@@ -87,13 +112,39 @@ public class CtrlPartida {
         }
     }
 
-    public void colocarFitxa(Fitxa fitxa, int fila, int columna) {
-        jugadors[torn].obtenirFaristol().eliminarFitxa(fitxa);
-        taulell.colocarFitxa(fitxa, fila, columna);
-    }
+//    public boolean colocarFitxa(Fitxa fitxa, int fila, int columna) {
+//        jugadors[torn%jugadors.length].eliminarFitxa(fitxa);
+//        taulell.colocarFitxa(fitxa, fila, columna);
+//        fitxesTorn.add(taulell.obtenirFitxa(fila, columna));
+//
+//
+//        int[][] pos = {{fila, columna}};
+//        return true;
+//        HashMap<String,Integer> nuevasPosiblesPalabras = new HashMap<>();
+//        Taulell.BooleanWrapper connex = new Taulell.BooleanWrapper(false);
+//        nuevasPosiblesPalabras = taulell.buscaPalabrasValidas(pos,connex);
+//        if (connex.getValue()) {
+//            for (String palabra : nuevasPosiblesPalabras.keySet()) {
+//                if (!dawg.conteParaula(palabra)) {
+//                    return false;
+//                }
+//            }
+//            return true;
+//        } else {
+//            return taulell.esBuit() && dawg.conteParaula(fitxa.obtenirLletra());
+//        }
+//    }
+//
+//    public void retirarFitxa(int fila, int columna) {
+//        jugadors[torn%jugadors.length].afegirFitxa(taulell.obtenirFitxa(fila, columna));
+//        fitxesTorn.remove(taulell.obtenirFitxa(fila, columna));
+//        taulell.retirarFitxa(fila, columna);
+//    }
+//
+//    public void mostrarContingutSac() {
+//        sac.obtenirSac().forEach((fitxa, quantitat) ->
+//                System.out.println(fitxa.obtenirLletra() + " -> " + quantitat + " fitxes, " + fitxa.obtenirPunts() + " punts"));
+//    }
 
-    public void mostrarContingutSac() {
-        sac.obtenirSac().forEach((fitxa, quantitat) ->
-                System.out.println(fitxa.obtenirLletra() + " -> " + quantitat + " fitxes, " + fitxa.obtenirPunts() + " punts"));
-    }
+
 }

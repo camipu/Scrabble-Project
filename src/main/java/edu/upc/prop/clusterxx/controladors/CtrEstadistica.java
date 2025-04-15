@@ -5,10 +5,18 @@ import edu.upc.prop.clusterxx.Estadistiques;
 import java.util.AbstractMap;
 
 public class CtrEstadistica {
+    private static CtrEstadistica instance = null;
     private Estadistiques estadistiques;
 
-    public CtrEstadistica() {
-        this.estadistiques = new Estadistiques();
+    public static CtrEstadistica getInstance() {
+        if (instance == null) {
+            instance = new CtrEstadistica();
+        }
+        return instance;
+    }
+
+    private CtrEstadistica() {
+        estadistiques = new Estadistiques();
     }
 
     // Agregar una puntuación para un jugador???
