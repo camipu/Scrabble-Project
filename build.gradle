@@ -20,6 +20,15 @@ jar {
     }
 }
 
+task jarProvaParida(type: Jar) {
+    archiveBaseName.set('ProvaParida')
+    manifest {
+        attributes 'Main-Class': 'edu.upc.prop.clusterxx.ProvaDriverParida'
+    }
+    from sourceSets.main.output
+    dependsOn classes
+}
+
 // Apply a specific Java toolchain to ease working on different environments.
 java {
     toolchain {

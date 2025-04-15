@@ -33,12 +33,17 @@ public class Jugador {
         this.punts -= nousPunts;
     }
 
+    public void afegirFitxa(Fitxa fitxa) {
+        faristol.afegirFitxa(fitxa);
+    }
+
+    public void eliminarFitxa(Fitxa fitxa) {
+        faristol.eliminarFitxa(fitxa);
+    }
+
     /*
     Driver
      */
-    public void imprimirFaristol() {
-        faristol.imprimirFaristol();
-    }
     public void imprimirInfo() {
         System.out.println(Colors.YELLOW_BACKGROUND + Colors.BLACK_TEXT + "======== INFORMACIÓ DEL JUGADOR ========" + Colors.RESET);
         System.out.println(Colors.CYAN_TEXT + "Nom: " + Colors.RESET + nom);
