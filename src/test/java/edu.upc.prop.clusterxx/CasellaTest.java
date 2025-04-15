@@ -54,13 +54,13 @@ public class CasellaTest {
     @Test
     public void testRetirarFitxaCorrectament() {
         casella.colocarFitxa(mockFitxaA);
-        casella.retirarFitxa(mockFitxaA);
+        casella.retirarFitxa();
         assertTrue(casella.esBuida());
     }
 
     @Test(expected = ExcepcioCasellaBuida.class)
     public void testRetirarFitxaCasellaBuida() {
-        casella.retirarFitxa(mockFitxaA);
+        casella.retirarFitxa();
     }
 
     @Test
@@ -92,7 +92,7 @@ public class CasellaTest {
         Casella tripleParaula = new Casella(0, 0, 15);
         tripleParaula.colocarFitxa(mockFitxaA);
         assertEquals(3, tripleParaula.obtenirMultiplicador());
-        assertTrue(tripleParaula.obtenirEstrategia() instanceof EstrategiaMultiplicadorParaula);
+        assertTrue(tripleParaula.obtenirEstrategia() instanceof EstrategiaPuntuacio.EstrategiaMultiplicadorParaula);
     }
 
     @Test
@@ -100,7 +100,7 @@ public class CasellaTest {
         Casella dobleParaula = new Casella(2, 2, 15); // i == j
         dobleParaula.colocarFitxa(mockFitxaA);
         assertEquals(2, dobleParaula.obtenirMultiplicador());
-        assertTrue(dobleParaula.obtenirEstrategia() instanceof EstrategiaMultiplicadorParaula);
+        assertTrue(dobleParaula.obtenirEstrategia() instanceof EstrategiaPuntuacio.EstrategiaMultiplicadorParaula);
     }
 
     @Test
@@ -108,7 +108,7 @@ public class CasellaTest {
         Casella tripleLletra = new Casella(3, 3, 15); // 3,3
         tripleLletra.colocarFitxa(mockFitxaA);
         assertEquals(3, tripleLletra.obtenirMultiplicador());
-        assertTrue(tripleLletra.obtenirEstrategia() instanceof EstrategiaMultiplicadorLletra);
+        assertTrue(tripleLletra.obtenirEstrategia() instanceof EstrategiaPuntuacio.EstrategiaMultiplicadorLletra);
     }
 
     @Test
@@ -116,7 +116,7 @@ public class CasellaTest {
         Casella dobleLletra = new Casella(7, 4, 15); // 7 == centre, j != centre
         dobleLletra.colocarFitxa(mockFitxaA);
         assertEquals(2, dobleLletra.obtenirMultiplicador());
-        assertTrue(dobleLletra.obtenirEstrategia() instanceof EstrategiaMultiplicadorLletra);
+        assertTrue(dobleLletra.obtenirEstrategia() instanceof EstrategiaPuntuacio.EstrategiaMultiplicadorLletra);
     }
 
     @Test
@@ -124,7 +124,7 @@ public class CasellaTest {
         Casella normal = new Casella(1, 2, 15); // No coincideix amb cap altra
         normal.colocarFitxa(mockFitxaA);
         assertEquals(1, normal.obtenirMultiplicador());
-        assertTrue(normal.obtenirEstrategia() instanceof EstrategiaNormal);
+        assertTrue(normal.obtenirEstrategia() instanceof EstrategiaPuntuacio.EstrategiaNormal);
     }
 
 }

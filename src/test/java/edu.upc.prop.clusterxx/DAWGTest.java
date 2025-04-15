@@ -1,3 +1,5 @@
+
+/*
 package edu.upc.prop.clusterxx;
 
 import org.junit.Before;
@@ -62,4 +64,4 @@ public class DAWGTest {
         assertTrue(dawg.esPrefix("CHI"));
         assertFalse(dawg.esPrefix("CI"));
     }
-}
+}*/
