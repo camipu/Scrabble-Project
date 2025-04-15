@@ -111,7 +111,7 @@ public class CtrlPartida {
             }
         }
     }
-//
+
 //    public boolean colocarFitxa(Fitxa fitxa, int fila, int columna) {
 //        jugadors[torn%jugadors.length].eliminarFitxa(fitxa);
 //        taulell.colocarFitxa(fitxa, fila, columna);

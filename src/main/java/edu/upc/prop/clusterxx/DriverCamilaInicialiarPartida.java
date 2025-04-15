@@ -5,6 +5,7 @@ import edu.upc.prop.clusterxx.controladors.CtrlPartida;
 import java.util.Scanner;
 
 public class DriverCamilaInicialiarPartida {
+
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
 
@@ -39,7 +40,35 @@ public class DriverCamilaInicialiarPartida {
         }
 
         CtrlPartida ctrlPartida = CtrlPartida.getInstance();
-        ctrlPartida.inicialitzarPartida(midaTaulell, midaFaristol, idioma, nomsJugadors,dificultats);
+        ctrlPartida.inicialitzarPartida(midaTaulell, midaFaristol, idioma, nomsJugadors, dificultats);
+
+        System.out.print("S'ha inicialitzat la partida amb " + midaTaulell + "x" + midaTaulell + " i " + midaFaristol + " fitxes al faristol.\n");
+
+        while (!ctrlPartida.acabada()) {
+            System.out.println("Torn del jugador: " + ctrlPartida.obtenirJugadorActual().obtenirNom());
+            boolean canviTorn = false;
+            while (!canviTorn) {
+                System.out.println("Torn" + ctrlPartida.obtenirTorn());
+                System.out.println("Torn del jugador: " + ctrlPartida.obtenirJugadorActual().obtenirNom());
+                ctrlPartida.obtenirTaulell().imprimirTaulell();
+                ctrlPartida.obtenirJugadorActual().obtenirFaristol().imprimirFaristol();
+                mostrarOpcions();
+                int opcio = sc.nextInt();
+                sc.nextLine(); // Netegem el salt de línia
+            }
 
         }
+    }
+
+
+    private static void mostrarOpcions() {
+        System.out.println("===== MENÚ DE PARTIDA =====");
+        System.out.println("1. Jugar paraula");
+        System.out.println("2. Passar torn");
+        System.out.println("3. Canviar fitxes");
+        System.out.println("4. Mostrar faristol");
+        System.out.println("5. Mostrar taulell");
+        System.out.println("6. Acabar partida");
+        System.out.print("Selecciona una opció (1-6): ");
+    }
 }
