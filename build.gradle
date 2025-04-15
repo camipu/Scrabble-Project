@@ -52,12 +52,6 @@ dependencies {
 }
 
 
-tasks.register('DriverFitxa', JavaExec) {
-    group = 'drivers'
-    description = 'Ejecuta el driver de Casella'
-    classpath = sourceSets.main.runtimeClasspath
-    mainClass = 'edu.upc.prop.clusterxx.DriverFitxa'
-}
 build.dependsOn jarProvaParida
 
 
