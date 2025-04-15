@@ -36,18 +36,17 @@ public class Casella {
         if ((i == 0 || i == centro || i == size - 1) && (j == 0 || j == centro || j == size - 1)) {
             return new EstrategiaMultiplicadorParaula(3);
         }
-
-        // Doble paraula (DW) aqui potser falta afegir que i = centro && j = centro
-        if (i == j || i + j == size - 1) {
-            return new EstrategiaMultiplicadorParaula(2);
-        }
-
         // Triple lletra (TL)
         if ((i == offset || i == size - 1 - offset) && (j == offset || j == size - 1 - offset)) {
             return new EstrategiaMultiplicadorLletra(3);
         }
         if ((i == offset || i == size - 1 - offset) && j == centro || i == centro && (j == offset || j == size - 1 - offset)) {
             return new EstrategiaMultiplicadorLletra(3);
+        }
+
+        // Doble paraula (DW) aqui potser falta afegir que i = centro && j = centro
+        if (i == j || i + j == size - 1) {
+            return new EstrategiaMultiplicadorParaula(2);
         }
 
         // Doble lletra (DL)
