@@ -2,6 +2,7 @@ package edu.upc.prop.clusterxx;
 
 import edu.upc.prop.clusterxx.controladors.CtrlPartida;
 
+import java.util.List;
 import java.util.Scanner;
 
 public class DriverCamilaInicialiarPartida {
@@ -50,7 +51,7 @@ public class DriverCamilaInicialiarPartida {
             while (!canviTorn) {
                 System.out.println("Torn" + ctrlPartida.obtenirTorn());
                 System.out.println("Torn del jugador: " + ctrlPartida.obtenirJugadorActual().obtenirNom());
-                ctrlPartida.obtenirTaulell().imprimirTaulell();
+                imprimirTaulell(ctrlPartida.obtenirTaulell());
                 ctrlPartida.obtenirJugadorActual().obtenirFaristol().imprimirFaristol();
                 mostrarOpcions();
                 int opcio = sc.nextInt();
@@ -60,6 +61,40 @@ public class DriverCamilaInicialiarPartida {
         }
     }
 
+    private static void imprimirTaulell(Taulell taulell) {
+        int size = taulell.getSize();
+        for (int i = 0; i < size; ++i) {
+            System.out.print("+----");
+        }
+        System.out.println("+");
+
+        for (int i = 0; i < size; ++i) {
+            for (int j = 0; j < size; ++j) {
+                Casella casella = taulell.getTaulell()[i][j];
+                String colorFons = obtenirColorFons(casella);
+                System.out.print("|" + colorFons + Colors.BLACK_TEXT + " " + casella + " " + Colors.RESET);
+            }
+            System.out.println("|");
+
+            for (int j = 0; j < size; ++j) {
+                System.out.print("+----");
+            }
+            System.out.println("+");
+        }
+    }
+
+    private static String obtenirColorFons(Casella casella) {
+        if (casella.obtenirEstrategia() instanceof EstrategiaPuntuacio.EstrategiaMultiplicadorParaula) {
+            EstrategiaPuntuacio.EstrategiaMultiplicadorParaula estrategia = (EstrategiaPuntuacio.EstrategiaMultiplicadorParaula) casella.obtenirEstrategia();
+            return estrategia.obtenirMultiplicador() == 3 ? Colors.RED_BACKGROUND : Colors.PURPLE_BACKGROUND;
+        } else if (casella.obtenirEstrategia() instanceof EstrategiaPuntuacio.EstrategiaMultiplicadorLletra) {
+            EstrategiaPuntuacio.EstrategiaMultiplicadorLletra estrategia = (EstrategiaPuntuacio.EstrategiaMultiplicadorLletra) casella.obtenirEstrategia();
+            return estrategia.obtenirMultiplicador() == 3 ? Colors.BLUE_BACKGROUND : Colors.CYAN_BACKGROUND;
+        } else {
+            // Caselles normals -> Blanc brillant (si el terminal ho suporta)
+            return "\033[107m";  // Alternativa més brillant per a WHITE_BACKGROUND
+        }
+    }
 
     private static void mostrarOpcions() {
         System.out.println("===== MENÚ DE PARTIDA =====");
@@ -70,5 +105,16 @@ public class DriverCamilaInicialiarPartida {
         System.out.println("5. Mostrar taulell");
         System.out.println("6. Acabar partida");
         System.out.print("Selecciona una opció (1-6): ");
+    }
+
+    public static void imprimirFaristol(Faristol faristol) {
+        List<Fitxa> fitxes = faristol.obtenirFitxes();
+        System.out.print("[");
+        for (int i = 0; i < fitxes.size(); i++) {
+            Fitxa fitxa = fitxes.get(i);
+            System.out.print("[" + fitxa + " " + Colors.YELLOW_TEXT + fitxa.obtenirPunts() + Colors.RESET + "]");
+            if (i < fitxes.size() - 1) System.out.print(" ");
+        }
+        System.out.println("]");
     }
 }
