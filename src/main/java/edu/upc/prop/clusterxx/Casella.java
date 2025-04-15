@@ -156,7 +156,7 @@ public class Casella {
      * @param fitxa Fitxa a col·locar
      *
      */
-    public void retirarFitxa(Fitxa fitxa) {
+    public void retirarFitxa() {
         if (!esBuida()) {
             this.fitxa = null;
         }

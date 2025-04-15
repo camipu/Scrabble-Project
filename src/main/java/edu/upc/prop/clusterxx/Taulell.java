@@ -45,6 +45,13 @@ public class Taulell {
         else taulell[fila][columna].colocarFitxa(fitxa);
     }
 
+    public void retirarFitxa( int fila, int columna) {
+        if (fila < 0 || fila >= size || columna < 0 || columna >= size) {
+            System.out.println(" Posició fora dels límits.");
+        }
+        else taulell[fila][columna].retirarFitxa();
+    }
+
     public void imprimirTaulell() {
         for (int i = 0; i < size; ++i) {
             System.out.print("+----");
@@ -130,29 +137,29 @@ public class Taulell {
                     }
                 }
 
-                if (!fitxaTocaParaula) continue;
-
-                // Verifica paraula vertical (si estem posant horitzontal) i viceversa
-                StringBuilder perpendicular = new StringBuilder();
-    
-                // Cap enrere
-                int nf = f - 1;
-                while (nf >= 0 && !taulell[nf][col].esBuida()) {
-                    perpendicular.insert(0, taulell[nf][col].obtenirFitxa().obtenirLletra());
-                    nf--;
+                if (fitxaTocaParaula) {
+                    // Verifica paraula vertical (si estem posant horitzontal) i viceversa
+                    StringBuilder perpendicular = new StringBuilder();
+        
+                    // Cap enrere
+                    int nf = f - 1;
+                    while (nf >= 0 && !taulell[nf][col].esBuida()) {
+                        perpendicular.insert(0, taulell[nf][col].obtenirFitxa().obtenirLletra());
+                        nf--;
+                    }
+        
+                    // Afegim la fitxa col·locada
+                    perpendicular.append(c.obtenirFitxa().obtenirLletra());
+        
+                    // Cap endavant
+                    nf = f + 1;
+                    while (nf < size && !taulell[nf][col].esBuida()) {
+                        perpendicular.append(taulell[nf][col].obtenirFitxa().obtenirLletra());
+                        nf++;
+                    }
+        
+                    if (!dawg.conteParaula(perpendicular.toString())) return false;
                 }
-    
-                // Afegim la fitxa col·locada
-                perpendicular.append(c.obtenirFitxa().obtenirLletra());
-    
-                // Cap endavant
-                nf = f + 1;
-                while (nf < size && !taulell[nf][col].esBuida()) {
-                    perpendicular.append(taulell[nf][col].obtenirFitxa().obtenirLletra());
-                    nf++;
-                }
-    
-                if (!dawg.conteParaula(perpendicular.toString())) return false;
             }
             return paraulaTocaParaula;
         }
