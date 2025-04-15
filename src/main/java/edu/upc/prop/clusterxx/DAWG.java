@@ -1,8 +1,7 @@
 package edu.upc.prop.clusterxx;
 
 import java.util.*;
-import java.io.*;
-import java.nio.file.*;
+
 
 import edu.upc.prop.clusterxx.exceptions.ExcepcioCaracterNoReconegut;
 

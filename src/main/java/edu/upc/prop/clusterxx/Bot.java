@@ -1,7 +1,6 @@
 package edu.upc.prop.clusterxx;
 
 import java.util.*;
-import edu.upc.prop.clusterxx.Taulell;
 
 
 public class Bot extends Jugador {
