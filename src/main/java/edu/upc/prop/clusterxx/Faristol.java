@@ -17,6 +17,10 @@ public class Faristol {
         this.size = size;
     }
 
+    public boolean esPle(){
+        return fitxes.size() >= size;
+    }
+
     public ArrayList<Fitxa> obtenirFitxes() {
         return new ArrayList<>(fitxes); // Retornem còpia per evitar modificació externa
     }
@@ -32,9 +36,9 @@ public class Faristol {
         return fitxes.size();
     }
 
-
+    
     public void afegirFitxa(Fitxa fitxa) {
-        if (fitxes.size() >= size) {
+        if (esPle()) {
             throw new ExcepcioFaristolPle("El faristol està ple, no es pot afegir la fitxa " + fitxa);
         }
         fitxes.add(fitxa);
