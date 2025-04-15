@@ -19,7 +19,7 @@ public class CtrlPartida {
     private int torn;
 
     // Lista de caselles que conté les fitxes del torn actual
-    private List<Casella> fitxesTorn = new ArrayList<>();
+    private List<Casella> casellasTorn = new ArrayList<>();
 
     public static CtrlPartida getInstance() {
         if (instance == null) {
@@ -120,14 +120,15 @@ public class CtrlPartida {
         }
     }
 
-//    public boolean colocarFitxa(Fitxa fitxa, int fila, int columna) {
-//        jugadors[torn%jugadors.length].eliminarFitxa(fitxa);
-//        taulell.colocarFitxa(fitxa, fila, columna);
-//        fitxesTorn.add(taulell.obtenirFitxa(fila, columna));
-//
-//
-//        int[][] pos = {{fila, columna}};
-//        return true;
+
+    public boolean colocarFitxa(Fitxa fitxa, int fila, int columna) {
+        jugadors[torn%jugadors.length].eliminarFitxa(fitxa);
+        taulell.colocarFitxa(fitxa, fila, columna);
+        casellasTorn.add(taulell.obtenirCasella(fila, columna));
+
+
+        int[][] pos = {{fila, columna}};
+        return true;
 //        HashMap<String,Integer> nuevasPosiblesPalabras = new HashMap<>();
 //        Taulell.BooleanWrapper connex = new Taulell.BooleanWrapper(false);
 //        nuevasPosiblesPalabras = taulell.buscaPalabrasValidas(pos,connex);
@@ -141,7 +142,8 @@ public class CtrlPartida {
 //        } else {
 //            return taulell.esBuit() && dawg.conteParaula(fitxa.obtenirLletra());
 //        }
-//    }
+    }
+
 //
 //    public void retirarFitxa(int fila, int columna) {
 //        jugadors[torn%jugadors.length].afegirFitxa(taulell.obtenirFitxa(fila, columna));

@@ -1,10 +1,10 @@
 package edu.upc.prop.clusterxx;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import edu.upc.prop.clusterxx.EstrategiaPuntuacio.EstrategiaMultiplicadorLletra;
 import edu.upc.prop.clusterxx.EstrategiaPuntuacio.EstrategiaMultiplicadorParaula;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Taulell {
     private final int size;
@@ -27,6 +27,10 @@ public class Taulell {
 
     public Casella[][] getTaulell() {
         return taulell;
+    }
+
+    public Casella obtenirCasella(int fila, int columna) {
+        return taulell[fila][columna];
     }
 
     public int getSize() {

@@ -117,4 +117,8 @@ public class DriverCamilaInicialiarPartida {
         }
         System.out.println("]");
     }
+        public void mostrarContingutSac(Sac sac) {
+        sac.obtenirSac().forEach((fitxa, quantitat) ->
+                System.out.println(fitxa.obtenirLletra() + " -> " + quantitat + " fitxes, " + fitxa.obtenirPunts() + " punts"));
+    }
 }
