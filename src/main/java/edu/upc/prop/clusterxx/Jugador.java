@@ -44,6 +44,9 @@ public class Jugador {
     /*
     Driver
      */
+    public void imprimirFaristol() {
+        faristol.imprimirFaristol();
+    }
     public void imprimirInfo() {
         System.out.println(Colors.YELLOW_BACKGROUND + Colors.BLACK_TEXT + "======== INFORMACIÓ DEL JUGADOR ========" + Colors.RESET);
         System.out.println(Colors.CYAN_TEXT + "Nom: " + Colors.RESET + nom);
