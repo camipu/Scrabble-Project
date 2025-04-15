@@ -1,5 +1,8 @@
 package edu.upc.prop.clusterxx;
 
+import edu.upc.prop.clusterxx.EstrategiaPuntuacio.EstrategiaMultiplicadorLletra;
+import edu.upc.prop.clusterxx.EstrategiaPuntuacio.EstrategiaMultiplicadorParaula;
+
 public class Taulell {
     private final int size;
     private final Casella[][] taulell;
