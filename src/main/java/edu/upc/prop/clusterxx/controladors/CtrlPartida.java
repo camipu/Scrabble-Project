@@ -1,10 +1,11 @@
 package edu.upc.prop.clusterxx.controladors;
+
 import edu.upc.prop.clusterxx.*;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -16,6 +17,9 @@ public class CtrlPartida {
     private DAWG dawg;
     private boolean acabada;
     private int torn;
+
+    // Lista de caselles que conté les fitxes del torn actual
+    private List<Casella> fitxesTorn = new ArrayList<>();
 
     public static CtrlPartida getInstance() {
         if (instance == null) {
@@ -99,28 +103,32 @@ public class CtrlPartida {
     }
 
     public boolean colocarFitxa(Fitxa fitxa, int fila, int columna) {
-        jugadors[torn].obtenirFaristol().eliminarFitxa(fitxa);
+        jugadors[torn%jugadors.length].eliminarFitxa(fitxa);
         taulell.colocarFitxa(fitxa, fila, columna);
+        fitxesTorn.add(taulell.obtenirFitxa(fila, columna));
 
 
         int[][] pos = {{fila, columna}};
-        HashMap<String,Integer> nuevasPosiblesPalabras = new HashMap<>();
-        Taulell.BooleanWrapper connex = new Taulell.BooleanWrapper(false);
-        nuevasPosiblesPalabras = taulell.buscaPalabrasValidas(pos,connex);
-        if (connex.getValue()) {
-            for (String palabra : nuevasPosiblesPalabras.keySet()) {
-                if (!dawg.conteParaula(palabra)) {
-                    return false;
-                }
-            }
-            return true;
-        } else {
-            return taulell.esBuit() && dawg.conteParaula(fitxa.obtenirLletra());
-        }
+        return true;
+//        HashMap<String,Integer> nuevasPosiblesPalabras = new HashMap<>();
+//        Taulell.BooleanWrapper connex = new Taulell.BooleanWrapper(false);
+//        nuevasPosiblesPalabras = taulell.buscaPalabrasValidas(pos,connex);
+//        if (connex.getValue()) {
+//            for (String palabra : nuevasPosiblesPalabras.keySet()) {
+//                if (!dawg.conteParaula(palabra)) {
+//                    return false;
+//                }
+//            }
+//            return true;
+//        } else {
+//            return taulell.esBuit() && dawg.conteParaula(fitxa.obtenirLletra());
+//        }
     }
 
-    public void retirarFitxa(int x, int y) {
-        taulell.retirarFitxa(x,y);
+    public void retirarFitxa(int fila, int columna) {
+        jugadors[torn%jugadors.length].afegirFitxa(taulell.obtenirFitxa(fila, columna));
+        fitxesTorn.remove(taulell.obtenirFitxa(fila, columna));
+        taulell.retirarFitxa(fila, columna);
     }
 
     public void mostrarContingutSac() {
