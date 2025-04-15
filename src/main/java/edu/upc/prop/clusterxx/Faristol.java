@@ -2,8 +2,7 @@ package edu.upc.prop.clusterxx;
 
 import edu.upc.prop.clusterxx.exceptions.ExcepcioFaristolNoConteLaFitxa;
 import edu.upc.prop.clusterxx.exceptions.ExcepcioFaristolPle;
-import edu.upc.prop.clusterxx.exceptions.ExcepcioSacBuit;
-import edu.upc.prop.clusterxx.exceptions.ExcepcioSacNoConteLaFitxa;
+
 
 import java.util.ArrayList;
 import java.util.Collections;

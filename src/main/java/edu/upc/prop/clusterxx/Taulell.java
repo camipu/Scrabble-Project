@@ -1,5 +1,11 @@
 package edu.upc.prop.clusterxx;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import edu.upc.prop.clusterxx.EstrategiaPuntuacio.EstrategiaMultiplicadorLletra;
+import edu.upc.prop.clusterxx.EstrategiaPuntuacio.EstrategiaMultiplicadorParaula;
+
 public class Taulell {
     private final int size;
     private final Casella[][] taulell;
@@ -36,6 +42,10 @@ public class Taulell {
             }
         }
         return true;
+    }
+
+    public Fitxa obtenirFitxa(int fila, int columna) {
+        return taulell[fila][columna].obtenirFitxa();
     }
 
     public void colocarFitxa(Fitxa fitxa, int fila, int columna) {
@@ -106,6 +116,11 @@ public class Taulell {
 
     public boolean validarJugada(Jugada jugada, DAWG dawg) {
         if (jugada.getCasellesJugades().isEmpty()) return false;
+
+        if (jugada.getParaulaFormada() == null) {
+            jugada.setParaulaFormada(calcularParaulaFormada(jugada.getCasellesJugades()));
+        }
+
         if (!dawg.conteParaula(jugada.getParaulaFormada())) return false;
 
         if (esBuit()) {
@@ -177,75 +192,32 @@ public class Taulell {
             return "\033[107m";  // Alternativa més brillant per a WHITE_BACKGROUND
         }
     }
+
+    public String calcularParaulaFormada(List<Casella> casellesJugades) {
+        if (casellesJugades.isEmpty()) return "";
+    
+        boolean esHoritzontal = esJugadaHoritzontal(casellesJugades);
+    
+        List<Casella> ordenades = new ArrayList<>(casellesJugades);
+        ordenades.sort((a, b) ->
+            esHoritzontal
+                ? Integer.compare(a.obtenirY(), b.obtenirY())
+                : Integer.compare(a.obtenirX(), b.obtenirX())
+        );
+    
+        StringBuilder paraula = new StringBuilder();
+        for (Casella c : ordenades) {
+            paraula.append(c.obtenirFitxa().obtenirLletra());
+        }
+    
+        return paraula.toString();
+    }
+    
+    private boolean esJugadaHoritzontal(List<Casella> caselles) {
+        int fila = caselles.get(0).obtenirX();
+        for (Casella c : caselles) {
+            if (c.obtenirX() != fila) return false;
+        }
+        return true;
+    }    
 }
-
-    // public static class BooleanWrapper {
-    //     public boolean value;
-    //     public BooleanWrapper(boolean value) {
-    //         this.value = value;
-    //     }
-    // }
-
-    // // Pre: un vector con las posiciones de las letras que se están añadiendo al tablero
-    // // Post: Un map<string, int> con las palabras nuevas y sus respectivas puntuaciones
-    // public HashMap<String, Integer> buscaPalabrasValidas(int[][] posNuevasLetras, BooleanWrapper conexa) {
-    //     HashMap<String,Integer> nuevasPosiblesPalabras = new HashMap<>();
-    //     for (int[] posLetra : posNuevasLetras) {
-    //         int x = posLetra[0];
-    //         int y = posLetra[1];
-    //         HashMap<String,Integer> aux =new HashMap<>();
-    //         aux = buscaPalabra(x, y, 1, 0,conexa); //derecha e izquierda
-    //         nuevasPosiblesPalabras.putAll(aux);
-    //         aux = buscaPalabra(x,y,0,1,conexa); //arriba, abajo
-    //         nuevasPosiblesPalabras.putAll(aux);
-
-    //     }
-    //     return nuevasPosiblesPalabras;
-    // }
-
-
-    // private HashMap<String, Integer> buscaPalabra(int x, int y, int dx, int dy, BooleanWrapper conexa) {
-    //     HashMap<String, Integer> palabras = new HashMap<>();
-    //     Vector<Fitxa> vectorDeFichas = new Vector<>();
-    //     StringBuilder palabra = new StringBuilder();
-    //     Stack<Fitxa> fichasInversas = new Stack<>();
-
-    //     int i = x, j = y;
-
-    //     // Dirección inversa
-    //     while (i >= 0 && i < size && j >= 0 && j < size && !taulell[i][j].esBuida()) {
-    //         if (taulell[i][j].esJugada()) conexa.value = true;
-    //         palabra.insert(0, taulell[i][j].toString().trim());
-    //         fichasInversas.push(taulell[i][j].obtenirFitxa());
-    //         i -= dx;
-    //         j -= dy;
-    //     }
-
-    //     int inicioX = i + dx;
-    //     int inicioY = j + dy;
-
-    //     // Fichas en orden correcto
-    //     while (!fichasInversas.isEmpty()) {
-    //         vectorDeFichas.add(fichasInversas.pop());
-    //     }
-
-    //     // Dirección normal
-    //     i = x + dx;
-    //     j = y + dy;
-    //     while (i >= 0 && i < size && j >= 0 && j < size && !taulell[i][j].esBuida()) {
-    //         if (taulell[i][j].esJugada()) conexa.value = true;
-    //         palabra.append(taulell[i][j].toString().trim());
-    //         vectorDeFichas.add(taulell[i][j].obtenirFitxa());
-
-    //         i += dx;
-    //         j += dy;
-    //     }
-
-    //     String palabraFinal = palabra.toString().replaceAll("\\s+", "");
-    //     if (palabraFinal.length() > 2) {
-    //         int puntos = calcularPuntuacioParaula(palabraFinal, vectorDeFichas, inicioX, inicioY, dx == 1);
-    //         palabras.put(palabraFinal, puntos);
-    //     }
-
-    //     return palabras;
-    // }
