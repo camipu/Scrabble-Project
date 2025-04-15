@@ -31,11 +31,11 @@ public class CtrlPartida {
     private CtrlPartida() {
     }
 
-    public void inicialitzarPartida(int midaTaulell, int midaFaristol, String idioma, String[] nomsJugadors,int[] dificultatsBots) {
-        acabada = false;
+    private void inicialitzarTaulell(int midaTaulell) {
         taulell = new Taulell(midaTaulell);
-        sac = new Sac();
-        inicialitzarSac(idioma);
+    }
+
+    private void inicialitzarJugadors(String[] nomsJugadors,int[] dificultatsBots, int midaFaristol) {
         jugadors = new Jugador[nomsJugadors.length + dificultatsBots.length];
         int i;
         for (i = 0; i < nomsJugadors.length; i++) {
@@ -55,6 +55,14 @@ public class CtrlPartida {
             jugadors[j] = new Bot("bot" + (j - i + 1), faristolBot, dificultatsBots[j-i]) ;
             System.out.println("Bot " + (j - i + 1) + " creat amb dificultat " + dificultatsBots[j-i]);
         }
+    }
+
+    public void inicialitzarPartida(int midaTaulell, int midaFaristol, String idioma, String[] nomsJugadors,int[] dificultatsBots) {
+        acabada = false;
+        inicialitzarTaulell(midaTaulell);
+        sac = new Sac();
+        inicialitzarSac(idioma);
+        inicialitzarJugadors(nomsJugadors,dificultatsBots,midaFaristol);
     }
 
     public boolean acabada() {return acabada;}
