@@ -13,7 +13,7 @@ import edu.upc.prop.clusterxx.exceptions.ExcepcioCaracterNoReconegut;
 public class DAWG {
 
     // Node intern del DAWG
-    private static class Node {
+    public static class Node {
         Map<String, Node> fills = new HashMap<>(); // Tokens cap a nodes fills
         boolean esFinal = false; // Indica si el camí fins aquí forma una paraula vàlida
 
@@ -28,6 +28,18 @@ public class DAWG {
         @Override
         public int hashCode() {
             return Objects.hash(esFinal, fills);
+        }
+
+        public Node getFill(String token) {
+            return fills.get(token);
+        }
+
+        public boolean conteToken(String token) {
+            return fills.containsKey(token);
+        }
+
+        public boolean esFinal() {
+            return esFinal;
         }
     }
 
@@ -175,20 +187,7 @@ public class DAWG {
         return actual.esFinal;
     }
 
-    /**
-     * Comprova si un prefix és vàlid (pot continuar una paraula dins el DAWG).
-     * @param prefix Prefix a validar
-     * @return true si existeix com a camí parcial, false si no
-     */
-    public boolean esPrefix(String prefix) {
-        List<String> tokensPrefix = tokenitzar(prefix);
-        Node actual = arrel;
-
-        for (String token : tokensPrefix) {
-            if (!actual.fills.containsKey(token)) return false;
-            actual = actual.fills.get(token);
-        }
-
-        return true;
+    public Node getArrel() {
+        return arrel;
     }
 }

@@ -92,27 +92,70 @@ public class Taulell {
      * @param horitzontal Direcció de la paraula
      * @return Puntuació total de la jugada
      */
-    public int calcularPuntuacioParaula(Jugada jugada) {
+    private int calcularPuntuacioParaula(List<Casella> casellesJugades) {
+        if (casellesJugades.isEmpty()) return 0;
+    
         int puntuacio = 0;
         int multiplicadorParaula = 1;
-
-        for (Casella c : jugada.getCasellesJugades()) {
-            Fitxa f = c.obtenirFitxa();
-            int punts = f.obtenirPunts();
-            
-            if (c.obtenirEstrategia().esMultiplicadorParaula()) {
-                multiplicadorParaula *= c.obtenirMultiplicador();
+    
+        // Determinar si la jugada és horitzontal
+        boolean horitzontal = esJugadaHoritzontal(casellesJugades);
+    
+        // Ordenar caselles per la direcció
+        casellesJugades.sort((a, b) ->
+            horitzontal ? Integer.compare(a.obtenirY(), b.obtenirY())
+                        : Integer.compare(a.obtenirX(), b.obtenirX())
+        );
+    
+        // Extrems de la paraula (completa)
+        int fila = casellesJugades.get(0).obtenirX();
+        int col = casellesJugades.get(0).obtenirY();
+        int inici = horitzontal ? col : fila;
+    
+        // Buscar límit inicial cap enrere
+        int i = inici - 1;
+        while (i >= 0) {
+            int f = horitzontal ? fila : i;
+            int c = horitzontal ? i : col;
+            if (taulell[f][c].esBuida()) break;
+            i--;
+        }
+        int iniciParaula = i + 1;
+    
+        // Buscar límit final cap endavant
+        i = inici + 1;
+        int mida = taulell.length;
+        while (i < mida) {
+            int f = horitzontal ? fila : i;
+            int c = horitzontal ? i : col;
+            if (taulell[f][c].esBuida()) break;
+            i++;
+        }
+        int finalParaula = i - 1;
+    
+        // Recorre tota la paraula (ja col·locada + nova)
+        for (int pos = iniciParaula; pos <= finalParaula; pos++) {
+            int f = horitzontal ? fila : pos;
+            int c = horitzontal ? pos : col;
+            Casella actual = taulell[f][c];
+            Fitxa fitxa = actual.obtenirFitxa();
+            int punts = fitxa.obtenirPunts();
+    
+            if (casellesJugades.contains(actual)) {
+                if (actual.obtenirEstrategia().esMultiplicadorParaula()) {
+                    multiplicadorParaula *= actual.obtenirMultiplicador();
+                } else {
+                    punts *= actual.obtenirMultiplicador();
+                }
             }
-            else {
-                punts *= c.obtenirMultiplicador();
-            }
-
+    
             puntuacio += punts;
         }
-        puntuacio *= multiplicadorParaula;
-        if (jugada.getCasellesJugades().size() == 7) puntuacio += 50;
-        return puntuacio;
+    
+        if (casellesJugades.size() == 7) puntuacio += 50;
+        return puntuacio * multiplicadorParaula;
     }
+    
 
     public boolean validarJugada(Jugada jugada, DAWG dawg) {
         if (jugada.getCasellesJugades().isEmpty()) return false;
@@ -127,9 +170,8 @@ public class Taulell {
             // Primera jugada i per tant almenys una de les caselles ha d’estar al mig
             int mig = size / 2;
             for (Casella c : jugada.getCasellesJugades()) {
-                if (c.obtenirX() == mig && c.obtenirY() == mig) return true;
+                if (c.obtenirX() != mig || c.obtenirY() != mig) return false;
             }
-            return false;
         }
         else {
             // MIRAR QUE HI HAGIN PARAULES PERPENDICULARS
@@ -176,8 +218,10 @@ public class Taulell {
                     if (!dawg.conteParaula(perpendicular.toString())) return false;
                 }
             }
-            return paraulaTocaParaula;
+            if (!paraulaTocaParaula) return false;
         }
+        jugada.setPuntuacio(calcularPuntuacioParaula(jugada.getCasellesJugades()));
+        return true;
     }
 
     private String obtenirColorFons(Casella casella) {
