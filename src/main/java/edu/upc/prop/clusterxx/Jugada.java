@@ -8,7 +8,7 @@ import java.util.List;
  * i la puntuació total.
  */
 public class Jugada {
-    private final String paraulaFormada;
+    private String paraulaFormada;
     private final List<Casella> casellesJugades;
     private int puntuacio;
 
@@ -26,6 +26,10 @@ public class Jugada {
 
     public String getParaulaFormada() {
         return paraulaFormada;
+    }
+
+    public void setParaulaFormada(String paraula) {
+        this.paraulaFormada = paraula;
     }
 
     public List<Casella> getCasellesJugades() {

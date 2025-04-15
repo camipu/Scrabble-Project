@@ -1,5 +1,8 @@
 package edu.upc.prop.clusterxx;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import edu.upc.prop.clusterxx.EstrategiaPuntuacio.EstrategiaMultiplicadorLletra;
 import edu.upc.prop.clusterxx.EstrategiaPuntuacio.EstrategiaMultiplicadorParaula;
 
@@ -39,6 +42,10 @@ public class Taulell {
             }
         }
         return true;
+    }
+
+    public Fitxa obtenirFitxa(int fila, int columna) {
+        return taulell[fila][columna].obtenirFitxa();
     }
 
     public void colocarFitxa(Fitxa fitxa, int fila, int columna) {
@@ -109,6 +116,11 @@ public class Taulell {
 
     public boolean validarJugada(Jugada jugada, DAWG dawg) {
         if (jugada.getCasellesJugades().isEmpty()) return false;
+
+        if (jugada.getParaulaFormada() == null) {
+            jugada.setParaulaFormada(calcularParaulaFormada(jugada.getCasellesJugades()));
+        }
+
         if (!dawg.conteParaula(jugada.getParaulaFormada())) return false;
 
         if (esBuit()) {
@@ -180,4 +192,32 @@ public class Taulell {
             return "\033[107m";  // Alternativa més brillant per a WHITE_BACKGROUND
         }
     }
+
+    public String calcularParaulaFormada(List<Casella> casellesJugades) {
+        if (casellesJugades.isEmpty()) return "";
+    
+        boolean esHoritzontal = esJugadaHoritzontal(casellesJugades);
+    
+        List<Casella> ordenades = new ArrayList<>(casellesJugades);
+        ordenades.sort((a, b) ->
+            esHoritzontal
+                ? Integer.compare(a.obtenirY(), b.obtenirY())
+                : Integer.compare(a.obtenirX(), b.obtenirX())
+        );
+    
+        StringBuilder paraula = new StringBuilder();
+        for (Casella c : ordenades) {
+            paraula.append(c.obtenirFitxa().obtenirLletra());
+        }
+    
+        return paraula.toString();
+    }
+    
+    private boolean esJugadaHoritzontal(List<Casella> caselles) {
+        int fila = caselles.get(0).obtenirX();
+        for (Casella c : caselles) {
+            if (c.obtenirX() != fila) return false;
+        }
+        return true;
+    }    
 }
