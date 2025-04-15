@@ -136,7 +136,7 @@ public class Bot extends Jugador {
                 
                 if (dawg.esPrefix(novaParaula)) {
                     Jugada novaJugada = construirJugada(novaParaula, fila, columna, horitzontal, fitxesUtilitzades, taulell, dawg);
-                    if (taulell.validar(novaJugada)) resultats.add(novaJugada);
+                    if (taulell.validarJugada(novaJugada, dawg)) resultats.add(novaJugada);
                     resultats.addAll(generarParaules(novaParaula, fitxesRestants, fitxesUtilitzades, fila, columna, horitzontal, taulell, dawg));
                 }
             }
@@ -153,7 +153,7 @@ public class Bot extends Jugador {
                     novesUtilitzades.add(fitxa);
 
                     Jugada novaJugada = construirJugada(novaParaula, fila, columna, horitzontal, fitxesUtilitzades, taulell, dawg);
-                    if (taulell.validar(novaJugada)) resultats.add(novaJugada);
+                    if (taulell.validarJugada(novaJugada, dawg)) resultats.add(novaJugada);
 
                     resultats.addAll(generarParaules(novaParaula, novesRestants, novesUtilitzades, fila, columna, horitzontal, taulell, dawg));
                 }
@@ -179,7 +179,7 @@ public class Bot extends Jugador {
         }
 
         Jugada jugada = new Jugada(paraula, casellesJugades, 0);
-        int puntuacio = taulell.calcularPuntuacioJugada(jugada, paraula, dawg);
+        int puntuacio = taulell.calcularPuntuacioParaula(jugada);
         jugada.setPuntuacio(puntuacio);
         return jugada;
     }
