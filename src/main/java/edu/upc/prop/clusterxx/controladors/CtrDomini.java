@@ -3,7 +3,7 @@ package edu.upc.prop.clusterxx.controladors;
 public class CtrDomini {
     private static CtrDomini instance = null;
     private CtrlPartida ctrlPartida = null;
-    private CtrEstadistica
+    private CtrEstadistica ctrEstadistica = null;
 
 
     public static CtrDomini getInstance() {
@@ -13,9 +13,9 @@ public class CtrDomini {
         return instance;
     }
 
-    private CtrDomini{
+    private CtrDomini(){
         ctrlPartida = CtrlPartida.getInstance();
-
+        ctrEstadistica = CtrEstadistica.getInstance();
     }
 }
 
