@@ -58,8 +58,12 @@ tasks.register('DriverFitxa', JavaExec) {
     classpath = sourceSets.main.runtimeClasspath
     mainClass = 'edu.upc.prop.clusterxx.DriverFitxa'
 }
+build.dependsOn jarProvaParida
+
 
 tasks.named('run') {
     standardInput = System.in
 }
+
+
 
