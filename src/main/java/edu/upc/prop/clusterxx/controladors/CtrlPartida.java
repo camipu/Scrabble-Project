@@ -42,9 +42,10 @@ public class CtrlPartida {
         sac = new Sac();
         inicialitzarSac(idioma);
         inicialitzarJugadors(nomsJugadors,dificultatsBots,midaFaristol);
+        passarTorn();
     }
 
-    public void inicialitzarTorn(Torn nouTorn) {
+    public void recuperarTorn(Torn nouTorn) {
         acabada = nouTorn.esAcabada();
         torn = nouTorn.obtenirTorn();
         taulell = nouTorn.obtenirTaulell();
@@ -75,14 +76,14 @@ public class CtrlPartida {
     }
 
     public void passarTorn() {
-        historial.afegirTorn(new Torn(sac, taulell, jugadors, torn, acabada));
         ++torn;
+        historial.afegirTorn(new Torn(sac, taulell, jugadors, torn, acabada));
     }
 
     public void undo() {
         if(torn >= 1) {
             historial.retirarTorn();
-            inicialitzarTorn(historial.obtenirTorn(torn-1));
+            recuperarTorn(historial.obtenirTorn(torn-1));
         }
     }
 
