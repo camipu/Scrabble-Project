@@ -11,6 +11,7 @@ public class Jugada {
     private String paraulaFormada;
     private final List<Casella> casellesJugades;
     private int puntuacio;
+    private boolean jugadaValida;
 
     /**
      * Constructor de la classe Jugada.
@@ -18,10 +19,11 @@ public class Jugada {
      * @param casellesJugades Caselles on el jugador ha col·locat fitxes.
      * @param puntuacio Puntuació total obtinguda amb la jugada.
      */
-    public Jugada(String paraulaFormada, List<Casella> casellesJugades, int puntuacio) {
+    public Jugada(String paraulaFormada, List<Casella> casellesJugades, int puntuacio, boolean jugadaValida) {
         this.paraulaFormada = paraulaFormada;
         this.casellesJugades = casellesJugades;
         this.puntuacio = puntuacio;
+        this.jugadaValida = jugadaValida;
     }
 
     /**
@@ -67,5 +69,13 @@ public class Jugada {
      */
     public void setPuntuacio(int puntuacio) {
         this.puntuacio = puntuacio;
+    }
+
+    public boolean getJugadaValida() {
+        return jugadaValida;
+    }
+
+    public void setJugadaValida(Boolean jugadaValida) {
+        this.jugadaValida = jugadaValida;
     }
 }

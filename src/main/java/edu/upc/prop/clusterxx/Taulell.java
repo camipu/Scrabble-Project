@@ -171,20 +171,33 @@ public class Taulell {
         return puntuacio * multiplicadorParaula;
     }
     
+    // FUNCIO PER CrtlPartida
+    public Jugada construirJugada(List<Casella> casellesJugades, DAWG dawg) {
+        String paraulaFormada = construirParaula(casellesJugades);
+        Boolean jugadaValida = jugadaValida(paraulaFormada, casellesJugades, dawg);
+        int puntuacio = calcularPuntuacioParaula(casellesJugades);
+        return new Jugada(paraulaFormada, casellesJugades, puntuacio, jugadaValida);
+    }
 
-    public boolean validarJugada(Jugada jugada, DAWG dawg) {
-        if (jugada.getCasellesJugades().isEmpty()) return false;
-
-        if (jugada.getParaulaFormada() == null) {
-            jugada.setParaulaFormada(calcularParaulaFormada(jugada.getCasellesJugades()));
+    // Funcio per CrtlBot
+    public Jugada construirJugadaBot(String paraulaFormada, List<Casella> casellesJugades, DAWG dawg) {
+        Boolean jugadaValida = jugadaValida(paraulaFormada, casellesJugades, dawg);
+        int puntuacio = -1;
+        if (jugadaValida) {
+            puntuacio = calcularPuntuacioParaula(casellesJugades);
         }
+        return new Jugada(paraulaFormada, casellesJugades, puntuacio, jugadaValida);
+    }
 
-        if (!dawg.conteParaula(jugada.getParaulaFormada())) return false;
+    private boolean jugadaValida(String paraulaJugada, List<Casella> casellesJugades, DAWG dawg) {
+        if (casellesJugades.isEmpty()) return false;
+
+        if (!dawg.conteParaula(paraulaJugada)) return false;
 
         if (esBuit()) {
             // Primera jugada i per tant almenys una de les caselles ha d’estar al mig
             int mig = size / 2;
-            for (Casella c : jugada.getCasellesJugades()) {
+            for (Casella c : casellesJugades) {
                 if (c.obtenirX() != mig || c.obtenirY() != mig) return false;
             }
         }
@@ -193,7 +206,7 @@ public class Taulell {
             // I MIRAR QUE SIGUIN VALIDES
             boolean paraulaTocaParaula = false;
 
-            for (Casella c : jugada.getCasellesJugades()) {
+            for (Casella c : casellesJugades) {
                 int f = c.obtenirX();
                 int col = c.obtenirY();
     
@@ -235,7 +248,6 @@ public class Taulell {
             }
             if (!paraulaTocaParaula) return false;
         }
-        jugada.setPuntuacio(calcularPuntuacioParaula(jugada.getCasellesJugades()));
         return true;
     }
 
@@ -252,7 +264,7 @@ public class Taulell {
         }
     }
 
-    public String calcularParaulaFormada(List<Casella> casellesJugades) {
+    private String construirParaula(List<Casella> casellesJugades) {
         if (casellesJugades.isEmpty()) return "";
     
         boolean esHoritzontal = esJugadaHoritzontal(casellesJugades);

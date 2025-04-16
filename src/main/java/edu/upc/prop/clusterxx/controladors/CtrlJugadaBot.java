@@ -21,7 +21,7 @@ public class CtrlJugadaBot {
     }
 
     /**
-     * Calcula una jugada segons les fitxes del faristol u la dificultat
+     * Calcula una jugada segons l'estat del taulell i la dificultat
      * @param taulell El taulell actual del joc
      * @param dawg El DAWG amb les paraules vàlides
      * @return Un objecte Jugada amb la millor jugada trobada
@@ -137,8 +137,10 @@ public class CtrlJugadaBot {
 
             String novaParaula = paraulaActual + token;
 
+            
+
             Jugada novaJugada = construirJugada(novaParaula, fila, columna, horitzontal, fitxesUtilitzades, taulell, dawg);
-            if (taulell.validarJugada(novaJugada, dawg)) resultats.add(novaJugada);
+            if (novaJugada.getJugadaValida()) resultats.add(novaJugada);
             resultats.addAll(generarParaules(novaParaula, fitxesRestants, fitxesUtilitzades, nodeSeguent, fila, columna, horitzontal, taulell, dawg));
 
         }
@@ -156,7 +158,7 @@ public class CtrlJugadaBot {
                 fitxesUtilitzades.add(usada);
 
                 Jugada novaJugada = construirJugada(novaParaula, fila, columna, horitzontal, fitxesUtilitzades, taulell, dawg);
-                if (taulell.validarJugada(novaJugada, dawg)) resultats.add(novaJugada);
+                if (novaJugada.getJugadaValida()) resultats.add(novaJugada);
 
                 resultats.addAll(generarParaules(novaParaula, fitxesRestants, fitxesUtilitzades, nodeSeguent, fila, columna, horitzontal, taulell, dawg));
 
@@ -184,7 +186,7 @@ public class CtrlJugadaBot {
                 casellesJugades.add(nova);
             }
         }
-
-        return new Jugada(paraula, casellesJugades, -1);
+        
+        return taulell.construirJugadaBot(paraula, casellesJugades, dawg);
     }
 }

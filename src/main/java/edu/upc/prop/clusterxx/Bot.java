@@ -1,8 +1,5 @@
 package edu.upc.prop.clusterxx;
 
-import java.util.*;
-
-
 public class Bot extends Jugador {
     private int nivellDificultat; // 1: fàcil, 2: mitjà, 3: difícil
 
