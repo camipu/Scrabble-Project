@@ -24,22 +24,47 @@ public class Jugada {
         this.puntuacio = puntuacio;
     }
 
+    /**
+     * Retorna la paraula formada durant el torn.
+     *
+     * @return Paraula formada en aquest torn
+     */
     public String getParaulaFormada() {
         return paraulaFormada;
     }
 
+    /**
+     * Assigna la paraula formada durant el torn.
+     *
+     * @param paraula Paraula que s’ha format en aquest torn
+     */
     public void setParaulaFormada(String paraula) {
         this.paraulaFormada = paraula;
     }
 
+    /**
+     * Retorna la llista de caselles utilitzades durant el torn.
+     *
+     * @return Llista de caselles on s’han col·locat fitxes en aquest torn
+     */
     public List<Casella> getCasellesJugades() {
         return casellesJugades;
     }
 
+    /**
+     * Retorna la puntuació obtinguda durant aquest torn.
+     *
+     * @return Puntuació del torn
+     */
     public int getPuntuacio() {
         return puntuacio;
     }
 
+    /**
+     * Assigna la puntuació obtinguda durant aquest torn.
+     *
+     * @param puntuacio Puntuació a assignar al torn
+     */
     public void setPuntuacio(int puntuacio) {
         this.puntuacio = puntuacio;
     }

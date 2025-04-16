@@ -40,14 +40,31 @@ public class HistorialJoc {
      */
     public void retirarTorn() {torns.removeLast();}
 
+    /**
+     * Retorna el torn corresponent a una posició concreta de l’historial.
+     * La numeració dels torns comença per 1 (no per 0).
+     *
+     * @param index Índex del torn a obtenir (començant per 1)
+     * @return El torn situat a la posició indicada
+     */
     public Torn obtenirTorn(int index) {
         return torns.get(index-1);
     }
 
+    /**
+     * Retorna el nombre total de torns registrats a l’historial.
+     *
+     * @return Nombre de torns actuals
+     */
     public int obtenirMida() {
         return torns.size();
     }
 
+    /**
+     * Retorna la data en què es va jugar la partida.
+     *
+     * @return Data de la partida
+     */
     public Date obtenirDataJoc() {
         return dataJoc;
     }
