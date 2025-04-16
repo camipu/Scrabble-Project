@@ -1,13 +1,16 @@
 package edu.upc.prop.clusterxx;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class HistorialJoc {
     private List<Torn> torns;
+    private Date dataJoc;
 
-    public HistorialJoc() {
+    public HistorialJoc(Date date) {
         torns = new ArrayList<>();
+        dataJoc = date;
     }
 
     public void afegirTorn(Torn torn) {
@@ -21,5 +24,9 @@ public class HistorialJoc {
 
     public int obtenirMida() {
         return torns.size();
+    }
+
+    public Date obtenirDataJoc() {
+        return dataJoc;
     }
 }

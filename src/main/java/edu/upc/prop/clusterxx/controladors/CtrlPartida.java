@@ -37,7 +37,7 @@ public class CtrlPartida {
 
     public void inicialitzarPartida(int midaTaulell, int midaFaristol, String idioma, String[] nomsJugadors,int[] dificultatsBots) {
         acabada = false;
-        torn = 1;
+        torn = 0;
         inicialitzarTaulell(midaTaulell);
         sac = new Sac();
         inicialitzarSac(idioma);
