@@ -11,6 +11,7 @@ import java.util.stream.Collectors;
 
 public class CtrlPartida {
     private static CtrlPartida instance = null;
+    private HistorialJoc historial;
     private Sac sac;
     private Taulell taulell;
     private Jugador[] jugadors;
@@ -33,11 +34,25 @@ public class CtrlPartida {
 
     public void inicialitzarPartida(int midaTaulell, int midaFaristol, String idioma, String[] nomsJugadors,int[] dificultatsBots) {
         acabada = false;
+        torn = 0;
         taulell = new Taulell(midaTaulell);
         sac = new Sac();
         inicialitzarSac(idioma);
         inicialitzarJugadors(midaFaristol, nomsJugadors, dificultatsBots);
+
+        historial = new HistorialJoc();
+        //torn 0
+        historial.afegirTorn(new Torn(sac, taulell, jugadors, torn, acabada));
     }
+
+    public void inicialitzarTorn(Torn nouTorn) {
+        acabada = nouTorn.esAcabada();
+        torn = nouTorn.obtenirTorn();
+        taulell = nouTorn.obtenirTaulell();
+        sac = nouTorn.obtenirSac();
+        jugadors = nouTorn.obtenirJugadors();
+    }
+
 
     public boolean acabada() {return acabada;}
     public Sac obtenirSac() {
@@ -58,6 +73,11 @@ public class CtrlPartida {
 
     public int obtenirTorn() {
         return torn;
+    }
+
+    public void undo() {
+        historial.retirarTorn();
+        inicialitzarTorn(historial.obtenirTorn(torn-1));
     }
 
     private void inicialitzarSac(String idioma) {
