@@ -26,6 +26,8 @@ public class CtrlPartida {
     //Puntaje acumulado del turno actual
     private int puntuacioTorn = 0;
 
+    private int tornsSenseCanvi = 0;
+
     public static CtrlPartida getInstance() {
         if (instance == null) {
             instance = new CtrlPartida();
@@ -58,6 +60,25 @@ public class CtrlPartida {
 
 
     public boolean acabada() {return acabada;}
+
+    private void ordenarJugadors(){
+        for (int i = 0; i < jugadors.length; ++i) {
+            for (int j = 0; j < jugadors.length - 1; ++j) {
+                if (jugadors[j].obtenirPunts() < jugadors[j + 1].obtenirPunts()) {
+                    Jugador temp = jugadors[j];
+                    jugadors[j] = jugadors[j + 1];
+                    jugadors[j + 1] = temp;
+                }
+            }
+        }
+    }
+
+    public void acabarPartida() {
+        acabada = true;
+        ordenarJugadors();
+    }
+
+
     public Sac obtenirSac() {
         return sac;
     }
@@ -80,6 +101,7 @@ public class CtrlPartida {
 
     public void passarTorn() {
         ++torn;
+        ++tornsSenseCanvi;
         historial.afegirTorn(new Torn(sac, taulell, jugadors, torn, acabada));
     }
 
@@ -90,6 +112,9 @@ public class CtrlPartida {
         }
     }
 
+    public boolean esFinalDePartida() {
+        return (sac.esBuit() && jugadors[torn%jugadors.length].esBuit()) || tornsSenseCanvi >= 6;
+    }
 
     private void inicialitzarSac(String idioma) {
         String nomFitxer = "/" + idioma + "/fitxes" + idioma + ".txt";
