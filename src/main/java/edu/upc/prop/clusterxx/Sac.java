@@ -1,5 +1,7 @@
 package edu.upc.prop.clusterxx;
 
+import com.google.common.collect.HashMultiset;
+import com.google.common.collect.Multiset;
 import edu.upc.prop.clusterxx.exceptions.ExcepcioSacBuit;
 import edu.upc.prop.clusterxx.exceptions.ExcepcioSacNoConteLaFitxa;
 
@@ -12,14 +14,14 @@ import java.util.*;
  * El sac permet extreure fitxes de manera aleatòria i controlar quantes queden.
  */
 public class Sac {
-    private final Map<Fitxa, Integer> fitxes;
+    private final Multiset<Fitxa> fitxes;
 
     /**
      * Crea un nou sac buit de fitxes.
      * Inicialitza l’estructura interna per emmagatzemar les fitxes i les seves quantitats.
      */
     public Sac() {
-        this.fitxes = new LinkedHashMap<>();
+        this.fitxes = HashMultiset.create();
     }
 
     /**
@@ -29,7 +31,7 @@ public class Sac {
      * @param copiaSac Sac original del qual es vol fer la còpia
      */
     public Sac(Sac copiaSac) {
-        this.fitxes = copiaSac.obtenirSac();
+        this.fitxes = HashMultiset.create(copiaSac.fitxes);
     }
 
     /**
@@ -38,7 +40,7 @@ public class Sac {
      * @param f Fitxa que es vol afegir al sac
      */
     public void afegirFitxa(Fitxa f) {
-        fitxes.put(f, fitxes.getOrDefault(f, 0) + 1);
+        fitxes.add(f);
     }
 
     /**
@@ -54,15 +56,12 @@ public class Sac {
             throw new ExcepcioSacBuit("No es pot agafar una fitxa: el sac està buit.");
         }
 
-        List<Fitxa> disponibles = new ArrayList<>();
-        for (Map.Entry<Fitxa, Integer> entry : fitxes.entrySet()) {
-            disponibles.addAll(Collections.nCopies(entry.getValue(), entry.getKey()));
-        }
-
+        List<Fitxa> disponibles = new ArrayList<>(fitxes);
         Fitxa seleccionada = disponibles.get(new Random().nextInt(disponibles.size()));
-        reduirQuantitat(seleccionada);
+        fitxes.remove(seleccionada);
         return seleccionada;
     }
+
     /**
      * Extreu una instància concreta d’una fitxa del sac.
      * Redueix en una unitat la seva quantitat disponible.
@@ -71,10 +70,15 @@ public class Sac {
      * @return Fitxa extreta
      */
     public Fitxa agafarFitxa(Fitxa fitxa) {
-        Fitxa f = obtenirFitxa(fitxa);
-        reduirQuantitat(f);
-        return f;
+        for (Fitxa f : fitxes.elementSet()) {
+            if (f.obtenirLletra().equals(fitxa.obtenirLletra())) {
+                fitxes.remove(f);
+                return f;
+            }
+        }
+        throw new ExcepcioSacNoConteLaFitxa("No hi ha fitxes disponibles amb la lletra '" + fitxa.obtenirLletra() + "'");
     }
+
 
     /**
      * Retorna el nombre total de fitxes disponibles al sac,
@@ -83,7 +87,7 @@ public class Sac {
      * @return Nombre total de fitxes al sac
      */
     public int obtenirNumFitxes() {
-        return fitxes.values().stream().mapToInt(Integer::intValue).sum();
+        return fitxes.size();
     }
 
     /**
@@ -93,7 +97,7 @@ public class Sac {
      * @return Nombre d’exemplars d’aquesta fitxa disponibles al sac
      */
     public int obtenirNumFitxes(Fitxa fitxa) {
-        return fitxes.getOrDefault(fitxa, 0);
+        return fitxes.count(fitxa);
     }
 
     /**
@@ -111,37 +115,11 @@ public class Sac {
      * @return Mapa de fitxes i les seves quantitats disponibles
      */
     public Map<Fitxa, Integer> obtenirSac() {
-        return fitxes;
+        Map<Fitxa, Integer> map = new LinkedHashMap<>();
+        for (Multiset.Entry<Fitxa> e : fitxes.entrySet()) {
+            map.put(e.getElement(), e.getCount());
+        }
+        return map;
     }
 
-    /**
-     * Redueix la quantitat d’una fitxa al sac en una unitat.
-     * Si només en queda una, la fitxa s’elimina del sac.
-     *
-     * @param fitxa Fitxa de la qual es vol reduir la quantitat
-     */
-    private void reduirQuantitat(Fitxa fitxa) {
-        int quantitat = fitxes.getOrDefault(fitxa, 0);
-        if (quantitat <= 1) {
-            fitxes.remove(fitxa);
-        } else {
-            fitxes.put(fitxa, quantitat - 1);
-        }
-    }
-
-    /**
-     * Cerca i retorna una fitxa del sac que tingui la mateixa lletra que la fitxa donada.
-     *
-     * @param fitxa Fitxa amb la lletra que es vol buscar
-     * @return Fitxa del sac amb la mateixa lletra
-     * @throws ExcepcioSacNoConteLaFitxa si no hi ha cap fitxa al sac amb la lletra indicada
-     */
-    private Fitxa obtenirFitxa(Fitxa fitxa) {
-        for (Fitxa f : fitxes.keySet()) {
-            if (f.obtenirLletra().equals(fitxa.obtenirLletra())) {
-                return f;
-            }
-        }
-        throw new ExcepcioSacNoConteLaFitxa("No hi ha fitxes disponibles amb la lletra '" + fitxa.obtenirLletra() + "'");
-    }
 }

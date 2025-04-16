@@ -23,8 +23,8 @@ public class JugadaTest {
         casella2 = mock(Casella.class);
         caselles = Arrays.asList(casella1, casella2);
 
-        // Inicialitzem una jugada
-        jugada = new Jugada("CASA", caselles, 12);
+        // Inicialitzem una jugada amb el nou constructor (4 paràmetres)
+        jugada = new Jugada("CASA", caselles, 12, true);
     }
 
     @Test
@@ -32,6 +32,7 @@ public class JugadaTest {
         assertEquals("CASA", jugada.getParaulaFormada());
         assertEquals(12, jugada.getPuntuacio());
         assertEquals(caselles, jugada.getCasellesJugades());
+        assertTrue(jugada.getJugadaValida());
     }
 
     @Test
@@ -44,6 +45,12 @@ public class JugadaTest {
     public void testSetPuntuacio() {
         jugada.setPuntuacio(20);
         assertEquals(20, jugada.getPuntuacio());
+    }
+
+    @Test
+    public void testSetJugadaValida() {
+        jugada.setJugadaValida(false);
+        assertFalse(jugada.getJugadaValida());
     }
 
     @Test

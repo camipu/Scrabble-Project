@@ -37,6 +37,7 @@ task jarProvaIni(type: Jar) {
     from sourceSets.main.output
     dependsOn classes
 }
+build.dependsOn jarProvaParida
 
 // Apply a specific Java toolchain to ease working on different environments.
 java {
@@ -54,14 +55,12 @@ repositories {
 }
 
 dependencies {
-    // this is just an example of importing an external library, you do not need to use it in your project
+    implementation 'com.google.guava:guava:33.0.0-jre' // or latest stable version
     implementation 'com.google.code.gson:gson:2.8.9'
     testImplementation('junit:junit:4.13.1')
     testImplementation 'org.mockito:mockito-core:4.8.1'
 }
 
-
-build.dependsOn jarProvaParida
 
 
 tasks.named('run') {
