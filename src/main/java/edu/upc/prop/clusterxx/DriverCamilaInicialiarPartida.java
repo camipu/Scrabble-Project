@@ -11,7 +11,7 @@ public class DriverCamilaInicialiarPartida {
         Scanner sc = new Scanner(System.in);
 
 //        System.out.print("Introdueix la mida del taulell: ");
-        int midaTaulell = 7;
+        int midaTaulell = 15;
 //
 //        System.out.print("Introdueix la mida del faristol: ");
         int midaFaristol = 5;
@@ -42,6 +42,9 @@ public class DriverCamilaInicialiarPartida {
 
         CtrlPartida ctrlPartida = CtrlPartida.getInstance();
         ctrlPartida.inicialitzarPartida(midaTaulell, midaFaristol, "castellano", nomsJugadors,dificultats);
+
+        Jugada jugada = ctrlPartida.colocarFitxa(1, 7, 7);
+        System.out.print(jugada.getJugadaValida() + " " + jugada.getPuntuacio() + "\n");
 
         System.out.print("S'ha inicialitzat la partida amb " + midaTaulell + "x" + midaTaulell + " i " + midaFaristol + " fitxes al faristol.\n");
 

@@ -22,7 +22,7 @@ public class CtrlPartida {
     private int torn;
 
     // Lista de caselles que conté les fitxes del torn actual
-    private List<Casella> fitxesTorn = new ArrayList<>();
+    private List<Casella> casellasTorn = new ArrayList<>();
 
     //Puntaje acumulado del turno actual
     private int puntuacioTorn = 0;
@@ -255,35 +255,22 @@ public class CtrlPartida {
         }
     }
 
-//    public boolean colocarFitxa(Fitxa fitxa, int fila, int columna) {
-//        jugadors[torn%jugadors.length].eliminarFitxa(fitxa);
-//        taulell.colocarFitxa(fitxa, fila, columna);
-//        fitxesTorn.add(taulell.obtenirFitxa(fila, columna));
-//
-//
-//        int[][] pos = {{fila, columna}};
-//        return true;
-//        HashMap<String,Integer> nuevasPosiblesPalabras = new HashMap<>();
-//        Taulell.BooleanWrapper connex = new Taulell.BooleanWrapper(false);
-//        nuevasPosiblesPalabras = taulell.buscaPalabrasValidas(pos,connex);
-//        if (connex.getValue()) {
-//            for (String palabra : nuevasPosiblesPalabras.keySet()) {
-//                if (!dawg.conteParaula(palabra)) {
-//                    return false;
-//                }
-//            }
-//            return true;
-//        } else {
-//            return taulell.esBuit() && dawg.conteParaula(fitxa.obtenirLletra());
-//        }
-//    }
-//
-//    public void retirarFitxa(int fila, int columna) {
-//        jugadors[torn%jugadors.length].afegirFitxa(taulell.obtenirFitxa(fila, columna));
-//        fitxesTorn.remove(taulell.obtenirFitxa(fila, columna));
-//        taulell.retirarFitxa(fila, columna);
-//    }
+    public Jugada colocarFitxa(int fitxa, int fila, int columna) {
+        Fitxa aux = jugadors[torn%jugadors.length].obtenirFaristol().obtenirFitxa(fitxa);
+        jugadors[torn%jugadors.length].eliminarFitxa(aux);
+        taulell.colocarFitxa(aux, fila, columna);
+        casellasTorn.add(taulell.getCasella(fila, columna));
+        Jugada jugada = taulell.construirJugada(casellasTorn, dawg);
+        puntuacioTorn += jugada.getPuntuacio();
+        return jugada;
+    }
 
+
+    public void retirarFitxa(int fila, int columna) {
+        jugadors[torn%jugadors.length].afegirFitxa(taulell.obtenirFitxa(fila, columna));
+        casellasTorn.remove(taulell.getCasella(fila, columna));
+        taulell.retirarFitxa(fila, columna);
+    }
 
 
 }
