@@ -49,6 +49,8 @@ public class Jugador {
         faristol.eliminarFitxa(fitxa);
     }
 
+    public boolean esBot() {return false;} // Per defecte, no és un bot
+
     /*
     Driver
      */
