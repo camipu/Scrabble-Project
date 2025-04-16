@@ -42,7 +42,7 @@ public class CtrlPartida {
         sac = new Sac();
         inicialitzarSac(idioma);
         inicialitzarJugadors(nomsJugadors,dificultatsBots,midaFaristol);
-        historial = new HistorialJoc();
+        historial = new HistorialJoc(new java.util.Date());
         passarTorn();
     }
 
