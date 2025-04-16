@@ -34,8 +34,8 @@ public class Casella {
     }
 
     public Casella(Casella c) {
-        this.x = c.x;
-        this.y = c.y;
+        this.x = c.obtenirX();
+        this.y = c.obtenirY();
 
         this.fitxa = c.obtenirFitxa() != null ? new Fitxa(c.obtenirFitxa()) : null;
 
