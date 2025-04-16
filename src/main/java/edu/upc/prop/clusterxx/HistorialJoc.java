@@ -4,18 +4,40 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * Representa l’historial d’una partida de joc.
+ * Emmagatzema la llista de torns realitzats durant la partida,
+ * així com la data en què es va jugar.
+ *
+ * Aquesta classe permet consultar o reconstruir el desenvolupament d’una partida.
+ */
 public class HistorialJoc {
     private List<Torn> torns;
     private Date dataJoc;
 
+    /**
+     * Crea un nou historial de joc amb la data especificada.
+     * Inicialitza la llista de torns com a buida.
+     *
+     * @param date Data en què es va jugar la partida
+     */
     public HistorialJoc(Date date) {
         torns = new ArrayList<>();
         dataJoc = date;
     }
 
+    /**
+     * Afegeix un torn a l’historial de joc.
+     *
+     * @param torn Torn que es vol afegir a la llista de torns
+     */
     public void afegirTorn(Torn torn) {
         torns.add(torn);
     }
+
+    /**
+     * Elimina l’últim torn afegit a l’historial de joc.
+     */
     public void retirarTorn() {torns.removeLast();}
 
     public Torn obtenirTorn(int index) {

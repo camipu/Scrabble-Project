@@ -33,29 +33,45 @@ public class Casella {
         this.casellaJugada = false;
     }
 
-    public Casella(Casella c) {
-        this.x = c.obtenirX();
-        this.y = c.obtenirY();
+    /**
+     * Inicialitza aquesta casella com a còpia d'una altra.
+     * Assigna la mateixa posició, fitxa (si n'hi ha), estratègia de puntuació i estat de jugada.
+     *
+     * @param copia Casella de la qual copiar les dades
+     */
+    public Casella(Casella copia) {
+        this.x = copia.obtenirX();
+        this.y = copia.obtenirY();
 
-        this.fitxa = c.obtenirFitxa() != null ? new Fitxa(c.obtenirFitxa()) : null;
+        this.fitxa = copia.obtenirFitxa() != null ? new Fitxa(copia.obtenirFitxa()) : null;
 
         // Clonar l'estratègia segons el tipus concret
-        if (c.obtenirEstrategia() instanceof EstrategiaPuntuacio.EstrategiaNormal) {
+        if (copia.obtenirEstrategia() instanceof EstrategiaPuntuacio.EstrategiaNormal) {
             this.estrategia = new EstrategiaPuntuacio.EstrategiaNormal();
-        } else if (c.obtenirEstrategia() instanceof EstrategiaPuntuacio.EstrategiaMultiplicadorLletra) {
-            int m = c.obtenirEstrategia().obtenirMultiplicador();
+        } else if (copia.obtenirEstrategia() instanceof EstrategiaPuntuacio.EstrategiaMultiplicadorLletra) {
+            int m = copia.obtenirEstrategia().obtenirMultiplicador();
             this.estrategia = new EstrategiaPuntuacio.EstrategiaMultiplicadorLletra(m);
-        } else if (c.obtenirEstrategia() instanceof EstrategiaPuntuacio.EstrategiaMultiplicadorParaula) {
-            int m = c.obtenirEstrategia().obtenirMultiplicador();
+        } else if (copia.obtenirEstrategia() instanceof EstrategiaPuntuacio.EstrategiaMultiplicadorParaula) {
+            int m = copia.obtenirEstrategia().obtenirMultiplicador();
             this.estrategia = new EstrategiaPuntuacio.EstrategiaMultiplicadorParaula(m);
         } else {
             // Per si afegeixes noves estratègies en el futur
             throw new IllegalArgumentException("Estratègia de puntuació desconeguda");
         }
 
-        this.casellaJugada = c.casellaJugada;
+        this.casellaJugada = copia.casellaJugada;
     }
 
+    /**
+     * Assigna una estratègia de puntuació a la casella segons la seva posició al tauler.
+     * Les estratègies es basen en les coordenades i la mida del tauler, segons la configuració
+     * estàndard de Scrabble (triple/doble paraula o lletra).
+     *
+     * @param i Coordenada vertical de la casella (fila)
+     * @param j Coordenada horitzontal de la casella (columna)
+     * @param size Mida del tauler (número de files/columnes)
+     * @return L'estratègia de puntuació assignada a la casella
+     */
     private EstrategiaPuntuacio assignarEstrategia(int i, int j, int size) {
         int centro = size / 2;
         int offset = size / 4;
@@ -165,10 +181,10 @@ public class Casella {
     }
 
     /**
-     * Intenta col·locar una fitxa a la casella si està buida.
+     * Col·loca una fitxa a la casella si aquesta està buida.
      *
      * @param fitxa Fitxa a col·locar
-     *
+     * @throws ExcepcioCasellaOcupada si la casella ja conté una fitxa
      */
     public void colocarFitxa(Fitxa fitxa) {
         if (esBuida()) {
@@ -181,7 +197,7 @@ public class Casella {
      * Retira la fitxa de la casella, si en conté.
      *
      * @param fitxa Fitxa a col·locar
-     *
+     * @throws ExcepcioCasellBuida si la casella no conté cap fitxa
      */
     public void retirarFitxa() {
         if (!esBuida()) {

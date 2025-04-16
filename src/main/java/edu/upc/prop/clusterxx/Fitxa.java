@@ -22,6 +22,12 @@ public class Fitxa {
         this.digraf = lletra.length() > 1;
     }
 
+    /**
+     * Inicialitza aquesta fitxa com la copia d'un altre.
+     * Es copien tots els atributs.
+     *
+     * @param copiaFaristol Faristol original del qual es vol fer la còpia
+     */
     public Fitxa(Fitxa copiaFitxa) {
         this.lletra = copiaFitxa.obtenirLletra();
         this.punts = copiaFitxa.obtenirPunts();
@@ -66,7 +72,14 @@ public class Fitxa {
         return lletra;
     }
 
-    // Implementació de equals
+    /**
+     * Compara aquesta fitxa amb un altre objecte per determinar si són iguals.
+     * Dues fitxes són iguals si tenen la mateixa lletra i els mateixos punts.
+     *
+     * @param obj Objecte amb el qual es vol comparar aquesta fitxa
+     * @return {@code true} si l’objecte comparat és una fitxa amb la mateixa lletra i punts,
+     *         {@code false} altrament
+     */
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {
@@ -79,9 +92,15 @@ public class Fitxa {
         return punts == fitxa.punts && Objects.equals(lletra, fitxa.lletra);
     }
 
-    // Implementació de hashCode
+    /**
+     * Genera un codi hash per a aquesta fitxa, basat en la seva lletra i puntuació.
+     * Aquest mètode és coherent amb {@link #equals(Object)}, de manera que dues fitxes iguals
+     * generaran el mateix codi hash.
+     *
+     * @return Codi hash de la fitxa
+     */
     @Override
     public int hashCode() {
-        return Objects.hash(lletra, punts); // Generem un hash basat en les propietats de la fitxa
+        return Objects.hash(lletra, punts);
     }
 }
