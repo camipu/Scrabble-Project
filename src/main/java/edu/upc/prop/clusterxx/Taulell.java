@@ -1,10 +1,10 @@
 package edu.upc.prop.clusterxx;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import edu.upc.prop.clusterxx.EstrategiaPuntuacio.EstrategiaMultiplicadorLletra;
 import edu.upc.prop.clusterxx.EstrategiaPuntuacio.EstrategiaMultiplicadorParaula;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Taulell {
     private final int size;
@@ -170,7 +170,8 @@ public class Taulell {
         if (casellesJugades.size() == 7) puntuacio += 50;
         return puntuacio * multiplicadorParaula;
     }
-    
+
+
 
     public boolean validarJugada(Jugada jugada, DAWG dawg) {
         if (jugada.getCasellesJugades().isEmpty()) return false;

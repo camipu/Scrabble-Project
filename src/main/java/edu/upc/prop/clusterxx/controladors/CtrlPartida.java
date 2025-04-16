@@ -6,6 +6,7 @@ import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -103,6 +104,7 @@ public class CtrlPartida {
         ++torn;
         ++tornsSenseCanvi;
         historial.afegirTorn(new Torn(sac, taulell, jugadors, torn, acabada));
+        acabada = esFinalDePartida();
     }
 
     public void undo() {
@@ -113,7 +115,7 @@ public class CtrlPartida {
     }
 
     public boolean esFinalDePartida() {
-        return (sac.esBuit() && jugadors[torn%jugadors.length].esBuit()) || tornsSenseCanvi >= 6;
+        return (sac.esBuit() && jugadors[torn%jugadors.length].obtenirFaristol().esBuit()) || tornsSenseCanvi >= 6;
     }
 
     private void inicialitzarSac(String idioma) {
@@ -177,6 +179,27 @@ public class CtrlPartida {
     }
 
 
+    public void agafarDelSac(){
+        Fitxa novaFitxa = sac.agafarFitxa();
+        jugadors[torn%jugadors.length].afegirFitxa(novaFitxa);
+    }
+
+    public void canviarFitxes(int[] fitxesCanviades) {
+        List<Fitxa> fitxesCanviadesAux = new ArrayList<>();
+        for (int i = 0; i < fitxesCanviades.length; ++i) {
+            Fitxa novaFitxa = sac.agafarFitxa();
+            fitxesCanviadesAux.add(novaFitxa);
+        }
+        for (int index : fitxesCanviades) {
+            Fitxa aux = jugadors[torn%jugadors.length].obtenirFaristol().obtenirFitxa(index);
+            sac.afegirFitxa(aux);
+            jugadors[torn%jugadors.length].eliminarFitxa(aux);
+        }
+        for (Fitxa fitxa : fitxesCanviadesAux) {
+            jugadors[torn%jugadors.length].afegirFitxa(fitxa);
+        }
+    }
+
 //    public boolean colocarFitxa(Fitxa fitxa, int fila, int columna) {
 //        jugadors[torn%jugadors.length].eliminarFitxa(fitxa);
 //        taulell.colocarFitxa(fitxa, fila, columna);
@@ -205,11 +228,7 @@ public class CtrlPartida {
 //        fitxesTorn.remove(taulell.obtenirFitxa(fila, columna));
 //        taulell.retirarFitxa(fila, columna);
 //    }
-//
-//    public void mostrarContingutSac() {
-//        sac.obtenirSac().forEach((fitxa, quantitat) ->
-//                System.out.println(fitxa.obtenirLletra() + " -> " + quantitat + " fitxes, " + fitxa.obtenirPunts() + " punts"));
-//    }
+
 
 
 }

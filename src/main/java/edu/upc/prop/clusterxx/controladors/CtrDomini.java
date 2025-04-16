@@ -69,6 +69,10 @@ public class CtrDomini {
         ctrlPartida.acabarPartida();
     }
 
+    public boolean esAcabada() {
+        return ctrlPartida.acabada();
+    }
+
 
 
 

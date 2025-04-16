@@ -48,6 +48,9 @@ public class Faristol {
         return fitxes.size();
     }
 
+    public bool esBuit() {
+        return fitxes.isEmpty();
+    }
 
     public void afegirFitxa(Fitxa fitxa) {
         if (esPle()) {
