@@ -174,7 +174,8 @@ public class Taulell {
     // FUNCIO PER CrtlPartida
     public Jugada construirJugada(List<Casella> casellesJugades, DAWG dawg) {
         String paraulaFormada = construirParaula(casellesJugades);
-        Boolean jugadaValida = jugadaValida(paraulaFormada, casellesJugades, dawg);
+        Boolean jugadaValida = dawg.conteParaula(paraulaFormada);
+        jugadaValida = jugadaValida && jugadaValida(paraulaFormada, casellesJugades, dawg);
         int puntuacio = calcularPuntuacioParaula(casellesJugades);
         return new Jugada(paraulaFormada, casellesJugades, puntuacio, jugadaValida);
     }
@@ -192,7 +193,7 @@ public class Taulell {
     private boolean jugadaValida(String paraulaJugada, List<Casella> casellesJugades, DAWG dawg) {
         if (casellesJugades.isEmpty()) return false;
 
-        if (!dawg.conteParaula(paraulaJugada)) return false;
+        // NO mira si paraula jugada és vàlida, això ja ho fa construirJugada
 
         if (esBuit()) {
             // Primera jugada i per tant almenys una de les caselles ha d’estar al mig
