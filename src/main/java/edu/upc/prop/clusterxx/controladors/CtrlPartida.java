@@ -11,6 +11,7 @@ import java.util.stream.Collectors;
 
 public class CtrlPartida {
     private static CtrlPartida instance = null;
+    private CtrlJugadaBot ctrlBot = null;
     private HistorialJoc historial;
     private Sac sac;
     private Taulell taulell;
@@ -33,6 +34,7 @@ public class CtrlPartida {
     }
 
     private CtrlPartida() {
+
     }
 
     public void inicialitzarPartida(int midaTaulell, int midaFaristol, String idioma, String[] nomsJugadors,int[] dificultatsBots) {
