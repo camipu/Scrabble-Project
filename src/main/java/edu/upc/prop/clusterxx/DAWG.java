@@ -34,6 +34,10 @@ public class DAWG {
             return fills.get(token);
         }
 
+        public Map<String, Node> getFills() {
+            return fills;
+        }
+
         public boolean conteToken(String token) {
             return fills.containsKey(token);
         }

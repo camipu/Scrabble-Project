@@ -3,8 +3,11 @@ package edu.upc.prop.clusterxx.controladors;
 import edu.upc.prop.clusterxx.*;
 
 import java.util.ArrayList;
+import java.util.Map;
 import java.util.List;
 import java.util.Random;
+
+
 
 public class CtrlJugadaBot {
     private static CtrlJugadaBot instance = null;
@@ -134,27 +137,51 @@ public class CtrlJugadaBot {
         }
         else {
             for (int i = 0; i < fitxesRestants.size(); i++) {
-                Fitxa fitxa = fitxesRestants.get(i);
+                Fitxa fitxa = fitxesRestants.remove(i);
                 String token = fitxa.obtenirLletra();
-                DAWG.Node nodeSeguent = nodeActual.getFill(token);
-                if (nodeSeguent == null) continue;
+                DAWG.Node nodeSeguent;
+                if (token == "#") {
+                // Comodí: pot agafar qualsevol token disponible en el node actual
+                    for (Map.Entry<String, DAWG.Node> entry : nodeActual.getFills().entrySet()) {
+                        String tokenSubstitut = entry.getKey();
+                        nodeSeguent = entry.getValue();
 
-                String novaParaula = prefix + token;
+                        String novaParaula = prefix + tokenSubstitut;
 
-                // Provo de afegir una fitxa
-                fitxesRestants.remove(i);
-                Casella novaCasella = new Casella(f, c, taulell.getSize());
-                novaCasella.colocarFitxa(fitxa);
-                casellesJugades.add(novaCasella);
+                        // Afegeixo fitxa
+                        Fitxa fitxaSubstituta = new Fitxa(tokenSubstitut, 0); // 0 punts si és comodí
+                        Casella novaCasella = new Casella(f, c, mida);
+                        novaCasella.colocarFitxa(fitxaSubstituta);
+                        casellesJugades.add(novaCasella);
 
-                Jugada novaJugada = taulell.construirJugadaBot(novaParaula, casellesJugades, dawg);
-                if (novaJugada.getJugadaValida()) resultats.add(novaJugada);
+                        Jugada novaJugada = taulell.construirJugadaBot(novaParaula, casellesJugades, dawg);
+                        if (novaJugada.getJugadaValida()) resultats.add(novaJugada);
 
-                resultats.addAll(generarParaules(novaParaula, fitxesRestants, casellesJugades, nodeSeguent, fila, columna, horitzontal, taulell, dawg));
+                        resultats.addAll(generarParaules(novaParaula, fitxesRestants, casellesJugades, nodeActual, fila, columna, horitzontal, taulell, dawg));
+                        
+                        casellesJugades.remove(casellesJugades.size() - 1);
+                    }
+                }
+                else {
+                    nodeSeguent = nodeActual.getFill(token);
+                    if (nodeSeguent == null) continue;
 
-                // Desfaig el canvi
-                casellesJugades.remove(novaCasella);
-                fitxesRestants.add(i, fitxa);
+                    String novaParaula = prefix + token;
+
+                    // Provo de afegir una fitxa
+                    Casella novaCasella = new Casella(f, c, taulell.getSize());
+                    novaCasella.colocarFitxa(fitxa);
+                    casellesJugades.add(novaCasella);
+
+                    Jugada novaJugada = taulell.construirJugadaBot(novaParaula, casellesJugades, dawg);
+                    if (novaJugada.getJugadaValida()) resultats.add(novaJugada);
+
+                    resultats.addAll(generarParaules(novaParaula, fitxesRestants, casellesJugades, nodeSeguent, fila, columna, horitzontal, taulell, dawg));
+
+                    // Desfaig el canvi
+                    casellesJugades.remove(novaCasella);
+                    fitxesRestants.add(i, fitxa);
+                }
             }
         }
         return resultats;
