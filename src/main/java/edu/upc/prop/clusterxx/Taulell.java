@@ -175,14 +175,14 @@ public class Taulell {
     public Jugada construirJugada(List<Casella> casellesJugades, DAWG dawg) {
         String paraulaFormada = construirParaula(casellesJugades);
         Boolean jugadaValida = dawg.conteParaula(paraulaFormada);
-        jugadaValida = jugadaValida && jugadaValida(paraulaFormada, casellesJugades, dawg);
+        jugadaValida = jugadaValida && jugadaValida(casellesJugades, dawg);
         int puntuacio = calcularPuntuacioParaula(casellesJugades);
         return new Jugada(paraulaFormada, casellesJugades, puntuacio, jugadaValida);
     }
 
     // Funcio per CrtlBot
     public Jugada construirJugadaBot(String paraulaFormada, List<Casella> casellesJugades, DAWG dawg) {
-        Boolean jugadaValida = jugadaValida(paraulaFormada, casellesJugades, dawg);
+        Boolean jugadaValida = jugadaValida(casellesJugades, dawg);
         int puntuacio = -1;
         if (jugadaValida) {
             puntuacio = calcularPuntuacioParaula(casellesJugades);
@@ -190,7 +190,7 @@ public class Taulell {
         return new Jugada(paraulaFormada, casellesJugades, puntuacio, jugadaValida);
     }
 
-    private boolean jugadaValida(String paraulaJugada, List<Casella> casellesJugades, DAWG dawg) {
+    private boolean jugadaValida(List<Casella> casellesJugades, DAWG dawg) {
         if (casellesJugades.isEmpty()) return false;
 
         // NO mira si paraula jugada és vàlida, això ja ho fa construirJugada
