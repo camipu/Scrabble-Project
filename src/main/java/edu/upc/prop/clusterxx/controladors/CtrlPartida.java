@@ -22,6 +22,9 @@ public class CtrlPartida {
     // Lista de caselles que conté les fitxes del torn actual
     private List<Casella> fitxesTorn = new ArrayList<>();
 
+    //Puntaje acumulado del turno actual
+    private int puntuacioTorn = 0;
+
     public static CtrlPartida getInstance() {
         if (instance == null) {
             instance = new CtrlPartida();
@@ -35,13 +38,10 @@ public class CtrlPartida {
     public void inicialitzarPartida(int midaTaulell, int midaFaristol, String idioma, String[] nomsJugadors,int[] dificultatsBots) {
         acabada = false;
         torn = 1;
-        taulell = new Taulell(midaTaulell);
+        inicialitzarTaulell(midaTaulell);
         sac = new Sac();
         inicialitzarSac(idioma);
-        inicialitzarJugadors(midaFaristol, nomsJugadors, dificultatsBots);
-
-        historial = new HistorialJoc();
-        historial.afegirTorn(new Torn(sac, taulell, jugadors, torn, acabada));
+        inicialitzarJugadors(nomsJugadors,dificultatsBots,midaFaristol);
     }
 
     public void inicialitzarTorn(Torn nouTorn) {
@@ -121,7 +121,7 @@ public class CtrlPartida {
         }
     }
 
-    private void inicialitzarJugadors(int midaFaristol, String[] nomsJugadors, int[] dificultatsBots) {
+    private void inicialitzarJugadors(String[] nomsJugadors, int[] dificultatsBots, int midaFaristol) {
         jugadors = new Jugador[nomsJugadors.length + dificultatsBots.length];
         int i;
         for (i = 0; i < nomsJugadors.length; i++) {
@@ -134,6 +134,10 @@ public class CtrlPartida {
             jugadors[j] = new Bot("bot" + (j - i + 1), faristolBot, dificultatsBots[j-i]) ;
             inicialitzarFaristol(jugadors[j]);
         }
+    }
+
+    private void inicialitzarTaulell(int midaTaulell) {
+        taulell = new Taulell(midaTaulell);
     }
 
     private void inicialitzarFaristol(Jugador jugador) {
