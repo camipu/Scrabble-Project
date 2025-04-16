@@ -1,9 +1,32 @@
 package edu.upc.prop.clusterxx;
 
-// Interfície Estratègia per calcular els punts
+/**
+ * Interfície que defineix una estratègia de puntuació per a una casella del tauler.
+ * Les estratègies poden aplicar multiplicadors a lletres o paraules senceres,
+ * segons el tipus de casella.
+ */
 public interface EstrategiaPuntuacio {
+
+    /**
+     * Calcula els punts aportats per una fitxa segons l’estratègia de puntuació.
+     *
+     * @param fitxa Fitxa per a la qual es vol calcular la puntuació
+     * @return Puntuació resultant d’aplicar l’estratègia
+     */
     int calcularPunts(Fitxa fitxa);
+
+    /**
+     * Retorna el valor del multiplicador associat a l’estratègia.
+     *
+     * @return Valor del multiplicador (per a lletra o paraula)
+     */
     int obtenirMultiplicador();
+
+    /**
+     * Indica si l’estratègia és de multiplicador de paraula.
+     *
+     * @return {@code true} si és una estratègia de paraula, {@code false} si és de lletra
+     */
     boolean esMultiplicadorParaula();
 
     /**
