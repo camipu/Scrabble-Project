@@ -11,8 +11,11 @@ public class Torn {
 
     public Torn(Sac sac, Taulell taulell, Jugador[] jugadors, int torn) {
         this.sac = new Sac(sac);
-        this.taulell = taulell;
-        this.jugadors = jugadors;
+        this.taulell = new Taulell(taulell);
+        this.jugadors = new Jugador[jugadors.length];
+        for (int i = 0; i < jugadors.length; i++) {
+            this.jugadors[i] = new Jugador(jugadors[i]);
+        }
         this.torn = torn;
     }
 }
