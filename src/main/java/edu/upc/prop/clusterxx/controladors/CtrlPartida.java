@@ -36,25 +36,7 @@ public class CtrlPartida {
         taulell = new Taulell(midaTaulell);
         sac = new Sac();
         inicialitzarSac(idioma);
-        jugadors = new Jugador[nomsJugadors.length + dificultatsBots.length];
-        int i;
-        for (i = 0; i < nomsJugadors.length; i++) {
-            Faristol faristolJugador = new Faristol(midaFaristol);
-            while(faristolJugador.obtenirNumFitxes() < midaFaristol) {
-                Fitxa novaFitxa = sac.agafarFitxa();
-                faristolJugador.afegirFitxa(novaFitxa);
-            }
-            jugadors[i] = new Jugador(nomsJugadors[i], faristolJugador);
-        }
-        for (int j = i; j < dificultatsBots.length + i; ++j) {
-            Faristol faristolBot = new Faristol(midaFaristol);
-            while(faristolBot.obtenirNumFitxes() < midaFaristol) {
-                Fitxa novaFitxa = sac.agafarFitxa();
-                faristolBot.afegirFitxa(novaFitxa);
-            }
-            jugadors[j] = new Bot("bot" + (j - i + 1), faristolBot, dificultatsBots[j-i]) ;
-            System.out.println("Bot " + (j - i + 1) + " creat amb dificultat " + dificultatsBots[j-i]);
-        }
+        inicialitzarJugadors(midaFaristol, nomsJugadors, dificultatsBots);
     }
 
     public boolean acabada() {return acabada;}
@@ -111,6 +93,29 @@ public class CtrlPartida {
             }
         }
     }
+
+    private void inicialitzarJugadors(int midaFaristol, String[] nomsJugadors, int[] dificultatsBots) {
+        jugadors = new Jugador[nomsJugadors.length + dificultatsBots.length];
+        int i;
+        for (i = 0; i < nomsJugadors.length; i++) {
+            Faristol faristolJugador = new Faristol(midaFaristol);
+            jugadors[i] = new Jugador(nomsJugadors[i], faristolJugador);
+            inicialitzarFaristol(jugadors[i]);
+        }
+        for (int j = i; j < dificultatsBots.length + i; ++j) {
+            Faristol faristolBot = new Faristol(midaFaristol);
+            jugadors[j] = new Bot("bot" + (j - i + 1), faristolBot, dificultatsBots[j-i]) ;
+            inicialitzarFaristol(jugadors[j]);
+        }
+    }
+
+    private void inicialitzarFaristol(Jugador jugador) {
+        while(!jugador.faristolPle()) {
+            Fitxa novaFitxa = sac.agafarFitxa();
+            jugador.afegirFitxa(novaFitxa);
+        }
+    }
+
 
 //    public boolean colocarFitxa(Fitxa fitxa, int fila, int columna) {
 //        jugadors[torn%jugadors.length].eliminarFitxa(fitxa);

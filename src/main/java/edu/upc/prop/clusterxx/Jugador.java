@@ -31,6 +31,8 @@ public class Jugador {
     public Faristol obtenirFaristol() {
         return faristol;
     }
+    public boolean faristolPle() {return faristol.esPle();}
+    public void barrejarFaristol() { faristol.barrejarFitxes();}
 
     public void afegirPunts(int nousPunts) {
         this.punts += nousPunts;
