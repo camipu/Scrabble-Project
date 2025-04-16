@@ -16,7 +16,7 @@ public class HistorialJoc {
     public void retirarTorn() {torns.removeLast();}
 
     public Torn obtenirTorn(int index) {
-        return torns.get(index);
+        return torns.get(index-1);
     }
 
     public int obtenirMida() {
