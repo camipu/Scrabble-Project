@@ -1,10 +1,10 @@
 package edu.upc.prop.clusterxx;
 
-import edu.upc.prop.clusterxx.EstrategiaPuntuacio.EstrategiaMultiplicadorLletra;
-import edu.upc.prop.clusterxx.EstrategiaPuntuacio.EstrategiaMultiplicadorParaula;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import edu.upc.prop.clusterxx.EstrategiaPuntuacio.EstrategiaMultiplicadorLletra;
+import edu.upc.prop.clusterxx.EstrategiaPuntuacio.EstrategiaMultiplicadorParaula;
 
 public class Taulell {
     private final int size;
@@ -170,22 +170,35 @@ public class Taulell {
         if (casellesJugades.size() == 7) puntuacio += 50;
         return puntuacio * multiplicadorParaula;
     }
+    
+    // FUNCIO PER CrtlPartida
+    public Jugada construirJugada(List<Casella> casellesJugades, DAWG dawg) {
+        String paraulaFormada = construirParaula(casellesJugades);
+        Boolean jugadaValida = dawg.conteParaula(paraulaFormada);
+        jugadaValida = jugadaValida && jugadaValida(casellesJugades, dawg);
+        int puntuacio = calcularPuntuacioParaula(casellesJugades);
+        return new Jugada(paraulaFormada, casellesJugades, puntuacio, jugadaValida);
+    }
 
-
-
-    public boolean validarJugada(Jugada jugada, DAWG dawg) {
-        if (jugada.getCasellesJugades().isEmpty()) return false;
-
-        if (jugada.getParaulaFormada() == null) {
-            jugada.setParaulaFormada(calcularParaulaFormada(jugada.getCasellesJugades()));
+    // Funcio per CrtlBot
+    public Jugada construirJugadaBot(String paraulaFormada, List<Casella> casellesJugades, DAWG dawg) {
+        Boolean jugadaValida = jugadaValida(casellesJugades, dawg);
+        int puntuacio = -1;
+        if (jugadaValida) {
+            puntuacio = calcularPuntuacioParaula(casellesJugades);
         }
+        return new Jugada(paraulaFormada, casellesJugades, puntuacio, jugadaValida);
+    }
 
-        if (!dawg.conteParaula(jugada.getParaulaFormada())) return false;
+    private boolean jugadaValida(List<Casella> casellesJugades, DAWG dawg) {
+        if (casellesJugades.isEmpty()) return false;
+
+        // NO mira si paraula jugada és vàlida, això ja ho fa construirJugada
 
         if (esBuit()) {
             // Primera jugada i per tant almenys una de les caselles ha d’estar al mig
             int mig = size / 2;
-            for (Casella c : jugada.getCasellesJugades()) {
+            for (Casella c : casellesJugades) {
                 if (c.obtenirX() != mig || c.obtenirY() != mig) return false;
             }
         }
@@ -194,7 +207,7 @@ public class Taulell {
             // I MIRAR QUE SIGUIN VALIDES
             boolean paraulaTocaParaula = false;
 
-            for (Casella c : jugada.getCasellesJugades()) {
+            for (Casella c : casellesJugades) {
                 int f = c.obtenirX();
                 int col = c.obtenirY();
     
@@ -236,7 +249,6 @@ public class Taulell {
             }
             if (!paraulaTocaParaula) return false;
         }
-        jugada.setPuntuacio(calcularPuntuacioParaula(jugada.getCasellesJugades()));
         return true;
     }
 
@@ -253,7 +265,7 @@ public class Taulell {
         }
     }
 
-    public String calcularParaulaFormada(List<Casella> casellesJugades) {
+    private String construirParaula(List<Casella> casellesJugades) {
         if (casellesJugades.isEmpty()) return "";
     
         boolean esHoritzontal = esJugadaHoritzontal(casellesJugades);

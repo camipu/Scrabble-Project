@@ -21,7 +21,7 @@ public class CtrlJugadaBot {
     }
 
     /**
-     * Calcula una jugada segons les fitxes del faristol u la dificultat
+     * Calcula una jugada segons l'estat del taulell i la dificultat
      * @param taulell El taulell actual del joc
      * @param dawg El DAWG amb les paraules vàlides
      * @return Un objecte Jugada amb la millor jugada trobada
@@ -91,21 +91,10 @@ public class CtrlJugadaBot {
             offset++;
         }
 
-        // Construir sufix correctament
-        // StringBuilder sufix = new StringBuilder();
-        // int offsetSufix = 1;
-        // while (true) {
-        //     int f = horitzontal ? fila : fila + offsetSufix;
-        //     int c = horitzontal ? columna + offsetSufix : columna;
-        //     if (f >= mida || c >= mida || caselles[f][c].esBuida()) break;
-        //     sufix.append(caselles[f][c].obtenirFitxa().obtenirLletra());
-        //     offsetSufix++;
-        // }
-
         String paraulaInicial = prefix.toString();
 
         // Generar les paraules possibles
-        return generarParaules(paraulaInicial, faristol.obtenirFitxes(), new ArrayList<>(), dawg.getArrel(), fila, columna, horitzontal, taulell, dawg);
+        return generarParaules(paraulaInicial, faristol.obtenirFitxes(), new ArrayList<>(),dawg.getArrel(), fila, columna, horitzontal, taulell, dawg);
     }
 
     /**
@@ -119,28 +108,29 @@ public class CtrlJugadaBot {
      * @param taulell El taulell actual
      * @param dawg El DAWG amb les paraules vàlides
      */
-    private List<Jugada> generarParaules(String paraulaActual, List<Fitxa> fitxesRestants, List<Fitxa> fitxesUtilitzades,
-                                         DAWG.Node nodeActual, int fila, int columna, boolean horitzontal, Taulell taulell, DAWG dawg) {
+    private List<Jugada> generarParaules(String prefix, List<Fitxa> fitxesRestants,
+                                         List<Casella> casellesJugades, DAWG.Node nodeActual, int fila, int columna,
+                                         boolean horitzontal, Taulell taulell, DAWG dawg) {
         List<Jugada> resultats = new ArrayList<>();
         int mida = taulell.getSize();
-        int pos = paraulaActual.length();
-        int f = horitzontal ? fila : fila + pos;
-        int c = horitzontal ? columna + pos : columna;
+        int offset = prefix.length();
+        int f = horitzontal ? fila : fila + offset;
+        int c = horitzontal ? columna + offset : columna;
 
         if (f >= mida || c >= mida) return resultats;
 
-        Casella casella = taulell.getTaulell()[f][c];
-        if (!casella.esBuida()) {
-            String token = casella.obtenirFitxa().obtenirLletra();
+        Casella casellaActual = taulell.getTaulell()[f][c];
+        if (!casellaActual.esBuida()) {
+            String token = casellaActual.obtenirFitxa().obtenirLletra();
             DAWG.Node nodeSeguent = nodeActual.getFill(token);
             if (nodeSeguent == null) return resultats;
 
-            String novaParaula = paraulaActual + token;
+            String novaParaula = prefix + token;
 
-            Jugada novaJugada = construirJugada(novaParaula, fila, columna, horitzontal, fitxesUtilitzades, taulell, dawg);
-            if (taulell.validarJugada(novaJugada, dawg)) resultats.add(novaJugada);
-            resultats.addAll(generarParaules(novaParaula, fitxesRestants, fitxesUtilitzades, nodeSeguent, fila, columna, horitzontal, taulell, dawg));
+            Jugada novaJugada = taulell.construirJugadaBot(novaParaula, casellesJugades, dawg);
+            if (novaJugada.getJugadaValida()) resultats.add(novaJugada);
 
+            resultats.addAll(generarParaules(novaParaula, fitxesRestants, casellesJugades, nodeSeguent, fila, columna, horitzontal, taulell, dawg));
         }
         else {
             for (int i = 0; i < fitxesRestants.size(); i++) {
@@ -149,42 +139,24 @@ public class CtrlJugadaBot {
                 DAWG.Node nodeSeguent = nodeActual.getFill(token);
                 if (nodeSeguent == null) continue;
 
-                String novaParaula = paraulaActual + token;
+                String novaParaula = prefix + token;
 
                 // Provo de afegir una fitxa
-                Fitxa usada = fitxesRestants.remove(i);
-                fitxesUtilitzades.add(usada);
+                fitxesRestants.remove(i);
+                Casella novaCasella = new Casella(f, c, taulell.getSize());
+                novaCasella.colocarFitxa(fitxa);
+                casellesJugades.add(novaCasella);
 
-                Jugada novaJugada = construirJugada(novaParaula, fila, columna, horitzontal, fitxesUtilitzades, taulell, dawg);
-                if (taulell.validarJugada(novaJugada, dawg)) resultats.add(novaJugada);
+                Jugada novaJugada = taulell.construirJugadaBot(novaParaula, casellesJugades, dawg);
+                if (novaJugada.getJugadaValida()) resultats.add(novaJugada);
 
-                resultats.addAll(generarParaules(novaParaula, fitxesRestants, fitxesUtilitzades, nodeSeguent, fila, columna, horitzontal, taulell, dawg));
+                resultats.addAll(generarParaules(novaParaula, fitxesRestants, casellesJugades, nodeSeguent, fila, columna, horitzontal, taulell, dawg));
 
                 // Desfaig el canvi
-                fitxesUtilitzades.remove(usada);
-                fitxesRestants.add(i, usada);
+                casellesJugades.remove(novaCasella);
+                fitxesRestants.add(i, fitxa);
             }
         }
         return resultats;
-    }
-
-    private Jugada construirJugada(String paraula, int fila, int columna, boolean horitzontal,
-                                   List<Fitxa> fitxesUtilitzades, Taulell taulell, DAWG dawg) {
-        List<Casella> casellesJugades = new ArrayList<>();
-        int idx = 0;
-        int mida = taulell.getSize();
-
-        for (int i = 0; i < paraula.length(); i++) {
-            int f = horitzontal ? fila : fila + i;
-            int c = horitzontal ? columna + i : columna;
-            if (f >= mida || c >= mida) break;
-            if (taulell.getTaulell()[f][c].esBuida()) {
-                Casella nova = new Casella(f, c, mida);
-                nova.colocarFitxa(fitxesUtilitzades.get(idx++));
-                casellesJugades.add(nova);
-            }
-        }
-
-        return new Jugada(paraula, casellesJugades, -1);
     }
 }
