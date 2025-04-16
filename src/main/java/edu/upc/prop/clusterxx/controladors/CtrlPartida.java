@@ -21,6 +21,9 @@ public class CtrlPartida {
     // Lista de caselles que conté les fitxes del torn actual
     private List<Casella> casellasTorn = new ArrayList<>();
 
+    //Puntaje acumulado del turno actual
+    private int puntuacioTorn = 0;
+
     public static CtrlPartida getInstance() {
         if (instance == null) {
             instance = new CtrlPartida();
