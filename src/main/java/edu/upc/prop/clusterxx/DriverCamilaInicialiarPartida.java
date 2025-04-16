@@ -27,8 +27,8 @@ public class DriverCamilaInicialiarPartida {
 
         sc.nextLine(); // Netegem el salt de línia
 
-        System.out.print("Introdueix l'idioma (ex: catala): ");
-        String idioma = sc.nextLine();
+        //System.out.print("Introdueix l'idioma (ex: catala): ");
+        String idioma = "castellano";
 
 //        System.out.print("Introdueix el nombre de jugadors: ");
         int numJugadors = 1;
@@ -41,7 +41,7 @@ public class DriverCamilaInicialiarPartida {
         }
 
         CtrlPartida ctrlPartida = CtrlPartida.getInstance();
-        ctrlPartida.inicialitzarPartida(midaTaulell, midaFaristol, idioma, nomsJugadors, dificultats);
+        ctrlPartida.inicialitzarPartida(midaTaulell, midaFaristol, "castellano", nomsJugadors,dificultats);
 
         System.out.print("S'ha inicialitzat la partida amb " + midaTaulell + "x" + midaTaulell + " i " + midaFaristol + " fitxes al faristol.\n");
 

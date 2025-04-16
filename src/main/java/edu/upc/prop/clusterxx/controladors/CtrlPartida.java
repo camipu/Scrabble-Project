@@ -3,10 +3,10 @@ package edu.upc.prop.clusterxx.controladors;
 import edu.upc.prop.clusterxx.*;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -27,7 +27,7 @@ public class CtrlPartida {
     //Puntaje acumulado del turno actual
     private int puntuacioTorn = 0;
 
-    private int tornsSenseCanvi = 0;
+    private int tornsSenseCanvi = -1;
 
     public static CtrlPartida getInstance() {
         if (instance == null) {
@@ -40,13 +40,68 @@ public class CtrlPartida {
 
     }
 
+    public void inicialitzarDawg(String idioma) {
+        List<String> palabras = new ArrayList<>();
+        List<String> tokens = new ArrayList<>();
+
+        try {
+            // Leer palabras desde el recurso
+            InputStream inputParaules = getClass().getClassLoader().getResourceAsStream(idioma + "/" + idioma + ".txt");
+            if (inputParaules == null) {
+                throw new RuntimeException("No s'ha pogut trobar el fitxer: " + idioma + "/" + idioma + ".txt");
+            }
+            try (BufferedReader reader = new BufferedReader(new InputStreamReader(inputParaules))) {
+                String linea;
+                while ((linea = reader.readLine()) != null) {
+                    linea = linea.trim();
+                    if (!linea.isEmpty()) {
+                        palabras.add(linea);
+                    }
+                }
+            }
+
+            // Leer tokens desde el recurso (solo la primera palabra de cada línea)
+            InputStream inputFitxes = getClass().getClassLoader().getResourceAsStream(idioma + "/fitxes" + idioma + ".txt");
+            if (inputFitxes == null) {
+                throw new RuntimeException("No s'ha pogut trobar el fitxer: " + idioma + "/fitxes" + idioma + ".txt");
+            }
+            try (BufferedReader reader = new BufferedReader(new InputStreamReader(inputFitxes))) {
+                String linea;
+                while ((linea = reader.readLine()) != null) {
+                    linea = linea.trim();
+                    if (linea.isEmpty() || linea.startsWith("#")) continue;
+                    String[] partes = linea.split("\\s+");
+                    if (partes.length > 0) {
+                        tokens.add(partes[0]);
+                    }
+                }
+            }
+
+        } catch (IOException e) {
+            throw new RuntimeException("Error al llegir els fitxers: " + e.getMessage(), e);
+        }
+
+        // Inicializar DAWG con los tokens
+        dawg = new DAWG(tokens, palabras);
+        System.out.print("Se ha inicializado el DAWG\n");
+        System.out.print("Tokens: " + tokens + "\n");
+    }
+
+
+
+    private void inicialitzarCtrlBot() {
+        ctrlBot = CtrlJugadaBot.getInstance();
+    }
+
     public void inicialitzarPartida(int midaTaulell, int midaFaristol, String idioma, String[] nomsJugadors,int[] dificultatsBots) {
         acabada = false;
         torn = 0;
         inicialitzarTaulell(midaTaulell);
+        inicialitzarDawg(idioma);
         sac = new Sac();
         inicialitzarSac(idioma);
         inicialitzarJugadors(nomsJugadors,dificultatsBots,midaFaristol);
+        inicialitzarCtrlBot();
         historial = new HistorialJoc(new java.util.Date());
         passarTorn();
     }
