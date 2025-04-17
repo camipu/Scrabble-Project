@@ -154,14 +154,24 @@ public class Taulell {
             int c = horitzontal ? pos : col;
             Casella actual = taulell[f][c];
             Fitxa fitxa = actual.obtenirFitxa();
-            int punts = fitxa.obtenirPunts();
-    
-            if (casellesJugades.contains(actual)) {
-                if (actual.obtenirEstrategia().esMultiplicadorParaula()) {
-                    multiplicadorParaula *= actual.obtenirMultiplicador();
-                } else {
-                    punts *= actual.obtenirMultiplicador();
+            int punts = 0;
+
+            if (actual.esBuida()) {
+                for (Casella casellaJugada : casellesJugades) {
+                    if (casellaJugada.obtenirX() == actual.obtenirX() &&
+                        casellaJugada.obtenirY() == actual.obtenirY()) {
+                        fitxa = casellaJugada.obtenirFitxa();
+                        break;
+                    }
+                    if (actual.obtenirEstrategia().esMultiplicadorParaula()) {
+                        multiplicadorParaula *= actual.obtenirMultiplicador();
+                    } else {
+                        punts *= actual.obtenirMultiplicador();
+                    }
                 }
+            }
+            else {
+                punts = fitxa.obtenirPunts();
             }
     
             puntuacio += punts;
