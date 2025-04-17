@@ -35,8 +35,10 @@ task jarProvaIni(type: Jar) {
     manifest {
         attributes 'Main-Class': 'edu.upc.prop.clusterxx.DriverCamilaInicialiarPartida'
     }
-    from sourceSets.main.output
-    dependsOn classes
+    from {
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+    with jar
 }
 build.dependsOn jarProvaIni
 
