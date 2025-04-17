@@ -83,8 +83,6 @@ public class CtrlPartida {
         dawg = new DAWG(tokens, palabras);
     }
 
-
-
     private void inicialitzarCtrlBot() {
         ctrlBot = CtrlJugadaBot.getInstance();
     }

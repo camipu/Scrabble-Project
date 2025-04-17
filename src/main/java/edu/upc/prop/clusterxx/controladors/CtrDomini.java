@@ -181,6 +181,7 @@ public class CtrDomini {
     public void ferUndo() {
         ctrlPartida.undo();
     }
+
     /**
      * Finalitza la partida actual.
      */
@@ -203,6 +204,14 @@ public class CtrDomini {
      */
     public void canviarFitxes(int[] fitxesCanviades){
         ctrlPartida.canviarFitxes(fitxesCanviades);
+    }
+
+    /**
+     * Confirma la paraula formada pel jugador actual al taulell.
+     * Aquesta acció valida el moviment, actualitza la puntuació i finalitza el torn.
+     */
+    public void commitParaula(){
+        ctrlPartida.commitParaula();
     }
 
     /**
