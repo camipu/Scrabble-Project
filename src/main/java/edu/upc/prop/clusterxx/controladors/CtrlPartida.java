@@ -37,7 +37,6 @@ public class CtrlPartida {
     }
 
     private CtrlPartida() {
-
     }
 
     public void inicialitzarDawg(String idioma) {
