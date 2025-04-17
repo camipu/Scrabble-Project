@@ -153,14 +153,13 @@ public class Taulell {
             int f = horitzontal ? fila : pos;
             int c = horitzontal ? pos : col;
             Casella actual = taulell[f][c];
-            Fitxa fitxa = actual.obtenirFitxa();
             int punts = 0;
 
             if (actual.esBuida()) {
                 for (Casella casellaJugada : casellesJugades) {
                     if (casellaJugada.obtenirX() == actual.obtenirX() &&
                         casellaJugada.obtenirY() == actual.obtenirY()) {
-                        fitxa = casellaJugada.obtenirFitxa();
+                        punts = casellaJugada.obtenirFitxa().obtenirPunts();
                         break;
                     }
                     if (actual.obtenirEstrategia().esMultiplicadorParaula()) {
@@ -171,6 +170,7 @@ public class Taulell {
                 }
             }
             else {
+                Fitxa fitxa = actual.obtenirFitxa();
                 punts = fitxa.obtenirPunts();
             }
     
