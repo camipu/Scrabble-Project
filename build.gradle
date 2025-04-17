@@ -4,7 +4,6 @@ plugins {
 }
 
 group = 'edu.upc.prop.clusterxx'
-version = '1.0-SNAPSHOT'
 
 ext {
     javaMainClass = 'edu.upc.prop.clusterxx.Main'
@@ -41,6 +40,18 @@ task jarProvaIni(type: Jar) {
     with jar
 }
 build.dependsOn jarProvaIni
+
+task jarDriverToni(type: Jar) {
+    archiveBaseName.set('DriverToni')
+    manifest {
+        attributes 'Main-Class': 'edu.upc.prop.clusterxx.DriverToni'
+    }
+    from {
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+    with jar
+}
+build.dependsOn jarDriverToni
 
 task jarDriverEstadistica(type: Jar) {
     archiveBaseName.set('DriverEstadistica')
