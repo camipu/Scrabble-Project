@@ -55,6 +55,7 @@ public class Estadistiques {
             // Crear un par y añadirlo a la PriorityQueue
             SimpleEntry<String, Integer> puntuacioJugador = new SimpleEntry<>(jugador, puntuacio);
             puntuacions.add(puntuacioJugador);
+            calcularPuntuacioMitjana();
             }
     }
 

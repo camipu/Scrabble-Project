@@ -3,6 +3,7 @@ package edu.upc.prop.clusterxx.controladors;
 import edu.upc.prop.clusterxx.Estadistiques;
 
 import java.util.AbstractMap;
+import java.util.PriorityQueue;
 
 public class CtrEstadistica {
     private static CtrEstadistica instance = null;
@@ -29,11 +30,6 @@ public class CtrEstadistica {
         return estadistiques.getPuntuacioMaxima();
     }
 
-    // Calcular la puntuación media
-    public void calcularPuntuacioMitjana() {
-        estadistiques.calcularPuntuacioMitjana();
-    }
-
     // Obtener la puntuación total
     public int obtenirPuntuacioTotal() {
         return estadistiques.getPuntuacioTotal();
@@ -47,6 +43,11 @@ public class CtrEstadistica {
     // Obtener la puntuación media
     public int obtenirPuntuacioMitjana() {
         return estadistiques.getPuntuacioMitjana();
+    }
+
+    // Obtener la lista de puntuaciones
+    public PriorityQueue<AbstractMap.SimpleEntry<String, Integer>> obtenirPuntuacions() {
+        return estadistiques.getPuntuacions();
     }
 
 }

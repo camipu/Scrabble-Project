@@ -28,6 +28,7 @@ task jarProvaParida(type: Jar) {
     from sourceSets.main.output
     dependsOn classes
 }
+build.dependsOn jarProvaParida
 
 task jarProvaIni(type: Jar) {
     archiveBaseName.set('ProvaIni')
@@ -37,7 +38,16 @@ task jarProvaIni(type: Jar) {
     from sourceSets.main.output
     dependsOn classes
 }
-build.dependsOn jarProvaParida
+
+task jarDriverEstadistica(type: Jar) {
+    archiveBaseName.set('DriverEstadistica')
+    manifest {
+        attributes 'Main-Class': 'edu.upc.prop.clusterxx.DriverEstadistica'
+    }
+    from sourceSets.main.output
+    dependsOn classes
+}
+build.dependsOn jarDriverEstadistica
 
 // Apply a specific Java toolchain to ease working on different environments.
 java {
