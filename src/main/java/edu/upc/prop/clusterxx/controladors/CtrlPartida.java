@@ -24,8 +24,7 @@ public class CtrlPartida {
     // Lista de caselles que conté les fitxes del torn actual
     private List<Casella> casellasTorn = new ArrayList<>();
 
-    //Puntaje acumulado del turno actual
-    private int puntuacioTorn = 0;
+    Jugada jugadaActual = null;
 
     private int tornsSenseCanvi = -1;
 
@@ -82,8 +81,6 @@ public class CtrlPartida {
 
         // Inicializar DAWG con los tokens
         dawg = new DAWG(tokens, palabras);
-        System.out.print("Se ha inicializado el DAWG\n");
-        System.out.print("Tokens: " + tokens + "\n");
     }
 
 
@@ -147,11 +144,11 @@ public class CtrlPartida {
     }
 
     public Jugador obtenirJugadorActual() {
-        return jugadors[torn];
+        return jugadors[torn%jugadors.length];
     }
 
     public int obtenirTorn() {
-        return torn;
+        return torn%jugadors.length;
     }
 
     public void passarTorn() {
@@ -252,6 +249,7 @@ public class CtrlPartida {
         for (Fitxa fitxa : fitxesCanviadesAux) {
             jugadors[torn%jugadors.length].afegirFitxa(fitxa);
         }
+        passarTorn();
     }
 
     public Jugada colocarFitxa(int fitxa, int fila, int columna) {
@@ -259,17 +257,42 @@ public class CtrlPartida {
         jugadors[torn%jugadors.length].eliminarFitxa(aux);
         taulell.colocarFitxa(aux, fila, columna);
         casellasTorn.add(taulell.getCasella(fila, columna));
-        Jugada jugada = taulell.construirJugada(casellasTorn, dawg);
-        puntuacioTorn += jugada.getPuntuacio();
-        return jugada;
+        jugadaActual = taulell.construirJugada(casellasTorn, dawg);
+        return jugadaActual;
     }
 
 
-    public void retirarFitxa(int fila, int columna) {
+    public Jugada retirarFitxa(int fila, int columna) {
         jugadors[torn%jugadors.length].afegirFitxa(taulell.obtenirFitxa(fila, columna));
         casellasTorn.remove(taulell.getCasella(fila, columna));
         taulell.retirarFitxa(fila, columna);
+        jugadaActual = taulell.construirJugada(casellasTorn, dawg);
+        return jugadaActual;
     }
+
+    /**
+     * PRE: La paraula ha de ser vàlida i la jugada ha de ser vàlida.
+     * POST: Es registra la puntuació de la jugada i es retorna un objecte Jugada
+     */
+    public void commitParaula() {
+        jugadors[torn%jugadors.length].afegirPunts(jugadaActual.getPuntuacio());
+        int i = 0;
+        while (i < casellasTorn.size() && !sac.esBuit()){
+            Fitxa novaFitxa = sac.agafarFitxa();
+            jugadors[torn%jugadors.length].afegirFitxa(novaFitxa);
+            i++;
+        }
+        inicialitzarCasellasTorn();
+        tornsSenseCanvi = -1;
+        passarTorn();
+    }
+
+    private void inicialitzarCasellasTorn() {
+        casellasTorn = new ArrayList<>();
+    }
+
+
+
 
 
 }

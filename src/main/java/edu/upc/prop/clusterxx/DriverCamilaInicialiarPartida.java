@@ -42,9 +42,14 @@ public class DriverCamilaInicialiarPartida {
 
         CtrlPartida ctrlPartida = CtrlPartida.getInstance();
         ctrlPartida.inicialitzarPartida(midaTaulell, midaFaristol, "castellano", nomsJugadors,dificultats);
+        imprimirFaristol(ctrlPartida.obtenirJugadorActual().obtenirFaristol());
 
         Jugada jugada = ctrlPartida.colocarFitxa(1, 7, 7);
         System.out.print(jugada.getJugadaValida() + " " + jugada.getPuntuacio() + "\n");
+        ctrlPartida.colocarFitxa(1, 7, 8);
+        ctrlPartida.colocarFitxa(1, 7, 9);
+        ctrlPartida.commitParaula();
+
 
         System.out.print("S'ha inicialitzat la partida amb " + midaTaulell + "x" + midaTaulell + " i " + midaFaristol + " fitxes al faristol.\n");
 
