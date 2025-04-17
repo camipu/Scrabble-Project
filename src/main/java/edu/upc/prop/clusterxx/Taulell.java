@@ -208,9 +208,14 @@ public class Taulell {
         if (esBuit()) {
             // Primera jugada i per tant almenys una de les caselles ha d’estar al mig
             int mig = size / 2;
+            boolean tocaCentre = false;
             for (Casella c : casellesJugades) {
-                if (c.obtenirX() != mig || c.obtenirY() != mig) return false;
+                if (c.obtenirX() == mig && c.obtenirY() == mig) {
+                    tocaCentre = true;
+                    break;
+                }
             }
+            if (!tocaCentre) return false;            
         }
         else {
             // MIRAR QUE HI HAGIN PARAULES PERPENDICULARS

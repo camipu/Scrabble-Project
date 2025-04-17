@@ -115,12 +115,10 @@ public class CtrlJugadaBot {
                                          boolean horitzontal, Taulell taulell, DAWG dawg) {
         List<Jugada> resultats = new ArrayList<>();
         int mida = taulell.getSize();
-        int f = horitzontal ? filaActual : filaActual + 1;
-        int c = horitzontal ? columnaActual + 1 : columnaActual;
 
-        if (f >= mida || c >= mida) return resultats;
+        if (filaActual >= mida || columnaActual >= mida) return resultats;
 
-        Casella casellaActual = taulell.getTaulell()[f][c];
+        Casella casellaActual = taulell.getTaulell()[filaActual][columnaActual];
         if (!casellaActual.esBuida()) {
             // Continuar la paraula amb una fitxa ja existent al taulell
             String token = casellaActual.obtenirFitxa().obtenirLletra();
@@ -131,6 +129,9 @@ public class CtrlJugadaBot {
             String novaParaula = prefix + token;
             Jugada novaJugada = taulell.construirJugadaBot(novaParaula, casellesJugades, dawg);
             if (novaJugada.getJugadaValida()) resultats.add(novaJugada);
+
+            int f = horitzontal ? filaActual : filaActual + 1;
+            int c = horitzontal ? columnaActual + 1 : columnaActual;
 
             // Continuar recursivament
             resultats.addAll(generarParaules(novaParaula, fitxesRestants, casellesJugades, nodeSeguent, f, c, horitzontal, taulell, dawg));
@@ -148,7 +149,7 @@ public class CtrlJugadaBot {
                         Fitxa fitxaComodi = new Fitxa(tokenSubstitut, 0);
 
                         String novaParaula = prefix+tokenSubstitut;
-                        processarFitxaIContinuar(novaParaula, fitxaComodi, fitxesRestants, i, casellesJugades, nodeSeguent, f, c, horitzontal, taulell, dawg, resultats);
+                        processarFitxaIContinuar(novaParaula, fitxaComodi, fitxesRestants, i, casellesJugades, nodeSeguent, filaActual, columnaActual, horitzontal, taulell, dawg, resultats);
                     }
                 }
                 else {
@@ -157,7 +158,7 @@ public class CtrlJugadaBot {
 
                     if (nodeSeguent != null) {
                         String novaParaula = prefix+token;
-                        processarFitxaIContinuar(novaParaula, fitxa, fitxesRestants, i, casellesJugades, nodeSeguent, f, c, horitzontal, taulell, dawg, resultats);
+                        processarFitxaIContinuar(novaParaula, fitxa, fitxesRestants, i, casellesJugades, nodeSeguent, filaActual, columnaActual, horitzontal, taulell, dawg, resultats);
                     }
                     else {
                         // No funciona: la tornem a posar a fitxes restants
@@ -189,16 +190,21 @@ public class CtrlJugadaBot {
                                        int filaActual, int columnaActual, boolean horitzontal,
                                        Taulell taulell, DAWG dawg, List<Jugada> resultats) {
 
+        List<Casella> novesCasellesJugades = new ArrayList<>(casellesJugades);
+
         Casella novaCasella = new Casella(filaActual, columnaActual, taulell.getSize());
         novaCasella.colocarFitxa(fitxa);
-        casellesJugades.add(novaCasella);
+        novesCasellesJugades.add(novaCasella);
 
-        Jugada novaJugada = taulell.construirJugadaBot(paraula, casellesJugades, dawg);
+        Jugada novaJugada = taulell.construirJugadaBot(paraula, novesCasellesJugades, dawg);
         if (novaJugada.getJugadaValida()) resultats.add(novaJugada);
 
-        resultats.addAll(generarParaules(paraula, fitxesRestants, casellesJugades, nodeSeguent, filaActual, columnaActual, horitzontal, taulell, dawg));
+        List<Fitxa> novesFitxesRestants = new ArrayList<>(fitxesRestants);
+        novesFitxesRestants.add(indexFitxa, fitxa);  // Reinsertar-la al lloc original    
 
-        casellesJugades.remove(casellesJugades.size() - 1);
-        fitxesRestants.add(indexFitxa, fitxa);
+        int f = horitzontal ? filaActual : filaActual + 1;
+        int c = horitzontal ? columnaActual + 1 : columnaActual;
+
+        resultats.addAll(generarParaules(paraula, novesFitxesRestants, novesCasellesJugades, nodeSeguent, f, c, horitzontal, taulell, dawg));
     }
 }
