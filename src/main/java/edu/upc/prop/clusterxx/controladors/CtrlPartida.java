@@ -283,9 +283,17 @@ public class CtrlPartida {
             jugadors[torn%jugadors.length].afegirFitxa(novaFitxa);
             i++;
         }
+        inicialitzarCasellasTorn();
         tornsSenseCanvi = -1;
         passarTorn();
     }
+
+    private void inicialitzarCasellasTorn() {
+        casellasTorn = new ArrayList<>();
+    }
+
+
+
 
 
 }
