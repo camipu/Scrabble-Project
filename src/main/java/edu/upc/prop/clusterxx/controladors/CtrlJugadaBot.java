@@ -139,7 +139,8 @@ public class CtrlJugadaBot {
         else {
             // Si no hi ha fitxa col·locada explorar possibles fitxes que es poden col·locar
             for (int i = 0; i < fitxesRestants.size(); i++) {
-                Fitxa fitxa = fitxesRestants.remove(i);
+                List<Fitxa> novesFitxesRestants = new ArrayList<>(fitxesRestants);
+                Fitxa fitxa = novesFitxesRestants.remove(i);
 
                 if (fitxa.obtenirLletra().equals("#")) {
                     // Comodí: prova tots els fills del node actual (tots formaran prefix vàlids)
@@ -149,7 +150,7 @@ public class CtrlJugadaBot {
                         Fitxa fitxaComodi = new Fitxa(tokenSubstitut, 0);
 
                         String novaParaula = prefix+tokenSubstitut;
-                        processarFitxaIContinuar(novaParaula, fitxaComodi, fitxesRestants, i, casellesJugades, nodeSeguent, filaActual, columnaActual, horitzontal, taulell, dawg, resultats);
+                        processarFitxaIContinuar(novaParaula, fitxaComodi, novesFitxesRestants, casellesJugades, nodeSeguent, filaActual, columnaActual, horitzontal, taulell, dawg, resultats);
                     }
                 }
                 else {
@@ -158,11 +159,7 @@ public class CtrlJugadaBot {
 
                     if (nodeSeguent != null) {
                         String novaParaula = prefix+token;
-                        processarFitxaIContinuar(novaParaula, fitxa, fitxesRestants, i, casellesJugades, nodeSeguent, filaActual, columnaActual, horitzontal, taulell, dawg, resultats);
-                    }
-                    else {
-                        // No funciona: la tornem a posar a fitxes restants
-                        fitxesRestants.add(i, fitxa);
+                        processarFitxaIContinuar(novaParaula, fitxa, novesFitxesRestants, casellesJugades, nodeSeguent, filaActual, columnaActual, horitzontal, taulell, dawg, resultats);
                     }
                 }
             }
@@ -175,7 +172,6 @@ public class CtrlJugadaBot {
      * @param paraula Nova paraula generada.
      * @param fitxa Fitxa que s'està col·locant.
      * @param fitxesRestants Fitxes encara disponibles.
-     * @param indexFitxa Índex original de la fitxa col·locada.
      * @param casellesJugades Caselles utilitzades fins ara.
      * @param nodeSeguent Node següent al DAWG.
      * @param filaActual Fila on col·locar la fitxa.
@@ -185,7 +181,7 @@ public class CtrlJugadaBot {
      * @param dawg Diccionari de paraules.
      * @param resultats Llista acumulativa de jugades vàlides.
      */
-    private void processarFitxaIContinuar(String paraula, Fitxa fitxa, List<Fitxa> fitxesRestants, int indexFitxa,
+    private void processarFitxaIContinuar(String paraula, Fitxa fitxa, List<Fitxa> fitxesRestants,
                                        List<Casella> casellesJugades, DAWG.Node nodeSeguent,
                                        int filaActual, int columnaActual, boolean horitzontal,
                                        Taulell taulell, DAWG dawg, List<Jugada> resultats) {
@@ -197,14 +193,11 @@ public class CtrlJugadaBot {
         novesCasellesJugades.add(novaCasella);
 
         Jugada novaJugada = taulell.construirJugadaBot(paraula, novesCasellesJugades, dawg);
-        if (novaJugada.getJugadaValida()) resultats.add(novaJugada);
-
-        List<Fitxa> novesFitxesRestants = new ArrayList<>(fitxesRestants);
-        novesFitxesRestants.add(indexFitxa, fitxa);  // Reinsertar-la al lloc original    
+        if (novaJugada.getJugadaValida()) resultats.add(novaJugada);   
 
         int f = horitzontal ? filaActual : filaActual + 1;
         int c = horitzontal ? columnaActual + 1 : columnaActual;
 
-        resultats.addAll(generarParaules(paraula, novesFitxesRestants, novesCasellesJugades, nodeSeguent, f, c, horitzontal, taulell, dawg));
+        resultats.addAll(generarParaules(paraula, fitxesRestants, novesCasellesJugades, nodeSeguent, f, c, horitzontal, taulell, dawg));
     }
 }

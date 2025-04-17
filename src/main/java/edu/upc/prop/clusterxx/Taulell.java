@@ -98,7 +98,7 @@ public class Taulell {
         }
     }
 
-        /**
+    /**
      * Calcula la puntuació d'una paraula segons les fitxes utilitzades i la posició al tauler
      * @param paraula Paraula formada
      * @param fitxesUtilitzades Fitxes utilitzades per formar la paraula
@@ -127,58 +127,89 @@ public class Taulell {
         int col = casellesJugades.get(0).obtenirY();
         int inici = horitzontal ? col : fila;
     
-        // Buscar límit inicial cap enrere
+        // ─── buscar límit inicial cap enrere ─────────────────────────
         int i = inici - 1;
         while (i >= 0) {
             int f = horitzontal ? fila : i;
-            int c = horitzontal ? i : col;
-            if (taulell[f][c].esBuida()) break;
+            int c = horitzontal ? i   : col;
+
+            boolean buida = taulell[f][c].esBuida();
+            if (buida) {                             // si la casella és buida…
+                boolean hiHaFitxaNova = false;
+                for (Casella cj : casellesJugades) { // …mirem si s’hi posa fitxa ara
+                    if (cj.obtenirX() == f && cj.obtenirY() == c) {
+                        hiHaFitxaNova = true;
+                        break;
+                    }
+                }
+                if (!hiHaFitxaNova) break;           // casella realment buida → límit
+            }
             i--;
         }
-        int iniciParaula = i + 1;
-    
-        // Buscar límit final cap endavant
+        int iniciParaula = i + 1;                    // primer índex vàlid
+
+        // ─── buscar límit final cap endavant ─────────────────────────
         i = inici + 1;
         int mida = taulell.length;
         while (i < mida) {
             int f = horitzontal ? fila : i;
-            int c = horitzontal ? i : col;
-            if (taulell[f][c].esBuida()) break;
+            int c = horitzontal ? i   : col;
+
+            boolean buida = taulell[f][c].esBuida();
+            if (buida) {
+                boolean hiHaFitxaNova = false;
+                for (Casella cj : casellesJugades) {
+                    if (cj.obtenirX() == f && cj.obtenirY() == c) {
+                        hiHaFitxaNova = true;
+                        break;
+                    }
+                }
+                if (!hiHaFitxaNova) break;
+            }
             i++;
         }
-        int finalParaula = i - 1;
+        int finalParaula = i - 1;                    // darrer índex vàlid
     
         // Recorre tota la paraula (ja col·locada + nova)
         for (int pos = iniciParaula; pos <= finalParaula; pos++) {
             int f = horitzontal ? fila : pos;
             int c = horitzontal ? pos : col;
             Casella actual = taulell[f][c];
-            int punts = 0;
-
-            if (actual.esBuida()) {
+            int puntsFitxa = 0;
+            int multiplicadorLletra = 1;
+            
+            if (!actual.esBuida()) {
+                // Casella ja ocupada
+                // PER ALGUN MOTIU MULTIPLICA LO DE SOTA!
+                puntsFitxa = actual.calcularPunts();
+            } else {
+                // Busquem la fitxa en les caselles jugades
                 for (Casella casellaJugada : casellesJugades) {
-                    if (casellaJugada.obtenirX() == actual.obtenirX() &&
-                        casellaJugada.obtenirY() == actual.obtenirY()) {
-                        punts = casellaJugada.obtenirFitxa().obtenirPunts();
+                    if (casellaJugada.obtenirX() == f && casellaJugada.obtenirY() == c) {
+                        puntsFitxa = casellaJugada.obtenirFitxa().obtenirPunts();
+                        
+                        // Apliquem estratègia de puntuació
+                        EstrategiaPuntuacio estrategia = casellaJugada.obtenirEstrategia();
+                        if (!estrategia.esMultiplicadorParaula()) {
+                            multiplicadorLletra = estrategia.obtenirMultiplicador();
+                        } else {
+                            multiplicadorParaula *= estrategia.obtenirMultiplicador();
+                        }
                         break;
-                    }
-                    if (actual.obtenirEstrategia().esMultiplicadorParaula()) {
-                        multiplicadorParaula *= actual.obtenirMultiplicador();
-                    } else {
-                        punts *= actual.obtenirMultiplicador();
                     }
                 }
             }
-            else {
-                Fitxa fitxa = actual.obtenirFitxa();
-                punts = fitxa.obtenirPunts();
-            }
-    
-            puntuacio += punts;
+            // Afegim els punts d'aquesta fitxa
+            puntuacio += puntsFitxa * multiplicadorLletra;
         }
     
+        // Apliquem el multiplicador total de paraula
+        puntuacio *= multiplicadorParaula;
+        
+        // Apliquem el bonus de 50 punts si utilitzem 7 fitxes
         if (casellesJugades.size() == 7) puntuacio += 50;
-        return puntuacio * multiplicadorParaula;
+        
+        return puntuacio;
     }
     
     // FUNCIO PER CrtlPartida
