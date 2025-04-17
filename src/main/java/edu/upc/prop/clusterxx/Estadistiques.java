@@ -14,7 +14,7 @@ public class Estadistiques {
     private PriorityQueue<SimpleEntry<String, Integer>> puntuacions;
     private int puntuacioMinima;
     private int puntuacioTotal;
-    private int puntuacioMitjana;
+    private float puntuacioMitjana;
 
     /**
      * Constructor per defecte que inicialitza les estadístiques.
@@ -102,7 +102,7 @@ public class Estadistiques {
      *
      * @return La puntuacio mitjana.
      */
-    public int getPuntuacioMitjana() {
+    public float getPuntuacioMitjana() {
         return puntuacioMitjana;
     }
 

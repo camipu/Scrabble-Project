@@ -1,4 +1,4 @@
-package edu.upc.prop.clusterxx.drivers;
+package edu.upc.prop.clusterxx;
 
 import edu.upc.prop.clusterxx.controladors.CtrEstadistica;
 

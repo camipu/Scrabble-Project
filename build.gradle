@@ -38,6 +38,7 @@ task jarProvaIni(type: Jar) {
     from sourceSets.main.output
     dependsOn classes
 }
+build.dependsOn jarProvaIni
 
 task jarDriverEstadistica(type: Jar) {
     archiveBaseName.set('DriverEstadistica')

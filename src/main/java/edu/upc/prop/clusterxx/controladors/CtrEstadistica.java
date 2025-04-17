@@ -41,7 +41,7 @@ public class CtrEstadistica {
     }
 
     // Obtener la puntuación media
-    public int obtenirPuntuacioMitjana() {
+    public float obtenirPuntuacioMitjana() {
         return estadistiques.getPuntuacioMitjana();
     }
 

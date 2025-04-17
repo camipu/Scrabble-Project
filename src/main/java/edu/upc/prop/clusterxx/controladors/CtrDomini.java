@@ -44,7 +44,7 @@ public class CtrDomini {
      *
      * @return Puntuació mitjana
      */
-    public int obtenirPuntuacioMitjana(){
+    public float obtenirPuntuacioMitjana(){
         return ctrEstadistica.obtenirPuntuacioMitjana();
     }
 
