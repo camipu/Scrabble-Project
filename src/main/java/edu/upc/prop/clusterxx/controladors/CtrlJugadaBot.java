@@ -188,17 +188,15 @@ public class CtrlJugadaBot {
                                        List<Casella> casellesJugades, DAWG.Node nodeSeguent,
                                        int filaActual, int columnaActual, boolean horitzontal,
                                        Taulell taulell, DAWG dawg, List<Jugada> resultats) {
-        int f = horitzontal ? filaActual : filaActual + 1;
-        int c = horitzontal ? columnaActual + 1 : columnaActual;
 
-        Casella novaCasella = new Casella(f, c, taulell.getSize());
+        Casella novaCasella = new Casella(filaActual, columnaActual, taulell.getSize());
         novaCasella.colocarFitxa(fitxa);
         casellesJugades.add(novaCasella);
 
         Jugada novaJugada = taulell.construirJugadaBot(paraula, casellesJugades, dawg);
         if (novaJugada.getJugadaValida()) resultats.add(novaJugada);
 
-        resultats.addAll(generarParaules(paraula, fitxesRestants, casellesJugades, nodeSeguent, f, c, horitzontal, taulell, dawg));
+        resultats.addAll(generarParaules(paraula, fitxesRestants, casellesJugades, nodeSeguent, filaActual, columnaActual, horitzontal, taulell, dawg));
 
         casellesJugades.remove(casellesJugades.size() - 1);
         fitxesRestants.add(indexFitxa, fitxa);
