@@ -17,7 +17,7 @@ public class DriverCamilaInicialiarPartida {
         int midaFaristol = 5;
 //
 //        System.out.print("Introdueix quants bots vols");
-        int numBots = 1;
+        int numBots = 2;
 
         int[] dificultats = new int[numBots];
         for (int i = 0; i < dificultats.length; ++i) {
@@ -40,13 +40,19 @@ public class DriverCamilaInicialiarPartida {
             nomsJugadors[i] = sc.nextLine();
         }
 
+
         CtrlPartida ctrlPartida = CtrlPartida.getInstance();
         ctrlPartida.inicialitzarPartida(midaTaulell, midaFaristol, "castellano", nomsJugadors,dificultats);
-        Jugada jugadabot = ctrlPartida.jugadaBot();
+
+        ctrlPartida.obtenirTaulell().colocarFitxa(new Fitxa("C",3), 7, 7);
+        imprimirFaristol(ctrlPartida.obtenirJugadorActual().obtenirFaristol());
+        Jugador jugador = ctrlPartida.obtenirJugadorActual();
+        boolean bot = jugador.esBot();
+        Jugada jugadabot;
+        jugadabot = ctrlPartida.jugadaBot();
+        imprimirFaristol(ctrlPartida.obtenirJugadorActual().obtenirFaristol());
         imprimirTaulell(ctrlPartida.obtenirTaulell());
 
-
-        imprimirFaristol(ctrlPartida.obtenirJugadorActual().obtenirFaristol());
 
 //        Jugada jugada = ctrlPartida.colocarFitxa(1, 7, 7);
 //        System.out.print(jugada.getJugadaValida() + " " + jugada.getPuntuacio() + "\n");
@@ -55,22 +61,22 @@ public class DriverCamilaInicialiarPartida {
 //        ctrlPartida.commitParaula();
 
 
-        System.out.print("S'ha inicialitzat la partida amb " + midaTaulell + "x" + midaTaulell + " i " + midaFaristol + " fitxes al faristol.\n");
-
-        while (!ctrlPartida.acabada()) {
-            System.out.println("Torn del jugador: " + ctrlPartida.obtenirJugadorActual().obtenirNom());
-            boolean canviTorn = false;
-            while (!canviTorn) {
-                System.out.println("Torn" + ctrlPartida.obtenirTorn());
-                System.out.println("Torn del jugador: " + ctrlPartida.obtenirJugadorActual().obtenirNom());
-                imprimirTaulell(ctrlPartida.obtenirTaulell());
-                ctrlPartida.obtenirJugadorActual().obtenirFaristol().imprimirFaristol();
-                mostrarOpcions();
-                int opcio = sc.nextInt();
-                sc.nextLine(); // Netegem el salt de línia
-            }
-
-        }
+//        System.out.print("S'ha inicialitzat la partida amb " + midaTaulell + "x" + midaTaulell + " i " + midaFaristol + " fitxes al faristol.\n");
+//
+//        while (!ctrlPartida.acabada()) {
+//            System.out.println("Torn del jugador: " + ctrlPartida.obtenirJugadorActual().obtenirNom());
+//            boolean canviTorn = false;
+//            while (!canviTorn) {
+//                System.out.println("Torn" + ctrlPartida.obtenirTorn());
+//                System.out.println("Torn del jugador: " + ctrlPartida.obtenirJugadorActual().obtenirNom());
+//                imprimirTaulell(ctrlPartida.obtenirTaulell());
+//                ctrlPartida.obtenirJugadorActual().obtenirFaristol().imprimirFaristol();
+//                mostrarOpcions();
+//                int opcio = sc.nextInt();
+//                sc.nextLine(); // Netegem el salt de línia
+//            }
+//
+//        }
     }
 
     private static void imprimirTaulell(Taulell taulell) {

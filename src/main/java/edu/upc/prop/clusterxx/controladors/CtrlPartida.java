@@ -372,18 +372,22 @@ public class CtrlPartida {
         return jugadaActual;
     }
 
-    /**
-     * PRE: La paraula ha de ser vàlida i la jugada ha de ser vàlida.
-     * POST: Es registra la puntuació de la jugada i es retorna un objecte Jugada
-     */
-    public void commitParaula() {
-        jugadors[torn%jugadors.length].afegirPunts(jugadaActual.getPuntuacio());
+    private void rellenarFaristol(){
         int i = 0;
         while (i < casellasTorn.size() && !sac.esBuit()){
             Fitxa novaFitxa = sac.agafarFitxa();
             jugadors[torn%jugadors.length].afegirFitxa(novaFitxa);
             i++;
         }
+    }
+
+    /**
+     * PRE: La paraula ha de ser vàlida i la jugada ha de ser vàlida.
+     * POST: Es registra la puntuació de la jugada i es retorna un objecte Jugada
+     */
+    public void commitParaula() {
+        jugadors[torn%jugadors.length].afegirPunts(jugadaActual.getPuntuacio());
+        rellenarFaristol();
         inicialitzarCasellasTorn();
         tornsSenseCanvi = -1;
         passarTorn();
@@ -397,10 +401,20 @@ public class CtrlPartida {
     public Jugada jugadaBot(){
         int nivellDificultat = ((Bot)jugadors[torn%jugadors.length]).obtenirDificultat();
         Bot bot = (Bot) jugadors[torn%jugadors.length];
-        //jugadaActual = ctrlBot.calcularJugada(taulell, dawg, nivellDificultat, bot);
+        jugadaActual = ctrlBot.calcularJugada(taulell, dawg, nivellDificultat, bot);
+        casellasTorn = jugadaActual.getCasellesJugades();
 
+        for (Casella casella : casellasTorn) {
+            System.out.println("ENTRO AL BUCLE DE CASILLAS");
+            Fitxa fitxa = casella.obtenirFitxa();
+            jugadors[torn%jugadors.length].eliminarFitxa(casella.obtenirFitxa());
+            taulell.colocarFitxa(casella.obtenirFitxa(), casella.obtenirX(), casella.obtenirY());
+        }
+
+        rellenarFaristol();
         inicialitzarCasellasTorn();
-        //tornsSenseCanvi = -1;
+        if (!casellasTorn.isEmpty()) tornsSenseCanvi = -1;
+        else System.out.print("ESTA VACIO");
         passarTorn();
         return jugadaActual;
 
