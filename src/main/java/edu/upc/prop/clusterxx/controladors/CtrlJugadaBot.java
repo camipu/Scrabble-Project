@@ -33,8 +33,8 @@ public class CtrlJugadaBot {
      * @param bot Instància del jugador Bot.
      * @return La jugada segons el nivell indicat, o null si no hi ha jugades possibles.
      */
-    public Jugada calcularJugada(Taulell taulell, DAWG dawg, int nivellDificultat, Bot bot) {
-        List<Jugada> jugadesPossibles = generarJugades(taulell, dawg, bot.obtenirFaristol());
+    public Jugada calcularJugada(Taulell taulell, DAWG dawg, int nivellDificultat, Faristol faristol) {
+        List<Jugada> jugadesPossibles = generarJugades(taulell, dawg, faristol);
 
         // Si no hi ha jugades vàlides retorna null
         if (jugadesPossibles.isEmpty()) return null;

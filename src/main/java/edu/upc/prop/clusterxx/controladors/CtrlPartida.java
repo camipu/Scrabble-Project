@@ -401,7 +401,7 @@ public class CtrlPartida {
     public Jugada jugadaBot(){
         int nivellDificultat = ((Bot)jugadors[torn%jugadors.length]).obtenirDificultat();
         Bot bot = (Bot) jugadors[torn%jugadors.length];
-        jugadaActual = ctrlBot.calcularJugada(taulell, dawg, nivellDificultat, bot);
+        jugadaActual = ctrlBot.calcularJugada(taulell, dawg, nivellDificultat, bot.obtenirFaristol());
         casellasTorn = jugadaActual.getCasellesJugades();
 
         for (Casella casella : casellasTorn) {
