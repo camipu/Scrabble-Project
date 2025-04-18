@@ -49,7 +49,8 @@ public class Casella {
         this.x = copia.obtenirX();
         this.y = copia.obtenirY();
 
-        this.fitxa = copia.obtenirFitxa() != null ? new Fitxa(copia.obtenirFitxa()) : null;
+        if (!copia.esBuida()) this.fitxa = new Fitxa(copia.obtenirFitxa());
+        else this.fitxa = null;
 
         // Clonar l'estratègia segons el tipus concret
         if (copia.obtenirEstrategia() instanceof EstrategiaPuntuacio.EstrategiaNormal) {

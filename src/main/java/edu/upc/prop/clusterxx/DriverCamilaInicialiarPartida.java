@@ -17,7 +17,7 @@ public class DriverCamilaInicialiarPartida {
         int midaFaristol = 5;
 //
 //        System.out.print("Introdueix quants bots vols");
-        int numBots = 2;
+        int numBots = 0;
 
         int[] dificultats = new int[numBots];
         for (int i = 0; i < dificultats.length; ++i) {
@@ -25,14 +25,14 @@ public class DriverCamilaInicialiarPartida {
             dificultats[i] = sc.nextInt();
         }
 
-        sc.nextLine(); // Netegem el salt de línia
+        //sc.nextLine(); // Netegem el salt de línia
 
         //System.out.print("Introdueix l'idioma (ex: catala): ");
         String idioma = "castellano";
 
 //        System.out.print("Introdueix el nombre de jugadors: ");
-        int numJugadors = 0;
-        sc.nextLine(); // Netegem el salt de línia
+        int numJugadors = 2;
+       // sc.nextLine(); // Netegem el salt de línia
 
         String[] nomsJugadors = new String[numJugadors];
         for (int i = 0; i < numJugadors; i++) {
@@ -44,18 +44,14 @@ public class DriverCamilaInicialiarPartida {
         CtrlPartida ctrlPartida = CtrlPartida.getInstance();
         ctrlPartida.inicialitzarPartida(midaTaulell, midaFaristol, "castellano", nomsJugadors,dificultats);
 
-        ctrlPartida.obtenirTaulell().colocarFitxa(new Fitxa("C",3), 7, 7);
-        imprimirFaristol(ctrlPartida.obtenirJugadorActual().obtenirFaristol());
-        Jugador jugador = ctrlPartida.obtenirJugadorActual();
-        boolean bot = jugador.esBot();
-        Jugada jugadabot;
-        jugadabot = ctrlPartida.jugadaBot();
-        imprimirFaristol(ctrlPartida.obtenirJugadorActual().obtenirFaristol());
-        imprimirTaulell(ctrlPartida.obtenirTaulell());
+//        ctrlPartida.obtenirTaulell().colocarFitxa(new Fitxa("C",3), 7, 7);
+//        imprimirFaristol(ctrlPartida.obtenirJugadorActual().obtenirFaristol());
+//        Jugador jugador = ctrlPartida.obtenirJugadorActual();
+//        boolean bot = jugador.esBot();
+//        Jugada jugadabot;
+//        jugadabot = ctrlPartida.jugadaBot();
 
 
-//        Jugada jugada = ctrlPartida.colocarFitxa(1, 7, 7);
-//        System.out.print(jugada.getJugadaValida() + " " + jugada.getPuntuacio() + "\n");
 //        ctrlPartida.colocarFitxa(1, 7, 8);
 //        ctrlPartida.colocarFitxa(1, 7, 9);
 //        ctrlPartida.commitParaula();
