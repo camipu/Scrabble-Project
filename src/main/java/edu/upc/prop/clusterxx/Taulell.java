@@ -215,8 +215,8 @@ public class Taulell {
     // FUNCIO PER CrtlPartida
     public Jugada construirJugada(List<Casella> casellesJugades, DAWG dawg) {
         String paraulaFormada = construirParaula(casellesJugades);
-        Boolean jugadaValida = dawg.conteParaula(paraulaFormada);
-        jugadaValida = jugadaValida && jugadaValida(casellesJugades, dawg);
+        Boolean paraulaValida = dawg.conteParaula(paraulaFormada);
+        Boolean jugadaValida = paraulaValida && jugadaValida(casellesJugades, dawg);
         int puntuacio = calcularPuntuacioParaula(casellesJugades);
         return new Jugada(paraulaFormada, casellesJugades, puntuacio, jugadaValida);
     }
