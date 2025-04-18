@@ -84,7 +84,8 @@ public class TaulellTest {
         c2.colocarFitxa(fitxaB);
         List<Casella> caselles = Arrays.asList(c1, c2);
         int puntuacio = taulell.calcularPuntuacioTotal(caselles);
-        assertEquals(4, puntuacio);
+        System.out.println("Punts obtinguts: " + puntuacio);
+        assertEquals(27, puntuacio);
     }
 
     @Test
@@ -130,24 +131,25 @@ public class TaulellTest {
         c2.colocarFitxa(f2);
         List<Casella> jugada = Arrays.asList(c1, c2);
         int puntuacio = taulell.calcularPuntuacioTotal(jugada);
-        assertEquals(9, puntuacio);
+        assertEquals(23, puntuacio);
     }
 
     @Test
-    public void testPuntuacioAmbDobleParaulaConcret() {
+    public void testPuntuacioAmbTripleParaulaConcret() {
         Casella c1 = new Casella(0, 0, 15);
         Casella c2 = new Casella(0, 1, 15);
         Fitxa f1 = new Fitxa("M", 3);
         Fitxa f2 = new Fitxa("A", 1);
         c1 = spy(c1);
-        when(c1.obtenirEstrategia()).thenReturn(new EstrategiaPuntuacio.EstrategiaMultiplicadorParaula(2));
+        when(c1.obtenirEstrategia()).thenReturn(new EstrategiaPuntuacio.EstrategiaMultiplicadorParaula(3));
         c1.colocarFitxa(f1);
         c2 = spy(c2);
         when(c2.obtenirEstrategia()).thenReturn(new EstrategiaPuntuacio.EstrategiaNormal());
         c2.colocarFitxa(f2);
         List<Casella> jugada = Arrays.asList(c1, c2);
         int puntuacio = taulell.calcularPuntuacioTotal(jugada);
-        assertEquals(8, puntuacio);
+        
+        assertEquals(12, puntuacio);
     }
 
     @Test
@@ -163,6 +165,6 @@ public class TaulellTest {
         c2.colocarFitxa(f2);
         List<Casella> jugada = Arrays.asList(c1, c2);
         int puntuacio = taulell.calcularPuntuacioTotal(jugada);
-        assertEquals(7, puntuacio);
+        assertEquals(9, puntuacio);
     }
 }

@@ -36,8 +36,10 @@ public class CtrlJugadaBot {
     public Jugada calcularJugada(Taulell taulell, DAWG dawg, int nivellDificultat, List<Fitxa> fitxesDisponibles) {
         List<Jugada> jugadesPossibles = generarJugades(taulell, dawg, fitxesDisponibles);
 
-        // Si no hi ha jugades vàlides retorna null
-        if (jugadesPossibles.isEmpty()) return null;
+        // Si no hi ha jugades vàlides retorna jugada buida
+        if (jugadesPossibles.isEmpty()) {
+            return new Jugada("", new ArrayList<>(), -1, false);
+        }
 
         // Ordenem les jugades segons la puntuació
         jugadesPossibles.sort((j1, j2) -> Integer.compare(j2.getPuntuacio(), j1.getPuntuacio()));

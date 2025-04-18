@@ -54,6 +54,7 @@ public class DAWG {
 
     /**
      * Constructor. Crea i construeix el DAWG a partir de tokens i paraules donades.
+     * Precondition: Llista de paraules ordenada alfabèticament
      * @param tokens Llista de tokens (dígrafs, lletres, etc.)
      * @param paraules Llista de paraules vàlides ORDENADES ALFABÈTICAMENT
      */
