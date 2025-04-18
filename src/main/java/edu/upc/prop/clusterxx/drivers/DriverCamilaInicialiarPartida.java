@@ -18,7 +18,7 @@ public class DriverCamilaInicialiarPartida {
     private static void inicialitzarPartida(Scanner sc) {
         int midaTaulell = 15;
         int midaFaristol = 5;
-        int numBots = 1;
+        int numBots = 0;
         int numJugadors = 1;
 
         int[] dificultats = llegirDificultatsBots(sc, numBots);
@@ -105,17 +105,40 @@ public class DriverCamilaInicialiarPartida {
 
         while (!commit) {
             imprimirFaristol(ctrlPartida.obtenirJugadorActual().obtenirFaristol());
+            System.out.print("Vols resetejar la jugada? (true/false): ");
+            boolean reset = sc.nextBoolean();
+            if (reset) {
+                ctrlPartida.resetTorn();
+                imprimirTaulell(ctrlPartida.obtenirTaulell());
+                imprimirFaristol(ctrlPartida.obtenirJugadorActual().obtenirFaristol());
+            }
             System.out.print("vols colocar o retirar una fitxa? (1 = colocar, 2 = retirar): ");
             int opcio = sc.nextInt();
             sc.nextLine();
 
             if (opcio == 1) {
                 System.out.print("Tria que fitxa vols jugar: ");
-                String fitxa = sc.nextLine();
-                if (fitxa.equals("#")) {
-                    System.out.print("Per quina lletra vols canviar el comodí?");
-                    fitxa = sc.nextLine();
+                String lletra = sc.nextLine();
+                if (lletra.equals("#")) {
+                    System.out.print("Per quina lletra vols canviar el comodí? ");
+                    boolean comodiUsatCorrectament = false;
 
+                    while (!comodiUsatCorrectament) {
+                        lletra = sc.nextLine().toUpperCase(); // Por si quieres que sea en mayúsculas
+                        Fitxa fitxa = ctrlPartida.obtenirJugadorActual().obtenirFitxa("#");
+
+                        if (fitxa == null) {
+                            System.out.println("No tens cap comodí disponible.");
+                            break; // o return, segons com vulguis gestionar-ho
+                        }
+
+                        comodiUsatCorrectament = ctrlPartida.setLletraComodi(fitxa, lletra);
+
+                        if (!comodiUsatCorrectament) {
+                            System.out.println("No hi ha cap fitxa amb la lletra " + lletra + " al diccionari. Intenta de nou.\n");
+                            System.out.print("Introdueix una nova lletra per al comodí: ");
+                        }
+                    }
                 }
 
                 System.out.print("Tria la fila on vols jugar: ");
@@ -124,7 +147,7 @@ public class DriverCamilaInicialiarPartida {
                 int columna = sc.nextInt();
                 sc.nextLine();
 
-                Jugada jugada = ctrlPartida.colocarFitxa(fitxa, fila, columna);
+                Jugada jugada = ctrlPartida.colocarFitxa(lletra, fila, columna);
 
                 if (jugada.getJugadaValida()) {
                     //System.out.println("La jugada és vàlida.");

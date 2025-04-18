@@ -143,6 +143,11 @@ public class CtrlPartida {
         jugadors = nouTorn.obtenirJugadors();
     }
 
+    public void resetTorn(){
+        Torn tornActual = historial.obtenirTorn(torn);
+        recuperarTorn(tornActual);
+    }
+
     /**
      * Indica si la partida ha finalitzat.
      *
@@ -297,7 +302,7 @@ public class CtrlPartida {
         }
 
         sac.setFitxesOriginals(sac.obtenirSac().elementSet());
-        sac.imprimirOriginals();
+
     }
 
     /**
@@ -339,6 +344,16 @@ public class CtrlPartida {
     public void agafarDelSac(){
         Fitxa novaFitxa = sac.agafarFitxa();
         jugadors[torn%jugadors.length].afegirFitxa(novaFitxa);
+    }
+
+    public boolean setLletraComodi(Fitxa fitxa, String lletraComodi) {
+        if (fitxa == null || !fitxa.esComodi() || !sac.esFitxaOriginal(lletraComodi)) {
+            return false;
+        }
+        Fitxa novaFitxa = new Fitxa(lletraComodi, 0);
+        jugadors[torn%jugadors.length].eliminarFitxa(fitxa);
+        jugadors[torn%jugadors.length].afegirFitxa(novaFitxa);
+        return true;
     }
 
     public void canviarFitxes(String[] fitxesCanviades) {
