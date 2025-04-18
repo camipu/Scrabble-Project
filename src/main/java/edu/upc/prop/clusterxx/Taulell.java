@@ -77,27 +77,6 @@ public class Taulell {
         else taulell[fila][columna].retirarFitxa();
     }
 
-    public void imprimirTaulell() {
-        for (int i = 0; i < size; ++i) {
-            System.out.print("+----");
-        }
-        System.out.println("+");
-
-        for (int i = 0; i < size; ++i) {
-            for (int j = 0; j < size; ++j) {
-                Casella casella = taulell[i][j];
-                String colorFons = obtenirColorFons(casella);
-                System.out.print("|" + colorFons + Colors.BLACK_TEXT + " " + casella + " " + Colors.RESET);
-            }
-            System.out.println("|");
-
-            for (int j = 0; j < size; ++j) {
-                System.out.print("+----");
-            }
-            System.out.println("+");
-        }
-    }
-
     public int calcularPuntuacioTotal(List<Casella> casellesJugades) {
         if (casellesJugades.isEmpty()) return 0;
     
@@ -355,8 +334,6 @@ public class Taulell {
         return null;
     }
     
-
-
     private String obtenirColorFons(Casella casella) {
         if (casella.obtenirEstrategia() instanceof EstrategiaMultiplicadorParaula) {
             EstrategiaMultiplicadorParaula estrategia = (EstrategiaMultiplicadorParaula) casella.obtenirEstrategia();
