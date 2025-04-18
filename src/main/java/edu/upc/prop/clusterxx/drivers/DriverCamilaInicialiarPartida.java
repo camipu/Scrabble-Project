@@ -11,7 +11,6 @@ public class DriverCamilaInicialiarPartida {
 
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
-
         inicialitzarPartida(sc);
     }
 
@@ -22,7 +21,6 @@ public class DriverCamilaInicialiarPartida {
         int numJugadors = 1;
 
         int[] dificultats = llegirDificultatsBots(sc, numBots);
-
         String[] nomsJugadors = llegirNomsJugadors(sc, numJugadors);
 
         CtrlPartida ctrlPartida = CtrlPartida.getInstance();
@@ -51,12 +49,13 @@ public class DriverCamilaInicialiarPartida {
     }
 
     private static void jugarTorns(Scanner sc, CtrlPartida ctrlPartida) {
-        boolean first = true; // Variable per controlar si és el primer torn
+        boolean first = true;
         while (!ctrlPartida.esFinalDePartida()) {
             imprimirSeparador();
             imprimirTorn(ctrlPartida);
             imprimirFaristol(ctrlPartida.obtenirJugadorActual().obtenirFaristol());
             if (first) imprimirTaulell(ctrlPartida.obtenirTaulell());
+
             Jugador jugadorActual = ctrlPartida.obtenirJugadorActual();
             boolean passatorn = false;
 
@@ -64,7 +63,7 @@ public class DriverCamilaInicialiarPartida {
                 Jugada jugadabot = ctrlPartida.jugadaBot();
                 imprimirJugada(jugadabot);
                 passatorn = true;
-                if (first) first = false; // Si el bot juga, ja no és el primer torn
+                if (first) first = false;
             }
 
             while (!passatorn) {
@@ -72,13 +71,11 @@ public class DriverCamilaInicialiarPartida {
                 if (!first) {
                     System.out.print("Que vols fer? (1 = jugar, 2 = passar torn, 3 = canviar fitxes): ");
                     opcio = sc.nextInt();
-                }
-                else {
+                } else {
                     System.out.print("Has de jugar, no pots passar torn. (1 = jugar): ");
-                    opcio = 1; // Si és el primer torn, només es pot jugar
+                    opcio = 1;
                     first = false;
                 }
-
 
                 switch (opcio) {
                     case 1 -> passatorn = jugarParaula(sc, ctrlPartida);
@@ -112,6 +109,7 @@ public class DriverCamilaInicialiarPartida {
                 imprimirTaulell(ctrlPartida.obtenirTaulell());
                 imprimirFaristol(ctrlPartida.obtenirJugadorActual().obtenirFaristol());
             }
+
             System.out.print("vols colocar o retirar una fitxa? (1 = colocar, 2 = retirar): ");
             int opcio = sc.nextInt();
             sc.nextLine();
@@ -119,17 +117,18 @@ public class DriverCamilaInicialiarPartida {
             if (opcio == 1) {
                 System.out.print("Tria que fitxa vols jugar: ");
                 String lletra = sc.nextLine();
+
                 if (lletra.equals("#")) {
                     System.out.print("Per quina lletra vols canviar el comodí? ");
                     boolean comodiUsatCorrectament = false;
 
                     while (!comodiUsatCorrectament) {
-                        lletra = sc.nextLine().toUpperCase(); // Por si quieres que sea en mayúsculas
+                        lletra = sc.nextLine().toUpperCase();
                         Fitxa fitxa = ctrlPartida.obtenirJugadorActual().obtenirFitxa("#");
 
                         if (fitxa == null) {
                             System.out.println("No tens cap comodí disponible.");
-                            break; // o return, segons com vulguis gestionar-ho
+                            break;
                         }
 
                         comodiUsatCorrectament = ctrlPartida.setLletraComodi(fitxa, lletra);
@@ -150,7 +149,6 @@ public class DriverCamilaInicialiarPartida {
                 Jugada jugada = ctrlPartida.colocarFitxa(lletra, fila, columna);
 
                 if (jugada.getJugadaValida()) {
-                    //System.out.println("La jugada és vàlida.");
                     System.out.print("Vols fer commit? (true/false): ");
                     boolean commitJugada = sc.nextBoolean();
                     sc.nextLine();
@@ -225,20 +223,37 @@ public class DriverCamilaInicialiarPartida {
         System.out.println("\033[107m   \033[0m → Casella normal");
 
         int size = taulell.getSize();
-        for (int i = 0; i < size; ++i) System.out.print("+----");
+
+        // Imprimir índices de columna con padding
+        System.out.print("     "); // Espacio para alinear con los números de fila
+        for (int i = 0; i < size; i++) {
+            System.out.printf(" %2d  ", i);
+        }
+        System.out.println();
+
+        // Línea superior
+        System.out.print("    ");
+        for (int i = 0; i < size; i++) System.out.print("+----");
         System.out.println("+");
 
+        // Filas del taulell
         for (int i = 0; i < size; ++i) {
+            System.out.printf("%2d  ", i); // Índice de fila
             for (int j = 0; j < size; ++j) {
                 Casella casella = taulell.getTaulell()[i][j];
                 String colorFons = obtenirColorFons(casella);
                 System.out.print("|" + colorFons + Colors.BLACK_TEXT + " " + casella + " " + Colors.RESET);
             }
             System.out.println("|");
-            for (int j = 0; j < size; ++j) System.out.print("+----");
+
+            // Línea divisoria
+            System.out.print("    ");
+            for (int j = 0; j < size; j++) System.out.print("+----");
             System.out.println("+");
         }
     }
+
+
 
     private static String obtenirColorFons(Casella casella) {
         if (casella.obtenirEstrategia() instanceof EstrategiaPuntuacio.EstrategiaMultiplicadorParaula estrategia) {
