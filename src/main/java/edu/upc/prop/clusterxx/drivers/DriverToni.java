@@ -101,56 +101,55 @@ public class DriverToni {
         boolean first = true; // Variable per controlar si és el primer torn
         while (!ctrlDomini.esFinalDePartida()) {
             imprimirSeparador();
-            imprimirTorn(ctrlDomini);
-            imprimirFaristol(ctrlDomini.obtenirJugadorActual().obtenirFaristol());
-            Jugador jugadorActual = ctrlDomini.obtenirJugadorActual();
             boolean passatorn = false;
-
-            if (jugadorActual.esBot()) {
-                Jugada jugadabot = ctrlDomini.jugadaBot();
-                imprimirJugada(jugadabot);
-                passatorn = true;
-                if (first) first = false; // Si el bot juga, ja no és el primer torn
-            }
 
             while (!passatorn) {
                 imprimirPrincipiTorn(ctrlDomini);
-                int opcio;
-                if (!first) {
-                    System.out.print("Que vols fer? (1 = jugar, 2 = passar torn, 3 = canviar fitxes, 4 = undo, 5 = guadar i sortir, 6 = sortir sense guardar): ");
-                    opcio = sc.nextInt();
+                Jugador jugadorActual = ctrlDomini.obtenirJugadorActual();
+                if (jugadorActual.esBot()) {
+                    Jugada jugadabot = ctrlDomini.jugadaBot();
+                    imprimirJugada(jugadabot);
+                    passatorn = true;
+                    if (first) first = false; // Si el bot juga, ja no és el primer torn
                 }
                 else {
-                    System.out.print("Que vols fer?. (1 = jugar, 3 = canviar fitxes, 5 = guadar i sortir, 6 = sortir sense guardar): ");
-                    opcio = sc.nextInt();
-                    first = false;
-                }
+                    int opcio;
+                    if (!first) {
+                        System.out.print("Que vols fer? (1 = jugar, 2 = passar torn, 3 = canviar fitxes, 4 = undo, 5 = guadar i sortir, 6 = sortir sense guardar): ");
+                        opcio = sc.nextInt();
+                    }
+                    else {
+                        System.out.print("Que vols fer?. (1 = jugar, 5 = guadar i sortir, 6 = sortir sense guardar): ");
+                        opcio = sc.nextInt();
+                        first = false;
+                    }
 
 
-                switch (opcio) {
-                    case 1 -> passatorn = jugarParaula(sc, ctrlDomini);
-                    case 2 -> {
-                        ctrlDomini.passarTorn();
-                        passatorn = true;
+                    switch (opcio) {
+                        case 1 -> passatorn = jugarParaula(sc, ctrlDomini);
+                        case 2 -> {
+                            ctrlDomini.passarTorn();
+                            passatorn = true;
+                        }
+                        case 3 -> {
+                            canviarFitxes(sc, ctrlDomini);
+                            passatorn = true;
+                        }
+                        case 4 -> {
+                            ctrlDomini.ferUndo();
+                        }
+                        case 5 -> {
+                            System.out.println("Guardant partida...");
+                            ctrlDomini.guardarPartida();
+                            System.out.println("Partida guardada.");
+                            return;
+                        }
+                        case 6 -> {
+                            System.out.println("Sortint sense guardar...");
+                            return;
+                        }
+                        default -> System.out.println("Opció no vàlida. Torna a intentar-ho.");
                     }
-                    case 3 -> {
-                        canviarFitxes(sc, ctrlDomini);
-                        passatorn = true;
-                    }
-                    case 4 -> {
-                        ctrlDomini.ferUndo();
-                    }
-                    case 5 -> {
-                        System.out.println("Guardant partida...");
-                        ctrlDomini.guardarPartida();
-                        System.out.println("Partida guardada.");
-                        return;
-                    }
-                    case 6 -> {
-                        System.out.println("Sortint sense guardar...");
-                        return;
-                    }
-                    default -> System.out.println("Opció no vàlida. Torna a intentar-ho.");
                 }
             }
             imprimirSeparador();
@@ -173,12 +172,8 @@ public class DriverToni {
         boolean commit = false;
 
         while (!commit) {
-            System.out.print("Vols reiniciar el torn? (true/false): ");
-            if (sc.nextBoolean()) {
-                ctrlDomini.resetTorn();
-            }
 
-            System.out.print("Vols col·locar o retirar una fitxa? (1 = col·locar, 2 = retirar): ");
+            System.out.print("Vols col·locar o retirar una fitxa? (1 = col·locar, 2 = retirar, 3 = reiniciar torn): ");
             int opcio = sc.nextInt();
             sc.nextLine(); // Netejar buffer
 
@@ -191,6 +186,9 @@ public class DriverToni {
                     int columna = sc.nextInt();
                     sc.nextLine(); // Netejar buffer
                     ctrlDomini.retirarFitxa(fila, columna);
+                }
+                case 3 -> {
+                    ctrlDomini.resetTorn();
                 }
                 default -> System.out.println("Opció no vàlida. Torna-ho a intentar.");
             }
@@ -209,7 +207,7 @@ public class DriverToni {
             lletra = gestionarComodi(sc, ctrlDomini);
             if (lletra == null) return false; // No hi havia comodí
         }
-    
+
         System.out.print("Introdueix la fila on vols col·locar la fitxa: ");
         int fila = sc.nextInt();
         System.out.print("Introdueix la columna on vols col·locar la fitxa: ");
