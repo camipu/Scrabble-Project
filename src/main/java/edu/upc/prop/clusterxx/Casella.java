@@ -26,6 +26,12 @@ public class Casella {
      * @param y Coordenada y de la casella
      */
     public Casella(int x, int y, int size) {
+        if(x < 0 || y < 0) {
+            throw new IllegalArgumentException("Les coordenades no poden ser negatives.");
+        }
+        if (x >= size || y >= size) {
+            throw new IllegalArgumentException("Les coordenades han de ser menors que la mida del tauler.");
+        }
         this.x = x;
         this.y = y;
         this.fitxa = null;
@@ -62,44 +68,6 @@ public class Casella {
         this.casellaJugada = copia.casellaJugada;
     }
 
-    /**
-     * Assigna una estratègia de puntuació a la casella segons la seva posició al tauler.
-     * Les estratègies es basen en les coordenades i la mida del tauler, segons la configuració
-     * estàndard de Scrabble (triple/doble paraula o lletra).
-     *
-     * @param i Coordenada vertical de la casella (fila)
-     * @param j Coordenada horitzontal de la casella (columna)
-     * @param size Mida del tauler (número de files/columnes)
-     * @return L'estratègia de puntuació assignada a la casella
-     */
-    private EstrategiaPuntuacio assignarEstrategia(int i, int j, int size) {
-        int centro = size / 2;
-        int offset = size / 4;
-        // Triple paraula (TW)
-        if ((i == 0 || i == centro || i == size - 1) && (j == 0 || j == centro || j == size - 1)) {
-            return new EstrategiaMultiplicadorParaula(3);
-        }
-        // Triple lletra (TL)
-        if ((i == offset || i == size - 1 - offset) && (j == offset || j == size - 1 - offset)) {
-            return new EstrategiaMultiplicadorLletra(3);
-        }
-        if ((i == offset || i == size - 1 - offset) && j == centro || i == centro && (j == offset || j == size - 1 - offset)) {
-            return new EstrategiaMultiplicadorLletra(3);
-        }
-
-        // Doble paraula (DW) aqui potser falta afegir que i = centro && j = centro
-        if (i == j || i + j == size - 1) {
-            return new EstrategiaMultiplicadorParaula(2);
-        }
-
-        // Doble lletra (DL)
-        if (i == centro || j == centro) {
-            return new EstrategiaMultiplicadorLletra(2);
-        }
-
-        return new EstrategiaNormal();
-    }
-
 
     /**
      * Calcula els punts que aporta la fitxa en aquesta casella segons l'estratègia assignada.
@@ -114,6 +82,9 @@ public class Casella {
      * Marca la casella com a jugada en el torn actual.
      */
     public void jugarCasella() {
+        if (casellaJugada) {
+            throw new IllegalStateException("La casella ja ha estat jugada.");
+        }
         casellaJugada = true;
     }
 
@@ -141,6 +112,9 @@ public class Casella {
      * @return La fitxa col·locada o null si la casella està buida
      */
     public Fitxa obtenirFitxa() {
+        if(fitxa == null) {
+            throw new ExcepcioCasellaBuida("La casella " + obtenirX() + " y " + obtenirY() + " està buida");
+        }
         return fitxa;
     }
 
@@ -204,6 +178,44 @@ public class Casella {
             this.fitxa = null;
         }
         else throw new ExcepcioCasellaBuida("La casella " + obtenirX() + " y " + obtenirY() + " esta buida");
+    }
+
+    /**
+     * Assigna una estratègia de puntuació a la casella segons la seva posició al tauler.
+     * Les estratègies es basen en les coordenades i la mida del tauler, segons la configuració
+     * estàndard de Scrabble (triple/doble paraula o lletra).
+     *
+     * @param i Coordenada vertical de la casella (fila)
+     * @param j Coordenada horitzontal de la casella (columna)
+     * @param size Mida del tauler (número de files/columnes)
+     * @return L'estratègia de puntuació assignada a la casella
+     */
+    private EstrategiaPuntuacio assignarEstrategia(int i, int j, int size) {
+        int centro = size / 2;
+        int offset = size / 4;
+        // Triple paraula (TW)
+        if ((i == 0 || i == centro || i == size - 1) && (j == 0 || j == centro || j == size - 1)) {
+            return new EstrategiaMultiplicadorParaula(3);
+        }
+        // Triple lletra (TL)
+        if ((i == offset || i == size - 1 - offset) && (j == offset || j == size - 1 - offset)) {
+            return new EstrategiaMultiplicadorLletra(3);
+        }
+        if ((i == offset || i == size - 1 - offset) && j == centro || i == centro && (j == offset || j == size - 1 - offset)) {
+            return new EstrategiaMultiplicadorLletra(3);
+        }
+
+        // Doble paraula (DW) aqui potser falta afegir que i = centro && j = centro
+        if (i == j || i + j == size - 1) {
+            return new EstrategiaMultiplicadorParaula(2);
+        }
+
+        // Doble lletra (DL)
+        if (i == centro || j == centro) {
+            return new EstrategiaMultiplicadorLletra(2);
+        }
+
+        return new EstrategiaNormal();
     }
 
     /**

@@ -65,14 +65,14 @@ public class Taulell {
 
     public void colocarFitxa(Fitxa fitxa, int fila, int columna) {
         if (fila < 0 || fila >= size || columna < 0 || columna >= size) {
-            System.out.println(" Posició fora dels límits.");
+            throw new IllegalArgumentException("Posició fora dels límits.");
         }
         else taulell[fila][columna].colocarFitxa(fitxa);
     }
 
     public void retirarFitxa( int fila, int columna) {
         if (fila < 0 || fila >= size || columna < 0 || columna >= size) {
-            System.out.println(" Posició fora dels límits.");
+            throw new IllegalArgumentException("Posició fora dels límits.");
         }
         else taulell[fila][columna].retirarFitxa();
     }

@@ -18,6 +18,9 @@ public class Fitxa {
      */
     public Fitxa(String lletra, int punts) {
         this.lletra = lletra;
+        if (punts < 0) {
+            throw new IllegalArgumentException("Els punts no poden ser negatius.");
+        }
         this.punts = punts;
         this.digraf = lletra.length() > 1;
     }

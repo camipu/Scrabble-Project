@@ -43,7 +43,7 @@ public class Estadistiques {
      */
     public void afegirPuntuacio(int puntuacio, String jugador) {
         if (puntuacio < 0) {
-            System.out.print("La puntuació no pot ser negativa.");
+            throw new IllegalArgumentException("La puntuació no pot ser negativa");
         }
         else {
             this.puntuacioTotal += puntuacio;
@@ -66,8 +66,9 @@ public class Estadistiques {
      */
     public void calcularPuntuacioMitjana() {
         if (!puntuacions.isEmpty()) {
-            this.puntuacioMitjana = this.puntuacioTotal / puntuacions.size();
+            this.puntuacioMitjana = (float) this.puntuacioTotal / puntuacions.size();
         }
+        else puntuacioMitjana = 0;
     }
 
     /**

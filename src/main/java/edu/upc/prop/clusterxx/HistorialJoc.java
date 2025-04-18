@@ -38,7 +38,12 @@ public class HistorialJoc {
     /**
      * Elimina l’últim torn afegit a l’historial de joc.
      */
-    public void retirarTorn() {torns.removeLast();}
+    public void retirarTorn() {
+        if (torns.isEmpty()) {
+            throw new IndexOutOfBoundsException("No hi ha torns per eliminar.");
+        }
+        torns.removeLast();
+    }
 
     /**
      * Retorna el torn corresponent a una posició concreta de l’historial.
@@ -48,7 +53,10 @@ public class HistorialJoc {
      * @return El torn situat a la posició indicada
      */
     public Torn obtenirTorn(int index) {
-        return torns.get(index-1);
+        if (index < 1 || index > torns.size()) {
+            throw new IndexOutOfBoundsException("Índex fora de límits: " + index);
+        }
+        else return torns.get(index-1);
     }
 
     /**

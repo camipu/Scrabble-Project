@@ -52,7 +52,10 @@ public interface EstrategiaPuntuacio {
         private final int multiplicador;
 
         public EstrategiaMultiplicadorLletra(int multiplicador) {
-            this.multiplicador = multiplicador;
+            if (multiplicador <= 0) {
+                throw new IllegalArgumentException("El multiplicador ha de ser positiu.");
+            }
+            else this.multiplicador = multiplicador;
         }
 
         @Override
@@ -74,7 +77,10 @@ public interface EstrategiaPuntuacio {
         private final int multiplicador;
 
         public EstrategiaMultiplicadorParaula(int multiplicador) {
-            this.multiplicador = multiplicador;
+            if (multiplicador <= 0) {
+                throw new IllegalArgumentException("El multiplicador ha de ser positiu.");
+            }
+            else this.multiplicador = multiplicador;
         }
 
         @Override

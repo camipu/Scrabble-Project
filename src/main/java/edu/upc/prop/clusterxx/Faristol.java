@@ -23,6 +23,9 @@ public class Faristol {
      */
     public Faristol(int size) {
         this.fitxes = new ArrayList<>(size);
+        if (size <= 0) {
+            throw new IllegalArgumentException("La mida del faristol ha de ser positiva.");
+        }
         this.size = size;
     }
 
