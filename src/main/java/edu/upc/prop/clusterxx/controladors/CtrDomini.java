@@ -58,21 +58,21 @@ public class CtrDomini {
     }
 
     /**
+     * Retorna la puntuació màxima registrada entre totes les partides.
+     *
+     * @return Puntuació màxima
+     */
+    public int obtenirPuntuacioMaxima(){
+        return ctrEstadistica.obtenirPuntuacioMaxima();
+    }
+
+    /**
      * Retorna la suma total de totes les puntuacions acumulades.
      *
      * @return Puntuació total
      */
     public int obtenirPuntuacioTotal(){
         return ctrEstadistica.obtenirPuntuacioTotal();
-    }
-
-    /**
-     * Retorna la millor puntuació registrada, juntament amb el nom del jugador que la va aconseguir.
-     *
-     * @return Entrada amb el nom del jugador i la seva millor puntuació
-     */
-    public AbstractMap.SimpleEntry<String, Integer> obtenirMillorPuntuacio(){
-        return ctrEstadistica.obtenirMillorPuntuacio();
     }
 
     /**

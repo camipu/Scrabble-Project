@@ -2,8 +2,7 @@ package edu.upc.prop.clusterxx.controladors;
 
 import edu.upc.prop.clusterxx.Estadistiques;
 
-import java.util.AbstractMap;
-import java.util.PriorityQueue;
+import java.util.Map;
 
 public class CtrEstadistica {
     private static CtrEstadistica instance = null;
@@ -17,37 +16,47 @@ public class CtrEstadistica {
     }
 
     private CtrEstadistica() {
-        estadistiques = new Estadistiques();
+        estadistiques = Estadistiques.getInstance();
     }
 
-    // Agregar una puntuación para un jugador???
     public void afegirPuntuacio(String jugador, int puntuacio) {
         estadistiques.afegirPuntuacio(puntuacio, jugador);
     }
 
-    // Obtener el jugador con la puntuación más alta
-    public AbstractMap.SimpleEntry<String, Integer> obtenirMillorPuntuacio() {
-        return estadistiques.getPuntuacioMaxima();
+    public void retirarPuntuacio(String jugador, int punts) {
+        estadistiques.retirarPuntuacio(jugador, punts);
     }
 
-    // Obtener la puntuación total
+
+    public void eliminarJugador(String jugador) {
+        estadistiques.eliminarJugador(jugador);
+    }
+
+    public String obtenirMillorJugador() {
+        return estadistiques.obtenirMillor().getKey();
+    }
+
+    public String obtenirPitjorJugador() {
+        return estadistiques.obtenirPitjor().getKey();
+    }
+
     public int obtenirPuntuacioTotal() {
         return estadistiques.getPuntuacioTotal();
     }
 
-    // Obtener la puntuación mínima
+    public int obtenirPuntuacioMaxima() {
+        return estadistiques.obtenirMillor().getValue();
+    }
+
     public int obtenirPuntuacioMinima() {
-        return estadistiques.getPuntuacioMinima();
+        return estadistiques.obtenirPitjor().getValue();
     }
 
-    // Obtener la puntuación media
     public float obtenirPuntuacioMitjana() {
-        return estadistiques.getPuntuacioMitjana();
+        return estadistiques.obtenirMitja();
     }
 
-    // Obtener la lista de puntuaciones
-    public PriorityQueue<AbstractMap.SimpleEntry<String, Integer>> obtenirPuntuacions() {
+    public Map<String, Integer> obtenirPuntuacions() {
         return estadistiques.getPuntuacions();
     }
-
 }
