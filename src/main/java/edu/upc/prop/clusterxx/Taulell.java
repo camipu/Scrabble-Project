@@ -170,42 +170,45 @@ public class Taulell {
             int x = c.obtenirX(), y = c.obtenirY();
             int puntuacio = 0;
             int multiplicadorParaula = 1;
-    
+            boolean hiHaFitxaNova = false;
+        
             int dx = horitzontal ? -1 : 0;
             int dy = horitzontal ? 0 : -1;
             int nx = x + dx, ny = y + dy;
-    
+        
             // Prefix
             while (nx >= 0 && ny >= 0 && nx < size && ny < size && !taulell[nx][ny].esBuida()) {
                 puntuacio += taulell[nx][ny].obtenirFitxa().obtenirPunts();
                 nx += dx;
                 ny += dy;
             }
-    
-            // Lletra jugada
+        
+            // Lletra jugada (sí o sí és nova)
             EstrategiaPuntuacio estrategia = c.obtenirEstrategia();
             int punts = c.obtenirFitxa().obtenirPunts();
-    
+        
             if (estrategia.esMultiplicadorParaula()) {
                 multiplicadorParaula *= estrategia.obtenirMultiplicador();
             } else {
                 punts *= estrategia.obtenirMultiplicador();
             }
             puntuacio += punts;
-    
+            hiHaFitxaNova = true; // perquè estem tractant la casella nova
+        
             // Sufix
             dx = horitzontal ? 1 : 0;
             dy = horitzontal ? 0 : 1;
-            nx = x + dx; ny = y + dy;
-    
+            nx = x + dx;
+            ny = y + dy;
+        
             while (nx >= 0 && ny >= 0 && nx < size && ny < size && !taulell[nx][ny].esBuida()) {
                 puntuacio += taulell[nx][ny].obtenirFitxa().obtenirPunts();
                 nx += dx;
                 ny += dy;
             }
-    
-            // Només afegim si la paraula perpendicular és més llarga que 1
-            if (puntuacio != c.obtenirFitxa().obtenirPunts()) {
+        
+            // Només sumem si la paraula perpendicular és més llarga que 1 i conté almenys una fitxa nova
+            if (hiHaFitxaNova && (puntuacio > c.obtenirFitxa().obtenirPunts())) {
                 total += puntuacio * multiplicadorParaula;
             }
         }
