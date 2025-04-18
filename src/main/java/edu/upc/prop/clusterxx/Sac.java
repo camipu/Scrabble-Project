@@ -15,6 +15,7 @@ import java.util.*;
  */
 public class Sac {
     private final Multiset<Fitxa> fitxes;
+    private Set<String> lletresOriginals;
 
     /**
      * Crea un nou sac buit de fitxes.
@@ -41,6 +42,16 @@ public class Sac {
      */
     public void afegirFitxa(Fitxa f) {
         fitxes.add(f);
+    }
+
+    public void setFitxesOriginals(Set<Fitxa> fitxesOriginals) {
+        for (Fitxa f : fitxesOriginals) {
+            lletresOriginals.add(f.obtenirLletra());
+        }
+    }
+
+    public boolean esFitxaOriginal(String lletra) {
+        return lletresOriginals.contains(lletra);
     }
 
     /**
