@@ -49,16 +49,21 @@ public class DriverToni {
         ctrlPartida.obtenirTaulell().colocarFitxa(new Fitxa("A", 3), 7, 10);
 
 
-
-
-        imprimirFaristol(ctrlPartida.obtenirJugadorActual().obtenirFaristol());
-        Jugador jugador = ctrlPartida.obtenirJugadorActual();
-        Jugada jugadabot;
-        jugadabot = ctrlPartida.jugadaBot();
-        imprimirJugada(jugadabot);
-        imprimirFaristol(ctrlPartida.obtenirJugadorActual().obtenirFaristol());
-        imprimirTaulell(ctrlPartida.obtenirTaulell());
-
+        for (int i = 0; i < 5; ++i) {
+            System.out.println("-----------------------------------------------");
+            System.out.println("-----------------------------------------------");
+            System.out.println("-----------------------------------------------");
+            imprimirFaristol(ctrlPartida.obtenirJugadorActual().obtenirFaristol());
+            Jugador jugador = ctrlPartida.obtenirJugadorActual();
+            Jugada jugadabot;
+            jugadabot = ctrlPartida.jugadaBot();
+            imprimirJugada(jugadabot);
+            imprimirFaristol(ctrlPartida.obtenirJugadorActual().obtenirFaristol());
+            imprimirTaulell(ctrlPartida.obtenirTaulell());
+            System.out.println("-----------------------------------------------");
+            System.out.println("-----------------------------------------------");
+            System.out.println("-----------------------------------------------");
+        }
     }
 
     public static void imprimirJugada(Jugada jugada) {
@@ -79,6 +84,13 @@ public class DriverToni {
     }
 
     private static void imprimirTaulell(Taulell taulell) {
+        System.out.println("🎨 Llegenda del Taulell:");
+        System.out.println("\033[41m   \033[0m → Multiplicador de PARAULA x3");
+        System.out.println("\033[45m   \033[0m → Multiplicador de PARAULA x2");
+        System.out.println("\033[44m   \033[0m → Multiplicador de LLETRA x3");
+        System.out.println("\033[46m   \033[0m → Multiplicador de LLETRA x2");
+        System.out.println("\033[107m   \033[0m → Casella normal");
+
         int size = taulell.getSize();
         for (int i = 0; i < size; ++i) {
             System.out.print("+----");
