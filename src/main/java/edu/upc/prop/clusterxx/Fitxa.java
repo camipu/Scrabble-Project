@@ -1,7 +1,9 @@
 package edu.upc.prop.clusterxx;
+
 import java.util.Objects;
+
 /**
- * Representa una fitxa del joc, amb una lletra, un valor en punts i 
+ * Representa una fitxa del joc, amb una lletra, un valor en punts i
  * un indicador de si és un dígraf.
  */
 public class Fitxa {
@@ -11,10 +13,11 @@ public class Fitxa {
 
     /**
      * Crea una nova fitxa amb una lletra i un valor de punts.
-     * Si la lletra te mida > 1, es considera dígraf.
+     * Si la lletra té més d'un caràcter, es considera un dígraf.
      *
      * @param lletra La lletra de la fitxa.
      * @param punts El valor en punts de la fitxa.
+     * @throws IllegalArgumentException Si els punts són negatius.
      */
     public Fitxa(String lletra, int punts) {
         this.lletra = lletra;
@@ -26,10 +29,10 @@ public class Fitxa {
     }
 
     /**
-     * Inicialitza aquesta fitxa com la copia d'un altre.
-     * Es copien tots els atributs.
+     * Crea una nova fitxa com a còpia d'una altra.
+     * Es copien tots els atributs de la fitxa original.
      *
-     * @param copiaFaristol Faristol original del qual es vol fer la còpia
+     * @param copiaFitxa La fitxa original de la qual es vol fer la còpia.
      */
     public Fitxa(Fitxa copiaFitxa) {
         this.lletra = copiaFitxa.obtenirLletra();
@@ -38,52 +41,62 @@ public class Fitxa {
     }
 
     /**
-     * Retorna la lletra de la fitxa.
+     * Retorna la lletra associada a aquesta fitxa.
      *
-     * @return La lletra associada a aquesta fitxa.
+     * @return La lletra de la fitxa.
      */
     public String obtenirLletra() {
         return lletra;
     }
 
     /**
-     * Retorna el valor en punts de la fitxa.
+     * Retorna el valor en punts d'aquesta fitxa.
      *
-     * @return Els punts que val aquesta fitxa.
+     * @return El valor en punts.
      */
     public int obtenirPunts() {
         return punts;
     }
 
     /**
-     * Indica si la fitxa representa un dígraf.
+     * Indica si la fitxa representa un dígraf (una combinació de dues lletres).
      *
-     * @return Cert si la fitxa és un dígraf, fals en cas contrari.
+     * @return {@code true} si la fitxa és un dígraf, {@code false} altrament.
      */
     public boolean esDigraf() {
         return digraf;
     }
 
+
+    /**
+     * Assigna una nova lletra a una fitxa comodí.
+     * Només es pot fer si la fitxa actual és un comodí ("#").
+     *
+     * @param lletra La nova lletra a assignar.
+     * @throws IllegalArgumentException Si la fitxa no és un comodí,
+     *                                  si la nova lletra té més d'un caràcter,
+     *                                  o si és també un comodí ("#").
+     */
     public void setLletraComodi(String lletra) {
         if (!this.lletra.equals("#")) {
             throw new IllegalArgumentException("No es pot canviar la lletra d'una fitxa que no és un comodí.");
-        }
-        else if (lletra.length() > 1) {
+        } else if (lletra.length() > 1) {
             throw new IllegalArgumentException("La lletra del comodí ha de ser una sola lletra.");
-        }
-        else if (lletra.equals("#")) {
+        } else if (lletra.equals("#")) {
             throw new IllegalArgumentException("La lletra del comodí no pot ser un comodí.");
-        }
-        else {
+        } else {
             this.lletra = lletra;
         }
     }
 
+    public boolean esComodi() {
+        return this.punts == 0;
+    }
 
     /**
-     * Retorna una representació en cadena de la fitxa.
+     * Retorna una representació en forma de cadena de la fitxa.
      *
-     * @return Una cadena que representa la fitxa.
+     * @return Una cadena que representa la lletra de la fitxa.
      */
     @Override
     public String toString() {
@@ -92,30 +105,26 @@ public class Fitxa {
 
     /**
      * Compara aquesta fitxa amb un altre objecte per determinar si són iguals.
-     * Dues fitxes són iguals si tenen la mateixa lletra i els mateixos punts.
+     * Dues fitxes són iguals si tenen la mateixa lletra i el mateix valor en punts.
      *
-     * @param obj Objecte amb el qual es vol comparar aquesta fitxa
+     * @param obj L’objecte amb el qual es vol comparar aquesta fitxa.
      * @return {@code true} si l’objecte comparat és una fitxa amb la mateixa lletra i punts,
-     *         {@code false} altrament
+     *         {@code false} altrament.
      */
     @Override
     public boolean equals(Object obj) {
-        if (this == obj) {
-            return true; //mateix objecte
-        }
-        if (obj == null || getClass() != obj.getClass()) { //null o diferent classe
-            return false;
-        }
-        Fitxa fitxa = (Fitxa) obj; //cast
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        Fitxa fitxa = (Fitxa) obj;
         return punts == fitxa.punts && Objects.equals(lletra, fitxa.lletra);
     }
 
     /**
-     * Genera un codi hash per a aquesta fitxa, basat en la seva lletra i puntuació.
+     * Genera un codi hash per a aquesta fitxa, basat en la lletra i el valor en punts.
      * Aquest mètode és coherent amb {@link #equals(Object)}, de manera que dues fitxes iguals
-     * generaran el mateix codi hash.
+     * tenen el mateix codi hash.
      *
-     * @return Codi hash de la fitxa
+     * @return El codi hash de la fitxa.
      */
     @Override
     public int hashCode() {

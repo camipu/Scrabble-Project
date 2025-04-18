@@ -4,6 +4,10 @@ import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
+/**
+ * Test per la classe Fitxa.
+ * Verifica les funcionalitats de la classe Fitxa com la creació, igualtat, excepcions i les funcions relacionades.
+ */
 public class FitxaTest {
 
     private Fitxa fitxaA;
@@ -54,7 +58,6 @@ public class FitxaTest {
         assertTrue(fitxaDigraf.esDigraf());
     }
 
-
     @Test
     public void testToString() {
         assertEquals("A", fitxaA.toString());
@@ -70,7 +73,6 @@ public class FitxaTest {
     public void testEqualsDiferentLletraB() {
         assertFalse(fitxaA.equals(fitxaB)); // Si la lletra és diferent, no són iguals
     }
-
 
     @Test
     public void testEqualsDiferentDigraf() {
@@ -92,5 +94,78 @@ public class FitxaTest {
         assertTrue(fitxaDigraf.esDigraf()); // Sí és un dígraf
     }
 
+    /**
+     * Test per la creació d'una fitxa amb punts negatius, que hauria de llançar una excepció.
+     */
+    @Test(expected = IllegalArgumentException.class)
+    public void testCreacioFitxaAmbPuntsNegatius() {
+        new Fitxa("A", -1);
+    }
+
+    /**
+     * Test per la funció setLletraComodi, amb la comprovació de que només es poden modificar les fitxes comodí
+     */
+    @Test
+    public void testSetLletraComodi() {
+        Fitxa fitxaComodi = new Fitxa("#", 0);
+
+        // Comodí es pot canviar de lletra
+        fitxaComodi.setLletraComodi("A");
+        assertEquals("A", fitxaComodi.obtenirLletra());
+
+        // No es pot canviar una lletra que no sigui comodí
+        try {
+            fitxaA.setLletraComodi("B");
+            fail("S'hauria de llançar una excepció per intentar canviar una lletra que no és comodí.");
+        } catch (IllegalArgumentException e) {
+            // Esperat
+        }
+
+        // No es pot posar un comodí de nou
+        try {
+            fitxaComodi.setLletraComodi("#");
+            fail("S'hauria de llançar una excepció per intentar posar un comodí.");
+        } catch (IllegalArgumentException e) {
+            // Esperat
+        }
+
+        // No es pot posar una lletra de mida superior a 1
+        try {
+            fitxaComodi.setLletraComodi("AB");
+            fail("S'hauria de llançar una excepció per intentar posar una lletra amb més de 1 caràcter.");
+        } catch (IllegalArgumentException e) {
+            // Esperat
+        }
+    }
+
+    /**
+     * Test per la igualtat de fitxes amb la mateixa lletra i punts
+     */
+    @Test
+    public void testEqualsSameLletraAndPunts() {
+        Fitxa fitxa1 = new Fitxa("A", 1);
+        Fitxa fitxa2 = new Fitxa("A", 1);
+        assertTrue(fitxa1.equals(fitxa2));
+    }
+
+    /**
+     * Test per la igualtat de fitxes amb la mateixa lletra però punts diferents
+     */
+    @Test
+    public void testEqualsDifferentPunts() {
+        Fitxa fitxa1 = new Fitxa("A", 1);
+        Fitxa fitxa2 = new Fitxa("A", 2);
+        assertFalse(fitxa1.equals(fitxa2));
+    }
+
+    /**
+     * Test per la igualtat de fitxes amb diferent lletra
+     */
+    @Test
+    public void testEqualsDifferentLletra() {
+        Fitxa fitxa1 = new Fitxa("A", 1);
+        Fitxa fitxa2 = new Fitxa("B", 1);
+        assertFalse(fitxa1.equals(fitxa2));
+    }
 
 }

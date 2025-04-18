@@ -26,24 +26,29 @@ public class Sac {
     }
 
     /**
-     * Inicialitza aquest sac com la copia d'un altre.
-     * Es copien tots els atributs.
+     * Inicialitza aquest sac com la còpia d'un altre sac.
+     * Es copien tots els atributs del sac original.
      *
-     * @param copiaSac Sac original del qual es vol fer la còpia
+     * @param copiaSac El sac original del qual es vol fer la còpia.
      */
     public Sac(Sac copiaSac) {
         this.fitxes = HashMultiset.create(copiaSac.fitxes);
     }
 
     /**
-     * Afegeix una fitxa al sac. Si la fitxa ja hi és, incrementa la seva quantitat.
+     * Afegeix una fitxa al sac. Si la fitxa ja existeix al sac, incrementa la seva quantitat.
      *
-     * @param f Fitxa que es vol afegir al sac
+     * @param f La fitxa que es vol afegir al sac.
      */
     public void afegirFitxa(Fitxa f) {
         fitxes.add(f);
     }
 
+    /**
+     * Inicialitza les lletres originals de les fitxes en el sac.
+     *
+     * @param fitxesOriginals El conjunt de fitxes originals per establir les lletres.
+     */
     public void setFitxesOriginals(Set<Fitxa> fitxesOriginals) {
         lletresOriginals = new HashSet<>();
         for (Fitxa f : fitxesOriginals) {
@@ -51,17 +56,23 @@ public class Sac {
         }
     }
 
+    /**
+     * Comprova si una lletra és una fitxa original.
+     *
+     * @param lletra La lletra a verificar.
+     * @return {@code true} si la lletra és una fitxa original, {@code false} altrament.
+     */
     public boolean esFitxaOriginal(String lletra) {
         return lletresOriginals.contains(lletra);
     }
 
     /**
      * Extreu una fitxa aleatòria del sac.
-     * La fitxa extreta es selecciona en funció de la seva presència real (tenint en compte la quantitat de cada tipus).
+     * La fitxa es selecciona en funció de la seva presència real (tenint en compte la quantitat de cada tipus).
      * Un cop seleccionada, la seva quantitat es redueix en una unitat.
      *
-     * @return Fitxa seleccionada aleatòriament del sac
-     * @throws ExcepcioSacBuit si el sac està buit i no es pot extreure cap fitxa
+     * @return La fitxa seleccionada aleatòriament del sac.
+     * @throws ExcepcioSacBuit Si el sac està buit i no es pot extreure cap fitxa.
      */
     public Fitxa agafarFitxa() {
         if (esBuit()) {
@@ -76,10 +87,11 @@ public class Sac {
 
     /**
      * Extreu una instància concreta d’una fitxa del sac.
-     * Redueix en una unitat la seva quantitat disponible.
+     * Redueix la seva quantitat disponible en una unitat.
      *
-     * @param fitxa Fitxa que es vol extreure del sac
-     * @return Fitxa extreta
+     * @param fitxa La fitxa que es vol extreure del sac.
+     * @return La fitxa extreta del sac.
+     * @throws ExcepcioSacNoConteLaFitxa Si no hi ha cap fitxa disponible amb la lletra especificada.
      */
     public Fitxa agafarFitxa(Fitxa fitxa) {
         for (Fitxa f : fitxes.elementSet()) {
@@ -91,12 +103,11 @@ public class Sac {
         throw new ExcepcioSacNoConteLaFitxa("No hi ha fitxes disponibles amb la lletra '" + fitxa.obtenirLletra() + "'");
     }
 
-
     /**
      * Retorna el nombre total de fitxes disponibles al sac,
      * sumant totes les quantitats de cada tipus de fitxa.
      *
-     * @return Nombre total de fitxes al sac
+     * @return El nombre total de fitxes al sac.
      */
     public int obtenirNumFitxes() {
         return fitxes.size();
@@ -105,8 +116,8 @@ public class Sac {
     /**
      * Retorna la quantitat disponible d’una fitxa concreta al sac.
      *
-     * @param fitxa Fitxa de la qual es vol consultar la quantitat
-     * @return Nombre d’exemplars d’aquesta fitxa disponibles al sac
+     * @param fitxa La fitxa de la qual es vol consultar la quantitat.
+     * @return El nombre d'exemplars d'aquesta fitxa disponibles al sac.
      */
     public int obtenirNumFitxes(Fitxa fitxa) {
         return fitxes.count(fitxa);
@@ -115,7 +126,7 @@ public class Sac {
     /**
      * Comprova si el sac està buit.
      *
-     * @return {@code true} si no hi ha cap fitxa al sac, {@code false} altrament
+     * @return {@code true} si no hi ha cap fitxa al sac, {@code false} altrament.
      */
     public boolean esBuit() {
         return fitxes.isEmpty();
@@ -124,16 +135,9 @@ public class Sac {
     /**
      * Retorna el contingut intern del sac, amb cada fitxa i la seva quantitat.
      *
-     * @return Mapa de fitxes i les seves quantitats disponibles
+     * @return Un conjunt de fitxes i les seves quantitats disponibles.
      */
     public Multiset<Fitxa> obtenirSac() {
         return fitxes;
     }
-
-    public void imprimirOriginals() {
-        for (String lletra : lletresOriginals) {
-            System.out.println(lletra);
-        }
-    }
-
 }
