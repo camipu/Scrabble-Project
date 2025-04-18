@@ -215,8 +215,8 @@ public class Taulell {
     // FUNCIO PER CrtlPartida
     public Jugada construirJugada(List<Casella> casellesJugades, DAWG dawg) {
         String paraulaFormada = construirParaula(casellesJugades);
-        Boolean jugadaValida = dawg.conteParaula(paraulaFormada);
-        jugadaValida = jugadaValida && jugadaValida(casellesJugades, dawg);
+        Boolean paraulaValida = dawg.conteParaula(paraulaFormada);
+        Boolean jugadaValida = paraulaValida && jugadaValida(casellesJugades, dawg);
         int puntuacio = calcularPuntuacioParaula(casellesJugades);
         return new Jugada(paraulaFormada, casellesJugades, puntuacio, jugadaValida);
     }
@@ -247,56 +247,110 @@ public class Taulell {
                 }
             }
             if (!tocaCentre) return false;            
-        }
-        else {
-            // MIRAR QUE HI HAGIN PARAULES PERPENDICULARS
-            // I MIRAR QUE SIGUIN VALIDES
-            boolean paraulaTocaParaula = false;
-
+        } else {
+            // Almenys una fitxa ha de tocar una ja existent
+            boolean adjacent = false;
+    
             for (Casella c : casellesJugades) {
                 int f = c.obtenirX();
                 int col = c.obtenirY();
-    
-                boolean fitxaTocaParaula = false;
-
                 int[][] dirs = {{-1,0}, {1,0}, {0,-1}, {0,1}};
                 for (int[] d : dirs) {
-                    int nf = f + d[0], nc = col + d[1];
-                    if (nf >= 0 && nf < size && nc >= 0 && nc < size && !taulell[nf][nc].esBuida()) {
-                        fitxaTocaParaula = true;
-                        paraulaTocaParaula = true;
-                        break;
+                    int nf = f + d[0];
+                    int nc = col + d[1];
+                    if (nf >= 0 && nf < size && nc >= 0 && nc < size) {
+                        if (!taulell[nf][nc].esBuida()) {
+                            adjacent = true;
+                            break;
+                        }
                     }
                 }
-
-                if (fitxaTocaParaula) {
-                    // Verifica paraula vertical (si estem posant horitzontal) i viceversa
-                    StringBuilder perpendicular = new StringBuilder();
-        
-                    // Cap enrere
-                    int nf = f - 1;
-                    while (nf >= 0 && !taulell[nf][col].esBuida()) {
-                        perpendicular.insert(0, taulell[nf][col].obtenirFitxa().obtenirLletra());
-                        nf--;
-                    }
-        
-                    // Afegim la fitxa col·locada
-                    perpendicular.append(c.obtenirFitxa().obtenirLletra());
-        
-                    // Cap endavant
-                    nf = f + 1;
-                    while (nf < size && !taulell[nf][col].esBuida()) {
-                        perpendicular.append(taulell[nf][col].obtenirFitxa().obtenirLletra());
-                        nf++;
-                    }
-        
-                    if (!dawg.conteParaula(perpendicular.toString())) return false;
-                }
+                if (adjacent) break;
             }
-            if (!paraulaTocaParaula) return false;
+            if (!adjacent) return false;
         }
-        return true;
+    
+        // Verificació de paraules perpendiculars
+        boolean horitzontal = esJugadaHoritzontal(casellesJugades);
+
+        for (Casella c : casellesJugades) {
+            int x = c.obtenirX(), y = c.obtenirY();
+            StringBuilder paraulaPerp = new StringBuilder();
+
+            // Direcció perpendicular: si jugada és horitzontal, mirem vertical (canviem X); si no, canviem Y
+            int dx = horitzontal ? -1 : 0;
+            int dy = horitzontal ? 0 : -1;
+            int nx = x + dx, ny = y + dy;
+
+            // Prefix
+            while (nx >= 0 && ny >= 0 && nx < size && ny < size && !taulell[nx][ny].esBuida()) {
+                paraulaPerp.insert(0, taulell[nx][ny].obtenirFitxa().obtenirLletra());
+                nx += dx;
+                ny += dy;
+            }
+
+            // Lletra jugada
+            paraulaPerp.append(c.obtenirFitxa().obtenirLletra());
+
+            // Sufix
+            dx = horitzontal ? 1 : 0;
+            dy = horitzontal ? 0 : 1;
+            nx = x + dx;
+            ny = y + dy;
+            while (nx >= 0 && ny >= 0 && nx < size && ny < size && !taulell[nx][ny].esBuida()) {
+                paraulaPerp.append(taulell[nx][ny].obtenirFitxa().obtenirLletra());
+                nx += dx;
+                ny += dy;
+            }
+
+            if (paraulaPerp.length() > 1 && !dawg.conteParaula(paraulaPerp.toString())) {
+                return false;
+            }
+        }
+
+        // Verifica la paraula principal (amb lletres ja col·locades també)
+        boolean esHoritzontal = esJugadaHoritzontal(casellesJugades);
+        Casella primer = casellesJugades.get(0);
+        int fila = primer.obtenirX(), col = primer.obtenirY();
+
+        // Troba l'inici real de la paraula
+        if (esHoritzontal) {
+            while (col > 0 && !taulell[fila][col - 1].esBuida()) col--;
+        } else {
+            while (fila > 0 && !taulell[fila - 1][col].esBuida()) fila--;
+        }
+
+        StringBuilder paraula = new StringBuilder();
+        while (fila < size && col < size) {
+            Casella actual = taulell[fila][col];
+            boolean esDeJugada = casellaPertanyAJugada(fila, col, casellesJugades);
+            if (actual.esBuida() && !esDeJugada) break;
+
+            Fitxa f = esDeJugada ? obtenirFitxaDeJugada(fila, col, casellesJugades) : actual.obtenirFitxa();
+            paraula.append(f.obtenirLletra());
+
+            if (esHoritzontal) col++;
+            else fila++;
+        }
+
+        return dawg.conteParaula(paraula.toString());
     }
+
+    private boolean casellaPertanyAJugada(int x, int y, List<Casella> jugada) {
+        for (Casella c : jugada) {
+            if (c.obtenirX() == x && c.obtenirY() == y) return true;
+        }
+        return false;
+    }
+    
+    private Fitxa obtenirFitxaDeJugada(int x, int y, List<Casella> jugada) {
+        for (Casella c : jugada) {
+            if (c.obtenirX() == x && c.obtenirY() == y) return c.obtenirFitxa();
+        }
+        return null;
+    }
+    
+
 
     private String obtenirColorFons(Casella casella) {
         if (casella.obtenirEstrategia() instanceof EstrategiaMultiplicadorParaula) {

@@ -125,10 +125,12 @@ public class CtrlJugadaBot {
             DAWG.Node nodeSeguent = nodeActual.getFill(token);
             if (nodeSeguent == null) return resultats;
 
-            // Validar i afegir la jugada si és vàlida
             String novaParaula = prefix + token;
-            Jugada novaJugada = taulell.construirJugadaBot(novaParaula, casellesJugades, dawg);
-            if (novaJugada.getJugadaValida()) resultats.add(novaJugada);
+            if (nodeSeguent.esFinal()) {
+                // Validar i afegir la jugada si és vàlida
+                Jugada novaJugada = taulell.construirJugadaBot(novaParaula, casellesJugades, dawg);
+                if (novaJugada.getJugadaValida()) resultats.add(novaJugada);
+            }
 
             int f = horitzontal ? filaActual : filaActual + 1;
             int c = horitzontal ? columnaActual + 1 : columnaActual;
@@ -191,10 +193,12 @@ public class CtrlJugadaBot {
         Casella novaCasella = new Casella(filaActual, columnaActual, taulell.getSize());
         novaCasella.colocarFitxa(fitxa);
         novesCasellesJugades.add(novaCasella);
-
-        Jugada novaJugada = taulell.construirJugadaBot(paraula, novesCasellesJugades, dawg);
-        if (novaJugada.getJugadaValida()) resultats.add(novaJugada);   
-
+        
+        if (nodeSeguent.esFinal()) {
+            Jugada novaJugada = taulell.construirJugadaBot(paraula, novesCasellesJugades, dawg);
+            if (novaJugada.getJugadaValida()) resultats.add(novaJugada);  
+        }
+ 
         int f = horitzontal ? filaActual : filaActual + 1;
         int c = horitzontal ? columnaActual + 1 : columnaActual;
 
