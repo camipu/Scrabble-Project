@@ -48,9 +48,8 @@ public class CtrlJugadaBot {
         switch (nivellDificultat) {
             case 1: // Fàcil: escull la pitjor jugada
                 return jugadesPossibles.get(mida-1);
-            case 2: // Mitjà: escull una jugada aleatòria
-                int indexAleatori = new Random().nextInt(mida);
-                return jugadesPossibles.get(indexAleatori);
+            case 2: // Mitjà: escull una jugada intermèdia
+                return jugadesPossibles.get(mida/2);
             default: // Difícil: escull sempre la millor jugada
                 return jugadesPossibles.get(0);
         }
