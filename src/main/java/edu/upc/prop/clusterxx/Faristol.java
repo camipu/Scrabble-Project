@@ -132,14 +132,19 @@ public class Faristol {
 
     /**
      * Elimina una fitxa concreta del faristol.
-     * Si la fitxa no es troba al faristol, es llença una excepció.
+     * Si la fitxa no es troba al faristol, mira que no sigui comodí i es llença una excepció.
      *
      * @param fitxa Fitxa que es vol eliminar
      * @throws ExcepcioFaristolNoConteLaFitxa si la fitxa no és present al faristol
      */
     public void eliminarFitxa(Fitxa fitxa) {
         if (!fitxes.remove(fitxa)) {
-            throw new ExcepcioFaristolNoConteLaFitxa("No es pot eliminar fitxa " + fitxa + ", el faristol no la conté.");
+            if (fitxa.obtenirPunts() == 0) {
+                eliminarFitxa(new Fitxa("#", 0));
+            }
+            else {
+                throw new ExcepcioFaristolNoConteLaFitxa("No es pot eliminar fitxa " + fitxa + ", el faristol no la conté.");
+            }
         }
     }
 
