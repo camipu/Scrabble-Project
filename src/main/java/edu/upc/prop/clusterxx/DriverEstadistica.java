@@ -16,12 +16,12 @@ public class DriverEstadistica {
         while (!sortir) {
             System.out.println("\n==== MENÚ D'ESTADÍSTIQUES ====");
             System.out.println("1. Afegir una puntuació");
-            System.out.println("2. Obtenir millor jugador");
-            System.out.println("3. Obtenir millor puntuació");
+            System.out.println("2. Retirar una puntuació");
+            System.out.println("3. Obtenir millor jugador");
             System.out.println("4. Obtenir puntuació mitjana");
             System.out.println("5. Obtenir puntuació total");
-            System.out.println("6. Obtenir puntuació mínima");
-            System.out.println("7. Obtenir totes les puntuacions");
+            System.out.println("6. Obtenir totes les puntuacions");
+            System.out.println("7. Eliminar jugador");
             System.out.println("0. Sortir");
             System.out.print("Escull una opció: ");
 
@@ -40,6 +40,16 @@ public class DriverEstadistica {
                     break;
 
                 case 2:
+                    System.out.print("Nom del jugador: ");
+                    nom = scanner.nextLine();
+                    System.out.print("Puntuació: ");
+                    puntuacio = scanner.nextInt();
+                    scanner.nextLine(); // Consumir el salto de línea
+                    ctr.retirarPuntuacio(nom, puntuacio);
+                    System.out.println("Puntuació retirada correctament.");
+                    break;
+
+                case 3:
                     String millorJugador = ctr.obtenirMillorJugador();
                     int millorPuntuacio = ctr.obtenirPuntuacioMaxima();
                     if (millorJugador != null) {
@@ -47,11 +57,6 @@ public class DriverEstadistica {
                     } else {
                         System.out.println("No hi ha puntuacions registrades.");
                     }
-                    break;
-
-                case 3:
-                    int millorPuntuacio2 = ctr.obtenirPuntuacioMaxima();
-                    System.out.println("Millor puntuació: " + millorPuntuacio2);
                     break;
 
                 case 4:
@@ -63,15 +68,6 @@ public class DriverEstadistica {
                     break;
 
                 case 6:
-                    int min = ctr.obtenirPuntuacioMinima();
-                    if (min != Integer.MAX_VALUE) {
-                        System.out.println("Puntuació mínima: " + min);
-                    } else {
-                        System.out.println("No hi ha puntuacions registrades.");
-                    }
-                    break;
-
-                case 7:
                     Map<String, Integer> puntuacions = ctr.obtenirPuntuacions();
                     if (puntuacions.isEmpty()) {
                         System.out.println("No hi ha puntuacions registrades.");
@@ -83,6 +79,13 @@ public class DriverEstadistica {
                                 .sorted((entry1, entry2) -> entry2.getValue() - entry1.getValue())  // Ordenamos de mayor a menor
                                 .forEach(entry -> System.out.println(entry.getKey() + ": " + entry.getValue() + " punts"));
                     }
+                    break;
+
+                case 7:
+                    System.out.print("Nom del jugador: ");
+                    nom = scanner.nextLine();
+                    ctr.eliminarJugador(nom);
+                    System.out.println("Jugador eliminat correctament.");
                     break;
 
                 case 0:

@@ -31,11 +31,11 @@ public class CasellaTest {
         when(mockFitxaB.esDigraf()).thenReturn(false);
     }
 
-    @Test
+    @Test(expected = ExcepcioCasellaBuida.class)
     public void testCasellaInicialBuida() {
         assertTrue(casella.esBuida());
         assertFalse(casella.esJugada());
-        assertNull(casella.obtenirFitxa());
+        casella.obtenirFitxa();
     }
 
     @Test
