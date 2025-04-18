@@ -1,15 +1,6 @@
 package edu.upc.prop.clusterxx.drivers;
 
-import edu.upc.prop.clusterxx.Casella;
-import edu.upc.prop.clusterxx.Colors;
-import edu.upc.prop.clusterxx.EstrategiaPuntuacio;
-import edu.upc.prop.clusterxx.Faristol;
-import edu.upc.prop.clusterxx.Fitxa;
-import edu.upc.prop.clusterxx.Jugada;
-import edu.upc.prop.clusterxx.Jugador;
-import edu.upc.prop.clusterxx.Taulell;
-import edu.upc.prop.clusterxx.EstrategiaPuntuacio.EstrategiaMultiplicadorLletra;
-import edu.upc.prop.clusterxx.EstrategiaPuntuacio.EstrategiaMultiplicadorParaula;
+import edu.upc.prop.clusterxx.*;
 import edu.upc.prop.clusterxx.controladors.CtrlPartida;
 
 import java.util.Arrays;
@@ -95,7 +86,10 @@ public class DriverCamilaInicialiarPartida {
                         ctrlPartida.passarTorn();
                         passatorn = true;
                     }
-                    case 3 -> canviarFitxes(sc, ctrlPartida);
+                    case 3 -> {
+                        canviarFitxes(sc, ctrlPartida);
+                        passatorn = true;
+                    }
                     default -> System.out.println("Opció no vàlida. Torna a intentar-ho.");
                 }
             }
@@ -121,6 +115,7 @@ public class DriverCamilaInicialiarPartida {
                 if (fitxa.equals("#")) {
                     System.out.print("Per quina lletra vols canviar el comodí?");
                     fitxa = sc.nextLine();
+
                 }
 
                 System.out.print("Tria la fila on vols jugar: ");

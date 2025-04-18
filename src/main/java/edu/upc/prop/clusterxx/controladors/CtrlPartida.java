@@ -250,7 +250,7 @@ public class CtrlPartida {
      * @return {@code true} si la partida ha de finalitzar, {@code false} altrament
      */
     public boolean esFinalDePartida() {
-        return (sac.esBuit() && jugadors[torn%jugadors.length].obtenirFaristol().esBuit()) || tornsSenseCanvi >= (jugadors.length)*3;
+        return (sac.esBuit() && jugadors[torn%jugadors.length].obtenirFaristol().esBuit()) || tornsSenseCanvi >= (jugadors.length)*2;
     }
 
     /**

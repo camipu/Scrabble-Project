@@ -32,7 +32,7 @@ build.dependsOn jarProvaParida
 task jarProvaIni(type: Jar) {
     archiveBaseName.set('ProvaIni')
     manifest {
-        attributes 'Main-Class': 'edu.upc.prop.clusterxx.DriverCamilaInicialiarPartida'
+        attributes 'Main-Class': 'edu.upc.prop.clusterxx.drivers.DriverCamilaInicialiarPartida'
     }
     from {
         configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
