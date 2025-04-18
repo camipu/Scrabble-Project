@@ -45,6 +45,7 @@ public class Sac {
     }
 
     public void setFitxesOriginals(Set<Fitxa> fitxesOriginals) {
+        lletresOriginals = new HashSet<>();
         for (Fitxa f : fitxesOriginals) {
             lletresOriginals.add(f.obtenirLletra());
         }
