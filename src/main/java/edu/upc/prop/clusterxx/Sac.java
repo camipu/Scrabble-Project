@@ -129,4 +129,10 @@ public class Sac {
         return fitxes;
     }
 
+    public void imprimirOriginals() {
+        for (String lletra : lletresOriginals) {
+            System.out.println(lletra);
+        }
+    }
+
 }

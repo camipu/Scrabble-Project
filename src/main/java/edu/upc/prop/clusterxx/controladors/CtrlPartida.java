@@ -297,6 +297,7 @@ public class CtrlPartida {
         }
 
         sac.setFitxesOriginals(sac.obtenirSac().elementSet());
+        sac.imprimirOriginals();
     }
 
     /**

@@ -1,5 +1,6 @@
 package edu.upc.prop.clusterxx.drivers;
 
+import com.google.common.collect.Multiset;
 import edu.upc.prop.clusterxx.Casella;
 import edu.upc.prop.clusterxx.Colors;
 import edu.upc.prop.clusterxx.EstrategiaPuntuacio;
@@ -158,7 +159,11 @@ public class DriverToni {
         System.out.println("]");
     }
     public void mostrarContingutSac(Sac sac) {
-        sac.obtenirSac().forEach((fitxa, quantitat) ->
-                System.out.println(fitxa.obtenirLletra() + " -> " + quantitat + " fitxes, " + fitxa.obtenirPunts() + " punts"));
+        for (Multiset.Entry<Fitxa> entrada : sac.obtenirSac().entrySet()) {
+            Fitxa fitxa = entrada.getElement();
+            int quantitat = entrada.getCount();
+            System.out.println(fitxa.obtenirLletra() + " -> " + quantitat + " fitxes, " + fitxa.obtenirPunts() + " punts");
+        }
     }
+
 }
