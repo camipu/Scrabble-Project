@@ -135,7 +135,13 @@ public class CtrlJugadaBot {
             if (nodeSeguent.esFinal()) {
                 // Validar i afegir la jugada si és vàlida
                 Jugada novaJugada = taulell.construirJugadaBot(nouPrefix, casellesJugades, dawg);
-                if (novaJugada.getJugadaValida()) resultats.add(novaJugada);
+                if (novaJugada.getJugadaValida()) {
+                    // Augmento la puntuació 50 si juga totes les fitxes
+                    if (fitxesRestants.size() == 0) {
+                        novaJugada.setPuntuacio(novaJugada.getPuntuacio()+50);
+                    }
+                    resultats.add(novaJugada);
+                }
             }
 
             // Em moc a la següent posició
@@ -209,7 +215,13 @@ public class CtrlJugadaBot {
         // Si el prefix és una paraula l'afageixo a resultats
         if (nodeSeguent.esFinal()) {
             Jugada novaJugada = taulell.construirJugadaBot(prefix, novesCasellesJugades, dawg);
-            if (novaJugada.getJugadaValida()) resultats.add(novaJugada);  
+            if (novaJugada.getJugadaValida()) {
+                // Augmento la puntuació 50 si juga totes les fitxes
+                if (fitxesRestants.size() == 0) {
+                    novaJugada.setPuntuacio(novaJugada.getPuntuacio()+50);
+                }
+                resultats.add(novaJugada);
+            }
         }
  
         // Em moc a la següent posició

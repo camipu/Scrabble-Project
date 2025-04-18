@@ -106,8 +106,8 @@ public class Taulell {
         puntuacio += calcularPuntuacioParaulaPrincipal(casellesJugades);
         puntuacio += calcularPuntuacioPerpendiculares(casellesJugades);
     
-        // Bonus de 50 punts si es col·loquen 7 fitxes noves
-        if (casellesJugades.size() == 7) puntuacio += 50;
+        // El bonus de punts si es col·loquen tantes fitxes com 
+        // el faristol el fan Jugador i Bot
     
         return puntuacio;
     }
