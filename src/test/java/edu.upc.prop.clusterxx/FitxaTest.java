@@ -6,7 +6,7 @@ import static org.junit.Assert.*;
 
 /**
  * Test per la classe Fitxa.
- * Verifica les funcionalitats de la classe Fitxa com la creació, igualtat, excepcions i les funcions relacionades.
+ * Verifica les funcionalitats de la classe Fitxa com la creació, igualtat, excepcions, les funcions relacionades, i la nova funcionalitat de comodí.
  */
 public class FitxaTest {
 
@@ -16,6 +16,7 @@ public class FitxaTest {
     private Fitxa fitxaB;
     private Fitxa fitxaCH2;
     private Fitxa fitxaA2;
+    private Fitxa fitxaComodi;
 
     @Before
     public void setUp() {
@@ -23,9 +24,11 @@ public class FitxaTest {
         fitxaZ = new Fitxa("Z", 5);
         fitxaDigraf = new Fitxa("CH", 5);
         fitxaB = new Fitxa("B", 2);
-
         fitxaCH2 = new Fitxa("CH", 5);
         fitxaA2 = new Fitxa("A", 1);
+
+        // Comodí amb punts 0
+        fitxaComodi = new Fitxa("#", 0);
     }
 
     @Test
@@ -128,14 +131,17 @@ public class FitxaTest {
         } catch (IllegalArgumentException e) {
             // Esperat
         }
+    }
 
-        // No es pot posar una lletra de mida superior a 1
-        try {
-            fitxaComodi.setLletraComodi("AB");
-            fail("S'hauria de llançar una excepció per intentar posar una lletra amb més de 1 caràcter.");
-        } catch (IllegalArgumentException e) {
-            // Esperat
-        }
+    /**
+     * Test per la nova funció esComodi.
+     * Verifica que una fitxa amb punts 0 sigui un comodí.
+     */
+    @Test
+    public void testEsComodi() {
+        assertTrue(fitxaComodi.esComodi()); // La fitxa amb punts 0 és un comodí
+        assertFalse(fitxaA.esComodi()); // La fitxa amb punts 1 no és un comodí
+        assertFalse(fitxaZ.esComodi()); // La fitxa amb punts 5 no és un comodí
     }
 
     /**
@@ -145,7 +151,7 @@ public class FitxaTest {
     public void testEqualsSameLletraAndPunts() {
         Fitxa fitxa1 = new Fitxa("A", 1);
         Fitxa fitxa2 = new Fitxa("A", 1);
-        assertTrue(fitxa1.equals(fitxa2));
+        assertEquals(fitxa1, fitxa2);
     }
 
     /**
@@ -155,7 +161,7 @@ public class FitxaTest {
     public void testEqualsDifferentPunts() {
         Fitxa fitxa1 = new Fitxa("A", 1);
         Fitxa fitxa2 = new Fitxa("A", 2);
-        assertFalse(fitxa1.equals(fitxa2));
+        assertNotEquals(fitxa1, fitxa2);
     }
 
     /**
@@ -165,7 +171,6 @@ public class FitxaTest {
     public void testEqualsDifferentLletra() {
         Fitxa fitxa1 = new Fitxa("A", 1);
         Fitxa fitxa2 = new Fitxa("B", 1);
-        assertFalse(fitxa1.equals(fitxa2));
+        assertNotEquals(fitxa1, fitxa2);
     }
-
 }

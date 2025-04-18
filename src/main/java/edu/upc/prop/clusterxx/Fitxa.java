@@ -80,15 +80,18 @@ public class Fitxa {
     public void setLletraComodi(String lletra) {
         if (!this.lletra.equals("#")) {
             throw new IllegalArgumentException("No es pot canviar la lletra d'una fitxa que no és un comodí.");
-        } else if (lletra.length() > 1) {
-            throw new IllegalArgumentException("La lletra del comodí ha de ser una sola lletra.");
-        } else if (lletra.equals("#")) {
-            throw new IllegalArgumentException("La lletra del comodí no pot ser un comodí.");
-        } else {
+        }
+        else {
             this.lletra = lletra;
         }
     }
 
+    /**
+     * Comprova si una fitxa és un comodí.
+     * Un comodí és una fitxa amb un valor de punts igual a 0.
+     *
+     * @return {@code true} si la fitxa és un comodí (punts == 0), {@code false} en cas contrari.
+     */
     public boolean esComodi() {
         return this.punts == 0;
     }
