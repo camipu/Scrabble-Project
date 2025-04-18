@@ -98,7 +98,6 @@ public class Jugador {
     public Fitxa obtenirFitxa(String lletra) {
         return faristol.obtenirFitxa(lletra);
     }
-
     /**
      * Afegeix una fitxa al faristol del jugador.
      *

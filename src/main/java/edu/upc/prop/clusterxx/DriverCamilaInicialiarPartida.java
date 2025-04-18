@@ -17,11 +17,12 @@ public class DriverCamilaInicialiarPartida {
     private static void inicialitzarPartida(Scanner sc) {
         int midaTaulell = 15;
         int midaFaristol = 5;
-        int numBots = 0;
+        int numBots = 1;
+        int numJugadors = 1;
 
         int[] dificultats = llegirDificultatsBots(sc, numBots);
 
-        String[] nomsJugadors = llegirNomsJugadors(sc, 1);
+        String[] nomsJugadors = llegirNomsJugadors(sc, numJugadors);
 
         CtrlPartida ctrlPartida = CtrlPartida.getInstance();
         ctrlPartida.inicialitzarPartida(midaTaulell, midaFaristol, "castellano", nomsJugadors, dificultats);
@@ -54,8 +55,16 @@ public class DriverCamilaInicialiarPartida {
             imprimirSeparador();
             imprimirTorn(ctrlPartida);
             imprimirFaristol(ctrlPartida.obtenirJugadorActual().obtenirFaristol());
+            if (first) imprimirTaulell(ctrlPartida.obtenirTaulell());
+            Jugador jugadorActual = ctrlPartida.obtenirJugadorActual();
             boolean passatorn = false;
 
+            if (jugadorActual.esBot()) {
+                Jugada jugadabot = ctrlPartida.jugadaBot();
+                imprimirJugada(jugadabot);
+                passatorn = true;
+                if (first) first = false; // Si el bot juga, ja no és el primer torn
+            }
 
             while (!passatorn) {
                 int opcio;
@@ -99,6 +108,11 @@ public class DriverCamilaInicialiarPartida {
             if (opcio == 1) {
                 System.out.print("Tria que fitxa vols jugar: ");
                 String fitxa = sc.nextLine();
+                if (fitxa.equals("#")) {
+                    System.out.print("Per quina lletra vols canviar el comodí?");
+                    fitxa = sc.nextLine();
+                }
+
                 System.out.print("Tria la fila on vols jugar: ");
                 int fila = sc.nextInt();
                 System.out.print("Tria la columna on vols jugar: ");
@@ -106,7 +120,9 @@ public class DriverCamilaInicialiarPartida {
                 sc.nextLine();
 
                 Jugada jugada = ctrlPartida.colocarFitxa(fitxa, fila, columna);
+
                 if (jugada.getJugadaValida()) {
+                    //System.out.println("La jugada és vàlida.");
                     System.out.print("Vols fer commit? (true/false): ");
                     boolean commitJugada = sc.nextBoolean();
                     sc.nextLine();

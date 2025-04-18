@@ -5,7 +5,7 @@ import java.util.Objects;
  * un indicador de si és un dígraf.
  */
 public class Fitxa {
-    private final String lletra;
+    private String lletra;
     private final int punts;
     private final boolean digraf;
 
@@ -62,6 +62,21 @@ public class Fitxa {
      */
     public boolean esDigraf() {
         return digraf;
+    }
+
+    public void setLletraComodi(String lletra) {
+        if (!this.lletra.equals("#")) {
+            throw new IllegalArgumentException("No es pot canviar la lletra d'una fitxa que no és un comodí.");
+        }
+        else if (lletra.length() > 1) {
+            throw new IllegalArgumentException("La lletra del comodí ha de ser una sola lletra.");
+        }
+        else if (lletra.equals("#")) {
+            throw new IllegalArgumentException("La lletra del comodí no pot ser un comodí.");
+        }
+        else {
+            this.lletra = lletra;
+        }
     }
 
 
