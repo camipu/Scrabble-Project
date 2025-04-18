@@ -159,8 +159,8 @@ public class CtrDomini {
      * @param i Coordenada vertical (fila) al taulell
      * @param j Coordenada horitzontal (columna) al taulell
      */
-    public void colocarFitxa(int index, int i, int j) {
-        ctrlPartida.colocarFitxa(index, i, j);
+    public void colocarFitxa(String lletra, int i, int j) {
+        ctrlPartida.colocarFitxa(lletra, i, j);
     }
 
     /**

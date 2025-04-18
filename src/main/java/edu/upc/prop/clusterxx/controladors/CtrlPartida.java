@@ -250,7 +250,7 @@ public class CtrlPartida {
      * @return {@code true} si la partida ha de finalitzar, {@code false} altrament
      */
     public boolean esFinalDePartida() {
-        return (sac.esBuit() && jugadors[torn%jugadors.length].obtenirFaristol().esBuit()) || tornsSenseCanvi >= 6;
+        return (sac.esBuit() && jugadors[torn%jugadors.length].obtenirFaristol().esBuit()) || tornsSenseCanvi >= (jugadors.length)*3;
     }
 
     /**
@@ -355,7 +355,7 @@ public class CtrlPartida {
         passarTorn();
     }
 
-    public Jugada colocarFitxa(int fitxa, int fila, int columna) {
+    public Jugada colocarFitxa(String fitxa, int fila, int columna) {
         Fitxa aux = jugadors[torn%jugadors.length].obtenirFaristol().obtenirFitxa(fitxa);
         jugadors[torn%jugadors.length].eliminarFitxa(aux);
         taulell.colocarFitxa(aux, fila, columna);

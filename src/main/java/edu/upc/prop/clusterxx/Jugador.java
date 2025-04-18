@@ -91,6 +91,14 @@ public class Jugador {
         this.punts -= nousPunts;
     }
 
+    public Fitxa obtenirFitxa(int index) {
+        return faristol.obtenirFitxa(index);
+    }
+
+    public Fitxa obtenirFitxa(String lletra) {
+        return faristol.obtenirFitxa(lletra);
+    }
+
     /**
      * Afegeix una fitxa al faristol del jugador.
      *
