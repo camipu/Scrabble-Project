@@ -1,9 +1,6 @@
 package edu.upc.prop.clusterxx.controladors;
 
-import edu.upc.prop.clusterxx.Jugador;
-import edu.upc.prop.clusterxx.Sac;
-import edu.upc.prop.clusterxx.Taulell;
-import edu.upc.prop.clusterxx.Torn;
+import edu.upc.prop.clusterxx.*;
 
 /**
  * Classe CtrDomini
@@ -156,11 +153,12 @@ public class CtrDomini {
      * Col·loca una fitxa del faristol del jugador actual en una posició concreta del taulell.
      *
      * @param index Índex de la fitxa dins del faristol
-     * @param i Coordenada vertical (fila) al taulell
-     * @param j Coordenada horitzontal (columna) al taulell
+     * @param i     Coordenada vertical (fila) al taulell
+     * @param j     Coordenada horitzontal (columna) al taulell
+     * @return
      */
-    public void colocarFitxa(String lletra, int i, int j) {
-        ctrlPartida.colocarFitxa(lletra, i, j);
+    public Jugada colocarFitxa(String lletra, int i, int j) {
+        return ctrlPartida.colocarFitxa(lletra, i, j);
     }
 
     /**
@@ -219,5 +217,25 @@ public class CtrDomini {
      */
     public boolean partidaAcabada() {
         return ctrlPartida.acabada();
+    }
+
+    public boolean esFinalDePartida() {
+        return ctrlPartida.esFinalDePartida();
+    }
+
+    public Jugada jugadaBot() {
+        return ctrlPartida.jugadaBot();
+    }
+
+    public void guardarPartida() {
+        //no tenim capa de persistència :(
+    }
+
+    public void resetTorn() {
+        ctrlPartida.resetTorn();
+    }
+
+    public boolean setLletraComodi(Fitxa fitxa, String lletra) {
+        return ctrlPartida.setLletraComodi(fitxa, lletra);
     }
 }
