@@ -227,6 +227,7 @@ public class CtrlPartida {
     public void passarTorn() {
         ++torn;
         ++tornsSenseCanvi;
+        inicialitzarCasellasTorn();
         historial.afegirTorn(new Torn(sac, taulell, jugadors, torn, acabada));
         acabada = esFinalDePartida();
     }
@@ -337,14 +338,14 @@ public class CtrlPartida {
         jugadors[torn%jugadors.length].afegirFitxa(novaFitxa);
     }
 
-    public void canviarFitxes(int[] fitxesCanviades) {
+    public void canviarFitxes(String[] fitxesCanviades) {
         List<Fitxa> fitxesCanviadesAux = new ArrayList<>();
         for (int i = 0; i < fitxesCanviades.length; ++i) {
             Fitxa novaFitxa = sac.agafarFitxa();
             fitxesCanviadesAux.add(novaFitxa);
         }
-        for (int index : fitxesCanviades) {
-            Fitxa aux = jugadors[torn%jugadors.length].obtenirFaristol().obtenirFitxa(index);
+        for (String lletra : fitxesCanviades) {
+            Fitxa aux = jugadors[torn%jugadors.length].obtenirFaristol().obtenirFitxa(lletra);
             sac.afegirFitxa(aux);
             jugadors[torn%jugadors.length].eliminarFitxa(aux);
         }
@@ -388,7 +389,6 @@ public class CtrlPartida {
     public void commitParaula() {
         jugadors[torn%jugadors.length].afegirPunts(jugadaActual.getPuntuacio());
         rellenarFaristol();
-        inicialitzarCasellasTorn();
         tornsSenseCanvi = -1;
         passarTorn();
     }
@@ -412,7 +412,7 @@ public class CtrlPartida {
         }
 
         rellenarFaristol();
-        inicialitzarCasellasTorn();
+
         if (!casellasTorn.isEmpty()) tornsSenseCanvi = -1;
         else System.out.print("ESTA VACIO");
         passarTorn();

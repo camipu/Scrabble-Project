@@ -98,6 +98,15 @@ public class Faristol {
         return fitxes.get(index);
     }
 
+    public Fitxa obtenirFitxa(String lletra) {
+        for (Fitxa fitxa : fitxes) {
+            if (fitxa.obtenirLletra().equals(lletra)) {
+                return fitxa;
+            }
+        }
+        throw new IllegalArgumentException("No hi ha cap fitxa amb la lletra " + lletra + " al faristol.");
+    }
+
     /**
      * Retorna el nombre actual de fitxes que hi ha al faristol.
      *
