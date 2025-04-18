@@ -5,8 +5,6 @@ import edu.upc.prop.clusterxx.Sac;
 import edu.upc.prop.clusterxx.Taulell;
 import edu.upc.prop.clusterxx.Torn;
 
-import java.util.AbstractMap;
-
 /**
  * Classe CtrDomini
  * Classe principal del domini del joc de Scrabble que actua com a controlador general.
@@ -202,7 +200,7 @@ public class CtrDomini {
      *
      * @param fitxesCanviades Índexs de les fitxes del faristol que es volen canviar
      */
-    public void canviarFitxes(int[] fitxesCanviades){
+    public void canviarFitxes(String[] fitxesCanviades){
         ctrlPartida.canviarFitxes(fitxesCanviades);
     }
 
