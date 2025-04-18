@@ -209,7 +209,7 @@ public class DriverToni {
             lletra = gestionarComodi(sc, ctrlDomini);
             if (lletra == null) return false; // No hi havia comodí
         }
-
+    
         System.out.print("Introdueix la fila on vols col·locar la fitxa: ");
         int fila = sc.nextInt();
         System.out.print("Introdueix la columna on vols col·locar la fitxa: ");
