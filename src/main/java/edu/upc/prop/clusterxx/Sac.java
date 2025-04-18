@@ -125,12 +125,8 @@ public class Sac {
      *
      * @return Mapa de fitxes i les seves quantitats disponibles
      */
-    public Map<Fitxa, Integer> obtenirSac() {
-        Map<Fitxa, Integer> map = new LinkedHashMap<>();
-        for (Multiset.Entry<Fitxa> e : fitxes.entrySet()) {
-            map.put(e.getElement(), e.getCount());
-        }
-        return map;
+    public Multiset<Fitxa> obtenirSac() {
+        return fitxes;
     }
 
 }

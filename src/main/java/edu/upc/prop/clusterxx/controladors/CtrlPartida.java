@@ -295,6 +295,8 @@ public class CtrlPartida {
                 throw new IllegalArgumentException("Error de format numèric a la línia: " + line, e);
             }
         }
+
+        sac.setFitxesOriginals(sac.obtenirSac().elementSet());
     }
 
     /**
