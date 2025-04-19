@@ -152,7 +152,7 @@ public class CtrDomini {
     /**
      * Col·loca una fitxa del faristol del jugador actual en una posició concreta del taulell.
      *
-     * @param index Índex de la fitxa dins del faristol
+     * @param lletra Lletra de la fitxa dins del faristol
      * @param i     Coordenada vertical (fila) al taulell
      * @param j     Coordenada horitzontal (columna) al taulell
      * @return

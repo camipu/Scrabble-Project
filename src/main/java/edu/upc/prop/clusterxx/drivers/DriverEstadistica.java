@@ -26,7 +26,7 @@ public class DriverEstadistica {
             System.out.print("Escull una opció: ");
 
             int opcio = scanner.nextInt();
-            scanner.nextLine(); // Consumir el salto de línea
+            scanner.nextLine();
 
             switch (opcio) {
                 case 1:
@@ -34,7 +34,7 @@ public class DriverEstadistica {
                     String nom = scanner.nextLine();
                     System.out.print("Puntuació: ");
                     int puntuacio = scanner.nextInt();
-                    scanner.nextLine(); // Consumir el salto de línea
+                    scanner.nextLine();
                     ctr.afegirPuntuacio(nom, puntuacio);
                     System.out.println("Puntuació afegida correctament.");
                     break;
@@ -44,7 +44,7 @@ public class DriverEstadistica {
                     nom = scanner.nextLine();
                     System.out.print("Puntuació: ");
                     puntuacio = scanner.nextInt();
-                    scanner.nextLine(); // Consumir el salto de línea
+                    scanner.nextLine();
                     ctr.retirarPuntuacio(nom, puntuacio);
                     System.out.println("Puntuació retirada correctament.");
                     break;
@@ -73,10 +73,9 @@ public class DriverEstadistica {
                         System.out.println("No hi ha puntuacions registrades.");
                     } else {
                         System.out.println("Llista de puntuacions (ordenades):");
-                        // Mostrar puntuaciones ordenadas
                         puntuacions.entrySet()
                                 .stream()
-                                .sorted((entry1, entry2) -> entry2.getValue() - entry1.getValue())  // Ordenamos de mayor a menor
+                                .sorted((entry1, entry2) -> entry2.getValue() - entry1.getValue())
                                 .forEach(entry -> System.out.println(entry.getKey() + ": " + entry.getValue() + " punts"));
                     }
                     break;

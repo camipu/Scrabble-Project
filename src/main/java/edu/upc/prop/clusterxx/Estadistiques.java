@@ -95,7 +95,7 @@ public class Estadistiques {
     }
 
     /**
-     * Retorna el jugador con la puntuación más baja.
+     * Retorna el jugador con la puntuación más baixa.
      * @return Una entrada (nombre del jugador y puntuación) del peor jugador.
      */
     public Map.Entry<String, Integer> obtenirPitjor() {
