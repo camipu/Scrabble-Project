@@ -44,7 +44,7 @@ build.dependsOn jarProvaIni
 task jarDriverToni(type: Jar) {
     archiveBaseName.set('DriverToni')
     manifest {
-        attributes 'Main-Class': 'edu.upc.prop.clusterxx.DriverToni'
+        attributes 'Main-Class': 'edu.upc.prop.clusterxx.drivers.DriverToni'
     }
     from {
         configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
@@ -56,7 +56,7 @@ build.dependsOn jarDriverToni
 task jarDriverEstadistica(type: Jar) {
     archiveBaseName.set('DriverEstadistica')
     manifest {
-        attributes 'Main-Class': 'edu.upc.prop.clusterxx.DriverEstadistica'
+        attributes 'Main-Class': 'edu.upc.prop.clusterxx.drivers.DriverEstadistica'
     }
     from sourceSets.main.output
     dependsOn classes
