@@ -151,6 +151,10 @@ public class DriverToni {
             }
             imprimirSeparador();
         }
+        if (ctrlDomini.esFinalDePartida()) {
+            System.out.println(Colors.YELLOW_BACKGROUND + Colors.BLACK_TEXT + "======== PARTIDA ACABADA ========" + Colors.RESET);
+            imprimirTaulell(ctrlDomini.obtenirTaulell());
+        }
     }
 
     private static void imprimirPrincipiTorn(CtrDomini ctrlDomini) {
