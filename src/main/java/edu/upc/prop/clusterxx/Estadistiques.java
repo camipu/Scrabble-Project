@@ -3,7 +3,12 @@ package edu.upc.prop.clusterxx;
 import edu.upc.prop.clusterxx.exceptions.ExcepcioEstadistiquesBuides;
 
 import java.util.*;
-
+/**
+ * Classe Estadístiques
+ *
+ * Controla les estadístiques globals del sistema. Registra i organitza la informació dels jugadors i les seves puntuacions.
+ * Té un mapa de puntuacions per jugador, un ranquing ordenat i altres estidisitques com la puntuacio total.
+ */
 public class Estadistiques {
 
     private Map<String, Integer> puntuacions = new HashMap<>();
@@ -13,6 +18,12 @@ public class Estadistiques {
 
     private Estadistiques() {}
 
+    /**
+     * Retorna la instància única del controlador d’estadístiques.
+     * Si encara no s’ha creat, s’inicialitza.
+     *
+     * @return Instància única de Estadistiques
+     */
     public static Estadistiques getInstance() {
         if (instance == null) {
             instance = new Estadistiques();
@@ -20,6 +31,15 @@ public class Estadistiques {
         return instance;
     }
 
+    /**
+     * Afegeix una puntuació al jugador entrat per paràmetre i actualitza les estadístiques globals.
+     * Si el jugador ja tenia una puntuació registrada, s'actualitza
+     * i es reordena el rànquing. També s’actualitza la puntuació total del sistema.
+     *
+     * @param puntuacio Puntuació a afegir al jugador
+     * @param jugador Nom del jugador
+     * @throws IllegalArgumentException si la puntuació és negativa
+     */
     public void afegirPuntuacio(int puntuacio, String jugador) {
         if (puntuacio < 0) {
             throw new IllegalArgumentException("La puntuació no pot ser negativa");
@@ -54,6 +74,15 @@ public class Estadistiques {
         }
     }
 
+    /**
+     * Retira una quantitat de punts a un jugador i actualitza les estadístiques globals.
+     * Si la nova puntuació és menor o igual a zero, el jugador s’elimina del registre.
+     * També s’actualitzen el rànquing i la puntuació total acumulada.
+     *
+     * @param jugador Nom del jugador
+     * @param punts Quantitat de punts a retirar
+     * @throws IllegalArgumentException si els punts són negatius o si el jugador no existeix
+     */
     public void retirarPuntuacio(String jugador, int punts) {
         if (punts < 0) {
             throw new IllegalArgumentException("Els punts a restar no poden ser negatius");
@@ -84,8 +113,9 @@ public class Estadistiques {
 
 
     /**
-     * Retorna el jugador con la puntuación más alta.
-     * @return Una entrada (nombre del jugador y puntuación) del mejor jugador.
+     * Retorna el jugador con la puntuacio mes alta.
+     *
+     * @return Una entrada (nom del jugador y puntuació) del millor jugador.
      */
     public Map.Entry<String, Integer> obtenirMillor() {
         if (ranking.isEmpty()) throw new ExcepcioEstadistiquesBuides("No hi ha puntuacions registrades");
@@ -95,8 +125,9 @@ public class Estadistiques {
     }
 
     /**
-     * Retorna el jugador con la puntuación más baixa.
-     * @return Una entrada (nombre del jugador y puntuación) del peor jugador.
+     * Retorna el jugador con la puntuació mes baixa.
+     *
+     * @return Una entrada (nom del jugador y puntuació) del pitjor jugador.
      */
     public Map.Entry<String, Integer> obtenirPitjor() {
         if (ranking.isEmpty()) throw new ExcepcioEstadistiquesBuides("No hi ha puntuacions registrades");
@@ -105,15 +136,30 @@ public class Estadistiques {
         return new AbstractMap.SimpleEntry<>(jugador, puntuacio);
     }
 
+    /**
+     * Retorna la puntuació mitjana de tots els jugadors
+     *
+     * @return La puntucacio total entre el nombre de jugadors.
+     */
     public float obtenirMitja() {
         if (puntuacions.isEmpty()) return 0f;
         return (float) puntuacioTotal / puntuacions.size();
     }
 
+    /**
+     * Retorna totes les puntuacions registrades
+     * 
+     * @return Map de les puntuacions
+     */
     public Map<String, Integer> getPuntuacions() {
         return puntuacions;
     }
 
+    /**
+     * Retorna la puntuacio total dels jugadors
+     *
+     * @return La suma de totes les puntuacions
+     */
     public int getPuntuacioTotal() {
         return puntuacioTotal;
     }
