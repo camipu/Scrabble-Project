@@ -61,6 +61,12 @@ public class Estadistiques {
         ranking.computeIfAbsent(nova, k -> new HashSet<>()).add(jugador);
     }
 
+    /**
+     * Elimina un determinat jugador de totes les estadístiques i actualitza les estadístiques globals.
+     *
+     * @param jugador Nom del jugador al que es vol eliminar
+     * @throws IllegalArgumentException Si el jugador no existeix
+     */
     public void eliminarJugador(String jugador) {
         if (!puntuacions.containsKey(jugador)) throw new IllegalArgumentException("El jugador no existeix");
 
@@ -113,7 +119,7 @@ public class Estadistiques {
 
 
     /**
-     * Retorna el jugador con la puntuacio mes alta.
+     * Retorna el jugador amb la puntuacio mes alta.
      *
      * @return Una entrada (nom del jugador y puntuació) del millor jugador.
      */
@@ -125,7 +131,7 @@ public class Estadistiques {
     }
 
     /**
-     * Retorna el jugador con la puntuació mes baixa.
+     * Retorna el jugador amb la puntuació mes baixa.
      *
      * @return Una entrada (nom del jugador y puntuació) del pitjor jugador.
      */
@@ -148,7 +154,7 @@ public class Estadistiques {
 
     /**
      * Retorna totes les puntuacions registrades
-     * 
+     *
      * @return Map de les puntuacions
      */
     public Map<String, Integer> getPuntuacions() {
