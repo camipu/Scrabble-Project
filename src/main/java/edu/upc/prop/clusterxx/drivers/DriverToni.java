@@ -19,39 +19,37 @@ public class DriverToni {
         System.out.println("         CONFIGURACIÓ DE PARTIDA       ");
         System.out.println("======================================\n");
 
-        // Preguntar mida del taulell
+        // Mida del taulell
         System.out.print("Introdueix la mida del taulell: ");
         int midaTaulell = sc.nextInt();
 
-        // Preguntar mida del faristol
+        // Mida del faristol
         System.out.print("Introdueix la mida del faristol: ");
         int midaFaristol = sc.nextInt();
 
-        // Preguntar idioma
-        System.out.print("Idiomes/Temàtiques disponibles: ");
-        System.out.print("castellano");
-        System.out.print("catalan");
-        System.out.print("english");
+        // Idioma
+        System.out.println("Idiomes/Temàtiques disponibles: ");
+        System.out.println("castellano");
+        System.out.println("catalan");
+        System.out.println("english");
         System.out.print("Introdueix l'idioma/temàtica: ");
         sc.nextLine(); // Consumir salt de línia
         String idioma = sc.nextLine();
 
-        // Preguntar número de bots
+        // Bots
         System.out.print("Introdueix el nombre de bots: ");
         int numBots = sc.nextInt();
 
-        // Llegir dificultats dels bots
         int[] dificultatsBots = new int[numBots];
         for (int i = 0; i < numBots; i++) {
             System.out.print("   Dificultat del Bot " + (i + 1) + " (1-Fàcil, 2-Normal, 3-Difícil): ");
             dificultatsBots[i] = sc.nextInt();
         }
 
-        // Preguntar número de jugadors
+        // Jugadors humans
         System.out.print("Introdueix el nombre de jugadors (persones): ");
         int numJugadors = sc.nextInt();
 
-        // Llegir noms de jugadors
         sc.nextLine(); // Consumir salt de línia
         String[] nomsJugadors = new String[numJugadors];
         for (int i = 0; i < numJugadors; i++) {
@@ -60,41 +58,40 @@ public class DriverToni {
             nomsJugadors[i] = sc.nextLine();
         }
 
-        // Combinar noms
-        String[] nomsTotals = new String[numBots + numJugadors];
-        for (int i = 0; i < numBots; i++) {
-            nomsTotals[i] = "Bot" + (i + 1);
-        }
-        System.arraycopy(nomsJugadors, 0, nomsTotals, numBots, numJugadors);
-
-        // Mostrar resum de configuració
+        // Mostrar configuració
         System.out.println("\n======================================");
         System.out.println("        CONFIGURACIÓ COMPLETADA        ");
         System.out.println("======================================");
         System.out.println("Taulell: " + midaTaulell);
         System.out.println("Faristol: " + midaFaristol);
         System.out.println("Idioma: " + idioma);
-        System.out.println("Jugadors totals: " + nomsTotals.length);
-        for (int i = 0; i < nomsTotals.length; i++) {
-            String tipus = nomsTotals[i].startsWith("Bot") ? "Bot" : "Persona";
-            if (tipus.equals("Bot")) {
-                System.out.println("  - " + tipus + " \"" + nomsTotals[i] + "\" amb dificultat " + dificultatsBots[i]);
-            } else {
-                System.out.println("  - " + tipus + " \"" + nomsTotals[i] + "\"");
-            }
+        System.out.println("Jugadors totals: " + (numBots + numJugadors));
+
+        // Mostrar bots
+        for (int i = 0; i < numBots; i++) {
+            System.out.println("  - Bot \"Bot" + (i + 1) + "\" amb dificultat " + dificultatsBots[i]);
+        }
+
+        // Mostrar jugadors humans
+        for (String nomsJugador : nomsJugadors) {
+            System.out.println("  - Persona \"" + nomsJugador + "\"");
         }
 
         System.out.println("======================================\n");
-        // Preguntar si es vol jugar
+
+        // Confirmació
         System.out.print("Vols jugar amb aquesta configuració? (true/false): ");
         boolean jugar = sc.nextBoolean();
         if (!jugar) {
             System.out.println("\nTornant a la configuració inicial...\n");
             inicialitzarPartida(sc, ctrDomini);
+            return;
         }
 
-        ctrDomini.inicialitzarPartida(midaTaulell, midaFaristol, idioma, nomsTotals, dificultatsBots);
+        // Inicialitzar partida (només amb noms de jugadors humans i dificultats dels bots)
+        ctrDomini.inicialitzarPartida(midaTaulell, midaFaristol, idioma, nomsJugadors, dificultatsBots);
     }
+
 
 
     private static void jugarTorns(Scanner sc, CtrDomini ctrlDomini) {

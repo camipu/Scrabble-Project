@@ -221,7 +221,7 @@ public class CtrlPartida {
      * @return Índex del torn actual dins el conjunt de jugadors
      */
     public int obtenirTorn() {
-        return torn%jugadors.length;
+        return torn;
     }
 
     /**
