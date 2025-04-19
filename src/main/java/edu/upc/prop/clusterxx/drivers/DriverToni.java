@@ -135,6 +135,7 @@ public class DriverToni {
                         }
                         case 4 -> {
                             ctrlDomini.ferUndo();
+                            passatorn = true;
                         }
                         case 5 -> {
                             System.out.println("Guardant partida...");
