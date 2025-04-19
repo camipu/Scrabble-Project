@@ -71,10 +71,19 @@ public class Jugada {
         this.puntuacio = puntuacio;
     }
 
+    /**
+     * Retorna si una jugada es vàlida
+     *
+     * @return {@code true} si la jugada és vàlida, {@code false} altrament.
+     */
     public boolean getJugadaValida() {
         return jugadaValida;
     }
 
+    /**
+     * Assigna una jugada a la validació que es passi per paràmetre.
+     * @param jugadaValida Booleà que indica si la jugada és vàlida
+     */
     public void setJugadaValida(Boolean jugadaValida) {
         this.jugadaValida = jugadaValida;
     }
