@@ -158,6 +158,8 @@ public class DriverToni {
     }
 
     private static void imprimirPrincipiTorn(CtrDomini ctrlDomini) {
+        imprimirSeparador();
+        imprimirSeparador();
         System.out.println(Colors.YELLOW_BACKGROUND + Colors.BLACK_TEXT + "======== INICI DEL TORN"+ ctrlDomini.obtenirTorn() +"========" + Colors.RESET);
         System.out.println(Colors.YELLOW_TEXT + "Jugador: " + Colors.RESET + ctrlDomini.obtenirJugadorActual().obtenirNom());
         System.out.println(Colors.CYAN_TEXT + "Punts: " + Colors.RESET + ctrlDomini.obtenirJugadorActual().obtenirPunts());
@@ -166,6 +168,8 @@ public class DriverToni {
             imprimirFaristol(ctrlDomini.obtenirJugadorActual().obtenirFaristol());
             imprimirTaulell(ctrlDomini.obtenirTaulell());
         }
+        imprimirSeparador();
+        imprimirSeparador();
 
     }
 
@@ -179,7 +183,15 @@ public class DriverToni {
             sc.nextLine(); // Netejar buffer
 
             switch (opcio) {
-                case 1 -> commit = gestionarColocacio(sc, ctrlDomini);
+                case 1 -> {
+                    imprimirSeparador();
+                    commit = gestionarColocacio(sc, ctrlDomini);
+                    imprimirSeparador();
+                    imprimirTaulell(ctrlDomini.obtenirTaulell());
+                    System.out.println(Colors.YELLOW_TEXT + "Faristol: " + Colors.RESET);
+                    imprimirFaristol(ctrlDomini.obtenirJugadorActual().obtenirFaristol());
+                    imprimirSeparador();
+                }
                 case 2 -> {
                     System.out.print("Introdueix la fila de la fitxa que vols retirar: ");
                     int fila = sc.nextInt();
@@ -187,14 +199,15 @@ public class DriverToni {
                     int columna = sc.nextInt();
                     sc.nextLine(); // Netejar buffer
                     ctrlDomini.retirarFitxa(fila, columna);
+                    imprimirTaulell(ctrlDomini.obtenirTaulell());
                 }
                 case 3 -> {
                     ctrlDomini.resetTorn();
+                    imprimirPrincipiTorn(ctrlDomini);
                 }
                 default -> System.out.println("Opció no vàlida. Torna-ho a intentar.");
             }
 
-            imprimirTaulell(ctrlDomini.obtenirTaulell());
         }
 
         return true;
