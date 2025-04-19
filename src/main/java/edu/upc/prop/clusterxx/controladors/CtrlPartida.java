@@ -329,10 +329,20 @@ public class CtrlPartida {
         }
     }
 
+    /**
+     * Inicialitza el taulell d'una partida donada una mida.
+     *
+     * @param midaTaulell Indica el tamany que tindrà el taulell.
+     */
     private void inicialitzarTaulell(int midaTaulell) {
         taulell = new Taulell(midaTaulell);
     }
 
+    /**
+     * Inicialitza el faristol d'un jugador determinat. L'omple d'algunes de les fitxes disponibles al sac.
+     *
+     * @param jugador Instancia de jugador inicialitzat.
+     */
     private void inicialitzarFaristol(Jugador jugador) {
         while(!jugador.faristolPle()) {
             Fitxa novaFitxa = sac.agafarFitxa();
@@ -340,12 +350,20 @@ public class CtrlPartida {
         }
     }
 
-
+    /**
+     * Agafa una fitxa del sac i la afegeix al jugador que li toqui el torn.
+     */
     public void agafarDelSac(){
         Fitxa novaFitxa = sac.agafarFitxa();
         jugadors[torn%jugadors.length].afegirFitxa(novaFitxa);
     }
 
+    /**
+     * Canvia la lletra comodí per la que hagi escollit el jugador
+     * @param fitxa La instància de la fitxa comodí
+     * @param lletraComodi La lletra escollida pel jugador
+     * @return {@code true} si l'operació s'ha pogut fer, {@code false} altrament
+     */
     public boolean setLletraComodi(Fitxa fitxa, String lletraComodi) {
         if (fitxa == null || !fitxa.esComodi() || !sac.esFitxaOriginal(lletraComodi)) {
             return false;
@@ -356,6 +374,10 @@ public class CtrlPartida {
         return true;
     }
 
+    /**
+     * Canvia les fitxes que el jugador del torn trïi per unes noves aleatories del sac. Despres es passarà el torn.
+     * @param fitxesCanviades Conjunt de lletres que el jugador ha decidit canviar.
+     */
     public void canviarFitxes(String[] fitxesCanviades) {
         List<Fitxa> fitxesCanviadesAux = new ArrayList<>();
         for (int i = 0; i < fitxesCanviades.length; ++i) {
@@ -373,6 +395,13 @@ public class CtrlPartida {
         passarTorn();
     }
 
+    /**
+     * Coloca una fitxa en una casella i ho registra com a jugada.
+     * @param fitxa La lletra que es vol colocar
+     * @param fila La fila de la casella en la qual es vol colocar
+     * @param columna La columna de la casella en la qual es vol colocar
+     * @return La instancia de Jugada construïda
+     */
     public Jugada colocarFitxa(String fitxa, int fila, int columna) {
         Fitxa aux = jugadors[torn%jugadors.length].obtenirFaristol().obtenirFitxa(fitxa);
         jugadors[torn%jugadors.length].eliminarFitxa(aux);
@@ -382,7 +411,12 @@ public class CtrlPartida {
         return jugadaActual;
     }
 
-
+    /**
+     * Retira una fitxa d'una casella i ho registra com a jugada.
+     * @param fila La fila de la casella de la qual es vol retirar
+     * @param columna La columna de la casella de la qual es vol retirar
+     * @return La instancia de Jugada construïda
+     */
     public Jugada retirarFitxa(int fila, int columna) {
         jugadors[torn%jugadors.length].afegirFitxa(taulell.obtenirFitxa(fila, columna));
         casellasTorn.remove(taulell.getCasella(fila, columna));
@@ -391,6 +425,9 @@ public class CtrlPartida {
         return jugadaActual;
     }
 
+    /**
+     * Es reomple el faristol fins que torni a estar ple o fins que no quedin més fitxes.
+     */
     private void rellenarFaristol(){
         int i = 0;
         while (i < casellasTorn.size() && !sac.esBuit()){
@@ -401,8 +438,11 @@ public class CtrlPartida {
     }
 
     /**
-     * PRE: La paraula ha de ser vàlida i la jugada ha de ser vàlida.
-     * POST: Es registra la puntuació de la jugada i es retorna un objecte Jugada
+     * Registra la jugada actual com a vàlida i actualitza l’estat de la partida.
+     *
+     * @pre {@code jugadaActual} ha de ser una paraula vàlida i col·locada correctament al taulell
+     * @post S’afegeixen els punts al jugador actual, es reomple el seu faristol,
+     * es reinicia el comptador de torns sense canvi i es passa al següent torn
      */
     public void commitParaula() {
         jugadors[torn%jugadors.length].afegirPunts(jugadaActual.getPuntuacio());
@@ -411,11 +451,17 @@ public class CtrlPartida {
         passarTorn();
     }
 
+    /**
+     * Inicialitza l'estructura que guarda les caselles que s'utilitzaran en el torn.
+     */
     private void inicialitzarCasellasTorn() {
         casellasTorn = new ArrayList<>();
     }
 
-
+    /**
+     * Executa la jugada decidida pel bot en el torn actual. Calcula la millor jugada possible segons la seva dificultat.
+     * @return Retorna la instància de jugada creada.
+     */
     public Jugada jugadaBot(){
         int nivellDificultat = ((Bot)jugadors[torn%jugadors.length]).obtenirDificultat();
         Bot bot = (Bot) jugadors[torn%jugadors.length];

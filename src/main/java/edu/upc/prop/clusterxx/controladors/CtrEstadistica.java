@@ -110,7 +110,7 @@ public class CtrEstadistica {
     public float obtenirPuntuacioMitjana() {
         return estadistiques.obtenirMitja();
     }
-    
+
     /**
      * Retorna totes les puntuacions registrades
      *
