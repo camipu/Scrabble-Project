@@ -11,6 +11,7 @@ public class Torn {
     private Jugador[] jugadors;
     private int numTorn;
     private boolean acabada;
+    private int tornsSenseCanvis;
 
     /**
      * Crea un nou torn amb una còpia completa de l’estat actual de la partida.
@@ -22,7 +23,7 @@ public class Torn {
      * @param torn Número de torn actual
      * @param acabada Indica si el torn ja s’ha completat
      */
-    public Torn(Sac sac, Taulell taulell, Jugador[] jugadors, int torn, boolean acabada) {
+    public Torn(Sac sac, Taulell taulell, Jugador[] jugadors, int torn, boolean acabada, int tornsSenseCanvis) {
         this.sac = new Sac(sac);
         this.taulell = new Taulell(taulell);
         this.jugadors = new Jugador[jugadors.length];
@@ -30,6 +31,12 @@ public class Torn {
             this.jugadors[i] = new Jugador(jugadors[i]);
         }
         this.numTorn = torn;
+        this.acabada = acabada;
+        this.tornsSenseCanvis = tornsSenseCanvis;
+    }
+
+    public int obtenirTornsSenseCanvis() {
+        return tornsSenseCanvis;
     }
 
     /**

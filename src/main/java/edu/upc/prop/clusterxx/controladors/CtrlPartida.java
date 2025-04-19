@@ -141,6 +141,8 @@ public class CtrlPartida {
         taulell = nouTorn.obtenirTaulell();
         sac = nouTorn.obtenirSac();
         jugadors = nouTorn.obtenirJugadors();
+        tornsSenseCanvi = nouTorn.obtenirTorn();
+        List<Casella> casellasTorn = new ArrayList<>();
     }
 
     public void resetTorn(){
@@ -233,7 +235,7 @@ public class CtrlPartida {
         ++torn;
         ++tornsSenseCanvi;
         inicialitzarCasellasTorn();
-        historial.afegirTorn(new Torn(sac, taulell, jugadors, torn, acabada));
+        historial.afegirTorn(new Torn(sac, taulell, jugadors, torn, acabada, tornsSenseCanvi));
         acabada = esFinalDePartida();
     }
 

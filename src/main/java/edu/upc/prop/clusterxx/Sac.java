@@ -32,7 +32,12 @@ public class Sac {
      * @param copiaSac El sac original del qual es vol fer la còpia.
      */
     public Sac(Sac copiaSac) {
-        this.fitxes = HashMultiset.create(copiaSac.fitxes);
+        this.fitxes = copiaSac.obtenirSac();
+        this.lletresOriginals = copiaSac.obtenirLletresOriginals();
+    }
+
+    public Set<String> obtenirLletresOriginals() {
+        return lletresOriginals;
     }
 
     /**
