@@ -106,6 +106,7 @@ public class DriverToni {
                 if (jugadorActual.esBot()) {
                     Jugada jugadabot = ctrlDomini.jugadaBot();
                     imprimirJugada(jugadabot);
+                    imprimirFaristol(ctrlDomini.obtenirJugadorActual().obtenirFaristol());
                     passatorn = true;
                     if (first) first = false; // Si el bot juga, ja no és el primer torn
                 }
