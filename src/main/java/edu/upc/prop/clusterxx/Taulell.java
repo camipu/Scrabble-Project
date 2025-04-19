@@ -286,6 +286,7 @@ public class Taulell {
      */
     public Jugada construirJugada(List<Casella> casellesJugades, DAWG dawg) {
         String paraulaFormada = construirParaula(casellesJugades);
+        System.out.println("PARAULA FORMADA:" + paraulaFormada);
         Boolean paraulaValida = dawg.conteParaula(paraulaFormada);
         Boolean jugadaValida = paraulaValida && jugadaValida(casellesJugades, dawg);
         int puntuacio = calcularPuntuacioTotal(casellesJugades);
@@ -352,70 +353,81 @@ public class Taulell {
             if (!adjacent) return false;
         }
     
-        // Verificació de paraules perpendiculars
-        boolean horitzontal = esJugadaHoritzontal(casellesJugades);
+        // FALTA VERIFICAR TOTES CASELLES JUGADES MATEIXA FILA/COLUMNA/I CONNECTADES
 
-        for (Casella c : casellesJugades) {
-            int x = c.obtenirX(), y = c.obtenirY();
-            StringBuilder paraulaPerp = new StringBuilder();
+        boolean almenysUnaParaulaValida = false;
 
-            // Direcció perpendicular: si jugada és horitzontal, mirem vertical (canviem X); si no, canviem Y
-            int dx = horitzontal ? -1 : 0;
-            int dy = horitzontal ? 0 : -1;
-            int nx = x + dx, ny = y + dy;
-
-            // Prefix
-            while (nx >= 0 && ny >= 0 && nx < size && ny < size && !taulell[nx][ny].esBuida()) {
-                paraulaPerp.insert(0, taulell[nx][ny].obtenirFitxa().obtenirLletra());
-                nx += dx;
-                ny += dy;
-            }
-
-            // Lletra jugada
-            paraulaPerp.append(c.obtenirFitxa().obtenirLletra());
-
-            // Sufix
-            dx = horitzontal ? 1 : 0;
-            dy = horitzontal ? 0 : 1;
-            nx = x + dx;
-            ny = y + dy;
-            while (nx >= 0 && ny >= 0 && nx < size && ny < size && !taulell[nx][ny].esBuida()) {
-                paraulaPerp.append(taulell[nx][ny].obtenirFitxa().obtenirLletra());
-                nx += dx;
-                ny += dy;
-            }
-
-            if (paraulaPerp.length() > 1 && !dawg.conteParaula(paraulaPerp.toString())) {
-                return false;
+        // Verificar totes les paraules formades horitzontalment
+        for (int fila = 0; fila < size; fila++) {
+            for (int col = 0; col < size; ) {
+                // Saltar caselles buides
+                while (col < size && taulell[fila][col].esBuida() && !casellaPertanyAJugada(fila, col, casellesJugades)) {
+                    col++;
+                }
+                if (col >= size) break;
+                
+                // Trobar inici paraula
+                int iniciCol = col;
+                StringBuilder paraula = new StringBuilder();
+                boolean conteCasellaJugada = false;
+                
+                // Construir paraula
+                while (col < size && (!taulell[fila][col].esBuida() || casellaPertanyAJugada(fila, col, casellesJugades))) {
+                    if (casellaPertanyAJugada(fila, col, casellesJugades)) {
+                        conteCasellaJugada = true;
+                        paraula.append(obtenirFitxaDeJugada(fila, col, casellesJugades).obtenirLletra());
+                    } else {
+                        paraula.append(taulell[fila][col].obtenirFitxa().obtenirLletra());
+                    }
+                    col++;
+                }
+                
+                // Verificar paraula només si és més llarga d'una lletra i inclou almenys una casella jugada
+                if (paraula.length() > 1 && conteCasellaJugada) {
+                    if (!dawg.conteParaula(paraula.toString())) {
+                        return false;
+                    }
+                    almenysUnaParaulaValida = true;
+                }
             }
         }
-
-        // Verifica la paraula principal (amb lletres ja col·locades també)
-        boolean esHoritzontal = esJugadaHoritzontal(casellesJugades);
-        Casella primer = casellesJugades.get(0);
-        int fila = primer.obtenirX(), col = primer.obtenirY();
-
-        // Troba l'inici real de la paraula
-        if (esHoritzontal) {
-            while (col > 0 && !taulell[fila][col - 1].esBuida()) col--;
-        } else {
-            while (fila > 0 && !taulell[fila - 1][col].esBuida()) fila--;
+        
+        // Verificar totes les paraules formades verticalment
+        for (int col = 0; col < size; col++) {
+            for (int fila = 0; fila < size; ) {
+                // Saltar caselles buides
+                while (fila < size && taulell[fila][col].esBuida() && !casellaPertanyAJugada(fila, col, casellesJugades)) {
+                    fila++;
+                }
+                if (fila >= size) break;
+                
+                // Trobar inici paraula
+                int iniciFila = fila;
+                StringBuilder paraula = new StringBuilder();
+                boolean conteCasellaJugada = false;
+                
+                // Construir paraula
+                while (fila < size && (!taulell[fila][col].esBuida() || casellaPertanyAJugada(fila, col, casellesJugades))) {
+                    if (casellaPertanyAJugada(fila, col, casellesJugades)) {
+                        conteCasellaJugada = true;
+                        paraula.append(obtenirFitxaDeJugada(fila, col, casellesJugades).obtenirLletra());
+                    } else {
+                        paraula.append(taulell[fila][col].obtenirFitxa().obtenirLletra());
+                    }
+                    fila++;
+                }
+                
+                // Verificar paraula només si és més llarga d'una lletra i inclou almenys una casella jugada
+                if (paraula.length() > 1 && conteCasellaJugada) {
+                    if (!dawg.conteParaula(paraula.toString())) {
+                        return false;
+                    }
+                    almenysUnaParaulaValida = true;
+                }
+            }
         }
-
-        StringBuilder paraula = new StringBuilder();
-        while (fila < size && col < size) {
-            Casella actual = taulell[fila][col];
-            boolean esDeJugada = casellaPertanyAJugada(fila, col, casellesJugades);
-            if (actual.esBuida() && !esDeJugada) break;
-
-            Fitxa f = esDeJugada ? obtenirFitxaDeJugada(fila, col, casellesJugades) : actual.obtenirFitxa();
-            paraula.append(f.obtenirLletra());
-
-            if (esHoritzontal) col++;
-            else fila++;
-        }
-
-        return dawg.conteParaula(paraula.toString());
+        
+        return almenysUnaParaulaValida;
     }
 
     /**
@@ -471,21 +483,96 @@ public class Taulell {
      */
     private String construirParaula(List<Casella> casellesJugades) {
         if (casellesJugades.isEmpty()) return "";
-    
+        
+        // Cas especial: quan només hi ha una casella jugada
+        if (casellesJugades.size() == 1) {
+            Casella casellaJugada = casellesJugades.get(0);
+            int x = casellaJugada.obtenirX();
+            int y = casellaJugada.obtenirY();
+            
+            // Mirar si forma una paraula horitzontal
+            String paraulaHoritzontal = construirParaulaAEix(x, y, true, casellesJugades);
+            
+            // Mirar si forma una paraula vertical
+            String paraulaVertical = construirParaulaAEix(x, y, false, casellesJugades);
+            
+            // Si ambdues són paraules vàlides (més d'una lletra), retornar la més llarga
+            if (paraulaHoritzontal.length() > 1 && paraulaVertical.length() > 1) {
+                return paraulaHoritzontal.length() >= paraulaVertical.length() ? 
+                    paraulaHoritzontal : paraulaVertical;
+            } 
+            // Si només una és paraula vàlida, retornar-la
+            else if (paraulaHoritzontal.length() > 1) {
+                return paraulaHoritzontal;
+            } 
+            else if (paraulaVertical.length() > 1) {
+                return paraulaVertical;
+            }
+            // Si cap és una paraula vàlida, retornar només la lletra
+            else {
+                return casellaJugada.obtenirFitxa().obtenirLletra();
+            }
+        }
+        
+        // Cas normal: múltiples caselles jugades
         boolean esHoritzontal = esJugadaHoritzontal(casellesJugades);
-    
+        
         List<Casella> ordenades = new ArrayList<>(casellesJugades);
         ordenades.sort((a, b) ->
             esHoritzontal
                 ? Integer.compare(a.obtenirY(), b.obtenirY())
                 : Integer.compare(a.obtenirX(), b.obtenirX())
         );
-    
+        
         StringBuilder paraula = new StringBuilder();
         for (Casella c : ordenades) {
             paraula.append(c.obtenirFitxa().obtenirLletra());
         }
-    
+        
+        return paraula.toString();
+    }
+
+    /**
+     * Construeix la paraula completa en un eix determinat.
+     * @param x Fila de la casella central
+     * @param y Columna de la casella central
+     * @param horitzontal Si volem la paraula horitzontal (true) o vertical (false)
+     * @param casellesJugades Llista de caselles jugades
+     * @return La paraula completa formada al taulell
+     */
+    private String construirParaulaAEix(int x, int y, boolean horitzontal, List<Casella> casellesJugades) {
+        // Trobar inici de la paraula
+        int fila = x;
+        int col = y;
+        
+        // Anar cap enrere fins trobar el principi de la paraula
+        while (true) {
+            int prevFila = horitzontal ? fila : fila - 1;
+            int prevCol = horitzontal ? col - 1 : col;
+            
+            if (prevFila < 0 || prevCol < 0) break;
+            if (taulell[prevFila][prevCol].esBuida() && !casellaPertanyAJugada(prevFila, prevCol, casellesJugades)) break;
+            
+            if (horitzontal) col--; else fila--;
+        }
+        
+        // Construir la paraula des de l'inici
+        StringBuilder paraula = new StringBuilder();
+        int f = fila;
+        int c = col;
+        
+        while (f < size && c < size) {
+            if (taulell[f][c].esBuida() && !casellaPertanyAJugada(f, c, casellesJugades)) break;
+            
+            if (casellaPertanyAJugada(f, c, casellesJugades)) {
+                paraula.append(obtenirFitxaDeJugada(f, c, casellesJugades).obtenirLletra());
+            } else {
+                paraula.append(taulell[f][c].obtenirFitxa().obtenirLletra());
+            }
+            
+            if (horitzontal) c++; else f++;
+        }
+        
         return paraula.toString();
     }
 
