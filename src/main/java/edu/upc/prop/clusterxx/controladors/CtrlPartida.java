@@ -446,6 +446,9 @@ public class CtrlPartida {
      */
     public void commitParaula() {
         jugadors[torn%jugadors.length].afegirPunts(jugadaActual.getPuntuacio());
+        if (jugadaActual.getCasellesJugades().size() == jugadors[torn%jugadors.length].obtenirFaristol().obtenirSize()) {
+            jugadors[torn%jugadors.length].afegirPunts(50);
+        }
         rellenarFaristol();
         tornsSenseCanvi = -1;
         passarTorn();
@@ -469,17 +472,18 @@ public class CtrlPartida {
         casellasTorn = jugadaActual.getCasellesJugades();
 
         for (Casella casella : casellasTorn) {
-            System.out.println("ENTRO AL BUCLE DE CASILLAS");
             Fitxa fitxa = casella.obtenirFitxa();
             jugadors[torn%jugadors.length].eliminarFitxa(casella.obtenirFitxa());
             taulell.colocarFitxa(casella.obtenirFitxa(), casella.obtenirX(), casella.obtenirY());
         }
 
-        rellenarFaristol();
+        commitParaula();
 
-        if (!casellasTorn.isEmpty()) tornsSenseCanvi = -1;
-        else System.out.print("ESTA VACIO");
-        passarTorn();
+//        rellenarFaristol();
+
+//        if (!casellasTorn.isEmpty()) tornsSenseCanvi = -1;
+//        else System.out.print("ESTA VACIO");
+//        passarTorn();
         return jugadaActual;
 
     }
