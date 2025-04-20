@@ -20,12 +20,30 @@ public class DriverToni {
         System.out.println("======================================\n");
 
         // Mida del taulell
-        System.out.print("Introdueix la mida del taulell: ");
-        int midaTaulell = sc.nextInt();
+        int midaTaulell = 0;
+        boolean midaValida = false;
+        while (!midaValida) {
+            System.out.print("Introdueix la mida del taulell: ");
+            midaTaulell = sc.nextInt();
+
+            try {
+                // Intentar crear el Taulell
+                Taulell taulell = new Taulell(midaTaulell);
+                midaValida = true;  // Si no lanza excepción, se considera válida
+            } catch (IllegalArgumentException e) {
+                // Atrapar la excepción y mostrar un mensaje al usuario
+                System.out.println(e.getMessage());
+                // El bucle continuará pidiendo la medida del tablero
+            }
+        }
 
         // Mida del faristol
         System.out.print("Introdueix la mida del faristol: ");
         int midaFaristol = sc.nextInt();
+        while (midaFaristol < 1) {
+            System.out.print("La mida del faristol ha de ser positiva. Torna-ho a intentar: ");
+            midaFaristol = sc.nextInt();
+        }
 
         // Idioma
         System.out.println("Idiomes/Temàtiques disponibles: ");
@@ -36,19 +54,36 @@ public class DriverToni {
         sc.nextLine(); // Consumir salt de línia
         String idioma = sc.nextLine();
 
+        while (!idioma.equals("castellano") && !idioma.equals("catalan") && !idioma.equals("english")) {
+            System.out.print("Idioma no vàlid. Torna-ho a intentar: ");
+            idioma = sc.nextLine();
+        }
+
         // Bots
         System.out.print("Introdueix el nombre de bots: ");
         int numBots = sc.nextInt();
+        while (numBots < 0) {
+            System.out.print("El nombre de bots ha de ser positiu. Torna-ho a intentar: ");
+            numBots = sc.nextInt();
+        }
 
         int[] dificultatsBots = new int[numBots];
         for (int i = 0; i < numBots; i++) {
             System.out.print("   Dificultat del Bot " + (i + 1) + " (1-Fàcil, 2-Normal, 3-Difícil): ");
             dificultatsBots[i] = sc.nextInt();
+            while(dificultatsBots[i] < 1 || dificultatsBots[i] > 3) {
+                System.out.print("Dificultat no vàlida. Torna-ho a intentar: ");
+                dificultatsBots[i] = sc.nextInt();
+            }
         }
 
         // Jugadors humans
         System.out.print("Introdueix el nombre de jugadors (persones): ");
         int numJugadors = sc.nextInt();
+        while (numJugadors < 0) {
+            System.out.print("El nombre de jugadors ha de ser positiu. Torna-ho a intentar: ");
+            numJugadors = sc.nextInt();
+        }
 
         sc.nextLine(); // Consumir salt de línia
         String[] nomsJugadors = new String[numJugadors];
@@ -81,7 +116,14 @@ public class DriverToni {
 
         // Confirmació
         System.out.print("Vols jugar amb aquesta configuració? (true/false): ");
-        boolean jugar = sc.nextBoolean();
+        String confirmacio = sc.nextLine();
+        while (!confirmacio.equals("true") && !confirmacio.equals("false")) {
+            System.out.print("Resposta no vàlida. Torna-ho a intentar (true/false): ");
+            confirmacio = sc.nextLine();
+        }
+        boolean jugar;
+        jugar = confirmacio.equals("true");
+
         if (!jugar) {
             System.out.println("\nTornant a la configuració inicial...\n");
             inicialitzarPartida(sc, ctrDomini);
@@ -89,8 +131,9 @@ public class DriverToni {
         }
 
         // Inicialitzar partida (només amb noms de jugadors humans i dificultats dels bots)
-        ctrDomini.inicialitzarPartida(midaTaulell, midaFaristol, idioma, nomsJugadors, dificultatsBots);
+        ctrDomini.inicialitzarPartida(midaTaulell, midaFaristol, idioma, nomsJugadors, dificultatsBots); //Aqui el ctrDomini creará el Taulell lo que disparará la excepción
     }
+
 
 
 
@@ -316,21 +359,35 @@ public class DriverToni {
         System.out.println("\033[107m   \033[0m → Casella normal");
 
         int size = taulell.getSize();
-        for (int i = 0; i < size; ++i) System.out.print("+----");
+
+        // Imprimir índices de columna con padding
+        System.out.print("     "); // Espacio para alinear con los números de fila
+        for (int i = 0; i < size; i++) {
+            System.out.printf(" %2d  ", i);
+        }
+        System.out.println();
+
+        // Línea superior
+        System.out.print("    ");
+        for (int i = 0; i < size; i++) System.out.print("+----");
         System.out.println("+");
 
+        // Filas del taulell
         for (int i = 0; i < size; ++i) {
+            System.out.printf("%2d  ", i); // Índice de fila
             for (int j = 0; j < size; ++j) {
                 Casella casella = taulell.getTaulell()[i][j];
                 String colorFons = obtenirColorFons(casella);
                 System.out.print("|" + colorFons + Colors.BLACK_TEXT + " " + casella + " " + Colors.RESET);
             }
             System.out.println("|");
-            for (int j = 0; j < size; ++j) System.out.print("+----");
+
+            // Línea divisoria
+            System.out.print("    ");
+            for (int j = 0; j < size; j++) System.out.print("+----");
             System.out.println("+");
         }
     }
-
     private static String obtenirColorFons(Casella casella) {
         if (casella.obtenirEstrategia() instanceof EstrategiaPuntuacio.EstrategiaMultiplicadorParaula estrategia) {
             return estrategia.obtenirMultiplicador() == 3 ? Colors.RED_BACKGROUND : Colors.PURPLE_BACKGROUND;

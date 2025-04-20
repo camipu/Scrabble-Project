@@ -136,13 +136,15 @@ public class CtrlPartida {
      * @param nouTorn Torn que conté l’estat complet de la partida a restaurar
      */
     public void recuperarTorn(Torn nouTorn) {
-        acabada = nouTorn.esAcabada();
         torn = nouTorn.obtenirTorn();
+        acabada = nouTorn.esAcabada();
         taulell = nouTorn.obtenirTaulell();
         sac = nouTorn.obtenirSac();
         jugadors = nouTorn.obtenirJugadors();
         tornsSenseCanvi = nouTorn.obtenirTorn();
         List<Casella> casellasTorn = new ArrayList<>();
+
+        historial.retirarTorns(torn);
     }
 
     public void resetTorn(){

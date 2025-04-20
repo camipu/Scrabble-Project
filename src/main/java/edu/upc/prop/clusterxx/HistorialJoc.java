@@ -45,6 +45,19 @@ public class HistorialJoc {
         torns.removeLast();
     }
 
+    public void retirarTorns(int torn){
+        if (torns.isEmpty()) {
+            throw new IndexOutOfBoundsException("No hi ha torns per eliminar.");
+        }
+        for (int i = torn + 1; i < torns.size(); i++) {
+            if (torns.isEmpty()) {
+                break;
+            }
+            torns.removeLast();
+            System.out.print("Retirant torn " + (i+1) + " de " + torns.size() + "\n");
+        }
+    }
+
     /**
      * Retorna el torn corresponent a una posició concreta de l’historial.
      * La numeració dels torns comença per 1 (no per 0).
