@@ -1,9 +1,13 @@
 package edu.upc.prop.clusterxx;
 
-import java.util.*;
-
-
 import edu.upc.prop.clusterxx.exceptions.ExcepcioCaracterNoReconegut;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
+import java.util.ArrayList;
+import java.util.List;
+
 
 /**
  * DAWG (Directed Acyclic Word Graph) que representa un diccionari de paraules

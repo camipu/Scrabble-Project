@@ -2,7 +2,6 @@ package edu.upc.prop.clusterxx.drivers;
 
 import edu.upc.prop.clusterxx.controladors.CtrEstadistica;
 
-import java.util.AbstractMap;
 import java.util.Map;
 import java.util.Scanner;
 

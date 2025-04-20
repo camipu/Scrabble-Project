@@ -2,7 +2,15 @@ package edu.upc.prop.clusterxx;
 
 import edu.upc.prop.clusterxx.exceptions.ExcepcioEstadistiquesBuides;
 
-import java.util.*;
+import java.util.AbstractMap;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeMap;
+import java.util.Collections;
+
+
 /**
  * Classe Estadístiques
  *

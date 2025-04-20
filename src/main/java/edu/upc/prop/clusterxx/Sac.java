@@ -5,7 +5,11 @@ import com.google.common.collect.Multiset;
 import edu.upc.prop.clusterxx.exceptions.ExcepcioSacBuit;
 import edu.upc.prop.clusterxx.exceptions.ExcepcioSacNoConteLaFitxa;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Random;
+import java.util.Set;
 
 /**
  * Representa el sac de fitxes del joc.

@@ -1,6 +1,13 @@
 package edu.upc.prop.clusterxx.drivers;
 
-import edu.upc.prop.clusterxx.*;
+import edu.upc.prop.clusterxx.Taulell;
+import edu.upc.prop.clusterxx.Jugador;
+import edu.upc.prop.clusterxx.Colors;
+import edu.upc.prop.clusterxx.EstrategiaPuntuacio;
+import edu.upc.prop.clusterxx.Jugada;
+import edu.upc.prop.clusterxx.Faristol;
+import edu.upc.prop.clusterxx.Fitxa;
+import edu.upc.prop.clusterxx.Casella;
 import edu.upc.prop.clusterxx.controladors.CtrlPartida;
 
 import java.util.Arrays;

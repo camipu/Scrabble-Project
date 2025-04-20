@@ -1,6 +1,16 @@
 package edu.upc.prop.clusterxx.controladors;
 
-import edu.upc.prop.clusterxx.*;
+import edu.upc.prop.clusterxx.Taulell;
+import edu.upc.prop.clusterxx.Jugador;
+import edu.upc.prop.clusterxx.Jugada;
+import edu.upc.prop.clusterxx.Faristol;
+import edu.upc.prop.clusterxx.Fitxa;
+import edu.upc.prop.clusterxx.HistorialJoc;
+import edu.upc.prop.clusterxx.Casella;
+import edu.upc.prop.clusterxx.DAWG;
+import edu.upc.prop.clusterxx.Sac;
+import edu.upc.prop.clusterxx.Torn;
+import edu.upc.prop.clusterxx.Bot;
 
 import java.io.BufferedReader;
 import java.io.IOException;
