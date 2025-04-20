@@ -75,47 +75,78 @@ public class TaulellTest {
     }
 
     @Test
-    public void testCalcularPuntuacioParaulaSimple() {
-        Fitxa fitxaA = new Fitxa("A", 1);
-        Fitxa fitxaB = new Fitxa("B", 3);
-        Casella c1 = taulell.getCasella(7, 7);
-        Casella c2 = taulell.getCasella(7, 8);
-        c1.colocarFitxa(fitxaA);
-        c2.colocarFitxa(fitxaB);
-        List<Casella> caselles = Arrays.asList(c1, c2);
-        int puntuacio = taulell.calcularPuntuacioTotal(caselles);
-        System.out.println("Punts obtinguts: " + puntuacio);
-        assertEquals(27, puntuacio);
-    }
+    public void testPrimeraJugadaHaDePassarPelCentre() {
+        DAWG dawg = new DAWG(List.of("A", "B", "C"), List.of("ABC"));
+        Fitxa a = new Fitxa("A", 1);
+        Fitxa b = new Fitxa("B", 1);
+        Fitxa c = new Fitxa("C", 1);
 
-    @Test
-    public void testValidarPrimeraJugadaCentre() {
-        DAWG mockDawg = mock(DAWG.class);
-        when(mockDawg.conteParaula("AB")).thenReturn(true);
-        Fitxa f1 = new Fitxa("A", 1);
-        Fitxa f2 = new Fitxa("B", 3);
-        Casella c1 = new Casella(7, 7, 15);
-        Casella c2 = new Casella(7, 8, 15);
-        c1.colocarFitxa(f1);
-        c2.colocarFitxa(f2);
-        List<Casella> caselles = Arrays.asList(c1, c2);
-        Jugada jugada = taulell.construirJugada(caselles, mockDawg);
+        List<Casella> caselles = List.of(
+            new Casella(7, 6, 15),
+            new Casella(7, 7, 15),
+            new Casella(7, 8, 15)
+        );
+        caselles.get(0).colocarFitxa(a);
+        caselles.get(1).colocarFitxa(b);
+        caselles.get(2).colocarFitxa(c);
+
+        Jugada jugada = taulell.construirJugada(caselles, dawg);
         assertTrue(jugada.getJugadaValida());
     }
 
     @Test
-    public void testValidarJugadaNoTocaParaulaDesprésPrimera() {
-        DAWG mockDawg = mock(DAWG.class);
-        when(mockDawg.conteParaula("CD")).thenReturn(true);
-        taulell.colocarFitxa(new Fitxa("X", 5), 7, 7);
-        Casella c1 = new Casella(0, 0, 15);
-        Casella c2 = new Casella(0, 1, 15);
-        c1.colocarFitxa(new Fitxa("C", 2));
-        c2.colocarFitxa(new Fitxa("D", 2));
-        List<Casella> caselles = Arrays.asList(c1, c2);
-        Jugada jugada = taulell.construirJugada(caselles, mockDawg);
+    public void testPrimeraJugadaSenseCentreEsInvalida() {
+        DAWG dawg = new DAWG(List.of("A", "B", "C"), List.of("ABC"));
+        Fitxa a = new Fitxa("A", 1);
+        Fitxa b = new Fitxa("B", 1);
+        Fitxa c = new Fitxa("C", 1);
+
+        List<Casella> caselles = List.of(
+            new Casella(7, 5, 15),
+            new Casella(7, 6, 15),
+            new Casella(7, 8, 15)
+        );
+        caselles.get(0).colocarFitxa(a);
+        caselles.get(1).colocarFitxa(b);
+        caselles.get(2).colocarFitxa(c);
+
+        Jugada jugada = taulell.construirJugada(caselles, dawg);
         assertFalse(jugada.getJugadaValida());
     }
+
+    @Test
+    public void testJugadaTocaParaulaEsValida() {
+        DAWG dawg = new DAWG(List.of("A", "B", "C", "D"), List.of("ABC", "CD"));
+        taulell.colocarFitxa(new Fitxa("A", 1), 7, 7);
+        taulell.colocarFitxa(new Fitxa("B", 1), 7, 8);
+
+        List<Casella> caselles = List.of(
+            new Casella(7, 9, 15),
+            new Casella(8, 9, 15)
+        );
+        caselles.get(0).colocarFitxa(new Fitxa("C", 1));
+        caselles.get(1).colocarFitxa(new Fitxa("D", 1));
+
+        Jugada jugada = taulell.construirJugada(caselles, dawg);
+        assertTrue(jugada.getJugadaValida());
+    }
+
+    @Test
+    public void testJugadaSenseTocarCapParaulaEsInvalida() {
+        DAWG dawg = new DAWG(List.of("A", "B", "C", "D"), List.of("CD"));
+        taulell.getTaulell()[7][7].colocarFitxa(new Fitxa("A", 1));
+
+        List<Casella> caselles = List.of(
+            new Casella(0, 0, 15),
+            new Casella(0, 1, 15)
+        );
+        caselles.get(0).colocarFitxa(new Fitxa("C", 1));
+        caselles.get(1).colocarFitxa(new Fitxa("D", 1));
+
+        Jugada jugada = taulell.construirJugada(caselles, dawg);
+        assertFalse(jugada.getJugadaValida());
+    }
+
 
     @Test
     public void testPuntuacioAmbDobleLletraConcret() {
@@ -167,4 +198,6 @@ public class TaulellTest {
         int puntuacio = taulell.calcularPuntuacioTotal(jugada);
         assertEquals(9, puntuacio);
     }
+
+
 }

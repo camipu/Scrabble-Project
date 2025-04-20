@@ -49,7 +49,7 @@ public class DAWG {
 
     private final Node arrel; // Node Arrel del DAWG
     private final Map<Node, Node> nodesMinimitzats = new HashMap<>(); // Nodes ja construïts i minimitzats
-    private final List<String> tokens = new ArrayList<>(); // Tokens vàlids per tokenitzar paraules
+    private final List<String> tokens; // Tokens vàlids per tokenitzar paraules
     private final List<Node> pathAnterior = new ArrayList<>(); // Ruta anterior paraula per minimitzar el DAWG
 
     /**
@@ -59,7 +59,19 @@ public class DAWG {
      * @param paraules Llista de paraules vàlides ORDENADES ALFABÈTICAMENT
      */
     public DAWG(List<String> tokens, List<String> paraules) {
-        this.tokens.addAll(tokens);
+        // Crea una còpia mutable de la llista de tokens
+        this.tokens = new ArrayList<>(tokens);
+        
+        // Ordeno per longitud --> Alfabèticament
+        this.tokens.sort((s1, s2) -> {
+            // Si les longituds són diferents, ordenar per longitud
+            if (s1.length() != s2.length()) {
+                return s2.length() - s1.length();
+            }
+            // Si les longituds són iguals, ordenar alfabèticament
+            return s1.compareTo(s2);
+        });
+
         arrel = new Node();
 
         String paraulaAnterior = "";
