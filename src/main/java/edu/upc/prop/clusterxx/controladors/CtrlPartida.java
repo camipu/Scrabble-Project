@@ -246,10 +246,12 @@ public class CtrlPartida {
      * i es restaura l’estat del joc tal com estava abans del darrer torn.
      */
     public void undo() {
-        if(torn >= 1) {
-            historial.retirarTorn();
-            recuperarTorn(historial.obtenirTorn(torn-1));
+        int tornAnterior = torn;
+        while (torn > 1 && !historial.obtenirTorn(tornAnterior).jugadorBot(tornAnterior)) {
+            --tornAnterior;
         }
+        if (!historial.obtenirTorn(tornAnterior).jugadorBot(tornAnterior)) recuperarTorn(historial.obtenirTorn(tornAnterior));
+        else throw new RuntimeException("No es pot fer undo");
     }
 
     /**
@@ -467,7 +469,7 @@ public class CtrlPartida {
      * Executa la jugada decidida pel bot en el torn actual. Calcula la millor jugada possible segons la seva dificultat.
      * @return Retorna la instància de jugada creada.
      */
-    public Jugada jugadaBot(){
+    public Jugada jugadaBot() {
         int nivellDificultat = ((Bot)jugadors[torn%jugadors.length]).obtenirDificultat();
         Bot bot = (Bot) jugadors[torn%jugadors.length];
         jugadaActual = ctrlBot.calcularJugada(taulell, dawg, nivellDificultat, bot.obtenirFaristol().obtenirFitxes());

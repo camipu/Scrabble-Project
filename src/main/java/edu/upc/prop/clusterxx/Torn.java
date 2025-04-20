@@ -35,6 +35,12 @@ public class Torn {
         this.tornsSenseCanvis = tornsSenseCanvis;
     }
 
+    public boolean jugadorBot(int torn) {
+        System.out.println("Jugador torn " + torn + ": " + jugadors[torn%jugadors.length].obtenirNom());
+        System.out.println("És bot?: " + jugadors[torn%jugadors.length].esBot());
+        return jugadors[torn%jugadors.length].esBot();
+    }
+
     public int obtenirTornsSenseCanvis() {
         return tornsSenseCanvis;
     }
