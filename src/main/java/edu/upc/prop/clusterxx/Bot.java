@@ -21,5 +21,6 @@ public class Bot extends Jugador {
         return nivellDificultat;
     }
 
+    @Override
     public boolean esBot() {return true;}
 }

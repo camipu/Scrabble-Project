@@ -16,9 +16,9 @@ public class DriverCamilaInicialiarPartida {
 
     private static void inicialitzarPartida(Scanner sc) {
         int midaTaulell = 15;
-        int midaFaristol = 5;
-        int numBots = 0;
-        int numJugadors = 1;
+        int midaFaristol = 1;
+        int numBots = 1;
+        int numJugadors = 0;
 
         int[] dificultats = llegirDificultatsBots(sc, numBots);
         String[] nomsJugadors = llegirNomsJugadors(sc, numJugadors);

@@ -246,14 +246,21 @@ public class CtrlPartida {
      * i es restaura l’estat del joc tal com estava abans del darrer torn.
      */
     public void undo() {
-        int tornAnterior = torn;
-        while (torn > 1 && !historial.obtenirTorn(tornAnterior).jugadorBot(tornAnterior)) {
-            --tornAnterior;
-        }
-        if (!historial.obtenirTorn(tornAnterior).jugadorBot(tornAnterior)) recuperarTorn(historial.obtenirTorn(tornAnterior));
-        else throw new RuntimeException("No es pot fer undo");
-    }
+        int tornAnterior = torn - 1;
 
+        // Buscar el último torn que NO era d'un bot
+        while (tornAnterior >= 1) {
+            Torn tornRecuperar = historial.obtenirTorn(tornAnterior);
+            Jugador j = tornRecuperar.obtenirJugadors()[tornAnterior%jugadors.length];
+            if (!j.esBot()) {
+                recuperarTorn(tornRecuperar);
+                return;
+            }
+            tornAnterior--;
+        }
+
+        throw new RuntimeException("No es pot fer undo\n");
+    }
     /**
      * Comprova si s’ha d’acabar la partida segons les condicions establertes.
      * @return {@code true} si la partida ha de finalitzar, {@code false} altrament
