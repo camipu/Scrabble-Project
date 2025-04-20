@@ -1,12 +1,14 @@
 package edu.upc.prop.clusterxx.controladors;
 
-import edu.upc.prop.clusterxx.*;
+import edu.upc.prop.clusterxx.Taulell;
+import edu.upc.prop.clusterxx.DAWG;
+import edu.upc.prop.clusterxx.Jugada;
+import edu.upc.prop.clusterxx.Fitxa;
+import edu.upc.prop.clusterxx.Casella;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
-import java.util.Random;
 
 /**
  * Controlador que gestiona la generació de jugades del bot de Scrabble.
