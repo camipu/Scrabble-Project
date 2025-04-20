@@ -17,6 +17,20 @@ public class Bot extends Jugador {
         this.nivellDificultat = nivellDificultat;
     }
 
+    /**
+     * Inicialitza aquest bot com una còpia d'un altre.
+     * Es copien tots els atributs del bot original, inclòs el nivell de dificultat.
+     *
+     * @param copiaBot Bot original del qual es vol fer la còpia
+     */
+    public Bot(Bot copiaBot) {
+        // Copia el nom i el faristol del bot original (superclase Jugador)
+        super(copiaBot.obtenirNom(), copiaBot.obtenirFaristol());
+
+        // Copia el nivell de dificultat del bot original
+        this.nivellDificultat = copiaBot.nivellDificultat;
+    }
+
     public int obtenirDificultat() {
         return nivellDificultat;
     }

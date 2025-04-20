@@ -28,7 +28,11 @@ public class Torn {
         this.taulell = new Taulell(taulell);
         this.jugadors = new Jugador[jugadors.length];
         for (int i = 0; i < jugadors.length; i++) {
-            this.jugadors[i] = new Jugador(jugadors[i]);
+            if (jugadors[i].esBot()) {
+                this.jugadors[i] = new Bot((Bot) jugadors[i]);
+            } else {
+                this.jugadors[i] = new Jugador(jugadors[i]);
+            }
         }
         this.numTorn = torn;
         this.acabada = acabada;
