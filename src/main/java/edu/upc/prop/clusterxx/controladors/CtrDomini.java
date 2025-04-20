@@ -178,6 +178,10 @@ public class CtrDomini {
         ctrlPartida.undo();
     }
 
+    public boolean esPotFerUndo() {
+        return ctrlPartida.esPotFerUndo();
+    }
+
     /**
      * Finalitza la partida actual.
      */

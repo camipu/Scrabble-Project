@@ -271,6 +271,28 @@ public class CtrlPartida {
         return (sac.esBuit() && jugadors[torn%jugadors.length].obtenirFaristol().esBuit()) || tornsSenseCanvi >= (jugadors.length)*2;
     }
 
+    public boolean esPotFerUndo() {
+        // No es pot fer undo si encara no s'ha fet cap torn
+        if (torn == 1) return false;
+// no logro que haga bien este if
+//        // Si només s'ha fet un torn i l'ha fet un bot, no es pot fer undo
+//        if (torn == 2 && jugadors[jugadors.length%(torn - 1)].esBot()) return false;
+
+        // Comptem quants jugadors humans hi ha
+        int humans = 0;
+        for (Jugador jugador : jugadors) {
+            if (!jugador.esBot()) {
+                humans++;
+                // Si hi ha més d’un jugador humà, no es permet fer undo
+                if (humans > 1) return false;
+            }
+        }
+
+        // Si només hi ha un jugador humà, es pot fer undo
+        return true;
+    }
+
+
     /**
      * Inicialitza el sac de fitxes a partir del fitxer de configuració corresponent a l’idioma especificat.
      *

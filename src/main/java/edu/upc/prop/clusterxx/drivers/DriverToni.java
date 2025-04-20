@@ -134,8 +134,13 @@ public class DriverToni {
                             passatorn = true;
                         }
                         case 4 -> {
-                            ctrlDomini.ferUndo();
-                            passatorn = true;
+                            if (ctrlDomini.esPotFerUndo()) {
+                                ctrlDomini.ferUndo();
+                                passatorn = true;
+                            }
+                            else {
+                                System.out.println("No es pot fer undo en aquest moment.");
+                            }
                         }
                         case 5 -> {
                             System.out.println("Guardant partida...");
