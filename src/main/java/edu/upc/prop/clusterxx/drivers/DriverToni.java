@@ -277,8 +277,8 @@ public class DriverToni {
 
     private static void jugarParaula(Scanner sc, CtrDomini ctrlDomini) {
         int torn = ctrlDomini.obtenirTorn();
-
-        while (torn == ctrlDomini.obtenirTorn()) {
+        boolean reset = false;
+        while (torn == ctrlDomini.obtenirTorn() && !reset) {
             System.out.print("Vols col·locar o retirar una fitxa? (1 = col·locar, 2 = retirar, 3 = reiniciar torn): ");
             int opcio = sc.nextInt();
             sc.nextLine(); // Netejar buffer
@@ -294,7 +294,10 @@ public class DriverToni {
                     }
                 }
                 case 2 -> retirarFitxa(sc, ctrlDomini);
-                case 3 -> resetTorn(ctrlDomini);
+                case 3 ->{
+                    resetTorn(ctrlDomini);
+                    reset = true;
+                }
                 default -> System.out.println("Opció no vàlida. Torna-ho a intentar.");
             }
         }
@@ -328,7 +331,7 @@ public class DriverToni {
             ctrlDomini.retirarFitxa(fila, columna);
             imprimirTaulell(ctrlDomini.obtenirTaulell());
             imprimirFaristol(ctrlDomini.obtenirJugadorActual().obtenirFaristol());
-        } catch (ExcepcioCasellaBuida e) {
+        } catch (Exception e) {
             System.out.print("Error: " + e.getMessage() + "\n");
         }
     }
@@ -362,7 +365,7 @@ public class DriverToni {
                 }
             }
             return true;
-        } catch (IllegalArgumentException e) {
+        } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
             System.out.print("Intenta-ho de nou. Tria que vols fer: \n");
             return false;

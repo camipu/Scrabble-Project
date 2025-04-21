@@ -455,8 +455,8 @@ public class CtrlPartida {
      */
     public Jugada colocarFitxa(String fitxa, int fila, int columna) {
         Fitxa aux = jugadors[torn%jugadors.length].obtenirFaristol().obtenirFitxa(fitxa);
-        jugadors[torn%jugadors.length].eliminarFitxa(aux);
         taulell.colocarFitxa(aux, fila, columna);
+        jugadors[torn%jugadors.length].eliminarFitxa(aux);
         casellasTorn.add(taulell.getCasella(fila, columna));
         jugadaActual = taulell.construirJugada(casellasTorn, dawg);
         return jugadaActual;
@@ -469,9 +469,12 @@ public class CtrlPartida {
      * @return La instancia de Jugada construïda
      */
     public Jugada retirarFitxa(int fila, int columna) {
-        jugadors[torn%jugadors.length].afegirFitxa(taulell.obtenirFitxa(fila, columna));
-        casellasTorn.remove(taulell.getCasella(fila, columna));
+        if (taulell.getCasella(fila, columna).esJugada()) {
+            throw new IllegalArgumentException("La casella està jugada");
+        }
         taulell.retirarFitxa(fila, columna);
+        casellasTorn.remove(taulell.getCasella(fila, columna));
+        jugadors[torn%jugadors.length].afegirFitxa(taulell.obtenirFitxa(fila, columna));
         jugadaActual = taulell.construirJugada(casellasTorn, dawg);
         return jugadaActual;
     }
@@ -499,6 +502,9 @@ public class CtrlPartida {
         jugadors[torn%jugadors.length].afegirPunts(jugadaActual.getPuntuacio());
         if (jugadaActual.getCasellesJugades().size() == jugadors[torn%jugadors.length].obtenirFaristol().obtenirSize()) {
             jugadors[torn%jugadors.length].afegirPunts(50);
+        }
+        for (Casella casella : jugadaActual.getCasellesJugades()) {
+            taulell.getCasella(casella.obtenirX(), casella.obtenirY()).jugarCasella();
         }
         rellenarFaristol();
         tornsSenseCanvi = -1;

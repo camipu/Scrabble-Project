@@ -76,7 +76,8 @@ public class Casella {
      * @return Punts calculats per a la fitxa en aquesta casella
      */
     public int calcularPunts() {
-        return estrategia.calcularPunts(fitxa);
+        if (esJugada()) return fitxa.obtenirPunts();
+        else return estrategia.calcularPunts(fitxa);
     }
 
     /**
@@ -171,8 +172,7 @@ public class Casella {
     /**
      * Retira la fitxa de la casella, si en conté.
      *
-     * @param fitxa Fitxa a col·locar
-     * @throws ExcepcioCasellBuida si la casella no conté cap fitxa
+     * @throws ExcepcioCasellaBuida si la casella no conté cap fitxa
      */
     public void retirarFitxa() {
         if (!esBuida()) {
