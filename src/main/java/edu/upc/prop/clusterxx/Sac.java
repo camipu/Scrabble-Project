@@ -58,8 +58,9 @@ public class Sac {
      *
      * @param fitxesOriginals El conjunt de fitxes originals per establir les lletres.
      */
-    public void setFitxesOriginals(Set<Fitxa> fitxesOriginals) {
+    public void setFitxesOriginals() {
         lletresOriginals = new HashSet<>();
+        Set<Fitxa> fitxesOriginals = fitxes.elementSet();
         for (Fitxa f : fitxesOriginals) {
             lletresOriginals.add(f.obtenirLletra());
         }
