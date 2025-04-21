@@ -286,7 +286,6 @@ public class Taulell {
      */
     public Jugada construirJugada(List<Casella> casellesJugades, DAWG dawg) {
         String paraulaFormada = construirParaula(casellesJugades);
-        System.out.println("PARAULA FORMADA:" + paraulaFormada);
         Boolean paraulaValida = dawg.conteParaula(paraulaFormada);
         Boolean jugadaValida = paraulaValida && jugadaValida(casellesJugades, dawg);
         int puntuacio = calcularPuntuacioTotal(casellesJugades);
@@ -525,10 +524,30 @@ public class Taulell {
         );
         
         StringBuilder paraula = new StringBuilder();
-        for (Casella c : ordenades) {
-            paraula.append(c.obtenirFitxa().obtenirLletra());
-        }
         
+        // Trobar inici de la paraula
+        int fila = ordenades.get(0).obtenirX();
+        int col = ordenades.get(0).obtenirY();
+        while ((esHoritzontal ? col : fila) > 0) {
+            int prevFila = esHoritzontal ? fila : fila - 1;
+            int prevCol = esHoritzontal ? col - 1 : col;
+            if (taulell[prevFila][prevCol].esBuida() && !casellaPertanyAJugada(prevFila, prevCol, casellesJugades)) break;
+            if (esHoritzontal) col--; else fila--;
+        }
+
+        // Construir la paraula completa
+        int f = fila, c = col;
+        while (f < size && c < size) {
+            if (taulell[f][c].esBuida() && !casellaPertanyAJugada(f, c, casellesJugades)) break;
+
+            if (casellaPertanyAJugada(f, c, casellesJugades)) {
+            paraula.append(obtenirFitxaDeJugada(f, c, casellesJugades).obtenirLletra());
+            } else {
+            paraula.append(taulell[f][c].obtenirFitxa().obtenirLletra());
+            }
+
+            if (esHoritzontal) c++; else f++;
+        }
         return paraula.toString();
     }
 
