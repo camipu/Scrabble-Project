@@ -56,7 +56,6 @@ public class Sac {
     /**
      * Inicialitza les lletres originals de les fitxes en el sac.
      *
-     * @param fitxesOriginals El conjunt de fitxes originals per establir les lletres.
      */
     public void setFitxesOriginals() {
         lletresOriginals = new HashSet<>();

@@ -40,8 +40,6 @@ public class Torn {
     }
 
     public boolean jugadorBot(int torn) {
-        System.out.println("Jugador torn " + torn + ": " + jugadors[torn%jugadors.length].obtenirNom());
-        System.out.println("És bot?: " + jugadors[torn%jugadors.length].esBot());
         return jugadors[torn%jugadors.length].esBot();
     }
 
@@ -78,7 +76,7 @@ public class Torn {
     public int obtenirTorn() {return numTorn;}
 
     /**
-     * Indica si aquest torn ja ha estat completat.
+     * Indica si és l'últim torn de la partida.
      *
      * @return {@code true} si el torn s’ha acabat, {@code false} altrament
      */

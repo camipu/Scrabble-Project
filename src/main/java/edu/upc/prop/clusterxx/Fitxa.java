@@ -74,7 +74,7 @@ public class Fitxa {
      *
      * @param lletra La nova lletra a assignar.
      * @throws IllegalArgumentException Si la fitxa no és un comodí,
-     *                                  si la nova lletra té més d'un caràcter,
+     *
      *                                  o si és també un comodí ("#").
      */
     public void setLletraComodi(String lletra) {
