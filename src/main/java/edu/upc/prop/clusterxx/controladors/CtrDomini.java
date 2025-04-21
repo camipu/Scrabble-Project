@@ -228,22 +228,40 @@ public class CtrDomini {
         return ctrlPartida.acabada();
     }
 
+    /**
+     * Comprova si es el final de la partida.
+     * @return {@code true} si la partida ha finalitzat, {@code false} altrament
+     */
     public boolean esFinalDePartida() {
         return ctrlPartida.esFinalDePartida();
     }
 
+    /**
+     * Realitza una jugada del bot.
+     *
+     * @return Una instància de Jugada que es la que acaba de fer el bot
+     */
     public Jugada jugadaBot() {
         return ctrlPartida.jugadaBot();
     }
 
-    public void guardarPartida() {
-        //no tenim capa de persistència :(
-    }
+//    public void guardarPartida() {
+//        //no tenim capa de persistència :(
+//    }
 
+    /**
+     * Es torna a l'estat inicial del torn.
+     */
     public void resetTorn() {
         ctrlPartida.resetTorn();
     }
 
+    /**
+     * Canvia la lletra comodí per la que hagi escollit el jugador
+     * @param fitxa La instància de la fitxa comodí
+     * @param lletra La lletra escollida pel jugador
+     * @return {@code true} si l'operació s'ha pogut fer, {@code false} altrament
+     */
     public boolean setLletraComodi(Fitxa fitxa, String lletra) {
         return ctrlPartida.setLletraComodi(fitxa, lletra);
     }
