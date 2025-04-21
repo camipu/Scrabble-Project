@@ -318,10 +318,10 @@ public class Taulell {
         if (casellesJugades.isEmpty()) return false;
 
         // NO mira si paraula jugada és vàlida, això ja ho fa construirJugada
-
-        if (esBuit()) {
-            // Primera jugada i per tant almenys una de les caselles ha d’estar al mig
-            int mig = size / 2;
+        
+        // Primera jugada i per tant almenys una de les caselles ha d’estar al mig
+        int mig = size / 2;
+        if (taulell[mig][mig].esBuida()) {
             boolean tocaCentre = false;
             for (Casella c : casellesJugades) {
                 if (c.obtenirX() == mig && c.obtenirY() == mig) {
@@ -329,7 +329,7 @@ public class Taulell {
                     break;
                 }
             }
-            if (!tocaCentre) return false;            
+            if (!tocaCentre) return false;
         } else {
             // Almenys una fitxa ha de tocar una ja existent
             boolean adjacent = false;

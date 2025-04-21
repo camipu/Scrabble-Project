@@ -40,7 +40,7 @@ public class CtrlJugadaBot {
 
         // Si no hi ha jugades vàlides retorna jugada buida
         if (jugadesPossibles.isEmpty()) {
-            return new Jugada("", new ArrayList<>(), -1, false);
+            return new Jugada("", new ArrayList<>(), 0, false);
         }
 
         // Ordenem les jugades segons la puntuació
