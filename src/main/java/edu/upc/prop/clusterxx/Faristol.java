@@ -155,17 +155,5 @@ public class Faristol {
         Collections.shuffle(fitxes);
     }
 
-    /**
-     * Imprimeix per consola el contingut actual del faristol.
-     * Cada fitxa es mostra amb el seu caràcter i la seva puntuació.
-     */
-    public void imprimirFaristol() {
-        System.out.print("[");
-        for (int i = 0; i < fitxes.size(); i++) {
-            Fitxa fitxa = fitxes.get(i);
-            System.out.print("[" + fitxa + " " + Colors.YELLOW_TEXT + fitxa.obtenirPunts() + Colors.RESET + "]");
-            if (i < fitxes.size() - 1) System.out.print(" ");
-        }
-        System.out.println("]");
-    }
+
 }

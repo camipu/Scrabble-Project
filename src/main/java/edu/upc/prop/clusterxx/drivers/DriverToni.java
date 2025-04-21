@@ -198,14 +198,15 @@ public class DriverToni {
         }
 
         if (ctrlDomini.esFinalDePartida()) {
+            ctrlDomini.acabarPartida();
             mostrarFinalPartida(ctrlDomini);
         }
     }
 
     private static void gestionarTornBot(CtrDomini ctrlDomini) {
+        imprimirFaristol(ctrlDomini.obtenirJugadorActual().obtenirFaristol());
         Jugada jugadabot = ctrlDomini.jugadaBot();
         imprimirJugada(jugadabot);
-        imprimirFaristol(ctrlDomini.obtenirJugadorActual().obtenirFaristol());
     }
 
     private static boolean gestionarTornJugadorHuma(Scanner sc, CtrDomini ctrlDomini, boolean first) {

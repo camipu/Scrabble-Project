@@ -12,7 +12,7 @@ public class Jugador {
      * Crea un nou jugador amb el nom especificat i un faristol assignat.
      * La puntuació inicial del jugador és 0.
      *
-     * @param nom Nom del jugador
+     * @param nom      Nom del jugador
      * @param faristol Faristol amb les fitxes inicials del jugador
      */
     public Jugador(String nom, Faristol faristol) {
@@ -64,14 +64,18 @@ public class Jugador {
      * Comprova si el faristol del jugador està ple.
      *
      * @return {@code true} si el faristol conté el nombre màxim de fitxes,
-     *         {@code false} altrament
+     * {@code false} altrament
      */
-    public boolean faristolPle() {return faristol.esPle();}
+    public boolean faristolPle() {
+        return faristol.esPle();
+    }
 
     /**
      * Barreja aleatòriament les fitxes del faristol del jugador.
      */
-    public void barrejarFaristol() { faristol.barrejarFitxes();}
+    public void barrejarFaristol() {
+        faristol.barrejarFitxes();
+    }
 
     /**
      * Afegeix punts a la puntuació del jugador.
@@ -98,6 +102,7 @@ public class Jugador {
     public Fitxa obtenirFitxa(String lletra) {
         return faristol.obtenirFitxa(lletra);
     }
+
     /**
      * Afegeix una fitxa al faristol del jugador.
      *
@@ -122,25 +127,20 @@ public class Jugador {
      *
      * @return {@code true} si el jugador és un bot, {@code false} altrament
      */
-    public boolean esBot() {return false;} // Per defecte, no és un bot
-    /**
-     * Imprimeix per consola el contingut actual del faristol del jugador.
-     * Aquest mètode delega la crida al faristol.
-     */
-    public void imprimirFaristol() {
-        faristol.imprimirFaristol();
-    }
+    public boolean esBot() {
+        return false;
+    } // Per defecte, no és un bot
 
     /**
-     * Imprimeix per consola tota la informació del jugador:
-     * nom, puntuació i contingut del faristol.
+     * Calcula la suma dels punts de totes les fitxes que el jugador té al faristol.
+     *
+     * @return Total de punts de les fitxes del faristol
      */
-    public void imprimirInfo() {
-        System.out.println(Colors.YELLOW_BACKGROUND + Colors.BLACK_TEXT + "======== INFORMACIÓ DEL JUGADOR ========" + Colors.RESET);
-        System.out.println(Colors.CYAN_TEXT + "Nom: " + Colors.RESET + nom);
-        System.out.println(Colors.GREEN_TEXT + "Punts: " + Colors.RESET + punts);
-        System.out.print(Colors.PURPLE_TEXT + "Faristol: " + Colors.RESET);
-        faristol.imprimirFaristol(); // Crida directament la funció de Faristol
-        System.out.println(Colors.YELLOW_BACKGROUND + Colors.BLACK_TEXT + "========================================" + Colors.RESET);
+    public int obtenirPuntsFaristol() {
+        int total = 0;
+        for (Fitxa fitxa : faristol.obtenirFitxes()) {
+            total += fitxa.obtenirPunts();
+        }
+        return total;
     }
 }

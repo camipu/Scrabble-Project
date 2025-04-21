@@ -1,16 +1,6 @@
 package edu.upc.prop.clusterxx.controladors;
 
-import edu.upc.prop.clusterxx.Taulell;
-import edu.upc.prop.clusterxx.Jugador;
-import edu.upc.prop.clusterxx.Jugada;
-import edu.upc.prop.clusterxx.Faristol;
-import edu.upc.prop.clusterxx.Fitxa;
-import edu.upc.prop.clusterxx.HistorialJoc;
-import edu.upc.prop.clusterxx.Casella;
-import edu.upc.prop.clusterxx.DAWG;
-import edu.upc.prop.clusterxx.Sac;
-import edu.upc.prop.clusterxx.Torn;
-import edu.upc.prop.clusterxx.Bot;
+import edu.upc.prop.clusterxx.*;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -186,12 +176,60 @@ public class CtrlPartida {
     }
     /**
      * Finalitza la partida actual.
-     * Marca la partida com acabada i ordena els jugadors segons la seva puntuació.
+     * Marca la partida com acabada, reparteix els punts finals i ordena els jugadors segons la seva puntuació.
      */
     public void acabarPartida() {
+        // Marca la partida com acabada
         acabada = true;
+
+        int puntsRestants = 0;
+        int jugadorAmbFaristolBuit = jugadors[(torn-1)%jugadors.length].obtenirFaristol().esBuit() ? torn%jugadors.length : -1;
+
+        // Calcular els punts restants al faristol de cada jugador i restar-los de la seva puntuació
+        for (Jugador jugador : jugadors) {
+            int penalitzacio = jugador.obtenirPuntsFaristol();
+            if (penalitzacio > 0) {
+                jugador.eliminarPunts(penalitzacio);
+                System.out.println("Restor " + penalitzacio + " punts al jugador " + jugador.obtenirNom() + " per fitxes al faristol");
+                puntsRestants += penalitzacio;
+            }
+        }
+
+        // Si un jugador s'ha quedat sense fitxes, se li sumen els punts restants dels altres
+        if (jugadorAmbFaristolBuit != -1) {
+            jugadors[jugadorAmbFaristolBuit].afegirPunts(puntsRestants);
+        }
+
+        // Ordenar els jugadors per puntuació de major a menor
         ordenarJugadors();
+        imprimirRanking();
+        guardarEstadistiques();
     }
+
+    private void imprimirRanking() {
+        // Primer, ordenem els jugadors
+        ordenarJugadors();
+
+        // Imprimim el rànquing
+        System.out.println("Rànquing final de jugadors:");
+
+        // Iterem per cada jugador ja ordenat
+        for (Jugador jugador : jugadors) {
+            System.out.println(jugador.obtenirNom() + ": " + jugador.obtenirPunts() + " punts");
+        }
+    }
+
+    private void guardarEstadistiques() {
+        Estadistiques estadistiques = Estadistiques.getInstance();
+
+        for (Jugador jugador : jugadors) {
+            String nom = jugador.obtenirNom();
+            int puntuacio = jugador.obtenirPunts();
+
+            estadistiques.afegirPuntuacio(puntuacio, nom);
+        }
+    }
+
 
     /**
      * Retorna el sac de fitxes actual de la partida.
@@ -506,8 +544,8 @@ public class CtrlPartida {
         for (Casella casella : jugadaActual.getCasellesJugades()) {
             taulell.getCasella(casella.obtenirX(), casella.obtenirY()).jugarCasella();
         }
+        if (!casellasTorn.isEmpty()) tornsSenseCanvi = -1;
         rellenarFaristol();
-        tornsSenseCanvi = -1;
         passarTorn();
     }
 
