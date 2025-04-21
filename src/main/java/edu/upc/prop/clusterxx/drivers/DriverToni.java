@@ -1,14 +1,8 @@
 package edu.upc.prop.clusterxx.drivers;
 
-import edu.upc.prop.clusterxx.Taulell;
-import edu.upc.prop.clusterxx.Jugador;
-import edu.upc.prop.clusterxx.Colors;
-import edu.upc.prop.clusterxx.EstrategiaPuntuacio;
-import edu.upc.prop.clusterxx.Jugada;
-import edu.upc.prop.clusterxx.Faristol;
-import edu.upc.prop.clusterxx.Fitxa;
-import edu.upc.prop.clusterxx.Casella;
+import edu.upc.prop.clusterxx.*;
 import edu.upc.prop.clusterxx.controladors.CtrDomini;
+import edu.upc.prop.clusterxx.exceptions.ExcepcioCasellaBuida;
 
 import java.util.Arrays;
 import java.util.List;
@@ -137,6 +131,8 @@ public class DriverToni {
             return;
         }
 
+        System.out.print("Inicialitzan partida...\n");
+
         // Inicialitzar partida (només amb noms de jugadors humans i dificultats dels bots)
         ctrDomini.inicialitzarPartida(midaTaulell, midaFaristol, idioma, nomsJugadors, dificultatsBots); //Aqui el ctrDomini creará el Taulell lo que disparará la excepción
     }
@@ -149,8 +145,9 @@ public class DriverToni {
         while (!ctrlDomini.esFinalDePartida()) {
             imprimirSeparador();
             boolean passatorn = false;
+            int torn = ctrlDomini.obtenirTorn();
 
-            while (!passatorn) {
+            while (torn == ctrlDomini.obtenirTorn()) {
                 imprimirPrincipiTorn(ctrlDomini);
                 Jugador jugadorActual = ctrlDomini.obtenirJugadorActual();
                 if (jugadorActual.esBot()) {
@@ -232,8 +229,9 @@ public class DriverToni {
 
     private static boolean jugarParaula(Scanner sc, CtrDomini ctrlDomini) {
         boolean commit = false;
+        int torn = ctrlDomini.obtenirTorn();
 
-        while (!commit) {
+        while (torn == ctrlDomini.obtenirTorn()) {
 
             System.out.print("Vols col·locar o retirar una fitxa? (1 = col·locar, 2 = retirar, 3 = reiniciar torn): ");
             int opcio = sc.nextInt();
@@ -242,25 +240,17 @@ public class DriverToni {
             switch (opcio) {
                 case 1 -> {
                     imprimirSeparador();
-                    commit = gestionarColocacio(sc, ctrlDomini);
-                    imprimirSeparador();
-                    imprimirTaulell(ctrlDomini.obtenirTaulell());
-                    System.out.println(Colors.YELLOW_TEXT + "Faristol: " + Colors.RESET);
-                    imprimirFaristol(ctrlDomini.obtenirJugadorActual().obtenirFaristol());
-                    imprimirSeparador();
+                    boolean fitxacolocada = gestionarColocacio(sc, ctrlDomini);
+                    if (fitxacolocada) {
+                        ImprimirInfo(ctrlDomini);
+                    }
+                    else imprimirFaristol(ctrlDomini.obtenirJugadorActual().obtenirFaristol());
                 }
                 case 2 -> {
-                    System.out.print("Introdueix la fila de la fitxa que vols retirar: ");
-                    int fila = sc.nextInt();
-                    System.out.print("Introdueix la columna de la fitxa que vols retirar: ");
-                    int columna = sc.nextInt();
-                    sc.nextLine(); // Netejar buffer
-                    ctrlDomini.retirarFitxa(fila, columna);
-                    imprimirTaulell(ctrlDomini.obtenirTaulell());
+                    retirarFitxa(sc, ctrlDomini);
                 }
                 case 3 -> {
-                    ctrlDomini.resetTorn();
-                    imprimirPrincipiTorn(ctrlDomini);
+                    resetTorn(ctrlDomini);
                 }
                 default -> System.out.println("Opció no vàlida. Torna-ho a intentar.");
             }
@@ -268,6 +258,40 @@ public class DriverToni {
         }
 
         return true;
+    }
+
+    private static void resetTorn(CtrDomini ctrlDomini) {
+        try {
+            ctrlDomini.resetTorn();
+            imprimirPrincipiTorn(ctrlDomini);
+        } catch (IndexOutOfBoundsException e) {
+            System.out.println("No es pot reiniciar el torn. Torna-ho a intentar.");
+        }
+    }
+
+    private static void ImprimirInfo(CtrDomini ctrlDomini) {
+        imprimirSeparador();
+        imprimirTaulell(ctrlDomini.obtenirTaulell());
+        System.out.println(Colors.YELLOW_TEXT + "Faristol: " + Colors.RESET);
+        imprimirFaristol(ctrlDomini.obtenirJugadorActual().obtenirFaristol());
+        imprimirSeparador();
+    }
+
+    private static void retirarFitxa(Scanner sc, CtrDomini ctrlDomini) {
+        System.out.print("Introdueix la fila de la fitxa que vols retirar: ");
+        int fila = sc.nextInt();
+        System.out.print("Introdueix la columna de la fitxa que vols retirar: ");
+        int columna = sc.nextInt();
+        sc.nextLine(); // Netejar buffer
+        try {
+            ctrlDomini.retirarFitxa(fila, columna);
+            imprimirTaulell(ctrlDomini.obtenirTaulell());
+            imprimirFaristol(ctrlDomini.obtenirJugadorActual().obtenirFaristol());
+        }
+        catch (ExcepcioCasellaBuida e){
+            System.out.print ("Error: " + e.getMessage() + "\n");
+        }
+
     }
 
     private static boolean gestionarColocacio(Scanner sc, CtrDomini ctrlDomini) {
@@ -285,31 +309,40 @@ public class DriverToni {
         int columna = sc.nextInt();
         sc.nextLine(); // Netejar buffer
 
-        Jugada jugada = ctrlDomini.colocarFitxa(lletra, fila, columna);
+        try {
+            Jugada jugada = ctrlDomini.colocarFitxa(lletra, fila, columna);
 
-        if (jugada.getJugadaValida()) {
-            System.out.print("Vols confirmar la jugada? (true/false): ");
-            boolean confirmacio = sc.nextBoolean();
-            sc.nextLine();
+            if (jugada.getJugadaValida()) {
+                System.out.print("Vols confirmar la jugada? (true/false): ");
+                boolean confirmacio = sc.nextBoolean();
+                sc.nextLine();
 
-            if (confirmacio) {
-                imprimirJugada(jugada);
-                ctrlDomini.commitParaula();
-                return true;
+                if (confirmacio) {
+                    imprimirJugada(jugada);
+                    ctrlDomini.commitParaula();
+                }
+
             }
         }
+        catch (IllegalArgumentException e) {
+            System.out.println("Error: " + e.getMessage());
+            System.out.print("Intenta-ho de nou. Tria que vols fer: \n");
+            return false;
+        }
 
-        return false;
+        return true;
     }
 
     private static String gestionarComodi(Scanner sc, CtrDomini ctrlDomini) {
         System.out.print("Per quina lletra vols substituir el comodí? ");
-        Fitxa fitxa = ctrlDomini.obtenirJugadorActual().obtenirFitxa("#");
-
-        if (fitxa == null) {
-            System.out.println("No tens cap comodí disponible.");
+        Fitxa fitxa = null;
+        try {
+            fitxa = ctrlDomini.obtenirJugadorActual().obtenirFitxa("#");
+        } catch (IllegalArgumentException e) {
+            System.out.print("No tens cap comodí disponible. ");
             return null;
         }
+
 
         while (true) {
             String lletra = sc.nextLine().toUpperCase();
@@ -328,15 +361,29 @@ public class DriverToni {
     private static void canviarFitxes(Scanner sc, CtrDomini ctrlDomini) {
         System.out.print("Tria quantes fitxes vols canviar: ");
         int numFitxes = sc.nextInt();
-        sc.nextLine();
-
-        String[] fitxes = new String[numFitxes];
-        for (int i = 0; i < numFitxes; ++i) {
-            System.out.print("Tria la fitxa que vols canviar: ");
-            fitxes[i] = sc.nextLine();
+        while (numFitxes < 1 || numFitxes > ctrlDomini.obtenirJugadorActual().obtenirFaristol().obtenirNumFitxes()) {
+            System.out.print("El nombre de fitxes ha de ser entre 1 i " + ctrlDomini.obtenirJugadorActual().obtenirFaristol().obtenirNumFitxes() + ". Torna-ho a intentar: ");
+            numFitxes = sc.nextInt();
         }
-        Arrays.sort(fitxes);
-        ctrlDomini.canviarFitxes(fitxes);
+        sc.nextLine();
+        boolean canviFet = false;
+
+        while (!canviFet) {
+            String[] fitxes = new String[numFitxes];
+            for (int i = 0; i < numFitxes; ++i) {
+                System.out.print("Tria la fitxa que vols canviar: ");
+                fitxes[i] = sc.nextLine();
+            }
+            Arrays.sort(fitxes);
+            try {
+                ctrlDomini.canviarFitxes(fitxes);
+                canviFet = true;
+            } catch (IllegalArgumentException e) {
+                System.out.println("Error: " + e.getMessage());
+                System.out.print("Intenta-ho de nou. Tria les fitxes que vols canviar: ");
+
+            }
+        }
     }
 
     private static void imprimirJugada(Jugada jugada) {
