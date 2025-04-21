@@ -245,9 +245,9 @@ public class CtrDomini {
         return ctrlPartida.jugadaBot();
     }
 
-//    public void guardarPartida() {
-//        //no tenim capa de persistència :(
-//    }
+    public void guardarPartida() {
+        //no tenim capa de persistència :(
+    }
 
     /**
      * Es torna a l'estat inicial del torn.
