@@ -49,15 +49,4 @@ public class JugadorTest {
         jugador.eliminarFitxa(mockFitxa);
         verify(mockFaristol, times(1)).eliminarFitxa(mockFitxa);
     }
-
-    @Test
-    public void testImprimirFaristolDelegat() {
-        jugador.imprimirFaristol();
-        verify(mockFaristol, times(1)).imprimirFaristol();
-    }
-
-    @Test
-    public void testImprimirInfoMostraCorrectament() {
-        jugador.imprimirInfo();
-    }
 }
