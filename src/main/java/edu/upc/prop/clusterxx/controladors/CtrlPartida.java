@@ -190,7 +190,10 @@ public class CtrlPartida {
             int penalitzacio = jugador.obtenirPuntsFaristol();
             if (penalitzacio > 0) {
                 jugador.eliminarPunts(penalitzacio);
-                System.out.println("Restor " + penalitzacio + " punts al jugador " + jugador.obtenirNom() + " per fitxes al faristol");
+                //Evitem errors
+                if (jugador.obtenirPunts() < 0) {
+                    jugador.eliminarPunts(jugador.obtenirPunts());
+                }
                 puntsRestants += penalitzacio;
             }
         }
