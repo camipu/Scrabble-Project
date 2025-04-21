@@ -1,8 +1,7 @@
 package edu.upc.prop.clusterxx.drivers;
 
 import edu.upc.prop.clusterxx.*;
-import edu.upc.prop.clusterxx.controladors.CtrDomini;
-import edu.upc.prop.clusterxx.exceptions.ExcepcioCasellaBuida;
+import edu.upc.prop.clusterxx.controladors.CtrlDomini;
 
 import java.util.Arrays;
 import java.util.List;
@@ -11,12 +10,12 @@ import java.util.Scanner;
 public class DriverToni {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
-        CtrDomini ctrlDomini = CtrDomini.getInstance();
+        CtrlDomini ctrlDomini = CtrlDomini.getInstance();
         inicialitzarPartida(sc, ctrlDomini);
         jugarTorns(sc, ctrlDomini);
     }
 
-    private static void inicialitzarPartida(Scanner sc, CtrDomini ctrDomini) {
+    private static void inicialitzarPartida(Scanner sc, CtrlDomini ctrDomini) {
         imprimirCapcaleraConfiguracio();
 
         // Mida del taulell
@@ -175,7 +174,7 @@ public class DriverToni {
         return confirmacio.equals("true");
     }
 
-    private static void jugarTorns(Scanner sc, CtrDomini ctrlDomini) {
+    private static void jugarTorns(Scanner sc, CtrlDomini ctrlDomini) {
         boolean first = true; // Variable per controlar si és el primer torn
 
         while (!ctrlDomini.esFinalDePartida()) {
@@ -203,13 +202,13 @@ public class DriverToni {
         }
     }
 
-    private static void gestionarTornBot(CtrDomini ctrlDomini) {
+    private static void gestionarTornBot(CtrlDomini ctrlDomini) {
         imprimirFaristol(ctrlDomini.obtenirJugadorActual().obtenirFaristol());
         Jugada jugadabot = ctrlDomini.jugadaBot();
         imprimirJugada(jugadabot);
     }
 
-    private static boolean gestionarTornJugadorHuma(Scanner sc, CtrDomini ctrlDomini, boolean first) {
+    private static boolean gestionarTornJugadorHuma(Scanner sc, CtrlDomini ctrlDomini, boolean first) {
         int opcio;
 
         if (!first) {
@@ -240,7 +239,7 @@ public class DriverToni {
         return first;
     }
 
-    private static void gestionarUndo(CtrDomini ctrlDomini) {
+    private static void gestionarUndo(CtrlDomini ctrlDomini) {
         if (ctrlDomini.esPotFerUndo()) {
             ctrlDomini.ferUndo();
         } else {
@@ -248,18 +247,18 @@ public class DriverToni {
         }
     }
 
-    private static void guardarPartida(CtrDomini ctrlDomini) {
+    private static void guardarPartida(CtrlDomini ctrlDomini) {
         System.out.println("Guardant partida...");
         ctrlDomini.guardarPartida();
         System.out.println("Partida guardada.");
     }
 
-    private static void mostrarFinalPartida(CtrDomini ctrlDomini) {
+    private static void mostrarFinalPartida(CtrlDomini ctrlDomini) {
         System.out.println(Colors.YELLOW_BACKGROUND + Colors.BLACK_TEXT + "======== PARTIDA ACABADA ========" + Colors.RESET);
         imprimirTaulell(ctrlDomini.obtenirTaulell());
     }
 
-    private static void imprimirPrincipiTorn(CtrDomini ctrlDomini) {
+    private static void imprimirPrincipiTorn(CtrlDomini ctrlDomini) {
         imprimirSeparador();
         imprimirSeparador();
         System.out.println(Colors.YELLOW_BACKGROUND + Colors.BLACK_TEXT + "======== INICI DEL TORN"+ ctrlDomini.obtenirTorn() +"========" + Colors.RESET);
@@ -276,7 +275,7 @@ public class DriverToni {
         imprimirSeparador();
     }
 
-    private static void jugarParaula(Scanner sc, CtrDomini ctrlDomini) {
+    private static void jugarParaula(Scanner sc, CtrlDomini ctrlDomini) {
         int torn = ctrlDomini.obtenirTorn();
         boolean reset = false;
         while (torn == ctrlDomini.obtenirTorn() && !reset) {
@@ -304,7 +303,7 @@ public class DriverToni {
         }
     }
 
-    private static void resetTorn(CtrDomini ctrlDomini) {
+    private static void resetTorn(CtrlDomini ctrlDomini) {
         try {
             ctrlDomini.resetTorn();
             imprimirPrincipiTorn(ctrlDomini);
@@ -313,7 +312,7 @@ public class DriverToni {
         }
     }
 
-    private static void ImprimirInfo(CtrDomini ctrlDomini) {
+    private static void ImprimirInfo(CtrlDomini ctrlDomini) {
         imprimirSeparador();
         imprimirTaulell(ctrlDomini.obtenirTaulell());
         System.out.println(Colors.YELLOW_TEXT + "Faristol: " + Colors.RESET);
@@ -321,7 +320,7 @@ public class DriverToni {
         imprimirSeparador();
     }
 
-    private static void retirarFitxa(Scanner sc, CtrDomini ctrlDomini) {
+    private static void retirarFitxa(Scanner sc, CtrlDomini ctrlDomini) {
         System.out.print("Introdueix la fila de la fitxa que vols retirar: ");
         int fila = sc.nextInt();
         System.out.print("Introdueix la columna de la fitxa que vols retirar: ");
@@ -337,7 +336,7 @@ public class DriverToni {
         }
     }
 
-    private static boolean gestionarColocacio(Scanner sc, CtrDomini ctrlDomini) {
+    private static boolean gestionarColocacio(Scanner sc, CtrlDomini ctrlDomini) {
         System.out.print("Escriu la lletra de la fitxa que vols jugar: ");
         String lletra = sc.nextLine();
 
@@ -373,7 +372,7 @@ public class DriverToni {
         }
     }
 
-    private static String gestionarComodi(Scanner sc, CtrDomini ctrlDomini) {
+    private static String gestionarComodi(Scanner sc, CtrlDomini ctrlDomini) {
         Fitxa fitxa;
         try {
             fitxa = ctrlDomini.obtenirJugadorActual().obtenirFitxa("#");
@@ -394,7 +393,7 @@ public class DriverToni {
         }
     }
 
-    private static void canviarFitxes(Scanner sc, CtrDomini ctrlDomini) {
+    private static void canviarFitxes(Scanner sc, CtrlDomini ctrlDomini) {
         Faristol faristol = ctrlDomini.obtenirJugadorActual().obtenirFaristol();
         int maxFitxes = faristol.obtenirNumFitxes();
 
@@ -410,7 +409,7 @@ public class DriverToni {
         intentarCanviarFitxes(sc, ctrlDomini, numFitxes);
     }
 
-    private static void intentarCanviarFitxes(Scanner sc, CtrDomini ctrlDomini, int numFitxes) {
+    private static void intentarCanviarFitxes(Scanner sc, CtrlDomini ctrlDomini, int numFitxes) {
         boolean canviFet = false;
 
         while (!canviFet) {

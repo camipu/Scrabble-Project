@@ -13,8 +13,8 @@ import edu.upc.prop.clusterxx.Torn;
  * S'encarrega de coordinar els controladors específics com {@code CtrlPartida} i {@code CtrEstadistica},
  * centralitzant la lògica de partida i les estadístiques dels jugadors.
  */
-public class CtrDomini {
-    private static CtrDomini instance = null;
+public class CtrlDomini {
+    private static CtrlDomini instance = null;
     private CtrlPartida ctrlPartida = null;
     private CtrEstadistica ctrEstadistica = null;
 
@@ -24,9 +24,9 @@ public class CtrDomini {
      *
      * @return Instància única de {@code CtrDomini}
      */
-    public static CtrDomini getInstance() {
+    public static CtrlDomini getInstance() {
         if (instance == null) {
-            instance = new CtrDomini();
+            instance = new CtrlDomini();
         }
         return instance;
     }
@@ -34,7 +34,7 @@ public class CtrDomini {
      * Constructor privat de {@code CtrDomini}.
      * Inicialitza els controladors del domini, com {@code CtrlPartida} i {@code CtrEstadistica}.
      */
-    private CtrDomini(){
+    private CtrlDomini(){
         ctrlPartida = CtrlPartida.getInstance();
         ctrEstadistica = CtrEstadistica.getInstance();
     }
