@@ -1,5 +1,3 @@
-
-/*
 package edu.upc.prop.clusterxx;
 
 import org.junit.Before;
@@ -38,30 +36,9 @@ public class DAWGTest {
     }
 
     @Test
-    public void testPrefixValid() {
-        assertTrue(dawg.esPrefix("CAS"));
-        assertTrue(dawg.esPrefix("SA"));
-        assertTrue(dawg.esPrefix("CHI")); // Prefix de CHIC i CHIP
-    }
-
-    @Test
-    public void testPrefixInvalid() {
-        assertFalse(dawg.esPrefix("XO"));
-        assertFalse(dawg.esPrefix("BA"));
-        assertFalse(dawg.esPrefix("XCH"));
-    }
-
-    @Test
     public void testParaulaAmbDigraf() {
         assertTrue(dawg.conteParaula("CHIC"));
         assertTrue(dawg.conteParaula("CH"));
         assertFalse(dawg.conteParaula("C")); // no existeix sola
     }
-
-    @Test
-    public void testPrefixAmbDigraf() {
-        assertTrue(dawg.esPrefix("CH"));
-        assertTrue(dawg.esPrefix("CHI"));
-        assertFalse(dawg.esPrefix("CI"));
-    }
-}*/
+}
