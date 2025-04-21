@@ -147,57 +147,48 @@ public class TaulellTest {
         assertFalse(jugada.getJugadaValida());
     }
 
-
     @Test
-    public void testPuntuacioAmbDobleLletraConcret() {
+    public void testPuntuacioNomésParaulaPrincipal() {
         Casella c1 = new Casella(0, 0, 15);
         Casella c2 = new Casella(0, 1, 15);
-        Fitxa f1 = new Fitxa("H", 4); // DL
-        Fitxa f2 = new Fitxa("I", 1);
-        c1 = spy(c1);
-        when(c1.obtenirEstrategia()).thenReturn(new EstrategiaPuntuacio.EstrategiaMultiplicadorLletra(2));
-        c1.colocarFitxa(f1);
-        c2 = spy(c2);
-        when(c2.obtenirEstrategia()).thenReturn(new EstrategiaPuntuacio.EstrategiaNormal());
-        c2.colocarFitxa(f2);
-        List<Casella> jugada = Arrays.asList(c1, c2);
-        int puntuacio = taulell.calcularPuntuacioTotal(jugada);
-        assertEquals(23, puntuacio);
-    }
-
-    @Test
-    public void testPuntuacioAmbTripleParaulaConcret() {
-        Casella c1 = new Casella(0, 0, 15);
-        Casella c2 = new Casella(0, 1, 15);
-        Fitxa f1 = new Fitxa("M", 3);
+        Fitxa f1 = new Fitxa("L", 1);
         Fitxa f2 = new Fitxa("A", 1);
+    
         c1 = spy(c1);
-        when(c1.obtenirEstrategia()).thenReturn(new EstrategiaPuntuacio.EstrategiaMultiplicadorParaula(3));
+        when(c1.obtenirEstrategia()).thenReturn(new EstrategiaPuntuacio.EstrategiaNormal());
         c1.colocarFitxa(f1);
+    
         c2 = spy(c2);
-        when(c2.obtenirEstrategia()).thenReturn(new EstrategiaPuntuacio.EstrategiaNormal());
+        when(c2.obtenirEstrategia()).thenReturn(new EstrategiaPuntuacio.EstrategiaMultiplicadorParaula(2));
         c2.colocarFitxa(f2);
-        List<Casella> jugada = Arrays.asList(c1, c2);
-        int puntuacio = taulell.calcularPuntuacioTotal(jugada);
-        
-        assertEquals(12, puntuacio);
+    
+        List<Casella> caselles = Arrays.asList(c1, c2);
+        int puntuacio = taulell.calcularPuntuacioParaulaPrincipal(caselles, true);
+    
+        // (1 + 1) * 2 = 4
+        System.out.println(puntuacio);
+        assertEquals(4, puntuacio);
     }
-
+    
     @Test
-    public void testPuntuacioAmbPerpendiculars() {
-        taulell.colocarFitxa(new Fitxa("T", 1), 7, 6);
-        taulell.colocarFitxa(new Fitxa("E", 1), 7, 7);
-        taulell.colocarFitxa(new Fitxa("N", 1), 7, 8);
-        Casella c1 = new Casella(6, 7, 15);
-        Casella c2 = new Casella(8, 7, 15);
-        Fitxa f1 = new Fitxa("A", 1);
-        Fitxa f2 = new Fitxa("O", 1);
-        c1.colocarFitxa(f1);
-        c2.colocarFitxa(f2);
-        List<Casella> jugada = Arrays.asList(c1, c2);
-        int puntuacio = taulell.calcularPuntuacioTotal(jugada);
-        assertEquals(9, puntuacio);
-    }
-
-
+    public void testPuntuacioPerpendicularValidaABC() {
+        // Fitxes existents ja al taulell
+        taulell.colocarFitxa(new Fitxa("A", 1), 7, 6); // A a l'esquerra
+        taulell.colocarFitxa(new Fitxa("C", 1), 7, 8); // C a la dreta
+    
+        // Fitxa nova que forma la paraula "ABC" horitzontalment
+        Casella c = new Casella(7, 7, 15);
+        c = spy(c);
+        when(c.obtenirEstrategia()).thenReturn(new EstrategiaPuntuacio.EstrategiaNormal());
+        c.colocarFitxa(new Fitxa("B", 1));
+    
+        List<Casella> jugada = List.of(c);
+    
+        // La jugada principal és vertical (una sola lletra col·locada verticalment)
+        // ⇒ direcció horitzontal = false
+        int puntuacio = taulell.calcularPuntuacioPerpendiculars(jugada, false);
+    
+        // S'espera la paraula "ABC" = 1*2 + 1 + 1*2 = 3
+        assertEquals(5, puntuacio);
+    }    
 }

@@ -137,7 +137,7 @@ public class CtrlJugadaBot {
             String nouPrefix = prefix + token;
             if (nodeSeguent.esFinal()) {
                 // Validar i afegir la jugada si és vàlida
-                Jugada novaJugada = taulell.construirJugadaBot(nouPrefix, casellesJugades, dawg);
+                Jugada novaJugada = taulell.construirJugadaBot(nouPrefix, casellesJugades, dawg, horitzontal);
                 if (novaJugada.getJugadaValida()) {
                     // Augmento la puntuació 50 si juga totes les fitxes
                     if (fitxesRestants.size() == 0) {
@@ -217,7 +217,7 @@ public class CtrlJugadaBot {
         
         // Si el prefix és una paraula l'afageixo a resultats
         if (nodeSeguent.esFinal()) {
-            Jugada novaJugada = taulell.construirJugadaBot(prefix, novesCasellesJugades, dawg);
+            Jugada novaJugada = taulell.construirJugadaBot(prefix, novesCasellesJugades, dawg, horitzontal);
             if (novaJugada.getJugadaValida()) {
                 // Augmento la puntuació 50 si juga totes les fitxes
                 if (fitxesRestants.size() == 0) {
