@@ -21,31 +21,38 @@ public class DAWG {
         Map<String, Node> fills = new HashMap<>(); // Tokens cap a nodes fills
         boolean esFinal = false; // Indica si el camí fins aquí forma una paraula vàlida
 
+        // Compara aquest node amb un altre objecte per determinar si són iguals
         @Override
         public boolean equals(Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
+            if (this == o) return true; // Si són el mateix objecte, són iguals
+            if (o == null || getClass() != o.getClass()) return false; // Si no són de la mateixa classe, no són iguals
             Node node = (Node) o;
+            // Compara si el camp 'esFinal' i els fills són iguals
             return esFinal == node.esFinal && fills.equals(node.fills);
         }
 
+        // Genera un codi hash per aquest node basat en els seus camps
         @Override
         public int hashCode() {
-            return Objects.hash(esFinal, fills);
+            return Objects.hash(esFinal, fills); // Utilitza 'esFinal' i 'fills' per calcular el hash
         }
 
+        // Retorna el node fill associat a un token donat
         public Node getFill(String token) {
             return fills.get(token);
         }
 
+        // Retorna tots els fills d'aquest node com un mapa
         public Map<String, Node> getFills() {
             return fills;
         }
 
+        // Comprova si aquest node conté un token específic com a fill
         public boolean conteToken(String token) {
             return fills.containsKey(token);
         }
 
+        // Indica si aquest node marca el final d'una paraula vàlida
         public boolean esFinal() {
             return esFinal;
         }
