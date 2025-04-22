@@ -1,5 +1,12 @@
 package edu.upc.prop.clusterxx;
 
+/*
+    * Colors.java
+    *
+    * Aquesta classe conté constants per a codis de colors ANSI per a la consola.
+    * S'utilitza per a imprimir text amb colors en la consola.
+    * 
+ */
 public class Colors {
     public static final String RESET = "\u001B[0m";
     public static final String RED_BACKGROUND = "\u001B[41m";

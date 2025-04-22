@@ -1,73 +1,59 @@
-/*
 package edu.upc.prop.clusterxx;
 
 import org.junit.Before;
 import org.junit.Test;
-
-import java.util.Arrays;
-import java.util.List;
-
 import static org.junit.Assert.*;
+import static org.mockito.Mockito.mock;
 
 public class BotTest {
 
+    private Faristol faristol;
     private Bot botFacil;
-    private Bot botMig;
+    private Bot botMitja;
     private Bot botDificil;
-    private DAWG dawg;
-    private Taulell taulell;
 
     @Before
-    public void setUp() {
-        // Tokens i paraules bàsiques per crear el DAWG
-        List<String> tokens = Arrays.asList("A", "B", "C", "S");
-        List<String> paraules = Arrays.asList("CAS", "SAC", "CASA", "ACAB");
-        dawg = new DAWG(tokens, paraules);
-        taulell = new Taulell(15);  // Tauler buit
-
-        // Crear faristols amb les mateixes fitxes per a cada bot
-        Faristol f1 = new Faristol(7);
-        f1.afegirFitxa(new Fitxa("C", 3));
-        f1.afegirFitxa(new Fitxa("A", 1));
-        f1.afegirFitxa(new Fitxa("S", 1));
-
-        Faristol f2 = new Faristol(7);
-        f2.afegirFitxa(new Fitxa("C", 3));
-        f2.afegirFitxa(new Fitxa("A", 1));
-        f2.afegirFitxa(new Fitxa("S", 1));
-
-        Faristol f3 = new Faristol(7);
-        f3.afegirFitxa(new Fitxa("C", 3));
-        f3.afegirFitxa(new Fitxa("A", 1));
-        f3.afegirFitxa(new Fitxa("S", 1));
-        f3.afegirFitxa(new Fitxa("A", 1));
-
-        // Crear bots amb diferents nivells de dificultat
-        botFacil = new Bot("BotFacil", f1, 1);
-        botMig = new Bot("BotMig", f2, 2);
-        botDificil = new Bot("BotDificil", f3, 3);
+    public void setUp() { // mida 4 per exemple
+        // Creem els bots amb diferents nivells de dificultat
+        botFacil = new Bot("BotFàcil", mock(Faristol.class), 1);
+        botMitja = new Bot("BotMitjà", mock(Faristol.class), 2);
+        botDificil = new Bot("BotDifícil", mock(Faristol.class), 3);
     }
 
     @Test
-    public void testBotFacilJugada() {
-        Jugada jugada = botFacil.calcularJugada(taulell, dawg);
-        assertNotNull(jugada);
-        System.out.println("Bot fàcil ha triat: " + jugada.getParaula());
+    public void testCrearBotCorrectament() {
+        assertNotNull(botFacil);
+        assertNotNull(botMitja);
+        assertNotNull(botDificil);
+        assertEquals("BotFàcil", botFacil.obtenirNom());
+        assertEquals("BotMitjà", botMitja.obtenirNom());
+        assertEquals("BotDifícil", botDificil.obtenirNom());
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testNivellDificultatIncorrecte() {
+        new Bot("BotIncorrecte", mock(Faristol.class), 0);  // Nivell incorrecte (per sota de l'interval)
     }
 
     @Test
-    public void testBotMigJugada() {
-        Jugada jugada = botMig.calcularJugada(taulell, dawg);
-        assertNotNull(jugada);
-        System.out.println("Bot mitjà ha triat: " + jugada.getParaula());
+    public void testObtenirDificultat() {
+        assertEquals(1, botFacil.obtenirDificultat());
+        assertEquals(2, botMitja.obtenirDificultat());
+        assertEquals(3, botDificil.obtenirDificultat());
     }
 
     @Test
-    public void testBotDificilJugada() {
-        Jugada jugada = botDificil.calcularJugada(taulell, dawg);
-        assertNotNull(jugada);
-        System.out.println("Bot difícil ha triat: " + jugada.getParaula());
-        assertEquals("CASA", jugada.getParaula()); // assumim que és la millor
+    public void testCopiaBot() {
+        Bot botCopia = new Bot(botFacil);
+        assertNotNull(botCopia);
+        assertEquals(botFacil.obtenirNom(), botCopia.obtenirNom());
+        assertEquals(botFacil.obtenirDificultat(), botCopia.obtenirDificultat());
+    }
+
+    @Test
+    public void testEsBot() {
+        assertTrue(botFacil.esBot());
+        assertTrue(botMitja.esBot());
+        assertTrue(botDificil.esBot());
     }
 }
-*/
