@@ -1,0 +1,14 @@
+- EXECUCIO DEL PROGRAMA
+Per compilar:
+./grandlew build
+
+Per provar el driver partida:
+java -jar build/libs/DriverPartida.jar
+
+Per provar el driver Estadistica:
+java -jar build/libs/DriverEstadistica.jar
+
+Per provar els tests
+./gradlew test
+
+

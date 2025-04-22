@@ -1,0 +1,69 @@
+Elements del directori:
+
+-Executable DriverEstadistica.jar.
+Per a executar escriure per terminal java -jar DriverEstadistica.jar
+
+-Fitxer provaStats.txt que conté un joc de prova (comentat a la documentació)
+Per a executar java -jar DriverEstadistica.jar < provaStats.txt
+
+__________________________________________________
+------------------USAGE---------------------------
+__________________________________________________
+
+
+
+
+Guia d'Us del DriverEstadistica
+Aquest driver permet provar la funcionalitat de la classe CtrEstadistica, que gestiona les estadistiques dels jugadors de Scrabble mitjancant una interficie de consola.
+Com utilitzar-lo
+
+Iniciar el Driver:
+
+Executa la classe DriverEstadistica.
+El programa mostrara un menu amb diferents opcions.
+
+
+Opcions disponibles:
+
+1. Afegir una puntuacio: Permet registrar una nova puntuacio per a un jugador.
+
+Introdueix el nom del jugador.
+Introdueix la puntuacio a afegir.
+
+
+2. Retirar una puntuacio: Elimina una puntuacio especifica d'un jugador.
+
+Introdueix el nom del jugador.
+Introdueix la puntuacio a retirar.
+
+
+3. Obtenir millor jugador: Mostra el jugador amb la puntuacio mes alta.
+
+Es mostrara el nom del jugador i la seva puntuacio maxima.
+
+
+4. Obtenir puntuacio mitjana: Calcula i mostra la mitjana de totes les puntuacions registrades.
+5. Obtenir puntuacio total: Mostra la suma de totes les puntuacions registrades.
+6. Obtenir totes les puntuacions: Llista tots els jugadors amb les seves puntuacions ordenades de major a menor.
+7. Eliminar jugador: Elimina completament un jugador i totes les seves puntuacions.
+
+Introdueix el nom del jugador a eliminar.
+
+
+0. Sortir: Tanca el programa.
+
+
+Funcionalitats principals:
+
+Gestio de puntuacions individuals dels jugadors.
+Calcul d'estadistiques globals.
+Consulta de ranquings.
+Administracio de registres de jugadors.
+
+
+Notes:
+
+Les puntuacions s'emmagatzemen nomes durant l'execucio del programa degut a la manca de capa de persistencia.
+
+
+Utilitza aquest driver per provar el correcte funcionament del nostre sistema d'estadistiques del joc!
