@@ -3,9 +3,6 @@ package edu.upc.prop.clusterxx;
 import java.util.ArrayList;
 import java.util.List;
 
-import edu.upc.prop.clusterxx.EstrategiaPuntuacio.EstrategiaMultiplicadorLletra;
-import edu.upc.prop.clusterxx.EstrategiaPuntuacio.EstrategiaMultiplicadorParaula;
-
 /**
  * Classe Taulell
  *
@@ -184,23 +181,16 @@ public class Taulell {
     }
 
     /**
-     * Mètode de coloració del taulell
-     * @param casella Casella de la qual volem obtenir el color
-     * @return Color
+     * Verifica si la posició de les caselles jugades és vàlida segons les regles del Scrabble.
+     *
+     * Una posició es considera vàlida si compleix els següents criteris:
+     * - Totes les caselles estan alineades en una mateixa fila o columna
+     * - En la primera jugada de la partida, almenys una casella ha d'estar a la posició central del taulell
+     * - En les jugades següents, almenys una de les caselles ha de ser adjacent a alguna fitxa ja existent
+     *
+     * @param casellesJugades Llista de caselles on s'han col·locat noves fitxes
+     * @return {@code true} si la posició és vàlida segons les regles, {@code false} altrament
      */
-    private String obtenirColorFons(Casella casella) {
-        if (casella.obtenirEstrategia() instanceof EstrategiaMultiplicadorParaula) {
-            EstrategiaMultiplicadorParaula estrategia = (EstrategiaMultiplicadorParaula) casella.obtenirEstrategia();
-            return estrategia.obtenirMultiplicador() == 3 ? Colors.RED_BACKGROUND : Colors.PURPLE_BACKGROUND;
-        } else if (casella.obtenirEstrategia() instanceof EstrategiaMultiplicadorLletra) {
-            EstrategiaMultiplicadorLletra estrategia = (EstrategiaMultiplicadorLletra) casella.obtenirEstrategia();
-            return estrategia.obtenirMultiplicador() == 3 ? Colors.BLUE_BACKGROUND : Colors.CYAN_BACKGROUND;
-        } else {
-            // Caselles normals -> Blanc brillant (si el terminal ho suporta)
-            return "\033[107m";  // Alternativa més brillant per a WHITE_BACKGROUND
-        }
-    }
-
     private boolean posicioValida(List<Casella> casellesJugades) {
         // Comprovar que estan alineades (mateixa fila o mateixa columna)
         boolean mateixaFila = casellesJugades.stream()
@@ -333,6 +323,21 @@ public class Taulell {
         return paraula.toString();
     }
 
+
+
+    /**
+     * Valida si les paraules perpendiculars formades per les caselles jugades són vàlides.
+     *
+     * Per cada casella jugada, construeix la paraula perpendicular a la direcció principal
+     * (horitzontal o vertical) i verifica que aquesta paraula existeixi al diccionari DAWG.
+     * Només es validen paraules de més d'una lletra.
+     *
+     * @param casellesJugades Llista de caselles on s'han col·locat noves fitxes
+     * @param dawg Diccionari (DAWG) per validar les paraules
+     * @param horitzontal {@code true} si la jugada principal és horitzontal (i es comproven paraules verticals),
+     *                    {@code false} si la jugada principal és vertical (i es comproven paraules horitzontals)
+     * @return {@code true} si totes les paraules perpendiculars són vàlides, {@code false} si alguna no ho és
+     */
     private boolean validarParaulesPerpendiculars(List<Casella> casellesJugades, DAWG dawg, boolean horitzontal) {
         for (Casella c : casellesJugades) {
             int x = c.obtenirX(), y = c.obtenirY();
@@ -503,7 +508,6 @@ public class Taulell {
         // Validar posicions (almenys una al centre si és primer torn)
         // Alineades i que conectin amb una com a mínim
         if (!posicioValida(casellesJugades)) {
-            System.out.println("Pos no valida");
             jugadaValida = false;
         }
 
