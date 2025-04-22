@@ -212,6 +212,14 @@ public class DAWG {
         return arrel;
     }
 
+    /**
+     * Comprova si un prefix donat existeix en l'estructura DAWG i
+     * retorna el node corresponent al final del prefix si existeix.
+     *
+     * @param prefix El prefix que es vol comprovar dins de l'estructura.
+     * @return El node corresponent al final del prefix si aquest existeix,
+     *         o null si el prefix no es troba a l'estructura.
+     */
     public Node esPrefix(String prefix) {
         List<String> tokensPrefix = tokenitzar(prefix);
         Node actual = arrel;

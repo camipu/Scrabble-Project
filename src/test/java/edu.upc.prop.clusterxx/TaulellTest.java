@@ -146,49 +146,45 @@ public class TaulellTest {
         Jugada jugada = taulell.construirJugada(caselles, dawg);
         assertFalse(jugada.getJugadaValida());
     }
-
     @Test
     public void testPuntuacioNomésParaulaPrincipal() {
         Casella c1 = new Casella(0, 0, 15);
         Casella c2 = new Casella(0, 1, 15);
         Fitxa f1 = new Fitxa("L", 1);
         Fitxa f2 = new Fitxa("A", 1);
-    
+
         c1 = spy(c1);
         when(c1.obtenirEstrategia()).thenReturn(new EstrategiaPuntuacio.EstrategiaNormal());
         c1.colocarFitxa(f1);
-    
+
         c2 = spy(c2);
         when(c2.obtenirEstrategia()).thenReturn(new EstrategiaPuntuacio.EstrategiaMultiplicadorParaula(2));
         c2.colocarFitxa(f2);
-    
+
         List<Casella> caselles = Arrays.asList(c1, c2);
-        int puntuacio = taulell.calcularPuntuacioParaulaPrincipal(caselles, true);
-    
-        // (1 + 1) * 2 = 4
-        System.out.println(puntuacio);
-        assertEquals(4, puntuacio);
+        DAWG dawg = new DAWG(List.of("LA"), List.of("LA"));
+        Jugada jugada = taulell.construirJugada(caselles, dawg);
+
+        assertEquals(4, jugada.getPuntuacio());
     }
-    
+
     @Test
     public void testPuntuacioPerpendicularValidaABC() {
         // Fitxes existents ja al taulell
         taulell.colocarFitxa(new Fitxa("A", 1), 7, 6); // A a l'esquerra
         taulell.colocarFitxa(new Fitxa("C", 1), 7, 8); // C a la dreta
-    
+
         // Fitxa nova que forma la paraula "ABC" horitzontalment
         Casella c = new Casella(7, 7, 15);
         c = spy(c);
         when(c.obtenirEstrategia()).thenReturn(new EstrategiaPuntuacio.EstrategiaNormal());
         c.colocarFitxa(new Fitxa("B", 1));
-    
-        List<Casella> jugada = List.of(c);
-    
-        // La jugada principal és vertical (una sola lletra col·locada verticalment)
-        // ⇒ direcció horitzontal = false
-        int puntuacio = taulell.calcularPuntuacioPerpendiculars(jugada, false);
-    
-        // S'espera la paraula "ABC" = 1*2 + 1 + 1*2 = 3
-        assertEquals(5, puntuacio);
-    }    
+
+        List<Casella> caselles = List.of(c);
+        DAWG dawg = new DAWG(List.of("ABC"), List.of("ABC"));
+        Jugada jugada = taulell.construirJugada(caselles, dawg);
+
+        assertTrue(jugada.getJugadaValida());
+        assertEquals(5, jugada.getPuntuacio());
+    }
 }

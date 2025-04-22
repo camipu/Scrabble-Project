@@ -378,7 +378,7 @@ public class Taulell {
      * @param casellesJugades Llistat de les caselles on s'ha jugat una fitxa
      * @return Puntuació total obtinguda per la paraula principal.
      */
-    protected int calcularPuntuacioParaulaPrincipal(List<Casella> casellesJugades, boolean horitzontal) {
+    private int calcularPuntuacioParaulaPrincipal(List<Casella> casellesJugades, boolean horitzontal) {
         List<Casella> ordenades = new ArrayList<>(casellesJugades);
     
         ordenades.sort((a, b) -> horitzontal ?
@@ -428,7 +428,7 @@ public class Taulell {
      * @param horitzontal Direcció principal de la jugada (true si és horitzontal, false si és vertical)
      * @return Puntuació total obtinguda per les paraules perpendiculars.
      */
-    protected int calcularPuntuacioPerpendiculars(List<Casella> casellesJugades, boolean horitzontal) {
+    private int calcularPuntuacioPerpendiculars(List<Casella> casellesJugades, boolean horitzontal) {
         int total = 0;
 
         for (Casella c : casellesJugades) {
