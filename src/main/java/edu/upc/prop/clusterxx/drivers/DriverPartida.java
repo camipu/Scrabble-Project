@@ -45,7 +45,7 @@ public class DriverPartida {
             return;
         }
 
-        System.out.print("Inicialitzan partida...\n");
+        System.out.print("Inicialitzant partida...\n");
         ctrDomini.inicialitzarPartida(midaTaulell, midaFaristol, idioma, nomsJugadors, dificultatsBots);
     }
 
@@ -369,6 +369,7 @@ public class DriverPartida {
             Jugada jugada = ctrlDomini.colocarFitxa(lletra, fila, columna);
 
             if (jugada.getJugadaValida()) {
+                System.out.print("Paraula formada: "+ jugada.getParaulaFormada() + "\n");
                 System.out.print("Vols confirmar la jugada? (true/false): ");
                 boolean confirmacio = sc.nextBoolean();
                 sc.nextLine();

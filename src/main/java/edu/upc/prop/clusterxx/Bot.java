@@ -31,10 +31,20 @@ public class Bot extends Jugador {
         this.nivellDificultat = copiaBot.nivellDificultat;
     }
 
+    /**
+     * Retorna el nivell de dificultat del bot.
+     *
+     * @return Nivell de dificultat (1: fàcil, 2: mitjà, 3: difícil)
+     */
     public int obtenirDificultat() {
         return nivellDificultat;
     }
 
+    /**
+     * Sobreescriu el mètode de la classe pare per indicar que aquest jugador és un bot.
+     *
+     * @return {@code true} sempre, ja que aquesta classe representa un bot
+     */
     @Override
     public boolean esBot() {return true;}
 }

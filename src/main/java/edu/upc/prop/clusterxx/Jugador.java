@@ -95,10 +95,22 @@ public class Jugador {
         this.punts -= nousPunts;
     }
 
+    /**
+     * Retorna la fitxa del faristol en la posició especificada.
+     *
+     * @param index Posició de la fitxa al faristol
+     * @return Fitxa corresponent a l'índex indicat
+     */
     public Fitxa obtenirFitxa(int index) {
         return faristol.obtenirFitxa(index);
     }
 
+    /**
+     * Cerca i retorna una fitxa del faristol que coincideixi amb la lletra especificada.
+     *
+     * @param lletra Lletra de la fitxa a obtenir
+     * @return Fitxa corresponent a la lletra indicada, o null si no es troba
+     */
     public Fitxa obtenirFitxa(String lletra) {
         return faristol.obtenirFitxa(lletra);
     }

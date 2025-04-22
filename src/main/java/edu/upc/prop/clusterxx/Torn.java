@@ -3,7 +3,7 @@ package edu.upc.prop.clusterxx;
 /**
  * Representa un torn dins d’una partida de Scrabble.
  * Conté la informació necessària per gestionar el torn actual,
- * incloent el sac de fitxes, el taulell, els jugadors, el número de torn i si el torn ha acabat.
+ * incloent-hi el sac de fitxes, el taulell, els jugadors, el número de torn i si el torn ha acabat.
  */
 public class Torn {
     private Sac sac;
@@ -39,10 +39,24 @@ public class Torn {
         this.tornsSenseCanvis = tornsSenseCanvis;
     }
 
+
+    /**
+     * Comprova si el jugador del torn actual és un bot.
+     *
+     * @param torn Número del torn a comprovar
+     * @return {@code true} si el jugador corresponent al torn és un bot, {@code false} altrament
+     */
     public boolean jugadorBot(int torn) {
         return jugadors[torn%jugadors.length].esBot();
     }
 
+
+    /**
+     * Retorna el número de torns consecutius sense canvis en el taulell.
+     * Aquest comptador s'utilitza per determinar condicions especials de finalització de partida.
+     *
+     * @return Número de torns sense canvis al taulell
+     */
     public int obtenirTornsSenseCanvis() {
         return tornsSenseCanvis;
     }

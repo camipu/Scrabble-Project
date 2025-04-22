@@ -42,7 +42,7 @@ task jarProvaIni(type: Jar) {
 build.dependsOn jarProvaIni
 
 task jarDriverPartida(type: Jar) {
-    archiveBaseName.set('DriverToni')
+    archiveBaseName.set('DriverPartida')
     manifest {
         attributes 'Main-Class': 'edu.upc.prop.clusterxx.drivers.DriverPartida'
     }
