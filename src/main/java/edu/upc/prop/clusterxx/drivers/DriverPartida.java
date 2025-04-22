@@ -7,7 +7,17 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
+/**
+ * Driver per provar la funcionalitat de la classe Partida i els seus components relacionats.
+ * Permet crear i jugar partides de Scrabble mitjançant una interfície de consola.
+ */
 public class DriverPartida {
+    /**
+     * Mètode principal que inicia l'execució del driver.
+     * Inicialitza una partida i comença a jugar els torns.
+     *
+     * @param args Arguments de la línia de comandes (no s'utilitzen)
+     */
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
         CtrlDomini ctrlDomini = CtrlDomini.getInstance();
@@ -15,6 +25,14 @@ public class DriverPartida {
         jugarTorns(sc, ctrlDomini);
     }
 
+
+    /**
+     * Configura i inicialitza una nova partida amb els paràmetres introduïts per l'usuari.
+     * Permet configurar la mida del taulell, la mida del faristol, l'idioma, i afegir jugadors humans i bots.
+     *
+     * @param sc Scanner per llegir l'entrada de l'usuari
+     * @param ctrDomini Controlador del domini per gestionar la partida
+     */
     private static void inicialitzarPartida(Scanner sc, CtrlDomini ctrDomini) {
         imprimirCapcaleraConfiguracio();
 
@@ -49,12 +67,21 @@ public class DriverPartida {
         ctrDomini.inicialitzarPartida(midaTaulell, midaFaristol, idioma, nomsJugadors, dificultatsBots);
     }
 
+    /**
+     * Mostra la capçalera de configuració de la partida a la consola.
+     */
     private static void imprimirCapcaleraConfiguracio() {
         System.out.println("\n======================================");
         System.out.println("         CONFIGURACIÓ DE PARTIDA       ");
         System.out.println("======================================\n");
     }
 
+    /**
+     * Llegeix la mida del taulell de joc i valida que sigui correcta.
+     *
+     * @param sc Scanner per llegir l'entrada de l'usuari
+     * @return Mida del taulell vàlida
+     */
     private static int obtenirMidaTaulellValida(Scanner sc) {
         int midaTaulell;
         boolean midaValida = false;
@@ -77,10 +104,24 @@ public class DriverPartida {
         return 0; // Este return nunca se alcanzará, pero es necesario para el compilador
     }
 
+    /**
+     * Llegeix la mida del faristol i valida que sigui correcta.
+     *
+     * @param sc Scanner per llegir l'entrada de l'usuari
+     * @return Mida del faristol vàlida
+     */
     private static int obtenirMidaFaristolValida(Scanner sc) {
         return obtenirNumeroFaristol(sc, "Introdueix la mida del faristol: ", "La mida del faristol ha de ser més gran que zero. Torna-ho a intentar: ");
     }
 
+    /**
+     * Llegeix un número positiu de l'entrada de l'usuari.
+     *
+     * @param sc Scanner per llegir l'entrada de l'usuari
+     * @param promptInicial Missatge inicial per demanar el número
+     * @param promptError Missatge d'error si el número no és vàlid
+     * @return Número positiu vàlid
+     */
     private static int obtenirNumeroPositiu(Scanner sc, String promptInicial, String promptError) {
         System.out.print(promptInicial);
         int valor = sc.nextInt();
@@ -93,6 +134,14 @@ public class DriverPartida {
         return valor;
     }
 
+    /**
+     * Llegeix un número de faristol de l'entrada de l'usuari.
+     *
+     * @param sc Scanner per llegir l'entrada de l'usuari
+     * @param promptInicial Missatge inicial per demanar el número
+     * @param promptError Missatge d'error si el número no és vàlid
+     * @return Número de faristol vàlid
+     */
     private static int obtenirNumeroFaristol(Scanner sc, String promptInicial, String promptError) {
         System.out.print(promptInicial);
         int valor = sc.nextInt();
@@ -105,6 +154,12 @@ public class DriverPartida {
         return valor;
     }
 
+    /**
+     * Llegeix l'idioma/temàtica de l'entrada de l'usuari i valida que sigui correcta.
+     *
+     * @param sc Scanner per llegir l'entrada de l'usuari
+     * @return Idioma vàlid
+     */
     private static String obtenirIdiomaValid(Scanner sc) {
         System.out.println("Idiomes/Temàtiques disponibles: ");
         System.out.println("castellano");
@@ -122,6 +177,13 @@ public class DriverPartida {
         return idioma;
     }
 
+    /**
+     * Llegeix la dificultat dels bots de l'entrada de l'usuari i valida que sigui correcta.
+     *
+     * @param sc Scanner per llegir l'entrada de l'usuari
+     * @param numBots Número de bots
+     * @return Array amb les dificultats dels bots
+     */
     private static int[] obtenirDificultatsBot(Scanner sc, int numBots) {
         int[] dificultatsBots = new int[numBots];
 
@@ -138,6 +200,13 @@ public class DriverPartida {
         return dificultatsBots;
     }
 
+    /**
+     * Llegeix els noms dels jugadors humans de l'entrada de l'usuari.
+     *
+     * @param sc Scanner per llegir l'entrada de l'usuari
+     * @param numJugadors Número de jugadors humans
+     * @return Array amb els noms dels jugadors humans
+     */
     private static String[] obtenirNomsJugadors(Scanner sc, int numJugadors) {
         String[] nomsJugadors = new String[numJugadors];
 
@@ -150,6 +219,17 @@ public class DriverPartida {
         return nomsJugadors;
     }
 
+    /**
+     * Mostra la configuració de la partida a la consola.
+     *
+     * @param midaTaulell Mida del taulell
+     * @param midaFaristol Mida del faristol
+     * @param idioma Idioma seleccionat
+     * @param numBots Número de bots
+     * @param dificultatsBots Dificultats dels bots
+     * @param numJugadors Número de jugadors humans
+     * @param nomsJugadors Noms dels jugadors humans
+     */
     private static void mostrarConfiguracio(int midaTaulell, int midaFaristol, String idioma,
                                             int numBots, int[] dificultatsBots,
                                             int numJugadors, String[] nomsJugadors) {
@@ -174,6 +254,12 @@ public class DriverPartida {
         System.out.println("======================================\n");
     }
 
+    /**
+     * Demana confirmació a l'usuari per continuar amb la configuració de la partida.
+     *
+     * @param sc Scanner per llegir l'entrada de l'usuari
+     * @return true si l'usuari vol continuar, false en cas contrari
+     */
     private static boolean confirmarConfiguracio(Scanner sc) {
         System.out.print("Vols jugar amb aquesta configuració? (true/false): ");
         String confirmacio = sc.nextLine();
@@ -186,6 +272,12 @@ public class DriverPartida {
         return confirmacio.equals("true");
     }
 
+    /**
+     * Juga els torns de la partida fins que es finalitzi.
+     *
+     * @param sc Scanner per llegir l'entrada de l'usuari
+     * @param ctrlDomini Controlador del domini per gestionar la partida
+     */
     private static void jugarTorns(Scanner sc, CtrlDomini ctrlDomini) {
         boolean first = true; // Variable per controlar si és el primer torn
 
@@ -214,12 +306,25 @@ public class DriverPartida {
         }
     }
 
+    /**
+     * Gestiona el torn d'un bot, mostrant el seu faristol i la jugada realitzada.
+     *
+     * @param ctrlDomini Controlador del domini per gestionar la partida
+     */
     private static void gestionarTornBot(CtrlDomini ctrlDomini) {
         imprimirFaristol(ctrlDomini.obtenirJugadorActual().obtenirFaristol());
         Jugada jugadabot = ctrlDomini.jugadaBot();
         imprimirJugada(jugadabot);
     }
 
+    /**
+     * Gestiona el torn d'un jugador humà, mostrant les opcions disponibles i processant la seva elecció.
+     *
+     * @param sc Scanner per llegir l'entrada de l'usuari
+     * @param ctrlDomini Controlador del domini per gestionar la partida
+     * @param first Indica si és el primer torn de la partida
+     * @return Retorna el valor actualitzat de first
+     */
     private static boolean gestionarTornJugadorHuma(Scanner sc, CtrlDomini ctrlDomini, boolean first) {
         int opcio;
 
@@ -252,6 +357,11 @@ public class DriverPartida {
         return first;
     }
 
+    /**
+     * Realitza un undo (desfà l'últim moviment) si és possible.
+     *
+     * @param ctrlDomini Controlador del domini per gestionar la partida
+     */
     private static void gestionarUndo(CtrlDomini ctrlDomini) {
         if (ctrlDomini.esPotFerUndo()) {
             ctrlDomini.ferUndo();
@@ -260,6 +370,11 @@ public class DriverPartida {
         }
     }
 
+    /**
+     * Guarda l'estat actual de la partida i surt del joc.
+     *
+     * @param ctrlDomini Controlador del domini per gestionar la partida
+     */
     private static void guardarPartida(CtrlDomini ctrlDomini) {
         System.out.println("Guardant partida...");
         ctrlDomini.guardarPartida();
@@ -267,12 +382,22 @@ public class DriverPartida {
         System.exit(0);
     }
 
+    /**
+     * Mostra el resum final de la partida amb el taulell i el rànquing de jugadors.
+     *
+     * @param ctrlDomini Controlador del domini per gestionar la partida
+     */
     private static void mostrarFinalPartida(CtrlDomini ctrlDomini) {
         System.out.println(Colors.YELLOW_BACKGROUND + Colors.BLACK_TEXT + "======== PARTIDA ACABADA ========" + Colors.RESET);
         imprimirTaulell(ctrlDomini.obtenirTaulell());
         imprimirRanking(ctrlDomini.obtenirJugadors());
     }
 
+    /**
+     * Mostra la informació inicial de cada torn: jugador actual, punts, faristol i taulell.
+     *
+     * @param ctrlDomini Controlador del domini per gestionar la partida
+     */
     private static void imprimirPrincipiTorn(CtrlDomini ctrlDomini) {
         imprimirSeparador();
         imprimirSeparador();
@@ -290,6 +415,12 @@ public class DriverPartida {
         imprimirSeparador();
     }
 
+    /**
+     * Gestiona el procés de jugar una paraula, permetent col·locar i retirar fitxes.
+     *
+     * @param sc Scanner per llegir l'entrada de l'usuari
+     * @param ctrlDomini Controlador del domini per gestionar la partida
+     */
     private static void jugarParaula(Scanner sc, CtrlDomini ctrlDomini) {
         int torn = ctrlDomini.obtenirTorn();
         boolean reset = false;
@@ -318,6 +449,11 @@ public class DriverPartida {
         }
     }
 
+    /**
+     * Reinicia el torn actual, tornant a l'estat inicial del torn.
+     *
+     * @param ctrlDomini Controlador del domini per gestionar la partida
+     */
     private static void resetTorn(CtrlDomini ctrlDomini) {
         try {
             ctrlDomini.resetTorn();
@@ -327,6 +463,11 @@ public class DriverPartida {
         }
     }
 
+    /**
+     * Mostra informació actualitzada del taulell i el faristol després d'una jugada.
+     *
+     * @param ctrlDomini Controlador del domini per gestionar la partida
+     */
     private static void ImprimirInfo(CtrlDomini ctrlDomini) {
         imprimirSeparador();
         imprimirTaulell(ctrlDomini.obtenirTaulell());
@@ -335,6 +476,12 @@ public class DriverPartida {
         imprimirSeparador();
     }
 
+    /**
+     * Processa la retirada d'una fitxa del taulell, demanant la posició a l'usuari.
+     *
+     * @param sc Scanner per llegir l'entrada de l'usuari
+     * @param ctrlDomini Controlador del domini per gestionar la partida
+     */
     private static void retirarFitxa(Scanner sc, CtrlDomini ctrlDomini) {
         System.out.print("Introdueix la fila de la fitxa que vols retirar: ");
         int fila = sc.nextInt();
@@ -351,6 +498,14 @@ public class DriverPartida {
         }
     }
 
+    /**
+     * Gestiona la col·locació d'una fitxa al taulell, demanant la lletra i la posició.
+     * Permet l'ús de comodins.
+     *
+     * @param sc Scanner per llegir l'entrada de l'usuari
+     * @param ctrlDomini Controlador del domini per gestionar la partida
+     * @return true si s'ha col·locat una fitxa correctament, false en cas contrari
+     */
     private static boolean gestionarColocacio(Scanner sc, CtrlDomini ctrlDomini) {
         System.out.print("Escriu la lletra de la fitxa que vols jugar: ");
         String lletra = sc.nextLine();
@@ -388,6 +543,13 @@ public class DriverPartida {
         }
     }
 
+    /**
+     * Gestiona l'ús d'un comodí, demanant a l'usuari per quina lletra vol substituir-lo.
+     *
+     * @param sc Scanner per llegir l'entrada de l'usuari
+     * @param ctrlDomini Controlador del domini per gestionar la partida
+     * @return La lletra per la qual es substitueix el comodí, o null si no hi ha comodins disponibles
+     */
     private static String gestionarComodi(Scanner sc, CtrlDomini ctrlDomini) {
         Fitxa fitxa;
         try {
@@ -409,6 +571,12 @@ public class DriverPartida {
         }
     }
 
+    /**
+     * Gestiona el canvi de fitxes del faristol del jugador amb el sac.
+     *
+     * @param sc Scanner per llegir l'entrada de l'usuari
+     * @param ctrlDomini Controlador del domini per gestionar la partida
+     */
     private static void canviarFitxes(Scanner sc, CtrlDomini ctrlDomini) {
         Faristol faristol = ctrlDomini.obtenirJugadorActual().obtenirFaristol();
         int maxFitxes = faristol.obtenirNumFitxes();
@@ -425,6 +593,13 @@ public class DriverPartida {
         intentarCanviarFitxes(sc, ctrlDomini, numFitxes);
     }
 
+    /**
+     * Processa l'intercanvi de fitxes seleccionades amb el sac.
+     *
+     * @param sc Scanner per llegir l'entrada de l'usuari
+     * @param ctrlDomini Controlador del domini per gestionar la partida
+     * @param numFitxes El nombre de fitxes a canviar
+     */
     private static void intentarCanviarFitxes(Scanner sc, CtrlDomini ctrlDomini, int numFitxes) {
         boolean canviFet = false;
 
@@ -448,6 +623,11 @@ public class DriverPartida {
         }
     }
 
+    /**
+     * Imprimeix la jugada realitzada, mostrant la paraula formada, la puntuació i les caselles jugades.
+     *
+     * @param jugada Jugada realitzada
+     */
     private static void imprimirJugada(Jugada jugada) {
         System.out.println("\n🎯 Jugada realitzada:");
         System.out.println(" - Paraula formada: " + jugada.getParaulaFormada());
@@ -460,6 +640,11 @@ public class DriverPartida {
         }
     }
 
+    /**
+     * Imprimeix el rànquing final dels jugadors al finalitzar la partida.
+     *
+     * @param jugadors Array de jugadors
+     */
     private static void imprimirRanking(Jugador[] jugadors) {
         // Imprimim el rànquing
         System.out.println("Rànquing final de jugadors:");
@@ -471,6 +656,11 @@ public class DriverPartida {
     }
 
 
+    /**
+     * Imprimeix el taulell de joc amb les caselles i els seus colors.
+     *
+     * @param taulell Taulell a imprimir
+     */
     private static void imprimirTaulell(Taulell taulell) {
         imprimirLlegendaTaulell();
 
@@ -501,6 +691,9 @@ public class DriverPartida {
         }
     }
 
+    /**
+     * Imprimeix la llegenda del taulell, mostrant els colors i els seus significats.
+     */
     private static void imprimirLlegendaTaulell() {
         System.out.println("🎨 Llegenda del Taulell:");
         System.out.println("\033[41m   \033[0m → Multiplicador de PARAULA x3");
@@ -510,12 +703,23 @@ public class DriverPartida {
         System.out.println("\033[107m   \033[0m → Casella normal");
     }
 
+    /**
+     * Imprimeix una línia separadora per al taulell.
+     *
+     * @param size Mida del taulell
+     */
     private static void imprimirLiniaSeparadora(int size) {
         System.out.print("    ");
         for (int j = 0; j < size; j++) System.out.print("+----");
         System.out.println("+");
     }
 
+    /**
+     * Obté el color de fons per a una casella del taulell.
+     *
+     * @param casella Casella del taulell
+     * @return Color de fons corresponent a la casella
+     */
     private static String obtenirColorFons(Casella casella) {
         if (casella.obtenirEstrategia() instanceof EstrategiaPuntuacio.EstrategiaMultiplicadorParaula estrategia) {
             return estrategia.obtenirMultiplicador() == 3 ? Colors.RED_BACKGROUND : Colors.PURPLE_BACKGROUND;
@@ -526,6 +730,11 @@ public class DriverPartida {
         }
     }
 
+    /**
+     * Imprimeix el faristol d'un jugador, mostrant les fitxes disponibles i els seus punts.
+     *
+     * @param faristol Faristol a imprimir
+     */
     public static void imprimirFaristol(Faristol faristol) {
         List<Fitxa> fitxes = faristol.obtenirFitxes();
         System.out.print("[");
@@ -539,6 +748,9 @@ public class DriverPartida {
         System.out.println("]");
     }
 
+    /**
+     * Imprimeix un missatge de separació a la consola.
+     */
     private static void imprimirSeparador() {
         System.out.println("================================================");
     }

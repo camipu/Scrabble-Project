@@ -87,16 +87,16 @@ public class CtrEstadistica {
     /**
      * Retorna la puntuació mes alta.
      *
-     * @return La puntuacio mes alta.
+     * @return La puntuació mes alta.
      */
     public int obtenirPuntuacioMaxima() {
         return estadistiques.obtenirMillor().getValue();
     }
 
     /**
-     * Retorna la puntuació mes baixa.
+     * Retorna la puntuació més baixa.
      *
-     * @return La puntuacio mes baixa.
+     * @return La puntuació més baixa.
      */
     public int obtenirPuntuacioMinima() {
         return estadistiques.obtenirPitjor().getValue();
@@ -105,7 +105,7 @@ public class CtrEstadistica {
     /**
      * Retorna la puntuació mitjana de tots els jugadors
      *
-     * @return La puntucacio total entre el nombre de jugadors.
+     * @return La puntuació total entre el nombre de jugadors.
      */
     public float obtenirPuntuacioMitjana() {
         return estadistiques.obtenirMitja();

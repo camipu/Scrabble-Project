@@ -308,8 +308,6 @@ public class CtrlPartida {
             Torn tornRecuperar = historial.obtenirTorn(tornAnterior);
             Jugador j = tornRecuperar.obtenirJugadors()[tornAnterior % jugadors.length];
             if (!j.esBot()) {
-                System.out.print("Recuperant torn " + tornRecuperar.obtenirTorn() + " del jugador " + j.obtenirNom());
-                System.out.print(j.esBot());
                 recuperarTorn(tornRecuperar);
 
                 // Recalcular el estado de la partida
