@@ -98,6 +98,15 @@ public class Faristol {
         return fitxes.get(index);
     }
 
+
+    /**
+     * Retorna una fitxa del faristol que coincideixi amb la lletra especificada.
+     * Si no es troba cap fitxa amb aquesta lletra, llença una excepció.
+     *
+     * @param lletra Lletra de la fitxa a obtenir
+     * @return La fitxa corresponent a la lletra indicada
+     * @throws IllegalArgumentException si no es troba cap fitxa amb la lletra especificada
+     */
     public Fitxa obtenirFitxa(String lletra) {
         for (Fitxa fitxa : fitxes) {
             if (fitxa.obtenirLletra().equals(lletra)) {
