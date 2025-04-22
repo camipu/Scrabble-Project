@@ -92,8 +92,15 @@ public class CtrlJugadaBot {
                         
                         // Generem totes les paraules vàlides possibles que comencin amb aquest prefix 
                         String paraulaInicial = prefix.toString();
-                        if (dawg.esPrefix(paraulaInicial)) {
+                        if (paraulaInicial.length()==0) {
                             jugades.addAll(generarParaules(paraulaInicial, fitxesDisponibles, new ArrayList<>(), dawg.getArrel(), fila, columna, horitzontal, taulell, dawg));
+
+                        }
+                        else {
+                            DAWG.Node node = dawg.esPrefix(paraulaInicial);
+                            if (node != null) {
+                                jugades.addAll(generarParaules(paraulaInicial, fitxesDisponibles, new ArrayList<>(), node, fila, columna, horitzontal, taulell, dawg));
+                            }
                         }
                     }
                 }

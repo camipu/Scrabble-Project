@@ -212,13 +212,13 @@ public class DAWG {
         return arrel;
     }
 
-    public boolean esPrefix(String prefix) {
+    public Node esPrefix(String prefix) {
         List<String> tokensPrefix = tokenitzar(prefix);
         Node actual = arrel;
         for (String token : tokensPrefix) {
-            if (!actual.fills.containsKey(token)) return false;
+            if (!actual.fills.containsKey(token)) return null;
             actual = actual.fills.get(token);
         }
-        return true;
+        return actual;
     }
 }

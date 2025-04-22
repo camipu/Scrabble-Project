@@ -1,0 +1,13 @@
+Elements del directori:
+
+- DOCS:
+-- Conte la documentació del projecte
+
+- EXE:
+-- Executables del projecte
+
+- FONTS:
+-- Classes implementades
+-- Tests unitàris implementats amb Junit4
+-- Tests d'integració (Drivers)
+-- Diccionari de paraules vàlides i fitxes (Resources)

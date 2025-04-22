@@ -252,6 +252,49 @@ public class Taulell {
      * @return La paraula formada
      */
     private String construirParaula(List<Casella> casellesJugades, boolean horitzontal) {
+        if (casellesJugades.size() == 1) {
+            StringBuilder paraula = new StringBuilder();
+            Casella casella = casellesJugades.get(0);
+            int fila = casella.obtenirX();
+            int columna = casella.obtenirY();
+
+            // Buscar cap a l'esquerra i cap a la dreta (horitzontal)
+            int tempColumna = columna;
+            while (tempColumna > 0 && (!taulell[fila][tempColumna - 1].esBuida() || null != casellaPertanyAJugada(fila, tempColumna - 1, casellesJugades))) {
+                tempColumna--;
+            }
+            while (tempColumna < size && (!taulell[fila][tempColumna].esBuida() || null != casellaPertanyAJugada(fila, tempColumna, casellesJugades))) {
+                Casella currentCasella = casellaPertanyAJugada(fila, tempColumna, casellesJugades);
+                if (currentCasella != null) {
+                    paraula.append(currentCasella.obtenirFitxa().obtenirLletra());
+                } else {
+                    paraula.append(taulell[fila][tempColumna].obtenirFitxa().obtenirLletra());
+                }
+                tempColumna++;
+            }
+
+            if (paraula.length() > 1) return paraula.toString();
+
+            // Buscar cap amunt i cap avall (vertical)
+            paraula = new StringBuilder();
+            int tempFila = fila;
+            while (tempFila > 0 && (!taulell[tempFila - 1][columna].esBuida() || null != casellaPertanyAJugada(tempFila - 1, columna, casellesJugades))) {
+                tempFila--;
+            }
+            while (tempFila < size && (!taulell[tempFila][columna].esBuida() || null != casellaPertanyAJugada(tempFila, columna, casellesJugades))) {
+                Casella currentCasella = casellaPertanyAJugada(tempFila, columna, casellesJugades);
+            if (currentCasella != null) {
+                paraula.append(currentCasella.obtenirFitxa().obtenirLletra());
+            } else {
+                paraula.append(taulell[tempFila][columna].obtenirFitxa().obtenirLletra());
+            }
+                tempFila++;
+            }
+
+            return paraula.toString();
+        }
+
+
         if (casellesJugades.isEmpty()) return "";
         
         List<Casella> ordenades = new ArrayList<>(casellesJugades);
@@ -460,6 +503,7 @@ public class Taulell {
         // Validar posicions (almenys una al centre si és primer torn)
         // Alineades i que conectin amb una com a mínim
         if (!posicioValida(casellesJugades)) {
+            System.out.println("Pos no valida");
             jugadaValida = false;
         }
 

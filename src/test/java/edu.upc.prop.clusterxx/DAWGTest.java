@@ -44,22 +44,22 @@ public class DAWGTest {
 
     @Test
     public void testPrefixValid() {
-        assertTrue(dawg.esPrefix("CAS"));
-        assertTrue(dawg.esPrefix("SA"));
-        assertTrue(dawg.esPrefix("CHI")); // Prefix de CHIC i CHIP
+        assertNotNull(dawg.esPrefix("CAS"));
+        assertNotNull(dawg.esPrefix("SA"));
+        assertNotNull(dawg.esPrefix("CHI")); // Prefix de CHIC i CHIP
     }
 
     @Test
     public void testPrefixInvalid() {
-        assertFalse(dawg.esPrefix("XO"));
-        assertFalse(dawg.esPrefix("BA"));
-        assertFalse(dawg.esPrefix("XCH"));
+        assertNull(dawg.esPrefix("XO"));
+        assertNull(dawg.esPrefix("BA"));
+        assertNull(dawg.esPrefix("XCH"));
     }
 
     @Test
     public void testPrefixAmbDigraf() {
-        assertTrue(dawg.esPrefix("CH"));
-        assertTrue(dawg.esPrefix("CHI"));
-        assertFalse(dawg.esPrefix("CI"));
+        assertNotNull(dawg.esPrefix("CH"));
+        assertNotNull(dawg.esPrefix("CHI"));
+        assertNull(dawg.esPrefix("CI"));
     }
 }

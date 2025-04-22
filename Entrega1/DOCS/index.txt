@@ -1,0 +1,4 @@
+- Diagrama de casos d'ús
+- Document PROP entrega 1.0
+- UML
+- Graf exemple de construcció del DAWG
