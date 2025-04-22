@@ -1,29 +1,13 @@
 Elements del directori:
 
 - DOCS:
--- Conte la documentació del projecte
+-- Conte la documentacio del projecte
 
 - EXE:
 -- Executables del projecte
 
 - FONTS:
 -- Classes implementades
--- Tests unitàris implementats amb Junit4
--- Diccionari de paraules vàlides i fitxes (Resources)
+-- Tests unitaris implementats amb Junit4
+-- Diccionari de paraules valides i fitxes (Resources)
 
-- EXECUCIÓ DEL PROGRAMA
-Per compilar:
-1. Anar al directori fonts
-2. ./grandlew build
-
-Per provar el driver partida:
-1. Anar al directori fonts
-2. java -jar build/libs/DriverPartida.jar
-
-Per provar el driver Estadística:
-1. Anar al directori fonts
-2. java -jar build/libs/DriverEstadistica.jar
-
-Per provar els tests
-1. Anar al directori fonts
-2. ./gradlew test
