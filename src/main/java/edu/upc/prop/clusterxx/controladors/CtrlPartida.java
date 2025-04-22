@@ -541,7 +541,8 @@ public class CtrlPartida {
      */
     public void commitParaula() {
         jugadors[torn%jugadors.length].afegirPunts(jugadaActual.getPuntuacio());
-        if (jugadaActual.getCasellesJugades().size() == jugadors[torn%jugadors.length].obtenirFaristol().obtenirSize()) {
+
+        if (!jugadors[torn%jugadors.length].esBot() && jugadaActual.getCasellesJugades().size() == jugadors[torn%jugadors.length].obtenirFaristol().obtenirSize()) {
             jugadors[torn%jugadors.length].afegirPunts(50);
         }
         for (Casella casella : jugadaActual.getCasellesJugades()) {
