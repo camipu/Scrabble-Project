@@ -1,4 +1,4 @@
-- Casos us -> Diagrama de casos d'ús
+- Casos us -> Diagrama de casos d'us
 - UML -> Diagrama UML
 - Entrega 1 -> Document PROP entrega 1.0
-- Graf exemple de construcció del DAWG
+- Graf exemple de construccio del DAWG

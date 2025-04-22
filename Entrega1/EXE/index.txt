@@ -1,8 +1,8 @@
 Elements del directori:
 
 Subdirectori DriverPartida:
- -Conté l'executable .jar per a executar una partida
+ -Conte l'executable .jar per a executar una partida
  
 Subdirectori DriverEstadistiques:
- -Conté l'executable .jar per a executar una simulació de estadístiques
+ -Conte l'executable .jar per a executar una simulacio de estadistiques
   
