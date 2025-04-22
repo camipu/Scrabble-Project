@@ -19,28 +19,6 @@ jar {
     }
 }
 
-task jarProvaParida(type: Jar) {
-    archiveBaseName.set('ProvaParida')
-    manifest {
-        attributes 'Main-Class': 'edu.upc.prop.clusterxx.ProvaDriverParida'
-    }
-    from sourceSets.main.output
-    dependsOn classes
-}
-build.dependsOn jarProvaParida
-
-task jarProvaIni(type: Jar) {
-    archiveBaseName.set('ProvaIni')
-    manifest {
-        attributes 'Main-Class': 'edu.upc.prop.clusterxx.drivers.DriverCamilaInicialiarPartida'
-    }
-    from {
-        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
-    }
-    with jar
-}
-build.dependsOn jarProvaIni
-
 task jarDriverPartida(type: Jar) {
     archiveBaseName.set('DriverPartida')
     manifest {
