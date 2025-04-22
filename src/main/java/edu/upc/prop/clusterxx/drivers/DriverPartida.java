@@ -7,7 +7,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
-public class DriverToni {
+public class DriverPartida {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
         CtrlDomini ctrlDomini = CtrlDomini.getInstance();
@@ -243,6 +243,7 @@ public class DriverToni {
             }
             case 6 -> {
                 System.out.println("Sortint sense guardar...");
+                System.exit(0);
                 return first;
             }
             default -> System.out.println("Opció no vàlida. Torna a intentar-ho.");
@@ -263,6 +264,7 @@ public class DriverToni {
         System.out.println("Guardant partida...");
         ctrlDomini.guardarPartida();
         System.out.println("Partida guardada.");
+        System.exit(0);
     }
 
     private static void mostrarFinalPartida(CtrlDomini ctrlDomini) {

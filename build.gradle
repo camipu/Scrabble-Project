@@ -41,17 +41,17 @@ task jarProvaIni(type: Jar) {
 }
 build.dependsOn jarProvaIni
 
-task jarDriverToni(type: Jar) {
+task jarDriverPartida(type: Jar) {
     archiveBaseName.set('DriverToni')
     manifest {
-        attributes 'Main-Class': 'edu.upc.prop.clusterxx.drivers.DriverToni'
+        attributes 'Main-Class': 'edu.upc.prop.clusterxx.drivers.DriverPartida'
     }
     from {
         configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
     }
     with jar
 }
-build.dependsOn jarDriverToni
+build.dependsOn jarDriverPartida
 
 task jarDriverEstadistica(type: Jar) {
     archiveBaseName.set('DriverEstadistica')
