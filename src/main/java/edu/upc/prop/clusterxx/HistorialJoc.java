@@ -45,6 +45,16 @@ public class HistorialJoc {
         torns.removeLast();
     }
 
+    /**
+     * Elimina els torns posteriors a un torn específic de l'historial.
+     *
+     * Aquest mètode s'utilitza principalment quan es fa una operació d'undo o
+     * quan es vol retornar a un estat anterior de la partida, eliminant tots
+     * els torns que s'han realitzat després del torn especificat.
+     *
+     * @param torn L'índex del torn a partir del qual s'han d'eliminar els torns següents
+     * @throws IndexOutOfBoundsException Si no hi ha torns per eliminar
+     */
     public void retirarTorns(int torn){
         if (torns.isEmpty()) {
             throw new IndexOutOfBoundsException("No hi ha torns per eliminar.");
