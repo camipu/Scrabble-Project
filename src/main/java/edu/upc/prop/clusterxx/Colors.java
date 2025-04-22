@@ -5,7 +5,7 @@ package edu.upc.prop.clusterxx;
     *
     * Aquesta classe conté constants per a codis de colors ANSI per a la consola.
     * S'utilitza per a imprimir text amb colors en la consola.
-    * 
+    *
  */
 public class Colors {
     public static final String RESET = "\u001B[0m";
