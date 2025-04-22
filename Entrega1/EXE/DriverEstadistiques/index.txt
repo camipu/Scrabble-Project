@@ -1,7 +1,10 @@
 Elements del directori:
 
-Executable DriverEstadistica.jar.
+-Executable DriverEstadistica.jar.
 Per a executar escriure per terminal java -jar DriverEstadistica.jar
+
+-Fitxer provaStats.txt que conté un joc de prova (comentat a la documentació)
+Per a executar java -jar DriverEstadistica.jar < provaStats.txt
 
 __________________________________________________
 ------------------USAGE---------------------------
