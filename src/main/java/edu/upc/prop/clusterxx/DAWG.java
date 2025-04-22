@@ -211,4 +211,14 @@ public class DAWG {
     public Node getArrel() {
         return arrel;
     }
+
+    public boolean esPrefix(String prefix) {
+        List<String> tokensPrefix = tokenitzar(prefix);
+        Node actual = arrel;
+        for (String token : tokensPrefix) {
+            if (!actual.fills.containsKey(token)) return false;
+            actual = actual.fills.get(token);
+        }
+        return true;
+    }
 }
