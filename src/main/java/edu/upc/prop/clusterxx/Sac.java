@@ -40,6 +40,10 @@ public class Sac {
         this.lletresOriginals = copiaSac.obtenirLletresOriginals();
     }
 
+    /**
+     * Retorna les lletres inicials del sac.
+     * @return Un set de les lletres originals.
+     */
     public Set<String> obtenirLletresOriginals() {
         return lletresOriginals;
     }
