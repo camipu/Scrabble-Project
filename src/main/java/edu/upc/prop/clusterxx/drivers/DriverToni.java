@@ -78,7 +78,7 @@ public class DriverToni {
     }
 
     private static int obtenirMidaFaristolValida(Scanner sc) {
-        return obtenirNumeroPositiu(sc, "Introdueix la mida del faristol: ", "La mida del faristol ha de ser positiva. Torna-ho a intentar: ");
+        return obtenirNumeroFaristol(sc, "Introdueix la mida del faristol: ", "La mida del faristol ha de ser més gran que zero. Torna-ho a intentar: ");
     }
 
     private static int obtenirNumeroPositiu(Scanner sc, String promptInicial, String promptError) {
@@ -86,6 +86,18 @@ public class DriverToni {
         int valor = sc.nextInt();
 
         while (valor < 0) {
+            System.out.print(promptError);
+            valor = sc.nextInt();
+        }
+
+        return valor;
+    }
+
+    private static int obtenirNumeroFaristol(Scanner sc, String promptInicial, String promptError) {
+        System.out.print(promptInicial);
+        int valor = sc.nextInt();
+
+        while (valor < 1) {
             System.out.print(promptError);
             valor = sc.nextInt();
         }
@@ -427,7 +439,7 @@ public class DriverToni {
                 canviFet = true;
             } catch (IllegalArgumentException e) {
                 System.out.println("Error: " + e.getMessage());
-                System.out.print("Intenta-ho de nou. Tria les fitxes que vols canviar: ");
+                System.out.print("Intenta-ho de nou. ");
             }
         }
     }
