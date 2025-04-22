@@ -27,6 +27,10 @@ public class Taulell {
         if (size % 2 == 0) {
             throw new IllegalArgumentException("La mida del tauler ha de ser imparella per garantir simetria.");
         }
+        else if (size < 5) {
+            throw new IllegalArgumentException("La mida del tauler ha de ser com a mínim 5.");
+        }
+
 
         this.size = size;
         taulell = new Casella[size][size];
