@@ -144,17 +144,6 @@ public class CtrlJugadaBot {
 
             // Construiexo el nouPrefix
             String nouPrefix = prefix + token;
-            if (nodeSeguent.esFinal()) {
-                // Validar i afegir la jugada si és vàlida
-                Jugada novaJugada = taulell.construirJugadaBot(nouPrefix, casellesJugades, dawg, horitzontal);
-                if (novaJugada.getJugadaValida()) {
-                    // Augmento la puntuació 50 si juga totes les fitxes
-                    if (fitxesRestants.size() == 0) {
-                        novaJugada.setPuntuacio(novaJugada.getPuntuacio()+50);
-                    }
-                    resultats.add(novaJugada);
-                }
-            }
 
             // Em moc a la següent posició
             int f = horitzontal ? filaActual : filaActual + 1;
@@ -164,6 +153,16 @@ public class CtrlJugadaBot {
             resultats.addAll(generarParaules(nouPrefix, fitxesRestants, casellesJugades, nodeSeguent, f, c, horitzontal, taulell, dawg));
         }
         else {
+            if (nodeActual.esFinal()) {
+                Jugada novaJugada = taulell.construirJugadaBot(prefix, casellesJugades, dawg, horitzontal);
+                if (novaJugada.getJugadaValida()) {
+                    if (fitxesRestants.size() == 0) {
+                        novaJugada.setPuntuacio(novaJugada.getPuntuacio()+50);
+                    }
+                    resultats.add(novaJugada);
+                }
+            }
+
             // Si no hi ha fitxa col·locada explorar possibles combinacions
             // amb les fitxes del faristol (fitxesRestants)
             for (int i = 0; i < fitxesRestants.size(); i++) {
@@ -223,18 +222,6 @@ public class CtrlJugadaBot {
         Casella novaCasella = new Casella(filaActual, columnaActual, taulell.getSize());
         novaCasella.colocarFitxa(fitxa);
         novesCasellesJugades.add(novaCasella);
-        
-        // Si el prefix és una paraula l'afageixo a resultats
-        if (nodeSeguent.esFinal()) {
-            Jugada novaJugada = taulell.construirJugadaBot(prefix, novesCasellesJugades, dawg, horitzontal);
-            if (novaJugada.getJugadaValida()) {
-                // Augmento la puntuació 50 si juga totes les fitxes
-                if (fitxesRestants.size() == 0) {
-                    novaJugada.setPuntuacio(novaJugada.getPuntuacio()+50);
-                }
-                resultats.add(novaJugada);
-            }
-        }
  
         // Em moc a la següent posició
         int f = horitzontal ? filaActual : filaActual + 1;
