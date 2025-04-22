@@ -1,0 +1,69 @@
+Elements del directori:
+
+Executable DriverPartida.jar.
+Per a executar escriure per terminal java -jar DriverPartida.jar
+
+__________________________________________________
+------------------USAGE---------------------------
+__________________________________________________
+
+Guia d'Us del DriverPartida
+Aquest driver permet provar la funcionalitat de la classe Partida i els seus components relacionats per jugar partides de Scrabble mitjancant una interficie de consola.
+Com utilitzar-lo
+
+Iniciar el Driver:
+
+Executa la classe DriverPartida.
+El programa comencara demanant-te configurar una nova partida.
+
+
+Configuracio de la Partida:
+
+Introdueix la mida del taulell (nombre enter).
+Introdueix la mida del faristol (nombre enter positiu).
+Selecciona l'idioma disponible (castellano, catalan o english).
+Indica el nombre de bots i la seva dificultat (1-Facil, 2-Normal, 3-Dificil).
+Introdueix el nombre de jugadors humans i els seus noms.
+Confirma la configuracio (true/false).
+
+
+Jugar la Partida:
+
+A cada torn, es mostrara el jugador actual, els seus punts, el faristol i el taulell.
+Si es un bot, la seva jugada es mostrara automaticament.
+Si es un jugador huma, tindras les seguents opcions:
+
+1: Jugar (col·locar o retirar fitxes)
+2: Passar torn
+3: Canviar fitxes
+4: Desfer l'ultima jugada (undo)
+5: Guardar la partida i sortir
+6: Sortir sense guardar
+
+
+
+
+Jugar una Paraula:
+
+Pots col·locar (1) o retirar (2) fitxes, o reiniciar el torn (3).
+Per col·locar una fitxa, introdueix la lletra i la posicio (fila i columna).
+Per utilitzar un comodi (#), indica la lletra que vols substituir.
+Despres de col·locar fitxes, pots confirmar la jugada (true/false).
+
+
+Final de la Partida:
+
+La partida finalitza quan es compleixen les condicions d'acabament.
+Es mostrara el taulell final i el ranquing de jugadors amb les seves puntuacions.
+
+
+
+Llegenda del Taulell
+
+Vermell: Multiplicador de paraula x3
+Lila: Multiplicador de paraula x2
+Blau: Multiplicador de lletra x3
+Cian: Multiplicador de lletra x2
+Blanc: Casella normal
+
+Gaudeix de la partida!
