@@ -12,6 +12,7 @@ Elements del directori:
 -- Tests d'integració (Drivers)
 -- Diccionari de paraules vàlides i fitxes (Resources)
 
+- EXECUCIÓ DEL PROGRAMA
 Per compilar:
 1. Anar al directori fonts
 2. ./grandlew build
