@@ -270,6 +270,7 @@ public class DriverPartida {
     private static void mostrarFinalPartida(CtrlDomini ctrlDomini) {
         System.out.println(Colors.YELLOW_BACKGROUND + Colors.BLACK_TEXT + "======== PARTIDA ACABADA ========" + Colors.RESET);
         imprimirTaulell(ctrlDomini.obtenirTaulell());
+        imprimirRanking(ctrlDomini.obtenirJugadors());
     }
 
     private static void imprimirPrincipiTorn(CtrlDomini ctrlDomini) {
@@ -458,6 +459,17 @@ public class DriverPartida {
             System.out.println("     · " + casella);
         }
     }
+
+    private static void imprimirRanking(Jugador[] jugadors) {
+        // Imprimim el rànquing
+        System.out.println("Rànquing final de jugadors:");
+
+        // Iterem per cada jugador ja ordenat
+        for (Jugador jugador : jugadors) {
+            System.out.println(jugador.obtenirNom() + ": " + jugador.obtenirPunts() + " punts");
+        }
+    }
+
 
     private static void imprimirTaulell(Taulell taulell) {
         imprimirLlegendaTaulell();

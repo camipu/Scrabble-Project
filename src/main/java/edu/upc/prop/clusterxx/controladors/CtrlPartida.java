@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
  * Classe CtrlPartida
  *
  * Controlador principal encarregat de gestionar el desenvolupament d'una partida de Scrabble.
- * Centralitza i coordina els components fonamentals del joc, incloent el taulell, el sac de fitxes,
+ * Centralitza i coordina els components fonamentals del joc, incloent-hi el taulell, el sac de fitxes,
  * el conjunt de jugadors, l'historial de jugades i el diccionari (DAWG) per validar paraules.
  *
  * També gestiona l'estat de la partida, el control de torns, el registre de jugades,
@@ -35,6 +35,12 @@ public class CtrlPartida {
     Jugada jugadaActual = null;
     private int tornsSenseCanvi = -1;
 
+
+    /**
+     * Obté la instància única del controlador de partida (singleton).
+     *
+     * @return Instància única de CtrlPartida
+     */
     public static CtrlPartida getInstance() {
         if (instance == null) {
             instance = new CtrlPartida();
@@ -147,6 +153,11 @@ public class CtrlPartida {
         historial.retirarTorns(torn);
     }
 
+
+    /**
+     * Reinicia l'estat del torn actual a l'estat inicial.
+     * Recupera el torn actual de l'historial i restaura l'estat de la partida.
+     */
     public void resetTorn(){
         Torn tornActual = historial.obtenirTorn(torn);
         recuperarTorn(tornActual);
@@ -205,23 +216,14 @@ public class CtrlPartida {
 
         // Ordenar els jugadors per puntuació de major a menor
         ordenarJugadors();
-        imprimirRanking();
         guardarEstadistiques();
     }
 
-    private void imprimirRanking() {
-        // Primer, ordenem els jugadors
-        ordenarJugadors();
 
-        // Imprimim el rànquing
-        System.out.println("Rànquing final de jugadors:");
-
-        // Iterem per cada jugador ja ordenat
-        for (Jugador jugador : jugadors) {
-            System.out.println(jugador.obtenirNom() + ": " + jugador.obtenirPunts() + " punts");
-        }
-    }
-
+    /**
+     * Guarda les estadístiques finals dels jugadors al finalitzar la partida.
+     * Afegeix la puntuació de cada jugador al registre d'estadístiques global.
+     */
     private void guardarEstadistiques() {
         Estadistiques estadistiques = Estadistiques.getInstance();
 
@@ -328,12 +330,16 @@ public class CtrlPartida {
         return (sac.esBuit() && jugadors[torn%jugadors.length].obtenirFaristol().esBuit()) || tornsSenseCanvi >= (jugadors.length)*2;
     }
 
+
+    /**
+     * Comprova si es pot utilitzar la funcionalitat d'undo en l'estat actual de la partida.
+     * Només es permet fer undo si hi ha més d'un torn i només hi ha un jugador humà.
+     *
+     * @return {@code true} si es pot fer undo, {@code false} altrament
+     */
     public boolean esPotFerUndo() {
         // No es pot fer undo si encara no s'ha fet cap torn
         if (torn == 1) return false;
-// no logro que haga bien este if
-//        // Si només s'ha fet un torn i l'ha fet un bot, no es pot fer undo
-//        if (torn == 2 && jugadors[jugadors.length%(torn - 1)].esBot()) return false;
 
         // Comptem quants jugadors humans hi ha
         int humans = 0;
@@ -578,11 +584,6 @@ public class CtrlPartida {
 
         commitParaula();
 
-//        rellenarFaristol();
-
-//        if (!casellasTorn.isEmpty()) tornsSenseCanvi = -1;
-//        else System.out.print("ESTA VACIO");
-//        passarTorn();
         return jugadaActual;
 
     }
