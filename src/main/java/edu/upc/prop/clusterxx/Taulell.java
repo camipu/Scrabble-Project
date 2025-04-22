@@ -378,7 +378,7 @@ public class Taulell {
     }
 
     /**
-     * Calcula la puntuacio de la paraula principal formada durant la jugada
+     * Calcula la puntuació de la paraula principal formada durant la jugada
      *
      * @param casellesJugades Llistat de les caselles on s'ha jugat una fitxa
      * @return Puntuació total obtinguda per la paraula principal.
