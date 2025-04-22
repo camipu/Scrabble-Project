@@ -6,7 +6,7 @@ public class Bot extends Jugador {
     /**
      * Constructor amb nom, sac i nivell de dificultat
      * @param nom Nom del bot
-     * @param sac Sac de fitxes
+     * @param faristol Faristol de fitxes
      * @param nivellDificultat Nivell de dificultat del bot (1-3)
      */
     public Bot(String nom, Faristol faristol, int nivellDificultat) {
