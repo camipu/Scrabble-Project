@@ -10,10 +10,7 @@ import java.awt.event.ActionListener;
 
 public class MainWindow extends JFrame {
     public MainWindow() {
-        setTitle("La meva Aplicació");
-        setSize(4000, 3000);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        initComponents();
+
     }
 
     private void initComponents() {
