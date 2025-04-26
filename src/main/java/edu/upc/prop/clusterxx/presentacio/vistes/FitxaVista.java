@@ -3,6 +3,8 @@ package edu.upc.prop.clusterxx.presentacio.vistes;
 import edu.upc.prop.clusterxx.Fitxa;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class FitxaVista extends JPanel {
     private final Fitxa fitxa;
@@ -21,6 +23,15 @@ public class FitxaVista extends JPanel {
         setBackground(colorFons);
         setBorder(BorderFactory.createLineBorder(new Color(120, 100, 60), 2)); // Borde més definit
         setOpaque(true); // Asegura que el fons sigui visible
+
+        // Afegir esdeveniment de selecció
+        addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                // Canviar l'estat de selecció
+                setSeleccionada(!seleccionada);
+            }
+        });
     }
 
     @Override
@@ -49,11 +60,12 @@ public class FitxaVista extends JPanel {
         g2d.drawString(lletra, (getWidth() - ampleLletra) / 2, getHeight() / 2 + fmLletra.getAscent() / 2 - 2);
 
         // Dibuixar els punts
-
-            g2d.setFont(fontPunts);
-            String punts = String.valueOf(fitxa.obtenirPunts());
-            g2d.drawString(punts, getWidth() - 15, getHeight() - 5);
-
+        g2d.setFont(fontPunts);
+        String punts = String.valueOf(fitxa.obtenirPunts());
+        if (fitxa.obtenirPunts() < 10) {
+            punts = "  " + punts; // Afegir espais davant si és menor de 10
+        }
+        g2d.drawString(punts, getWidth() - 16, getHeight() - 5);
     }
 
     public void setSeleccionada(boolean seleccionada) {
