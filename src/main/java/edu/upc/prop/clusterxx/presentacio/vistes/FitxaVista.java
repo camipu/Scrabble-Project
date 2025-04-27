@@ -1,6 +1,7 @@
 package edu.upc.prop.clusterxx.presentacio.vistes;
 
 import edu.upc.prop.clusterxx.Fitxa;
+import edu.upc.prop.clusterxx.presentacio.ColorLoader;
 import edu.upc.prop.clusterxx.presentacio.FontLoader;
 
 import javax.swing.*;
@@ -13,8 +14,8 @@ import java.io.IOException;
 public class FitxaVista extends JPanel {
     private final Fitxa fitxa;
     private boolean seleccionada;
-    private final Color colorFons = new Color(240, 220, 180); // Color fusta clar
-    private final Color colorSeleccionada = new Color(255, 255, 150); // Groc clar per selecció
+    private final Color colorFons = ColorLoader.getInstance().getColorFonsFitxa(); // Color de fons per defecte
+    private final Color colorSeleccionada = ColorLoader.getInstance().getColorSeleccionada();
     private final Color colorText = Color.BLACK;
     private Font fontLletra = FontLoader.getCustomFont(20f);
     private final Font fontPunts =  FontLoader.getCustomFont(20f);

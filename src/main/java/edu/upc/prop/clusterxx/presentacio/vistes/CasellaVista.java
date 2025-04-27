@@ -2,6 +2,7 @@ package edu.upc.prop.clusterxx.presentacio.vistes;
 
 import edu.upc.prop.clusterxx.Casella;
 import edu.upc.prop.clusterxx.EstrategiaPuntuacio;
+import edu.upc.prop.clusterxx.presentacio.ColorLoader;
 import edu.upc.prop.clusterxx.presentacio.FontLoader;
 
 import javax.swing.*;
@@ -21,12 +22,12 @@ public class CasellaVista extends JPanel {
     private boolean seleccionada;
 
     // Colors per als diferents tipus de caselles
-    private final Color colorNormal = new Color(240, 240, 240);
-    private final Color colorML2 = new Color(135, 206, 250); // Blau clar per multiplicador lletra x2
-    private final Color colorML3 = new Color(65, 105, 225);  // Blau fosc per multiplicador lletra x3
-    private final Color colorMP2 = new Color(255, 192, 203); // Rosa clar per multiplicador paraula x2
-    private final Color colorMP3 = new Color(220, 20, 60);   // Vermell per multiplicador paraula x3
-    private final Color colorSeleccionada = new Color(255, 255, 150); // Groc clar per selecció
+    private final Color colorNormal = ColorLoader.getInstance().getColorNormal();
+    private final Color colorML2 = ColorLoader.getInstance().getColorML2(); // Blau clar per multiplicador lletra x2
+    private final Color colorML3 = ColorLoader.getInstance().getColorML3();
+    private final Color colorMP2 = ColorLoader.getInstance().getColorMP2();
+    private final Color colorMP3 = ColorLoader.getInstance().getColorMP3();
+    private final Color colorSeleccionada = ColorLoader.getInstance().getColorSeleccionada();
 
     private final Font fontMultiplicador = FontLoader.getCustomFont(20f);
 

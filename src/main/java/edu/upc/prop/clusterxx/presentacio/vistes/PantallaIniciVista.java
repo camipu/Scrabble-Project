@@ -1,6 +1,7 @@
 package edu.upc.prop.clusterxx.presentacio.vistes;
 
 import edu.upc.prop.clusterxx.Fitxa;
+import edu.upc.prop.clusterxx.presentacio.ColorLoader;
 import edu.upc.prop.clusterxx.presentacio.FontLoader;
 
 import javax.swing.*;
@@ -16,9 +17,7 @@ public class PantallaIniciVista extends JFrame {
     private JButton continuarPartidaButton;
     private JButton estadistiquesButton;
     private Font vt323Font = FontLoader.getCustomFont(36f);
-    private Color[] colorsFons = {new Color(255, 245, 230), new Color(240, 230, 255)};
-    private int colorIndex = 0;
-    private Timer fonsTimer;
+    private Color colorsFons = ColorLoader.getInstance().getColorFons();
 
     public PantallaIniciVista() {
         setTitle("Scrabble - Pantalla d'Inici");
@@ -31,7 +30,7 @@ public class PantallaIniciVista extends JFrame {
             @Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
-                setBackground(colorsFons[colorIndex]);
+                setBackground(colorsFons);
             }
         };
         panell.setLayout(new BoxLayout(panell, BoxLayout.Y_AXIS));
@@ -71,7 +70,7 @@ public class PantallaIniciVista extends JFrame {
             @Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
-                setBackground(colorsFons[colorIndex]);
+                setBackground(colorsFons);
             }
         };
         panellBotons.setLayout(new GridBagLayout());  // Canvia a GridBagLayout
@@ -90,6 +89,16 @@ public class PantallaIniciVista extends JFrame {
         panell.add(panellBotons);
 
         add(panell);
+
+        // Afegir ActionListener al botó "Estadístiques"
+        estadistiquesButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Quan es clica, s'obre la finestra d'estadístiques
+                EstadistiquesVista estadistiquesVista = new EstadistiquesVista();
+                estadistiquesVista.setVisible(true);
+            }
+        });
     }
 
     private JButton crearBotoRetro(String text, Color colorFons, Font font) {
@@ -117,16 +126,8 @@ public class PantallaIniciVista extends JFrame {
             }
         });
 
-        boto.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                System.out.println(text + " clicat");
-            }
-        });
-
         return boto;
     }
-
 
     private int obtenirPuntsLletra(char lletra) {
         switch (Character.toUpperCase(lletra)) {
