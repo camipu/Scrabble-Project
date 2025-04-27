@@ -1,98 +1,144 @@
 package edu.upc.prop.clusterxx.presentacio.vistes;
 
+import edu.upc.prop.clusterxx.Fitxa;
 import edu.upc.prop.clusterxx.presentacio.FontLoader;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
-import java.io.IOException;
-import java.awt.FontFormatException;
 
 /**
- * Pantalla d'inici per al joc de Scrabble.
- * Conté tres botons per a les opcions: "Jugar nova partida", "Continuar partida", "Estadístiques".
+ * Pantalla d'inici compactada: Benvingut + SCRABBLE amb Fitxes + Botons centrats.
  */
 public class PantallaIniciVista extends JFrame {
     private JButton jugarNovaPartidaButton;
     private JButton continuarPartidaButton;
     private JButton estadistiquesButton;
-    private Font vt323Font = FontLoader.getCustomFont(20f);  // Font VT323
+    private Font vt323Font = FontLoader.getCustomFont(36f);
+    private Color[] colorsFons = {new Color(255, 245, 230), new Color(240, 230, 255)};
+    private int colorIndex = 0;
+    private Timer fonsTimer;
 
     public PantallaIniciVista() {
-        // Configuració de la finestra
         setTitle("Scrabble - Pantalla d'Inici");
-        setSize(400, 300);
-        setLocationRelativeTo(null); // Centra la finestra a la pantalla
+        setSize(1200, 800);
+        setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setResizable(false); // La finestra no es pot redimensionar
+        setResizable(false);
 
-        // Creació del panell principal
-        JPanel panell = new JPanel();
-        panell.setLayout(new GridLayout(4, 1, 10, 10));
-        panell.setBackground(new Color(255, 245, 230)); // Color de fons bonic (beix clar)
-
-        // Títol
-        JLabel títol = new JLabel("Benvingut a Scrabble!", JLabel.CENTER);
-        títol.setFont(vt323Font);  // Aplicar la font VT323
-        títol.setForeground(new Color(34, 34, 34)); // Color text fosc
-        panell.add(títol);
-
-        // Botó per jugar nova partida
-        jugarNovaPartidaButton = new JButton("Jugar nova partida");
-        jugarNovaPartidaButton.setFont(vt323Font);  // Aplicar la font VT323
-        jugarNovaPartidaButton.setBackground(new Color(102, 204, 255)); // Blau cel
-        jugarNovaPartidaButton.setFocusPainted(false);
-        jugarNovaPartidaButton.addActionListener(new ActionListener() {
+        JPanel panell = new JPanel() {
             @Override
-            public void actionPerformed(ActionEvent e) {
-                // Aquí es fa la transició per començar una nova partida
-                System.out.println("Nova partida iniciada");
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                setBackground(colorsFons[colorIndex]);
             }
-        });
-        panell.add(jugarNovaPartidaButton);
+        };
+        panell.setLayout(new BoxLayout(panell, BoxLayout.Y_AXIS));
+        panell.setAlignmentX(Component.CENTER_ALIGNMENT);  // Centra els components dins del panell
 
-        // Botó per continuar partida
-        continuarPartidaButton = new JButton("Continuar partida");
-        continuarPartidaButton.setFont(vt323Font);  // Aplicar la font VT323
-        continuarPartidaButton.setBackground(new Color(255, 205, 85)); // Groc daurat
-        continuarPartidaButton.setFocusPainted(false);
-        continuarPartidaButton.addActionListener(new ActionListener() {
+        // 1. "Benvingut a"
+        JLabel labelBenvingut = new JLabel("Benvingut a");
+        labelBenvingut.setAlignmentX(Component.CENTER_ALIGNMENT);
+        labelBenvingut.setFont(FontLoader.getCustomFont(75f));
+        labelBenvingut.setForeground(Color.BLACK);
+        panell.add(Box.createRigidArea(new Dimension(0, 10)));
+        panell.add(labelBenvingut);
+
+        // 2. Paraula "SCRABBLE" amb FitxaVista
+        JPanel panellTitol = new JPanel();
+        panellTitol.setLayout(new FlowLayout(FlowLayout.CENTER, 2, 0)); // menys separació
+        panellTitol.setOpaque(false);
+
+        String paraula = "SCRABBLE";
+        for (char c : paraula.toCharArray()) {
+            Fitxa fitxa = new Fitxa(String.valueOf(c), obtenirPuntsLletra(c));
+            FitxaVista fitxaVista = new FitxaVista(fitxa, 75, 75, 50); // fitxes més petites
+            panellTitol.add(fitxaVista);
+        }
+        panell.add(Box.createRigidArea(new Dimension(0, 5))); // Espai petit
+        panell.add(panellTitol);
+        panell.add(Box.createRigidArea(new Dimension(0, 15))); // Espai molt petit abans botons
+
+        // 3. Botons
+        Font botoFont = FontLoader.getCustomFont(58f);
+        jugarNovaPartidaButton = crearBotoRetro("Jugar nova partida", new Color(0, 255, 128), botoFont);
+        continuarPartidaButton = crearBotoRetro("Continuar partida", new Color(255, 255, 0), botoFont);
+        estadistiquesButton = crearBotoRetro("Estadístiques", new Color(255, 100, 100), botoFont);
+
+        // Panell per als botons amb GridBagLayout per centrar-los
+        JPanel panellBotons = new JPanel() {
             @Override
-            public void actionPerformed(ActionEvent e) {
-                // Aquí es fa la transició per continuar una partida existent
-                System.out.println("Partida continuada");
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                setBackground(colorsFons[colorIndex]);
             }
-        });
-        panell.add(continuarPartidaButton);
+        };
+        panellBotons.setLayout(new GridBagLayout());  // Canvia a GridBagLayout
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.gridx = 0;  // Columna 0
+        gbc.gridy = 0;  // Fil 0
+        gbc.insets = new Insets(5, 0, 5, 0);  // Espai entre els botons
 
-        // Botó per mostrar estadístiques
-        estadistiquesButton = new JButton("Estadístiques");
-        estadistiquesButton.setFont(vt323Font);  // Aplicar la font VT323
-        estadistiquesButton.setBackground(new Color(255, 102, 102)); // Vermell suau
-        estadistiquesButton.setFocusPainted(false);
-        estadistiquesButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // Aquí es fa la transició per mostrar les estadístiques del joc
-                System.out.println("Visualitzant estadístiques");
-            }
-        });
-        panell.add(estadistiquesButton);
+        // Afegir els botons amb espais
+        panellBotons.add(jugarNovaPartidaButton, gbc);
+        gbc.gridy++;
+        panellBotons.add(continuarPartidaButton, gbc);
+        gbc.gridy++;
+        panellBotons.add(estadistiquesButton, gbc);
 
-        // Afegir el panell a la finestra
+        panell.add(panellBotons);
+
         add(panell);
     }
 
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                // Crear i mostrar la finestra d'inici
-                PantallaIniciVista vista = new PantallaIniciVista();
-                vista.setVisible(true);
+    private JButton crearBotoRetro(String text, Color colorFons, Font font) {
+        JButton boto = new JButton(text);
+        boto.setAlignmentX(Component.CENTER_ALIGNMENT);
+        boto.setFont(font);
+        boto.setBackground(colorFons);
+        boto.setForeground(Color.BLACK);
+        boto.setFocusPainted(false);
+        boto.setBorder(BorderFactory.createLineBorder(Color.BLACK, 3));
+
+        Dimension midaBoton = new Dimension(600, 120);
+        boto.setPreferredSize(midaBoton); // Estableix una mida fixa
+        boto.setMaximumSize(midaBoton);
+        boto.setMinimumSize(midaBoton);
+
+        boto.setCursor(new Cursor(Cursor.HAND_CURSOR));
+
+        boto.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                boto.setBackground(boto.getBackground().darker());
             }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                boto.setBackground(colorFons);
+            }
+        });
+
+        boto.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.out.println(text + " clicat");
+            }
+        });
+
+        return boto;
+    }
+
+
+    private int obtenirPuntsLletra(char lletra) {
+        switch (Character.toUpperCase(lletra)) {
+            case 'C': return 3;
+            default: return 1;
+        }
+    }
+
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> {
+            PantallaIniciVista vista = new PantallaIniciVista();
+            vista.setVisible(true);
         });
     }
 }

@@ -6,7 +6,7 @@ plugins {
 group = 'edu.upc.prop.clusterxx'
 
 ext {
-    javaMainClass = 'edu.upc.prop.clusterxx.presentacio.MainWindow' // <-- Canviat aquí
+    javaMainClass = 'edu.upc.prop.clusterxx.MainWindow' // <-- Canviat aquí
 }
 
 application {

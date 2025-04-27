@@ -1,4 +1,4 @@
-package edu.upc.prop.clusterxx.presentacio.mainwindow;
+package edu.upc.prop.clusterxx;
 
 import edu.upc.prop.clusterxx.presentacio.vistes.PantallaIniciVista;
 

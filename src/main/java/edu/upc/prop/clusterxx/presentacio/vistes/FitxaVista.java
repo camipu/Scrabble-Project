@@ -16,7 +16,7 @@ public class FitxaVista extends JPanel {
     private final Color colorFons = new Color(240, 220, 180); // Color fusta clar
     private final Color colorSeleccionada = new Color(255, 255, 150); // Groc clar per selecció
     private final Color colorText = Color.BLACK;
-    private final Font fontLletra = FontLoader.getCustomFont(20f);
+    private Font fontLletra = FontLoader.getCustomFont(20f);
     private final Font fontPunts =  FontLoader.getCustomFont(20f);
 
     public FitxaVista(Fitxa fitxa) {
@@ -38,6 +38,24 @@ public class FitxaVista extends JPanel {
             }
         });
     }
+
+    public FitxaVista(Fitxa fitxa, int ample, int alt, int midaFont) {
+        this.fitxa = fitxa;
+        this.seleccionada = false;
+        setPreferredSize(new Dimension(ample, alt));
+        setMinimumSize(new Dimension(ample, alt));
+        setBackground(colorFons);
+        setBorder(BorderFactory.createLineBorder(new Color(120, 100, 60), 3));
+        setOpaque(true);
+        fontLletra = FontLoader.getCustomFont(midaFont);
+        addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                setSeleccionada(!seleccionada);
+            }
+        });
+    }
+
 
     @Override
     protected void paintComponent(Graphics g) {
