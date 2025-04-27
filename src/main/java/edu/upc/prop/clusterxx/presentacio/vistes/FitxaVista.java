@@ -18,10 +18,9 @@ public class FitxaVista extends JPanel {
     private final Color colorSeleccionada = ColorLoader.getInstance().getColorSeleccionada();
     private final Color colorText = Color.BLACK;
     private Font fontLletra = FontLoader.getCustomFont(20f);
-    private final Font fontPunts =  FontLoader.getCustomFont(20f);
+    private final Font fontPunts = FontLoader.getCustomFont(20f);
 
     public FitxaVista(Fitxa fitxa) {
-
         this.fitxa = fitxa;
         this.seleccionada = false;
         setPreferredSize(new Dimension(50, 50));
@@ -34,8 +33,7 @@ public class FitxaVista extends JPanel {
         addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                // Canviar l'estat de selecció
-                setSeleccionada(!seleccionada);
+                setSeleccionada(!seleccionada); // Inverteix l'estat de selecció quan es fa clic
             }
         });
     }
@@ -49,14 +47,14 @@ public class FitxaVista extends JPanel {
         setBorder(BorderFactory.createLineBorder(new Color(120, 100, 60), 3));
         setOpaque(true);
         fontLletra = FontLoader.getCustomFont(midaFont);
+
         addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                setSeleccionada(!seleccionada);
+                setSeleccionada(!seleccionada); // Inverteix l'estat de selecció quan es fa clic
             }
         });
     }
-
 
     @Override
     protected void paintComponent(Graphics g) {
@@ -69,7 +67,7 @@ public class FitxaVista extends JPanel {
         // Dibuixar l'efecte de selecció
         if (seleccionada) {
             g2d.setColor(new Color(255, 255, 200, 120)); // Sombra suau
-            g2d.fillRoundRect(5, 5, getWidth() - 10, getHeight() - 10, 10, 10);
+            g2d.fillRoundRect(5, 5, getWidth() - 10, getHeight() - 10, 10, 10); // Contorn arrodonit
         }
 
         // Dibuixar la lletra
@@ -89,9 +87,20 @@ public class FitxaVista extends JPanel {
         g2d.drawString(punts, getWidth() - 20, getHeight() - 6);
     }
 
+    /**
+     * Mètode per actualitzar la selecció visual de la fitxa.
+     * @param seleccionada indica si la fitxa està seleccionada o no
+     */
     public void setSeleccionada(boolean seleccionada) {
         this.seleccionada = seleccionada;
-        setBackground(seleccionada ? colorSeleccionada : colorFons);
-        repaint();
+        setBackground(seleccionada ? colorSeleccionada : colorFons); // Canviar el fons
+        repaint(); // Redibuixar el panell per actualitzar la vista
+    }
+
+    /**
+     * Retorna la fitxa associada a aquesta vista.
+     */
+    public Fitxa obtenirFitxa() {
+        return fitxa;
     }
 }
