@@ -35,7 +35,7 @@ public class PantallaPersonalitzacioVista extends JFrame {
         setTitle("Configuració de la partida");
         setSize(600, 700);
         setLocationRelativeTo(null);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setResizable(true);
 
         // Configuració general

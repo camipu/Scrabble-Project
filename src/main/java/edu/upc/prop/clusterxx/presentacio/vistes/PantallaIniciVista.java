@@ -59,6 +59,11 @@ public class PantallaIniciVista extends JFrame {
         panell.add(panellTitol);
         panell.add(Box.createRigidArea(new Dimension(0, 15))); // Espai molt petit abans botons
 
+
+        panell.add(Box.createRigidArea(new Dimension(0, 5))); // Espai petit
+        panell.add(panellTitol);
+        panell.add(Box.createRigidArea(new Dimension(0, 15))); // Espai molt petit abans botons
+
         // 3. Botons
         Font botoFont = FontLoader.getCustomFont(58f);
         jugarNovaPartidaButton = crearBotoRetro("Jugar nova partida", new Color(0, 255, 128), botoFont);
@@ -97,6 +102,16 @@ public class PantallaIniciVista extends JFrame {
                 // Quan es clica, s'obre la finestra d'estadístiques
                 EstadistiquesVista estadistiquesVista = new EstadistiquesVista();
                 estadistiquesVista.setVisible(true);
+            }
+        });
+
+        // Afegir ActionListener al botó "Estadístiques"
+        jugarNovaPartidaButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Quan es clica, s'obre la finestra d'estadístiques
+                PantallaPersonalitzacioVista pantallaPersonalitzacioVista = new PantallaPersonalitzacioVista();
+                pantallaPersonalitzacioVista.setVisible(true);
             }
         });
     }
