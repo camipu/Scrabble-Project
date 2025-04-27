@@ -2,11 +2,15 @@ package edu.upc.prop.clusterxx.presentacio.vistes;
 
 import edu.upc.prop.clusterxx.Faristol;
 import edu.upc.prop.clusterxx.Fitxa;
+import edu.upc.prop.clusterxx.presentacio.FontLoader;
 
 import javax.swing.*;
+import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.File;
+import java.io.IOException;
 
 /**
  * Vista gràfica del Faristol, mostrant totes les fitxes disponibles del jugador.
@@ -19,7 +23,11 @@ public class FaristolVista extends JPanel {
     public FaristolVista(Faristol faristol) {
         this.faristol = faristol;
         setLayout(new FlowLayout(FlowLayout.CENTER, 10, 10));
-        setBorder(BorderFactory.createTitledBorder("El teu faristol"));
+        TitledBorder border = BorderFactory.createTitledBorder("El teu faristol");
+        Font fontLletra = FontLoader.getCustomFont(20f);
+        border.setTitleFont(fontLletra);
+        setBorder(border);
+
 
         actualitzarVista();
     }

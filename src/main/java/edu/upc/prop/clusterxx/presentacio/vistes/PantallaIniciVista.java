@@ -1,5 +1,7 @@
 package edu.upc.prop.clusterxx.presentacio.vistes;
 
+import edu.upc.prop.clusterxx.presentacio.FontLoader;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -16,18 +18,9 @@ public class PantallaIniciVista extends JFrame {
     private JButton jugarNovaPartidaButton;
     private JButton continuarPartidaButton;
     private JButton estadistiquesButton;
-    private Font vt323Font;  // Font VT323
+    private Font vt323Font = FontLoader.getCustomFont(20f);  // Font VT323
 
     public PantallaIniciVista() {
-        // Intentar carregar la font VT323
-        try {
-            // Carregar la font VT323 des del fitxer TTF
-            vt323Font = Font.createFont(Font.TRUETYPE_FONT, new File("src/main/resources/fonts/VT323-Regular.ttf")).deriveFont(20f);
-        } catch (FontFormatException | IOException e) {
-            e.printStackTrace();  // Si no es pot carregar la font, mostrar error
-            vt323Font = new Font("Arial", Font.PLAIN, 20);  // Si falla, utilitza la font per defecte
-        }
-
         // Configuració de la finestra
         setTitle("Scrabble - Pantalla d'Inici");
         setSize(400, 300);

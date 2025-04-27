@@ -2,10 +2,14 @@ package edu.upc.prop.clusterxx.presentacio.vistes;
 
 import edu.upc.prop.clusterxx.Casella;
 import edu.upc.prop.clusterxx.EstrategiaPuntuacio;
+import edu.upc.prop.clusterxx.presentacio.FontLoader;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.File;
+import java.io.IOException;
 
 /**
  * Component visual que representa una casella del tauler de joc.
@@ -24,7 +28,7 @@ public class CasellaVista extends JPanel {
     private final Color colorMP3 = new Color(220, 20, 60);   // Vermell per multiplicador paraula x3
     private final Color colorSeleccionada = new Color(255, 255, 150); // Groc clar per selecció
 
-    private final Font fontMultiplicador = new Font("Arial", Font.BOLD, 10);
+    private final Font fontMultiplicador = FontLoader.getCustomFont(20f);
 
     /**
      * Constructor de la vista d'una casella.

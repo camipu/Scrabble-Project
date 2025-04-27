@@ -1,10 +1,14 @@
 package edu.upc.prop.clusterxx.presentacio.vistes;
 
 import edu.upc.prop.clusterxx.Fitxa;
+import edu.upc.prop.clusterxx.presentacio.FontLoader;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.File;
+import java.io.IOException;
 
 public class FitxaVista extends JPanel {
     private final Fitxa fitxa;
@@ -12,10 +16,11 @@ public class FitxaVista extends JPanel {
     private final Color colorFons = new Color(240, 220, 180); // Color fusta clar
     private final Color colorSeleccionada = new Color(255, 255, 150); // Groc clar per selecció
     private final Color colorText = Color.BLACK;
-    private final Font fontLletra = new Font("VT323", Font.PLAIN, 24);
-    private final Font fontPunts = new Font("VT323", Font.PLAIN, 14);
+    private final Font fontLletra = FontLoader.getCustomFont(20f);
+    private final Font fontPunts =  FontLoader.getCustomFont(20f);
 
     public FitxaVista(Fitxa fitxa) {
+
         this.fitxa = fitxa;
         this.seleccionada = false;
         setPreferredSize(new Dimension(50, 50));
@@ -62,7 +67,7 @@ public class FitxaVista extends JPanel {
         g2d.setFont(fontPunts);
         String punts = String.valueOf(fitxa.obtenirPunts());
         if (fitxa.obtenirPunts() < 10) punts = " " + punts; // petit padding
-        g2d.drawString(punts, getWidth() - 18, getHeight() - 6);
+        g2d.drawString(punts, getWidth() - 20, getHeight() - 6);
     }
 
     public void setSeleccionada(boolean seleccionada) {

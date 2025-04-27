@@ -1,5 +1,7 @@
 package edu.upc.prop.clusterxx.presentacio.vistes;
 
+import edu.upc.prop.clusterxx.presentacio.FontLoader;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -25,18 +27,9 @@ public class PantallaPersonalitzacioVista extends JFrame {
     private java.util.List<JComboBox<Integer>> dificultatsBotsCombos = new ArrayList<>();
     private java.util.List<JTextField> nomsJugadorsFields = new ArrayList<>();
 
-    private Font vt323Font;  // Font VT323
+    private final Font vt323Font = FontLoader.getCustomFont(20f);  // Font VT323
 
     public PantallaPersonalitzacioVista() {
-        // Intentar carregar la font VT323
-        try {
-            // Carregar la font VT323 des del fitxer TTF
-            vt323Font = Font.createFont(Font.TRUETYPE_FONT, new File("src/main/resources/fonts/VT323-Regular.ttf")).deriveFont(20f);
-        } catch (FontFormatException | IOException e) {
-            e.printStackTrace();  // Si no es pot carregar la font, mostrar error
-            vt323Font = new Font("Arial", Font.PLAIN, 20);  // Si falla, utilitza la font per defecte
-        }
-
         setTitle("Configuració de la partida");
         setSize(600, 700);
         setLocationRelativeTo(null);
