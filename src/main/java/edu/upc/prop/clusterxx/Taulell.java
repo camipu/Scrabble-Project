@@ -171,20 +171,6 @@ public class Taulell {
     }
 
     /**
-     * Mètode per obtenir la fitxa jugada d'una casella utilitzada a la jugada
-     * @param x Fila de la casella
-     * @param y Columna de la casella
-     * @param jugada Llistat de caselles utiltzades en la jugada
-     * @return Fitxa de la casella
-     */
-    private Fitxa obtenirFitxaDeJugada(int x, int y, List<Casella> jugada) {
-        for (Casella c : jugada) {
-            if (c.obtenirX() == x && c.obtenirY() == y) return c.obtenirFitxa();
-        }
-        return null;
-    }
-
-    /**
      * Verifica si la posició de les caselles jugades és vàlida segons les regles del Scrabble.
      *
      * Una posició es considera vàlida si compleix els següents criteris:
