@@ -503,8 +503,7 @@ public class CtrlPartida {
         taulell.colocarFitxa(aux, fila, columna);
         jugadors[torn%jugadors.length].eliminarFitxa(aux);
         casellasTorn.add(taulell.getCasella(fila, columna));
-        jugadaActual = taulell.construirJugada(casellasTorn, dawg);
-        return jugadaActual;
+        return new Jugada(casellasTorn, dawg, taulell);
     }
 
     /**
@@ -520,8 +519,7 @@ public class CtrlPartida {
         taulell.retirarFitxa(fila, columna);
         casellasTorn.remove(taulell.getCasella(fila, columna));
         jugadors[torn%jugadors.length].afegirFitxa(taulell.obtenirFitxa(fila, columna));
-        jugadaActual = taulell.construirJugada(casellasTorn, dawg);
-        return jugadaActual;
+        return new Jugada(casellasTorn, dawg, taulell);
     }
 
     /**

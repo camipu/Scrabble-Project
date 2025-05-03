@@ -25,6 +25,51 @@ public class Jugada {
         this.puntuacio = puntuacio;
         this.jugadaValida = jugadaValida;
     }
+    
+    /**
+     * Constructor per jugades d'usuari. Valida la jugada i calcula la puntuació.
+     * 
+     * @param casellesJugades Caselles on l'usuari ha col·locat fitxes
+     * @param dawg Diccionari per validar les paraules
+     * @param taulell El taulell de joc actual
+     */
+    public Jugada(List<Casella> casellesJugades, DAWG dawg, Taulell taulell) {
+        this.casellesJugades = casellesJugades;
+        this.jugadaValida = ValidadorJugada.validarJugada(casellesJugades, dawg, taulell);
+        
+        boolean horitzontal = ValidadorJugada.esJugadaHoritzontal(casellesJugades);
+        this.paraulaFormada = ValidadorJugada.construirParaula(casellesJugades, horitzontal, taulell);
+        
+        if (this.jugadaValida) {
+            this.puntuacio = CalculadorPuntuacio.calcularPuntuacioJugada(casellesJugades, horitzontal, taulell);
+        } else {
+            this.puntuacio = 0;
+        }
+    }
+    
+    /**
+     * Constructor per jugades de bot. Valida únicament les paraules perpendiculars i calcula la puntuació.
+     * 
+     * @param paraulaFormada Paraula formada pel bot
+     * @param casellesJugades Caselles on el bot ha col·locat fitxes
+     * @param dawg Diccionari per validar les paraules
+     * @param taulell El taulell de joc actual
+     * @param horitzontal Indica si la jugada és en direcció horitzontal
+     */
+    public Jugada(String paraulaFormada, List<Casella> casellesJugades, DAWG dawg, Taulell taulell, boolean horitzontal) {
+        this.paraulaFormada = paraulaFormada;
+        this.casellesJugades = casellesJugades;
+        
+        // Només validem la posició i les paraules perpendiculars per al bot
+        this.jugadaValida = ValidadorJugada.posicioValida(casellesJugades, taulell) && 
+                           ValidadorJugada.validarParaulesPerpendiculars(casellesJugades, dawg, horitzontal, taulell);
+        
+        if (this.jugadaValida) {
+            this.puntuacio = CalculadorPuntuacio.calcularPuntuacioJugada(casellesJugades, horitzontal, taulell);
+        } else {
+            this.puntuacio = 0;
+        }
+    }
 
     /**
      * Retorna la paraula formada durant el torn.
@@ -38,7 +83,7 @@ public class Jugada {
     /**
      * Assigna la paraula formada durant el torn.
      *
-     * @param paraula Paraula que s’ha format en aquest torn
+     * @param paraula Paraula que s'ha format en aquest torn
      */
     public void setParaulaFormada(String paraula) {
         this.paraulaFormada = paraula;
@@ -47,7 +92,7 @@ public class Jugada {
     /**
      * Retorna la llista de caselles utilitzades durant el torn.
      *
-     * @return Llista de caselles on s’han col·locat fitxes en aquest torn
+     * @return Llista de caselles on s'han col·locat fitxes en aquest torn
      */
     public List<Casella> getCasellesJugades() {
         return casellesJugades;

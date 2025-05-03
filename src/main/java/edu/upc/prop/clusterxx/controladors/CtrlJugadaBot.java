@@ -154,7 +154,7 @@ public class CtrlJugadaBot {
         }
         else {
             if (nodeActual.esFinal()) {
-                Jugada novaJugada = taulell.construirJugadaBot(prefix, casellesJugades, dawg, horitzontal);
+                Jugada novaJugada = new Jugada(prefix, casellesJugades, dawg, taulell, horitzontal);
                 if (novaJugada.getJugadaValida()) {
                     if (fitxesRestants.size() == 0) {
                         novaJugada.setPuntuacio(novaJugada.getPuntuacio()+50);
