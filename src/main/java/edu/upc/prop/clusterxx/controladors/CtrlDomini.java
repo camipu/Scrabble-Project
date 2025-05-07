@@ -7,6 +7,8 @@ import edu.upc.prop.clusterxx.Fitxa;
 import edu.upc.prop.clusterxx.Sac;
 import edu.upc.prop.clusterxx.Torn;
 
+import java.io.IOException;
+
 /**
  * Classe CtrDomini
  * Classe principal del domini del joc de Scrabble que actua com a controlador general.
@@ -103,10 +105,10 @@ public class CtrlDomini {
      * Carrega una partida a partir d’un estat de torn guardat.
      * Aquesta acció permet reprendre una partida anteriorment iniciada.
      *
-     * @param torn Torn que conté l’estat de la partida a carregar
+     * @param fitxer Fitxer que conté l’estat de la partida a carregar
      */
-    public void carregarPartida(Torn torn){
-        ctrlPartida.recuperarTorn(torn);
+    public void carregarPartida(String fitxer){
+        ctrlPartida.carregarPartida(fitxer);
     }
 
     /**
@@ -245,8 +247,8 @@ public class CtrlDomini {
         return ctrlPartida.jugadaBot();
     }
 
-    public void guardarPartida() {
-        //no tenim capa de persistència :(
+    public void guardarPartida() throws IOException {
+        ctrlPartida.guardarPartida("1");
     }
 
     /**

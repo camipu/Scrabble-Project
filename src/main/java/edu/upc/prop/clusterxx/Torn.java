@@ -1,11 +1,15 @@
 package edu.upc.prop.clusterxx;
 
+import java.io.Serializable;
+
 /**
  * Representa un torn dins d’una partida de Scrabble.
  * Conté la informació necessària per gestionar el torn actual,
  * incloent-hi el sac de fitxes, el taulell, els jugadors, el número de torn i si el torn ha acabat.
  */
-public class Torn {
+public class Torn implements Serializable {
+
+    private static final long serialVersionUID = 1L;
     private Sac sac;
     private Taulell taulell;
     private Jugador[] jugadors;

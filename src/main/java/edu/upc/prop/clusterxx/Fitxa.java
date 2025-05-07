@@ -1,12 +1,13 @@
 package edu.upc.prop.clusterxx;
 
+import java.io.Serializable;
 import java.util.Objects;
 
 /**
  * Representa una fitxa del joc, amb una lletra, un valor en punts i
  * un indicador de si és un dígraf.
  */
-public class Fitxa {
+public class Fitxa implements Serializable {
     private String lletra;
     private final int punts;
     private final boolean digraf;

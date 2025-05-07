@@ -1,9 +1,12 @@
 package edu.upc.prop.clusterxx;
+
+import java.io.Serializable;
+
 /**
  * Representa un jugador de la partida.
  * Conté el nom del jugador, la seva puntuació acumulada i el seu faristol amb fitxes disponibles.
  */
-public class Jugador {
+public class Jugador implements Serializable {
     String nom;
     int punts;
     Faristol faristol;

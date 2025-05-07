@@ -3,6 +3,8 @@ package edu.upc.prop.clusterxx.drivers;
 import edu.upc.prop.clusterxx.*;
 import edu.upc.prop.clusterxx.controladors.CtrlDomini;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
@@ -18,12 +20,53 @@ public class DriverPartida {
      *
      * @param args Arguments de la línia de comandes (no s'utilitzen)
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         Scanner sc = new Scanner(System.in);
         CtrlDomini ctrlDomini = CtrlDomini.getInstance();
-        inicialitzarPartida(sc, ctrlDomini);
+
+        System.out.println("Vols (1) començar una nova partida o (2) carregar una partida guardada?");
+        int opcio = sc.nextInt();
+        sc.nextLine(); // netejar el buffer
+
+        if (opcio == 2) {
+            File carpeta = new File("data/partides/");
+            if (!carpeta.exists() || carpeta.listFiles() == null || carpeta.listFiles().length == 0) {
+                System.out.println("No hi ha cap partida guardada. Començant una de nova...");
+                inicialitzarPartida(sc, ctrlDomini);
+            } else {
+                System.out.println("Partides disponibles:");
+                File[] arxius = carpeta.listFiles((dir, name) -> name.endsWith(".scrabble"));
+                for (int i = 0; i < arxius.length; i++) {
+                    System.out.println((i + 1) + ". " + arxius[i].getName().replace(".scrabble", ""));
+                }
+
+                System.out.print("Tria el número de la partida que vols carregar: ");
+                int index = sc.nextInt() - 1;
+                sc.nextLine();
+
+                if (index >= 0 && index < arxius.length) {
+                    String nom = arxius[index].getName().replace(".scrabble", "");
+                    try {
+                        ctrlDomini.carregarPartida(nom);
+                        System.out.println("Partida carregada correctament.");
+                        jugarTorns(sc, ctrlDomini);
+                        return;
+                    } catch (Exception e) {
+                        System.out.println("No s'ha pogut carregar la partida: " + e.getMessage());
+                        return;
+                    }
+                } else {
+                    System.out.println("Index no vàlid. Sortint.");
+                    return;
+                }
+            }
+        } else {
+            inicialitzarPartida(sc, ctrlDomini);
+        }
+
         jugarTorns(sc, ctrlDomini);
     }
+
 
 
     /**
@@ -278,7 +321,7 @@ public class DriverPartida {
      * @param sc Scanner per llegir l'entrada de l'usuari
      * @param ctrlDomini Controlador del domini per gestionar la partida
      */
-    private static void jugarTorns(Scanner sc, CtrlDomini ctrlDomini) {
+    private static void jugarTorns(Scanner sc, CtrlDomini ctrlDomini) throws IOException {
         boolean first = true; // Variable per controlar si és el primer torn
 
         while (!ctrlDomini.esFinalDePartida()) {
@@ -325,7 +368,7 @@ public class DriverPartida {
      * @param first Indica si és el primer torn de la partida
      * @return Retorna el valor actualitzat de first
      */
-    private static boolean gestionarTornJugadorHuma(Scanner sc, CtrlDomini ctrlDomini, boolean first) {
+    private static boolean gestionarTornJugadorHuma(Scanner sc, CtrlDomini ctrlDomini, boolean first) throws IOException {
         int opcio;
 
         if (!first) {
@@ -375,7 +418,7 @@ public class DriverPartida {
      *
      * @param ctrlDomini Controlador del domini per gestionar la partida
      */
-    private static void guardarPartida(CtrlDomini ctrlDomini) {
+    private static void guardarPartida(CtrlDomini ctrlDomini) throws IOException {
         System.out.println("Guardant partida...");
         ctrlDomini.guardarPartida();
         System.out.println("Partida guardada.");

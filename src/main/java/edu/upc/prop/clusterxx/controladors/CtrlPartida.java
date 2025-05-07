@@ -2,13 +2,11 @@ package edu.upc.prop.clusterxx.controladors;
 
 import edu.upc.prop.clusterxx.*;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+import edu.upc.prop.clusterxx.persistencia.CtrlPersistencia;
 
 /**
  * Classe CtrlPartida
@@ -582,6 +580,20 @@ public class CtrlPartida {
 
         return jugadaActual;
 
+    }
+
+    public void guardarPartida(String nomFitxer) throws IOException {
+        Torn tornActual = historial.obtenirTorn(torn);
+        CtrlPersistencia.guardarTorn(nomFitxer, tornActual);
+    }
+
+    public void carregarPartida(String nomFitxer) {
+        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream("data/partides/" + nomFitxer + ".scrabble"))) {
+            Torn torn = (Torn) ois.readObject();
+            CtrlPartida.getInstance().recuperarTorn(torn);
+        } catch (IOException | ClassNotFoundException e) {
+            throw new RuntimeException("No s'ha pogut carregar la partida: " + e.getMessage(), e);
+        }
     }
 
 
