@@ -1,0 +1,37 @@
+FEEDBACK ENTREGA 1:
+
+Bon dia,
+
+La vostra nota del primer lliurament és 8. A continuació teniu el feedback corresponent, per a qualsevol dubte, teniu el meu correu a la vostra disposició.
+
+S’entreguen casos d'ús i una descripció bàsica. Els fluxos principals i d’error apareixen, però manca detall en condicions excepcionals i referències creuades amb els missatges d’error.
+
+Hi ha un uml coherent amb el codi; s’utilitzen herència mínima i generics. Tot i així falten cardinalitats i la visibilitat d’alguns mètodes/atributs.
+
+S’implementa un DAWG per validar diccionaris i un algorisme de cerca de la millor paraula que fa servir pruning i heurístiques de puntuació. La memòria descriu la complexitat i justifica l’ús de mapes i llistes, complint la majoria de punts demanats
+. Millorable: discussió més profunda sobre l’efecte de la mida del diccionari i paràmetres d’heurística.
+Classes principals. Noms de mètodes i variables majoritàriament expressius (només ~12 % variables de lletra única). Ús correcte de generics, interfície EstrategiaPuntuacio, i gairebé cap TODO ni codi mort. La complexitat ciclomàtica es manté raonable (Taulell 63 ramificacions és el punt crític que cal refactoritzar) seguint els criteris de qualitat del lliurament
+
+9 classes de prova cobreixen model i controlador; s’empren Mockito a 6 tests i hi ha drivers interactius a EXE/. Cobertura estimada pròxima al 100 % del model, però alguns casos límit (fitxes blanc, taulers de mida diferent) no es proven. Documentació dels jocs de prova correcta però escassa. 
+
+Recomanacions de millora
+Casos d’ús
+Afegiu fluxos alternatius detallats (p. ex. error de fitxes insuficients, diccionari inexistent) i referencieu-los explícitament en la narrativa.
+
+Model de classes
+Incloeu cardinalitats, visibilitat completa i relacions d’herència on correspongui.
+Reviseu la responsabilitat de Taulell (classe massa gran): separeu la puntuació i la validació semàntica.
+
+Algorismes
+Justifiqueu la selecció d’heurístiques (p. ex. pes de lletres rares) amb anàlisi empírica.
+Documenteu la complexitat del camí de cerca i l’ús de memòria del DAWG.
+
+Codi
+Refactoritzeu mètodes > 40 línies per reduir complexitat ciclomàtica.
+Elimineu números màgics movent-los a constants nominals.
+
+Testing
+Cobriu casos d’error: tauler ple, fitxa “jolly”, paraules que toquen doble/triple casella.
+Amplieu la documentació dels jocs de prova indicant objectius, valors d’entrada i resultat esperat.
+
+Salutacions
