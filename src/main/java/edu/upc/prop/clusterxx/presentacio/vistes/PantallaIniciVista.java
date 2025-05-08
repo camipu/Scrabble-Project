@@ -16,6 +16,7 @@ public class PantallaIniciVista extends JFrame {
     private JButton jugarNovaPartidaButton;
     private JButton continuarPartidaButton;
     private JButton estadistiquesButton;
+    private JButton sortirButton;
     private Font vt323Font = FontLoader.getCustomFont(36f);
     private Color colorsFons = ColorLoader.getInstance().getColorFons();
 
@@ -59,16 +60,12 @@ public class PantallaIniciVista extends JFrame {
         panell.add(panellTitol);
         panell.add(Box.createRigidArea(new Dimension(0, 15))); // Espai molt petit abans botons
 
-
-        panell.add(Box.createRigidArea(new Dimension(0, 5))); // Espai petit
-        panell.add(panellTitol);
-        panell.add(Box.createRigidArea(new Dimension(0, 15))); // Espai molt petit abans botons
-
         // 3. Botons
         Font botoFont = FontLoader.getCustomFont(58f);
-        jugarNovaPartidaButton = crearBotoRetro("Jugar nova partida", new Color(0, 255, 128), botoFont);
-        continuarPartidaButton = crearBotoRetro("Continuar partida", new Color(255, 255, 0), botoFont);
-        estadistiquesButton = crearBotoRetro("Estadístiques", new Color(255, 100, 100), botoFont);
+        jugarNovaPartidaButton = crearBotoRetro("Jugar nova partida", new Color(0, 255, 128), botoFont, 600, 120);
+        continuarPartidaButton = crearBotoRetro("Continuar partida", new Color(255, 255, 0), botoFont, 600, 120);
+        estadistiquesButton = crearBotoRetro("Estadístiques", new Color(255, 100, 100), botoFont, 600, 120);
+        sortirButton = crearBotoRetro("Sortir", new Color(255, 0, 0), botoFont, 400, 80);
 
         // Panell per als botons amb GridBagLayout per centrar-los
         JPanel panellBotons = new JPanel() {
@@ -91,6 +88,11 @@ public class PantallaIniciVista extends JFrame {
         gbc.gridy++;
         panellBotons.add(estadistiquesButton, gbc);
 
+        // Afegir espai addicional abans del botó Sortir
+        gbc.gridy++;
+        gbc.insets = new Insets(20, 0, 20, 0);  // Més espai a dalt per separar-lo
+        panellBotons.add(sortirButton, gbc);
+
         panell.add(panellBotons);
 
         add(panell);
@@ -105,18 +107,27 @@ public class PantallaIniciVista extends JFrame {
             }
         });
 
-        // Afegir ActionListener al botó "Estadístiques"
+        // Afegir ActionListener al botó "Jugar nova partida"
         jugarNovaPartidaButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // Quan es clica, s'obre la finestra d'estadístiques
+                // Quan es clica, s'obre la finestra de personalització
                 PantallaPersonalitzacioVista pantallaPersonalitzacioVista = new PantallaPersonalitzacioVista();
                 pantallaPersonalitzacioVista.setVisible(true);
             }
         });
+
+        // Afegir ActionListener al botó "Sortir"
+        sortirButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Tancar l'aplicació quan es clica el botó Sortir
+                System.exit(0);
+            }
+        });
     }
 
-    private JButton crearBotoRetro(String text, Color colorFons, Font font) {
+    private JButton crearBotoRetro(String text, Color colorFons, Font font, int w, int h) {
         JButton boto = new JButton(text);
         boto.setAlignmentX(Component.CENTER_ALIGNMENT);
         boto.setFont(font);
@@ -125,7 +136,7 @@ public class PantallaIniciVista extends JFrame {
         boto.setFocusPainted(false);
         boto.setBorder(BorderFactory.createLineBorder(Color.BLACK, 3));
 
-        Dimension midaBoton = new Dimension(600, 120);
+        Dimension midaBoton = new Dimension(w, h);
         boto.setPreferredSize(midaBoton); // Estableix una mida fixa
         boto.setMaximumSize(midaBoton);
         boto.setMinimumSize(midaBoton);
