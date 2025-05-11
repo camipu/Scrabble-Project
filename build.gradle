@@ -23,6 +23,11 @@ jar {
 // Task per generar un JAR per a DriverPartida amb la classe principal corresponent
 task jarDriverPartida(type: Jar) {
     archiveBaseName.set('DriverPartida')
+
+    // REVISAR
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE   // ignora fitxers repetits
+    // REVISAR
+
     manifest {
         attributes 'Main-Class': 'edu.upc.prop.clusterxx.drivers.DriverPartida'
     }
