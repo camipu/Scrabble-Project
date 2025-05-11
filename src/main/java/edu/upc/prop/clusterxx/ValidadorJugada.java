@@ -15,6 +15,11 @@ public class ValidadorJugada {
      * @return {@code true} si la paraula és horitzontal, {@code false} altrament
      */
     public static boolean esJugadaHoritzontal(List<Casella> caselles) {
+        // Si només hi ha una casella, no podem determinar la direcció
+        if (caselles.size() == 1) {
+            return true; // Per defecte assumim horitzontal
+        }
+        
         int fila = caselles.get(0).obtenirX();
         for (Casella c : caselles) {
             if (c.obtenirX() != fila) return false;
@@ -49,16 +54,28 @@ public class ValidadorJugada {
      * @return {@code true} si la posició és vàlida segons les regles, {@code false} altrament
      */
     public static boolean posicioValida(List<Casella> casellesJugades, Taulell taulell) {
+        if (casellesJugades.isEmpty()) return false;
+        
         int size = taulell.getSize();
         Casella[][] caselles = taulell.getTaulell();
         
         // Comprovar que estan alineades (mateixa fila o mateixa columna)
-        boolean mateixaFila = casellesJugades.stream()
-            .allMatch(c -> c.obtenirX() == casellesJugades.get(0).obtenirX());
-        boolean mateixaColumna = casellesJugades.stream()
-            .allMatch(c -> c.obtenirY() == casellesJugades.get(0).obtenirY());
-
-        if (!mateixaFila && !mateixaColumna) return false;
+        // Si només hi ha una fitxa, considerem que està alineada
+        if (casellesJugades.size() > 1) {
+            boolean mateixaFila = true;
+            boolean mateixaColumna = true;
+            int filaBase = casellesJugades.get(0).obtenirX();
+            int colBase = casellesJugades.get(0).obtenirY();
+            
+            for (int i = 1; i < casellesJugades.size(); i++) {
+                Casella c = casellesJugades.get(i);
+                if (c.obtenirX() != filaBase) mateixaFila = false;
+                if (c.obtenirY() != colBase) mateixaColumna = false;
+            }
+            
+            // Si no estan en la mateixa fila NI en la mateixa columna, la jugada no és vàlida
+            if (!mateixaFila && !mateixaColumna) return false;
+        }
 
         // Comprovar si és primera jugada i per tant
         // almenys una de les caselles ha d'estar al mig
@@ -84,7 +101,8 @@ public class ValidadorJugada {
                     int nf = f + d[0];
                     int nc = col + d[1];
                     if (nf >= 0 && nf < size && nc >= 0 && nc < size) {
-                        if (!caselles[nf][nc].esBuida()) {
+                        // Comprovem que la casella adjacent no sigui buida i no pertanyi a la jugada actual
+                        if (!caselles[nf][nc].esBuida() && casellaPertanyAJugada(nf, nc, casellesJugades) == null) {
                             adjacent = true;
                             break;
                         }
@@ -252,29 +270,25 @@ public class ValidadorJugada {
      * @param taulell El taulell de joc actual
      * @return {@code true} si la jugada és vàlida, {@code false} altrament
      */
-    public static boolean validarJugada(List<Casella> casellesJugades, DAWG dawg, Taulell taulell) {
-        boolean jugadaValida = true;
-        
+    public static boolean validarJugada(List<Casella> casellesJugades, DAWG dawg, Taulell taulell) {        
         // Revisar caselles jugades > 0
         if (casellesJugades == null || casellesJugades.isEmpty()) {
             return false;
         }
-    
-        boolean jugadaHoritzontal = esJugadaHoritzontal(casellesJugades);
-        
+            
         // Validar posicions (almenys una al centre si és primer torn)
         // Alineades i que conectin amb una com a mínim
         if (!posicioValida(casellesJugades, taulell)) {
             return false;
         }
 
+        boolean jugadaHoritzontal = esJugadaHoritzontal(casellesJugades);
+
         // Construïm la paraula principal i revisem que sigui correcte
         String paraulaPrincipal = construirParaula(casellesJugades, jugadaHoritzontal, taulell);
-        jugadaValida = jugadaValida && dawg.conteParaula(paraulaPrincipal);
+        if (!dawg.conteParaula(paraulaPrincipal)) return false;
 
         // Revisar paraules perpendiculars
-        jugadaValida = jugadaValida && validarParaulesPerpendiculars(casellesJugades, dawg, jugadaHoritzontal, taulell);
-        
-        return jugadaValida;
+        return validarParaulesPerpendiculars(casellesJugades, dawg, jugadaHoritzontal, taulell);        
     }
 }
