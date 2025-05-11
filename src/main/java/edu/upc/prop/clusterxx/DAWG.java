@@ -52,7 +52,7 @@ public class DAWG {
             return fills.containsKey(token);
         }
 
-        // Indica si aquest node marca el final d'una paraula vàlida
+        // Indica si aquest node marca el final d'una paraula vàliday
         public boolean esFinal() {
             return esFinal;
         }

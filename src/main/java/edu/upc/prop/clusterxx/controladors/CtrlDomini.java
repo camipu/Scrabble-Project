@@ -1,11 +1,6 @@
 package edu.upc.prop.clusterxx.controladors;
 
-import edu.upc.prop.clusterxx.Taulell;
-import edu.upc.prop.clusterxx.Jugador;
-import edu.upc.prop.clusterxx.Jugada;
-import edu.upc.prop.clusterxx.Fitxa;
-import edu.upc.prop.clusterxx.Sac;
-import edu.upc.prop.clusterxx.Torn;
+import edu.upc.prop.clusterxx.*;
 
 /**
  * Classe CtrDomini
@@ -262,7 +257,7 @@ public class CtrlDomini {
      * @param lletra La lletra escollida pel jugador
      * @return {@code true} si l'operació s'ha pogut fer, {@code false} altrament
      */
-    public boolean setLletraComodi(Fitxa fitxa, String lletra) {
+    public boolean setLletraComodi(String fitxa, String lletra) {
         return ctrlPartida.setLletraComodi(fitxa, lletra);
     }
 }

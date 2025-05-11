@@ -460,12 +460,13 @@ public class CtrlPartida {
      * @param lletraComodi La lletra escollida pel jugador
      * @return {@code true} si l'operació s'ha pogut fer, {@code false} altrament
      */
-    public boolean setLletraComodi(Fitxa fitxa, String lletraComodi) {
-        if (fitxa == null || !fitxa.esComodi() || !sac.esFitxaOriginal(lletraComodi)) {
+    public boolean setLletraComodi(String fitxa, String lletraComodi) {
+        Fitxa fitxaComodi = jugadors[torn%jugadors.length].obtenirFaristol().obtenirFitxa(fitxa);
+        if (fitxaComodi == null || !fitxaComodi.esComodi() || !sac.esFitxaOriginal(lletraComodi)) {
             return false;
         }
         Fitxa novaFitxa = new Fitxa(lletraComodi, 0);
-        jugadors[torn%jugadors.length].eliminarFitxa(fitxa);
+        jugadors[torn%jugadors.length].eliminarFitxa(fitxaComodi);
         jugadors[torn%jugadors.length].afegirFitxa(novaFitxa);
         return true;
     }
