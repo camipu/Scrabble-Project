@@ -6,7 +6,7 @@ plugins {
 group = 'edu.upc.prop.clusterxx'
 
 ext {
-    javaMainClass = 'edu.upc.prop.clusterxx.Main' // Classe principal de l'aplicació
+    javaMainClass = 'edu.upc.prop.clusterxx.MainWindow' // <-- Canviat aquí
 }
 
 application {
@@ -16,28 +16,28 @@ application {
 // Configuració per al JAR principal de l'aplicació
 jar {
     manifest {
-        attributes 'Main-Class': javaMainClass // Afegim la classe principal al manifest per executar el JAR
+        attributes 'Main-Class': javaMainClass // <-- Apunta ara a MainWindow
     }
 }
 
 // Task per generar un JAR per a DriverPartida amb la classe principal corresponent
 task jarDriverPartida(type: Jar) {
-    archiveBaseName.set('DriverPartida') // Nom del JAR generat
+    archiveBaseName.set('DriverPartida')
     manifest {
-        attributes 'Main-Class': 'edu.upc.prop.clusterxx.drivers.DriverPartida' // Classe principal per DriverPartida
+        attributes 'Main-Class': 'edu.upc.prop.clusterxx.drivers.DriverPartida'
     }
     from {
-        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) } // Afegim totes les dependències al JAR
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
     }
-    with jar // Inclou totes les configuracions del JAR principal
+    with jar
 }
 build.dependsOn jarDriverPartida
 
 // Task per generar un JAR per a DriverEstadistica amb la classe principal corresponent
 task jarDriverEstadistica(type: Jar) {
-    archiveBaseName.set('DriverEstadistica') // Nom del JAR generat
+    archiveBaseName.set('DriverEstadistica')
     manifest {
-        attributes 'Main-Class': 'edu.upc.prop.clusterxx.drivers.DriverEstadistica' // Classe principal per DriverEstadistica
+        attributes 'Main-Class': 'edu.upc.prop.clusterxx.drivers.DriverEstadistica'
     }
     from sourceSets.main.output
     dependsOn classes
@@ -46,27 +46,28 @@ build.dependsOn jarDriverEstadistica
 
 java {
     toolchain {
-        languageVersion = JavaLanguageVersion.of(22) // Versió de Java 22
+        languageVersion = JavaLanguageVersion.of(22)
     }
 }
 
 test {
-    useJUnit() // Configura Gradle per executar les proves amb JUnit 4
+    useJUnit()
 }
 
 repositories {
-    mavenCentral() // Repositori Maven Central
+    mavenCentral()
 }
 
 dependencies {
-    implementation 'com.google.guava:guava:33.0.0-jre' // Llibreria Guava per utilitats Java
-    implementation 'com.google.code.gson:gson:2.8.9' // Llibreria Gson per manipular JSON
-    testImplementation('junit:junit:4.13.1') // JUnit 4 per les proves
-    testImplementation 'org.mockito:mockito-core:4.8.1' // Mockito per mocks en proves unitàries
-    implementation 'com.google.guava:guava:32.1.2-jre' // Versió addicional de Guava per evitar conflictes
+    implementation 'com.google.guava:guava:33.0.0-jre'
+    implementation 'org.apache.commons:commons-lang3:3.12.0'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.15.0' // Versió més recent
+    implementation 'com.google.code.gson:gson:2.8.9'
+    testImplementation('junit:junit:4.13.1')
+    testImplementation 'org.mockito:mockito-core:4.8.1'
+    implementation 'com.google.guava:guava:32.1.2-jre'
 }
 
-// Assegura que l'entrada està configurada per permetre la interacció per consola quan s'executa
 tasks.named('run') {
     standardInput = System.in
 }
