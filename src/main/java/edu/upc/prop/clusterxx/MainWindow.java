@@ -19,6 +19,7 @@ public class MainWindow {
         estadistiques.afegirPuntuacio(200, "Jan");
         estadistiques.afegirPuntuacio(150, "Roger");
         estadistiques.afegirPuntuacio(0, "Toni");
+        
 
     }
 }
