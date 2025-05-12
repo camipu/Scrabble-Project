@@ -1,6 +1,7 @@
 package edu.upc.prop.clusterxx.presentacio.vistes;
 
 import edu.upc.prop.clusterxx.Fitxa;
+import edu.upc.prop.clusterxx.controladors.CtrlPresentacio;
 import edu.upc.prop.clusterxx.presentacio.ColorLoader;
 import edu.upc.prop.clusterxx.presentacio.FontLoader;
 
@@ -20,7 +21,10 @@ public class PantallaIniciVista extends JFrame {
     private Font vt323Font = FontLoader.getCustomFont(36f);
     private Color colorsFons = ColorLoader.getInstance().getColorFons();
 
-    public PantallaIniciVista() {
+    private CtrlPresentacio ctrlPresentacio;
+
+    public PantallaIniciVista(CtrlPresentacio ctrlPresentacio) {
+        this.ctrlPresentacio = ctrlPresentacio;
         setTitle("Scrabble - Pantalla d'Inici");
         setSize(1200, 800);
         setLocationRelativeTo(null);
@@ -111,9 +115,7 @@ public class PantallaIniciVista extends JFrame {
         jugarNovaPartidaButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // Quan es clica, s'obre la finestra de personalització
-                PantallaPersonalitzacioVista pantallaPersonalitzacioVista = new PantallaPersonalitzacioVista();
-                pantallaPersonalitzacioVista.setVisible(true);
+                ctrlPresentacio.configurarPartida();
             }
         });
 
@@ -168,12 +170,5 @@ public class PantallaIniciVista extends JFrame {
             case 'C': return 3;
             default: return 1;
         }
-    }
-
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            PantallaIniciVista vista = new PantallaIniciVista();
-            vista.setVisible(true);
-        });
     }
 }

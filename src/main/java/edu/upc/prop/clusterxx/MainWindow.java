@@ -1,15 +1,11 @@
 package edu.upc.prop.clusterxx;
 
-import edu.upc.prop.clusterxx.presentacio.vistes.PantallaIniciVista;
-import edu.upc.prop.clusterxx.presentacio.vistes.EstadistiquesVista;
+import edu.upc.prop.clusterxx.controladors.CtrlDomini;
 
 public class MainWindow {
     public static void main(String[] args) {
-        // Crea una nova instància de la pantalla d'inici
-        PantallaIniciVista pantallaInici = new PantallaIniciVista();
-
-        // Mostra la finestra
-        pantallaInici.setVisible(true);
+        CtrlDomini ctrlDomini = CtrlDomini.getInstance();
+        ctrlDomini.inicialitzarApp();
 
         // Crear una instància de les estadístiques per afegir punts
         Estadistiques estadistiques = Estadistiques.getInstance();
@@ -18,7 +14,7 @@ public class MainWindow {
         estadistiques.afegirPuntuacio(100, "Camila");
         estadistiques.afegirPuntuacio(200, "Jan");
         estadistiques.afegirPuntuacio(150, "Roger");
-        estadistiques.afegirPuntuacio(0, "Toni");
+        estadistiques.afegirPuntuacio(10000, "Toni");
 
 
     }

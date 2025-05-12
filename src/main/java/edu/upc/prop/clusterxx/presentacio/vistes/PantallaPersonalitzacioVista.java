@@ -1,12 +1,12 @@
 package edu.upc.prop.clusterxx.presentacio.vistes;
 
+import edu.upc.prop.clusterxx.controladors.CtrlPresentacio;
 import edu.upc.prop.clusterxx.presentacio.ColorLoader;
 import edu.upc.prop.clusterxx.presentacio.FontLoader;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+
 import java.util.ArrayList;
 
 /**
@@ -30,8 +30,10 @@ public class PantallaPersonalitzacioVista extends JFrame {
 
     private final Font vt323Font = FontLoader.getCustomFont(20f);
     private final ColorLoader colorLoader = ColorLoader.getInstance();
+    private CtrlPresentacio ctrlPresentacio;
 
-    public PantallaPersonalitzacioVista() {
+    public PantallaPersonalitzacioVista(CtrlPresentacio ctrlPresentacio) {
+        this.ctrlPresentacio = ctrlPresentacio;
         setTitle("Configuració de la partida");
         setSize(600, 700);
         setLocationRelativeTo(null);
@@ -331,31 +333,18 @@ public class PantallaPersonalitzacioVista extends JFrame {
             }
         }
 
-        // Mostrar la informació (per a proves, després es connectaria amb el controlador)
-        System.out.println("Mida taulell: " + midaTaulell);
-        System.out.println("Mida faristol: " + midaFaristol);
-        System.out.println("Idioma: " + idioma);
-        System.out.println("Noms Bots i dificultats:");
-        for (int i = 0; i < nomsBots.length; ++i) {
-            System.out.println("  " + nomsBots[i] + " - Dificultat " + dificultatsBots[i]);
-        }
-        System.out.println("Noms Jugadors:");
-        for (String s : nomsJugadors) {
-            System.out.println("  " + s);
-        }
+        
 
-        // Aquí es connectaria amb el controlador de domini
-        // ctrlDomini.inicialitzarPartida(midaTaulell, midaFaristol, idioma, nomsJugadors, nomsBots, dificultatsBots);
+        ctrlPresentacio.inicialitzarPartida(
+                midaTaulell,
+                midaFaristol,
+                idioma,
+                dificultatsBots,
+                nomsJugadors
+        );
 
         JOptionPane.showMessageDialog(this,
                 "Configuració completada correctament",
                 "Èxit", JOptionPane.INFORMATION_MESSAGE);
-    }
-
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            PantallaPersonalitzacioVista vista = new PantallaPersonalitzacioVista();
-            vista.setVisible(true);
-        });
     }
 }
