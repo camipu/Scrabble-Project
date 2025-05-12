@@ -504,7 +504,8 @@ public class CtrlPartida {
         taulell.colocarFitxa(aux, fila, columna);
         jugadors[torn%jugadors.length].eliminarFitxa(aux);
         casellasTorn.add(taulell.getCasella(fila, columna));
-        return new Jugada(casellasTorn, dawg, taulell);
+        jugadaActual = new Jugada(casellasTorn, dawg, taulell);
+        return jugadaActual;
     }
 
     /**
