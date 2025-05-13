@@ -2,9 +2,7 @@ package edu.upc.prop.clusterxx.presentacio;
 
 import edu.upc.prop.clusterxx.Faristol;
 import edu.upc.prop.clusterxx.Fitxa;
-import edu.upc.prop.clusterxx.Jugador;
 import edu.upc.prop.clusterxx.presentacio.vistes.FaristolVista;
-import edu.upc.prop.clusterxx.presentacio.vistes.JugadorVista;
 
 import javax.swing.*;
 import java.awt.*;
@@ -31,7 +29,7 @@ public class MostraFaristol extends JFrame {
         faristol.afegirFitxa(new Fitxa("G", 2));
 
         // Crear la vista del faristol
-        JugadorVista faristolVista = new JugadorVista(new Jugador("Toni", faristol));
+        FaristolVista faristolVista = new FaristolVista(faristol);
 
         // Afegim el faristol a la finestra
         add(faristolVista, BorderLayout.CENTER);

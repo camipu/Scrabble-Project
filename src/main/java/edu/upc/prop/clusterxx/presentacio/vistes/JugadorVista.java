@@ -30,23 +30,29 @@ public class JugadorVista extends JPanel {
         TitledBorder border = BorderFactory.createTitledBorder("Informació del jugador");
         Font fontLletra = FontLoader.getCustomFont(20f);
         border.setTitleFont(fontLletra);
+        border.setTitleColor(ColorLoader.getInstance().getColorText());
         setBorder(border);
+        setBackground(ColorLoader.getInstance().getColorFons());
 
         // Panell principal per a la informació del jugador
         JPanel infoPanel = new JPanel();
         infoPanel.setLayout(new BorderLayout(10, 10));
+        infoPanel.setBackground(ColorLoader.getInstance().getColorFons());
 
         // Panell per a nom i puntuació
         JPanel jugadorInfoPanel = new JPanel();
         jugadorInfoPanel.setLayout(new GridLayout(2, 1, 5, 5));
+        jugadorInfoPanel.setBackground(ColorLoader.getInstance().getColorFons());
 
         // Nom del jugador
         nomLabel = new JLabel("Jugador: " + jugador.obtenirNom());
         nomLabel.setFont(FontLoader.getCustomFont(18f));
+        nomLabel.setForeground(ColorLoader.getInstance().getColorText());
 
         // Puntuació del jugador
         puntsLabel = new JLabel("Puntuació: " + jugador.obtenirPunts());
         puntsLabel.setFont(FontLoader.getCustomFont(18f));
+        puntsLabel.setForeground(ColorLoader.getInstance().getColorText());
 
         jugadorInfoPanel.add(nomLabel);
         jugadorInfoPanel.add(puntsLabel);
@@ -102,13 +108,15 @@ public class JugadorVista extends JPanel {
                             "Informació del jugador - És el teu torn",
                             TitledBorder.DEFAULT_JUSTIFICATION,
                             TitledBorder.DEFAULT_POSITION,
-                            FontLoader.getCustomFont(20f)
+                            FontLoader.getCustomFont(20f),
+                            ColorLoader.getInstance().getColorText()
                     )
             ));
         } else {
             // Tornem a l'estat normal quan no és el torn
             TitledBorder border = BorderFactory.createTitledBorder("Informació del jugador");
             border.setTitleFont(FontLoader.getCustomFont(20f));
+            border.setTitleColor(ColorLoader.getInstance().getColorText());
             setBorder(border);
         }
 
