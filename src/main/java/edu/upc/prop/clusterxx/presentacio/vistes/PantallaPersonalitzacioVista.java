@@ -339,8 +339,8 @@ public class PantallaPersonalitzacioVista extends JFrame {
                 midaTaulell,
                 midaFaristol,
                 idioma,
-                dificultatsBots,
-                nomsJugadors
+                nomsJugadors,
+                dificultatsBots
         );
 
         JOptionPane.showMessageDialog(this,

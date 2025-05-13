@@ -17,8 +17,7 @@ public class CtrlDomini {
     private static CtrlDomini instance = null;
     private CtrlPartida ctrlPartida = null;
     private CtrEstadistica ctrEstadistica = null;
-    private CtrlPresentacio ctrlPresentacio = CtrlPresentacio.getInstance();
-    
+
 
     /**
      * Retorna la instància única del controlador de domini.
@@ -39,17 +38,6 @@ public class CtrlDomini {
     private CtrlDomini(){
         ctrlPartida = CtrlPartida.getInstance();
         ctrEstadistica = CtrEstadistica.getInstance();
-    }
-
-    /**
-     * Inicialitza l'aplicació, creant les instàncies necessàries per al funcionament del joc.
-     */
-    public void inicialitzarApp(){
-        ctrlPresentacio.inicialitzarApp();
-
-
-        //@jan TODO
-        //ctrEstadistica.inicialitzarApp();
     }
 
     /**

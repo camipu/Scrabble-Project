@@ -1,10 +1,20 @@
 package edu.upc.prop.clusterxx.controladors;
 
+import edu.upc.prop.clusterxx.Casella;
+import edu.upc.prop.clusterxx.Colors;
+import edu.upc.prop.clusterxx.EstrategiaPuntuacio;
+import edu.upc.prop.clusterxx.Taulell;
 import edu.upc.prop.clusterxx.presentacio.vistes.PantallaIniciVista;
 import edu.upc.prop.clusterxx.presentacio.vistes.PantallaPersonalitzacioVista;
+import edu.upc.prop.clusterxx.presentacio.vistes.TaulellVista;
+
+import javax.swing.*;
+import java.awt.*;
+import java.util.Locale;
 
 public class CtrlPresentacio {
     private static CtrlPresentacio instance = null;
+    private CtrlDomini ctrlDomini = CtrlDomini.getInstance();
     private PantallaIniciVista pantallaInici;
     private PantallaPersonalitzacioVista pantallaPersonalitzacioVista;
 
@@ -44,18 +54,9 @@ public class CtrlPresentacio {
         pantallaPersonalitzacioVista.setVisible(true);
     }
 
-    public void inicialitzarPartida(int midaTaulell, int midaFaristol, String idioma, int[] dificultatsBots, String[] nomsJugadors ) {
-        //Passar struct System.out.println("Mida taulell: " + midaTaulell);
-        System.out.println("Mida faristol: " + midaFaristol);
-        System.out.println("Idioma: " + idioma);
-        System.out.println("Noms Bots i dificultats:");
-        for (int i = 0; i < dificultatsBots.length; ++i) {
-            System.out.println("  " + i + " - Dificultat " + dificultatsBots[i]);
-        }
-        System.out.println("Noms Jugadors:");
-        for (String s : nomsJugadors) {
-            System.out.println("  " + s);
-        }
+    public void inicialitzarPartida(int midaTaulell, int midaFaristol, String idioma, String[] nomsJugadors, int[] dificultatsBots ) {
+        ctrlDomini.inicialitzarPartida(midaTaulell, midaFaristol, idioma.toLowerCase(Locale.ROOT), nomsJugadors, dificultatsBots);
+        pantallaPersonalitzacioVista.setVisible(false);
     }
 
     
