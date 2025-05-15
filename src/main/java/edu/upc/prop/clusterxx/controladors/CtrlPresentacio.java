@@ -1,11 +1,9 @@
 package edu.upc.prop.clusterxx.controladors;
 
-import edu.upc.prop.clusterxx.Casella;
-import edu.upc.prop.clusterxx.Colors;
-import edu.upc.prop.clusterxx.EstrategiaPuntuacio;
-import edu.upc.prop.clusterxx.Taulell;
+import edu.upc.prop.clusterxx.*;
 import edu.upc.prop.clusterxx.presentacio.vistes.PantallaIniciVista;
 import edu.upc.prop.clusterxx.presentacio.vistes.PantallaPersonalitzacioVista;
+import edu.upc.prop.clusterxx.presentacio.vistes.PartidaVista;
 import edu.upc.prop.clusterxx.presentacio.vistes.TaulellVista;
 
 import javax.swing.*;
@@ -54,10 +52,24 @@ public class CtrlPresentacio {
         pantallaPersonalitzacioVista.setVisible(true);
     }
 
-    public void inicialitzarPartida(int midaTaulell, int midaFaristol, String idioma, String[] nomsJugadors, int[] dificultatsBots ) {
+
+    public void inicialitzarPartida(int midaTaulell, int midaFaristol, String idioma, String[] nomsJugadors, int[] dificultatsBots) {
         ctrlDomini.inicialitzarPartida(midaTaulell, midaFaristol, idioma.toLowerCase(Locale.ROOT), nomsJugadors, dificultatsBots);
         pantallaPersonalitzacioVista.setVisible(false);
-    }
 
+        Taulell taulell = ctrlDomini.obtenirTaulell();
+        Jugador jugador = ctrlDomini.obtenirJugadorActual();
+        ctrlDomini.jugadaBot();
+
+        // Create the PartidaVista and display it in a JFrame
+        PartidaVista partidaVista = new PartidaVista(taulell, jugador);
+        JFrame frame = new JFrame("Partida");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setLayout(new BorderLayout());
+        frame.add(partidaVista, BorderLayout.CENTER);
+        frame.pack();
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
+    }
     
 }

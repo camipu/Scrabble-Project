@@ -24,6 +24,7 @@ public class PartidaVista extends JPanel {
     private JButton botoPassar;
     private JButton botoCanviarFitxes;
     private JButton botoValidarJugada;
+    private JButton botoColocar;
 
     /**
      * Crea una nova vista de partida amb el taulell i jugador especificats.
@@ -64,35 +65,30 @@ public class PartidaVista extends JPanel {
      *
      * @return Panell amb els botons de control
      */
+    // Update the crearPanellBotons method
     private JPanel crearPanellBotons() {
         JPanel panell = new JPanel();
-        panell.setLayout(new GridLayout(5, 1, 0, 10));
+        panell.setLayout(new GridLayout(6, 1, 0, 10)); // Adjusted for 4 buttons
         panell.setBorder(new EmptyBorder(0, 10, 0, 0));
-        panell.setBackground(ColorLoader.getInstance().getColorFons()); // Color de fons coherent
+        panell.setBackground(ColorLoader.getInstance().getColorFons());
 
-        // Estil comú pels botons - utilitzem els colors de la paleta definida
         Font fontBotons = FontLoader.getCustomFont(16f);
-        Color colorFons = ColorLoader.getInstance().getColorFonsFitxa(); // Color fitxa per als botons
-        Color colorText = ColorLoader.getInstance().getColorText(); // Color del text de la paleta
+        Color colorFons = ColorLoader.getInstance().getColorFonsFitxa();
+        Color colorText = ColorLoader.getInstance().getColorText();
 
-        // Botó per passar torn
         botoPassar = crearBoto("Passar torn", fontBotons, colorFons, colorText);
-
-        // Botó per canviar fitxes
         botoCanviarFitxes = crearBoto("Canviar fitxes", fontBotons, colorFons, colorText);
-
-        // Botó per validar jugada
         botoValidarJugada = crearBoto("Validar jugada", fontBotons, colorFons, colorText);
+        botoColocar = crearBoto("Col·locar", fontBotons, colorFons, colorText); // New button
 
-        // Afegim espai a la part superior amb un panell buit
         panell.add(Box.createVerticalStrut(50));
-
-        // Afegim els botons al panell
         panell.add(botoValidarJugada);
-        panell.add(Box.createVerticalStrut(10)); // Espaiat entre botons
+        panell.add(Box.createVerticalStrut(10));
         panell.add(botoCanviarFitxes);
-        panell.add(Box.createVerticalStrut(10)); // Espaiat entre botons
+        panell.add(Box.createVerticalStrut(10));
         panell.add(botoPassar);
+        panell.add(Box.createVerticalStrut(10));
+        panell.add(botoColocar); // Add the new button
 
         return panell;
     }
@@ -118,6 +114,7 @@ public class PartidaVista extends JPanel {
         ));
         return boto;
     }
+
 
     /**
      * Gestiona l'event de selecció d'una casella al taulell.
@@ -154,6 +151,11 @@ public class PartidaVista extends JPanel {
      */
     public void setValidarJugadaListener(ActionListener listener) {
         botoValidarJugada.addActionListener(listener);
+    }
+
+    // Add this method to set the ActionListener for the "Col·locar" button
+    public void setColocarListener(ActionListener listener) {
+        botoColocar.addActionListener(listener);
     }
 
     /**
