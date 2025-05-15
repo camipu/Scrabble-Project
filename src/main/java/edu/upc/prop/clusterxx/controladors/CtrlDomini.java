@@ -164,7 +164,9 @@ public class CtrlDomini {
      * @return
      */
     public Jugada colocarFitxa(String lletra, int i, int j) {
+        System.out.println("colocarFitxa");
         return ctrlPartida.colocarFitxa(lletra, i, j);
+
     }
 
     /**

@@ -1,10 +1,11 @@
 package edu.upc.prop.clusterxx.presentacio.vistes;
 
 import edu.upc.prop.clusterxx.Casella;
+import edu.upc.prop.clusterxx.Fitxa;
 import edu.upc.prop.clusterxx.Jugador;
 import edu.upc.prop.clusterxx.Taulell;
-import edu.upc.prop.clusterxx.presentacio.FontLoader;
 import edu.upc.prop.clusterxx.presentacio.ColorLoader;
+import edu.upc.prop.clusterxx.presentacio.FontLoader;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -25,6 +26,8 @@ public class PartidaVista extends JPanel {
     private JButton botoCanviarFitxes;
     private JButton botoValidarJugada;
     private JButton botoColocar;
+    private Casella casellaSeleccionada = null;
+    private Character lletraSeleccionada = null;
 
     /**
      * Crea una nova vista de partida amb el taulell i jugador especificats.
@@ -124,6 +127,31 @@ public class PartidaVista extends JPanel {
     private void handleCasellaSeleccionada(Casella casella) {
         // Aquí es pot implementar la lògica quan es selecciona una casella
         System.out.println("Casella seleccionada a PartidaVista: " + casella);
+        casellaSeleccionada = casella;
+
+    }
+
+    public Fitxa obtenirFitxaSeleccionada() {
+        return jugadorVista.obtenirFitxaSeleccionada();
+    }
+
+    public void desseleccionarFitxa() {
+        jugadorVista.obtenirFaristolVista().desseleccionarFitxa();
+    }
+
+    public void netejarSeleccions() {
+        //taulellVista.desseleccionarCasella();       // Limpia la casella seleccionada
+        jugadorVista.obtenirFaristolVista().desseleccionarFitxa(); // Limpia la fitxa seleccionada
+    }
+
+
+    /**
+     * Obté la casella seleccionada actualment.
+     *
+     * @return Casella seleccionada
+     */
+    public Casella getCasellaSeleccionada() {
+        return casellaSeleccionada;
     }
 
     /**

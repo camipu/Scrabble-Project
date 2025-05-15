@@ -1,10 +1,12 @@
 package edu.upc.prop.clusterxx.controladors;
 
-import edu.upc.prop.clusterxx.*;
+import edu.upc.prop.clusterxx.Casella;
+import edu.upc.prop.clusterxx.Fitxa;
+import edu.upc.prop.clusterxx.Jugador;
+import edu.upc.prop.clusterxx.Taulell;
 import edu.upc.prop.clusterxx.presentacio.vistes.PantallaIniciVista;
 import edu.upc.prop.clusterxx.presentacio.vistes.PantallaPersonalitzacioVista;
 import edu.upc.prop.clusterxx.presentacio.vistes.PartidaVista;
-import edu.upc.prop.clusterxx.presentacio.vistes.TaulellVista;
 
 import javax.swing.*;
 import java.awt.*;
@@ -12,7 +14,7 @@ import java.util.Locale;
 
 public class CtrlPresentacio {
     private static CtrlPresentacio instance = null;
-    private CtrlDomini ctrlDomini = CtrlDomini.getInstance();
+    private CtrlDomini ctrlDomini;
     private PantallaIniciVista pantallaInici;
     private PantallaPersonalitzacioVista pantallaPersonalitzacioVista;
     private PartidaVista partidaVista;
@@ -43,6 +45,7 @@ public class CtrlPresentacio {
      * Inicialitza l'aplicació, creant les instàncies necessàries per al funcionament del joc.
      */
     public void inicialitzarApp() {
+        ctrlDomini = CtrlDomini.getInstance();
         pantallaInici = new PantallaIniciVista(this);
         // Mostra la finestra
         pantallaInici.setVisible(true);
@@ -103,6 +106,27 @@ public class CtrlPresentacio {
             ctrlDomini.jugadaBot();
             actualitzarVistes();
         }
+        System.out.println("Passat torn");
+    }
+
+    /**
+     * Col·loca una fitxa al taulell.
+     */
+    public void colocarFitxa() {
+        Casella casella = partidaVista.getCasellaSeleccionada();
+        Fitxa fitxa = partidaVista.obtenirFitxaSeleccionada();
+
+        if (casella != null && fitxa != null) {
+            ctrlDomini.colocarFitxa(fitxa.obtenirLletra(), casella.obtenirX(), casella.obtenirY());
+            partidaVista.desseleccionarFitxa(); // Limpia la selección visual
+            partidaVista.netejarSeleccions();   // Limpia también casella seleccionada, si lo tienes
+            actualitzarVistes(); // Refresca el tablero y faristol
+        } else {
+            JOptionPane.showMessageDialog(null,
+                    "Selecciona una casella i una fitxa abans de col·locar.",
+                    "Error",
+                    JOptionPane.WARNING_MESSAGE);
+        }
     }
 
     /**
@@ -118,9 +142,11 @@ public class CtrlPresentacio {
             framePartida.getContentPane().removeAll();
         }
 
+
         // Crea o actualitza la vista de partida
         partidaVista = new PartidaVista(taulell, jugador);
         partidaVista.setPassarTornListener(this::passarTorn);
+        partidaVista.setColocarListener(e -> colocarFitxa());
 
         // Afegeix la nova vista al frame
         framePartida.add(partidaVista, BorderLayout.CENTER);
