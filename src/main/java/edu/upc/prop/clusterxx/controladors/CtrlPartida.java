@@ -4,6 +4,7 @@ import edu.upc.prop.clusterxx.*;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 import edu.upc.prop.clusterxx.persistencia.CtrlPersistencia;
@@ -148,7 +149,7 @@ public class CtrlPartida {
         tornsSenseCanvi = nouTorn.obtenirTorn();
         List<Casella> casellasTorn = new ArrayList<>();
 
-        historial.retirarTorns(torn);
+        //historial.retirarTorns(torn);
     }
 
 
@@ -582,9 +583,22 @@ public class CtrlPartida {
 
     }
 
-    public void guardarPartida(String nomFitxer) throws IOException {
+    public void guardarPartida() throws IOException {
         Torn tornActual = historial.obtenirTorn(torn);
+        String nomFitxer = generarNomFitxerAmbData();
+
         CtrlPersistencia.guardarTorn(nomFitxer, tornActual);
+    }
+
+    private String generarNomFitxerAmbData() {
+        String nomsJugadors = Arrays.stream(jugadors)
+                .map(Jugador::obtenirNom)
+                .collect(Collectors.joining("-"));
+
+        String timestamp = java.time.LocalDateTime.now()
+                .format(java.time.format.DateTimeFormatter.ofPattern("yyyy-MM-dd_HH-mm"));
+
+        return nomsJugadors + "_" + timestamp;
     }
 
     public void carregarPartida(String nomFitxer) {

@@ -241,14 +241,14 @@ public class CtrlDomini {
     /**
      * Realitza una jugada del bot.
      *
-     * @return Una instància de Jugada que es la que acaba de fer el bot
+     * @return Una instància de Jugada que és la que acaba de fer el bot
      */
     public Jugada jugadaBot() {
         return ctrlPartida.jugadaBot();
     }
 
     public void guardarPartida() throws IOException {
-        ctrlPartida.guardarPartida("1");
+        ctrlPartida.guardarPartida();
     }
 
     /**
