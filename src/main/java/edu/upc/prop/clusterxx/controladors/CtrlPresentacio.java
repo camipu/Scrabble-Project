@@ -15,12 +15,13 @@ public class CtrlPresentacio {
     private CtrlDomini ctrlDomini = CtrlDomini.getInstance();
     private PantallaIniciVista pantallaInici;
     private PantallaPersonalitzacioVista pantallaPersonalitzacioVista;
-    PartidaVista partidaVista;
+    private PartidaVista partidaVista;
+    private JFrame framePartida;
 
     /**
      * Retorna la instància única del controlador de presentació.
      * Si encara no existeix, la crea.
-     *W
+     *
      * @return Instància única de {@code CtrlPresentacio}
      */
     public static CtrlPresentacio getInstance() {
@@ -47,37 +48,92 @@ public class CtrlPresentacio {
         pantallaInici.setVisible(true);
     }
 
+    /**
+     * Canvia a la pantalla de configuració de partida.
+     */
     public void configurarPartida() {
         pantallaPersonalitzacioVista = new PantallaPersonalitzacioVista(this);
         pantallaInici.setVisible(false);
         pantallaPersonalitzacioVista.setVisible(true);
     }
 
-
+    /**
+     * Inicialitza una nova partida amb els paràmetres configurats.
+     *
+     * @param midaTaulell Mida del taulell de joc
+     * @param midaFaristol Mida del faristol de fitxes
+     * @param idioma Idioma seleccionat per a la partida
+     * @param nomsJugadors Noms dels jugadors participants
+     * @param dificultatsBots Nivells de dificultat dels bots
+     */
     public void inicialitzarPartida(int midaTaulell, int midaFaristol, String idioma, String[] nomsJugadors, int[] dificultatsBots) {
         ctrlDomini.inicialitzarPartida(midaTaulell, midaFaristol, idioma.toLowerCase(Locale.ROOT), nomsJugadors, dificultatsBots);
         pantallaPersonalitzacioVista.setVisible(false);
 
+        // Inicialitzar frame per a la partida només un cop
+        crearFramePartida();
+
+        // Actualitza la vista amb les dades inicials
+        actualitzarVistes();
+
+        // Fa la jugada del bot i torna a actualitzar la vista
+        ctrlDomini.jugadaBot();
+        actualitzarVistes();
+    }
+
+    /**
+     * Crea el frame principal de la partida.
+     */
+    private void crearFramePartida() {
+        framePartida = new JFrame("Partida");
+        framePartida.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        framePartida.setLayout(new BorderLayout());
+        framePartida.setLocationRelativeTo(null);
+    }
+
+    /**
+     * Gestiona el pas de torn entre jugadors.
+     */
+    public void passarTorn() {
+        ctrlDomini.passarTorn();
+        actualitzarVistes();
+
+        // Si el següent jugador és un bot, executa la seva jugada automàticament
+        if (esJugadorActualBot()) {
+            ctrlDomini.jugadaBot();
+            actualitzarVistes();
+        }
+    }
+
+    /**
+     * Actualitza les vistes amb les dades actuals del joc.
+     * Evita crear nous frames cada vegada.
+     */
+    private void actualitzarVistes() {
         Taulell taulell = ctrlDomini.obtenirTaulell();
         Jugador jugador = ctrlDomini.obtenirJugadorActual();
-        ctrlDomini.jugadaBot();
 
+        // Elimina els components anteriors del frame si existeixen
+        if (framePartida.getContentPane().getComponentCount() > 0) {
+            framePartida.getContentPane().removeAll();
+        }
+
+        // Crea o actualitza la vista de partida
         partidaVista = new PartidaVista(taulell, jugador);
-        partidaVista.setPassarTornListener(() -> passarTorn()); // Set listener
+        partidaVista.setPassarTornListener(this::passarTorn);
 
+        // Afegeix la nova vista al frame
+        framePartida.add(partidaVista, BorderLayout.CENTER);
 
-        JFrame frame = new JFrame("Partida");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setLayout(new BorderLayout());
-        frame.add(partidaVista, BorderLayout.CENTER);
-        frame.pack();
-        frame.setLocationRelativeTo(null);
-        frame.setVisible(true);
+        // Actualitza el frame
+        framePartida.pack();
+        framePartida.setVisible(true);
+        framePartida.revalidate();
+        framePartida.repaint();
     }
 
-    private void passarTorn() {
-        System.out.println("Pasando turno camila quiere café!!!!");
+    public boolean esJugadorActualBot() {
+        return ctrlDomini.obtenirJugadorActual().esBot();
     }
-
 
 }
