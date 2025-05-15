@@ -15,6 +15,7 @@ public class CtrlPresentacio {
     private CtrlDomini ctrlDomini = CtrlDomini.getInstance();
     private PantallaIniciVista pantallaInici;
     private PantallaPersonalitzacioVista pantallaPersonalitzacioVista;
+    PartidaVista partidaVista;
 
     /**
      * Retorna la instància única del controlador de presentació.
@@ -61,8 +62,10 @@ public class CtrlPresentacio {
         Jugador jugador = ctrlDomini.obtenirJugadorActual();
         ctrlDomini.jugadaBot();
 
-        // Create the PartidaVista and display it in a JFrame
-        PartidaVista partidaVista = new PartidaVista(taulell, jugador);
+        partidaVista = new PartidaVista(taulell, jugador);
+        partidaVista.setPassarTornListener(() -> passarTorn()); // Set listener
+
+
         JFrame frame = new JFrame("Partida");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLayout(new BorderLayout());
@@ -71,5 +74,10 @@ public class CtrlPresentacio {
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }
-    
+
+    private void passarTorn() {
+        System.out.println("Pasando turno camila quiere café!!!!");
+    }
+
+
 }

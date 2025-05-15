@@ -129,10 +129,10 @@ public class PartidaVista extends JPanel {
     /**
      * Estableix l'ActionListener pel botó de passar torn.
      *
-     * @param listener ActionListener a establir
+     * @param passarTornAction Runnable a establir
      */
-    public void setPassarTornListener(ActionListener listener) {
-        botoPassar.addActionListener(listener);
+    public void setPassarTornListener(Runnable passarTornAction) {
+        botoPassar.addActionListener(e -> passarTornAction.run());
     }
 
     /**
