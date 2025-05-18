@@ -8,6 +8,7 @@ import edu.upc.prop.clusterxx.Sac;
 import edu.upc.prop.clusterxx.Torn;
 
 import java.io.IOException;
+import java.util.Map;
 
 /**
  * Classe CtrDomini
@@ -88,6 +89,35 @@ public class CtrlDomini {
     }
 
     /**
+     * Retira una puntuació a les estadístiques del sistema.
+     *
+     * @param jugador Nom del jugador al que retirem la puntuació
+     * @param puntuacio Puntuació retirada al jugador
+     */
+    public void retirarPuntuacio(String jugador, int puntuacio) {
+        ctrEstadistica.retirarPuntuacio(jugador, puntuacio);
+    }
+
+    public String obtenirMillorJugador() {
+        return ctrEstadistica.obtenirMillorJugador();
+    }
+
+    public Map<String, Integer> obtenirPuntuacions(){
+        return ctrEstadistica.obtenirPuntuacions();
+    }
+
+    public void eliminarJugador(String nom) {
+        ctrEstadistica.eliminarJugador(nom);
+    }
+
+    public void actualitzarEstadistiques(Jugador[] jugadors) {
+        for (Jugador j : jugadors) {
+            ctrEstadistica.afegirPuntuacio(j.obtenirNom(), j.obtenirPunts());
+        }
+        ctrEstadistica.desarEstadistiques();
+    }
+
+    /**
      * Inicialitza una nova partida amb els paràmetres especificats.
      * Aquesta acció es delega al controlador de partida.
      *
@@ -99,16 +129,6 @@ public class CtrlDomini {
      */
     public void inicialitzarPartida(int midaTaulell, int midaFaristol, String idioma, String[] nomsJugadors,int[] dificultatsBots){
         ctrlPartida.inicialitzarPartida(midaTaulell, midaFaristol, idioma, nomsJugadors, dificultatsBots);
-    }
-
-    /**
-     * Carrega una partida a partir d’un estat de torn guardat.
-     * Aquesta acció permet reprendre una partida anteriorment iniciada.
-     *
-     * @param fitxer Fitxer que conté l’estat de la partida a carregar
-     */
-    public void carregarPartida(String fitxer){
-        ctrlPartida.carregarPartida(fitxer);
     }
 
     /**
@@ -247,10 +267,6 @@ public class CtrlDomini {
         return ctrlPartida.jugadaBot();
     }
 
-    public void guardarPartida() throws IOException {
-        ctrlPartida.guardarPartida();
-    }
-
     /**
      * Es torna a l'estat inicial del torn.
      */
@@ -266,5 +282,27 @@ public class CtrlDomini {
      */
     public boolean setLletraComodi(Fitxa fitxa, String lletra) {
         return ctrlPartida.setLletraComodi(fitxa, lletra);
+    }
+
+
+    public void guardarPartida() throws IOException {
+        ctrlPartida.guardarPartida();
+    }
+    /**
+     * Carrega una partida a partir d’un estat de torn guardat.
+     * Aquesta acció permet reprendre una partida anteriorment iniciada.
+     *
+     * @param fitxer Fitxer que conté l’estat de la partida a carregar
+     */
+    public void carregarPartida(String fitxer){
+        ctrlPartida.carregarPartida(fitxer);
+    }
+
+    public void desarEstadistiques() {
+        ctrEstadistica.desarEstadistiques();
+    }
+
+    public void carregarEstadistiques() {
+        ctrEstadistica.carregarEstadistiques();
     }
 }

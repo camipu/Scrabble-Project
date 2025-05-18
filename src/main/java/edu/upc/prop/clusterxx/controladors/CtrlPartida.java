@@ -215,20 +215,7 @@ public class CtrlPartida {
 
         // Ordenar els jugadors per puntuació de major a menor
         ordenarJugadors();
-        guardarEstadistiques();
-    }
-
-
-    /**
-     * Guarda les estadístiques finals dels jugadors al finalitzar la partida.
-     * Afegeix la puntuació de cada jugador al registre d'estadístiques global.
-     */
-    private void guardarEstadistiques() {
-        CtrEstadistica estadisticaCtrl = CtrEstadistica.getInstance();
-        for (Jugador jugador : jugadors) {
-            estadisticaCtrl.afegirPuntuacio(jugador.obtenirNom(), jugador.obtenirPunts());
-        }
-        estadisticaCtrl.desarEstadistiques();
+        CtrlDomini.getInstance().actualitzarEstadistiques(jugadors);
     }
 
 

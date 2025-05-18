@@ -1,6 +1,7 @@
 package edu.upc.prop.clusterxx.drivers;
 
 import edu.upc.prop.clusterxx.controladors.CtrEstadistica;
+import edu.upc.prop.clusterxx.controladors.CtrlDomini;
 import edu.upc.prop.clusterxx.persistencia.CtrlPersistencia;
 
 import java.util.Map;
@@ -9,9 +10,10 @@ import java.util.Scanner;
 public class DriverEstadistica {
 
     public static void main(String[] args) {
-        // Carregar estadístiques des de fitxer
-        CtrEstadistica ctr = CtrEstadistica.getInstance();
-        ctr.carregarEstadistiques(); // <- aquest mètode l'has d'afegir i fer que cridi a CtrlPersistencia.carregarEstadistiques()
+
+        CtrlDomini ctr = CtrlDomini.getInstance();
+        ctr.carregarEstadistiques();
+
 
         Scanner scanner = new Scanner(System.in);
         boolean sortir = false;
