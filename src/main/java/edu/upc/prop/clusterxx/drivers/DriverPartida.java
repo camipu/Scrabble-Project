@@ -29,23 +29,23 @@ public class DriverPartida {
         sc.nextLine(); // netejar el buffer
 
         if (opcio == 2) {
-            File carpeta = new File("data/partides/");
-            if (!carpeta.exists() || carpeta.listFiles() == null || carpeta.listFiles().length == 0) {
+            List<String> partidesDisponibles = ctrlDomini.llistarPartidesGuardades();
+            if (partidesDisponibles.isEmpty()) {
                 System.out.println("No hi ha cap partida guardada. Començant una de nova...");
                 inicialitzarPartida(sc, ctrlDomini);
             } else {
+
                 System.out.println("Partides disponibles:");
-                File[] arxius = carpeta.listFiles((dir, name) -> name.endsWith(".scrabble"));
-                for (int i = 0; i < arxius.length; i++) {
-                    System.out.println((i + 1) + ". " + arxius[i].getName().replace(".scrabble", ""));
+                for (int i = 0; i < partidesDisponibles.size(); i++) {
+                    System.out.println((i + 1) + ". " + partidesDisponibles.get(i));
                 }
 
                 System.out.print("Tria el número de la partida que vols carregar: ");
                 int index = sc.nextInt() - 1;
                 sc.nextLine();
 
-                if (index >= 0 && index < arxius.length) {
-                    String nom = arxius[index].getName().replace(".scrabble", "");
+                if (index >= 0 && index < partidesDisponibles.size()) {
+                    String nom = partidesDisponibles.get(index);
                     try {
                         ctrlDomini.carregarPartida(nom);
                         System.out.println("Partida carregada correctament.");

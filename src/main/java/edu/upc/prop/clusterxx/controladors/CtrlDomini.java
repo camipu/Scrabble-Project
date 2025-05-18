@@ -6,9 +6,13 @@ import edu.upc.prop.clusterxx.Jugada;
 import edu.upc.prop.clusterxx.Fitxa;
 import edu.upc.prop.clusterxx.Sac;
 import edu.upc.prop.clusterxx.Torn;
+import edu.upc.prop.clusterxx.persistencia.CtrlPersistencia;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * Classe CtrDomini
@@ -285,17 +289,35 @@ public class CtrlDomini {
     }
 
 
-    public void guardarPartida() throws IOException {
-        ctrlPartida.guardarPartida();
+    public void guardarPartida() {
+        Torn tornActual = ctrlPartida.obtenirTornActual();
+        String nomFitxer = generarNomFitxerAmbData(); // pots fer-ho com a mètode privat aquí també
+        try {
+            CtrlPersistencia.guardarTorn(nomFitxer, tornActual);
+        } catch (IOException e) {
+            throw new RuntimeException("Error al guardar la partida: " + e.getMessage());
+        }
     }
-    /**
-     * Carrega una partida a partir d’un estat de torn guardat.
-     * Aquesta acció permet reprendre una partida anteriorment iniciada.
-     *
-     * @param fitxer Fitxer que conté l’estat de la partida a carregar
-     */
-    public void carregarPartida(String fitxer){
-        ctrlPartida.carregarPartida(fitxer);
+
+    public void carregarPartida(String nomFitxer) {
+        try {
+            Torn torn = CtrlPersistencia.carregarTorn(nomFitxer);
+            ctrlPartida.recuperarTornDesDeFitxer(torn);
+        } catch (IOException | ClassNotFoundException e) {
+            throw new RuntimeException("Error al carregar la partida: " + e.getMessage());
+        }
+    }
+
+    private String generarNomFitxerAmbData() {
+        return Arrays.stream(obtenirJugadors())
+                .map(Jugador::obtenirNom)
+                .collect(Collectors.joining("-")) +
+                "_" + java.time.LocalDateTime.now()
+                .format(java.time.format.DateTimeFormatter.ofPattern("yyyy-MM-dd_HH-mm"));
+    }
+
+    public List<String> llistarPartidesGuardades() {
+        return CtrlPersistencia.llistarPartidesGuardades();
     }
 
     public void desarEstadistiques() {

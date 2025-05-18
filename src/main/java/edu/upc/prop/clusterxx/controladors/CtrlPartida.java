@@ -152,6 +152,16 @@ public class CtrlPartida {
         historial.retirarTorns(torn);
     }
 
+    public void recuperarTornPersi(Torn nouTorn) {
+        torn = nouTorn.obtenirTorn();
+        acabada = nouTorn.esAcabada();
+        taulell = nouTorn.obtenirTaulell();
+        sac = nouTorn.obtenirSac();
+        jugadors = nouTorn.obtenirJugadors();
+        tornsSenseCanvi = nouTorn.obtenirTorn();
+        List<Casella> casellasTorn = new ArrayList<>();
+    }
+
 
     /**
      * Reinicia l'estat del torn actual a l'estat inicial.
@@ -567,32 +577,42 @@ public class CtrlPartida {
 
     }
 
-    public void guardarPartida() throws IOException {
-        Torn tornActual = historial.obtenirTorn(torn);
-        String nomFitxer = generarNomFitxerAmbData();
+//    public void guardarPartida() throws IOException {
+//        Torn tornActual = historial.obtenirTorn(torn);
+//        String nomFitxer = generarNomFitxerAmbData();
+//
+//        CtrlPersistencia.guardarTorn(nomFitxer, tornActual);
+//    }
 
-        CtrlPersistencia.guardarTorn(nomFitxer, tornActual);
+//    private String generarNomFitxerAmbData() {
+//        String nomsJugadors = Arrays.stream(jugadors)
+//                .map(Jugador::obtenirNom)
+//                .collect(Collectors.joining("-"));
+//
+//        String timestamp = java.time.LocalDateTime.now()
+//                .format(java.time.format.DateTimeFormatter.ofPattern("yyyy-MM-dd_HH-mm"));
+//
+//        return nomsJugadors + "_" + timestamp;
+//    }
+
+//    public void carregarPartida(String nomFitxer) {
+//        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream("data/partides/" + nomFitxer + ".scrabble"))) {
+//            Torn torn = (Torn) ois.readObject();
+//            CtrlPartida.getInstance().recuperarTornPersi(torn);
+//        } catch (IOException | ClassNotFoundException e) {
+//            throw new RuntimeException("No s'ha pogut carregar la partida: " + e.getMessage(), e);
+//        }
+//    }
+
+    public Torn obtenirTornActual() {
+        return historial.obtenirTorn(torn);
     }
 
-    private String generarNomFitxerAmbData() {
-        String nomsJugadors = Arrays.stream(jugadors)
-                .map(Jugador::obtenirNom)
-                .collect(Collectors.joining("-"));
-
-        String timestamp = java.time.LocalDateTime.now()
-                .format(java.time.format.DateTimeFormatter.ofPattern("yyyy-MM-dd_HH-mm"));
-
-        return nomsJugadors + "_" + timestamp;
+    public void recuperarTornDesDeFitxer(Torn torn) {
+        recuperarTornPersi(torn);
     }
 
-    public void carregarPartida(String nomFitxer) {
-        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream("data/partides/" + nomFitxer + ".scrabble"))) {
-            Torn torn = (Torn) ois.readObject();
-            CtrlPartida.getInstance().recuperarTorn(torn);
-        } catch (IOException | ClassNotFoundException e) {
-            throw new RuntimeException("No s'ha pogut carregar la partida: " + e.getMessage(), e);
-        }
-    }
+
 
 
 }
