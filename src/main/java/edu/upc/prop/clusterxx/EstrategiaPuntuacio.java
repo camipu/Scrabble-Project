@@ -1,5 +1,7 @@
 package edu.upc.prop.clusterxx;
 
+import java.io.Serializable;
+
 /**
  * Interfície que defineix una estratègia de puntuació per a una casella del tauler.
  * Les estratègies poden aplicar multiplicadors a lletres o paraules senceres,
@@ -32,7 +34,7 @@ public interface EstrategiaPuntuacio {
     /**
      * Estratègia normal (sense multiplicadors)
      */
-    class EstrategiaNormal implements EstrategiaPuntuacio {
+    class EstrategiaNormal implements EstrategiaPuntuacio, Serializable {
         @Override
         public int calcularPunts(Fitxa fitxa) {
             return fitxa != null ? fitxa.obtenirPunts() : 0;
@@ -48,7 +50,7 @@ public interface EstrategiaPuntuacio {
     /**
      * Multiplicador de lletra (ex: DL, TL)
      */
-    class EstrategiaMultiplicadorLletra implements EstrategiaPuntuacio {
+    class EstrategiaMultiplicadorLletra implements EstrategiaPuntuacio, Serializable {
         private final int multiplicador;
 
         public EstrategiaMultiplicadorLletra(int multiplicador) {
@@ -73,7 +75,7 @@ public interface EstrategiaPuntuacio {
     /**
      * Multiplicador de paraula (ex: DW, TW)
      */
-    class EstrategiaMultiplicadorParaula implements EstrategiaPuntuacio {
+    class EstrategiaMultiplicadorParaula implements EstrategiaPuntuacio, Serializable {
         private final int multiplicador;
 
         public EstrategiaMultiplicadorParaula(int multiplicador) {

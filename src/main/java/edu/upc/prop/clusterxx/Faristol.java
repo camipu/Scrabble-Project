@@ -4,6 +4,7 @@ import edu.upc.prop.clusterxx.exceptions.ExcepcioFaristolNoConteLaFitxa;
 import edu.upc.prop.clusterxx.exceptions.ExcepcioFaristolPle;
 
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -11,7 +12,7 @@ import java.util.Collections;
  * Representa el faristol d’un jugador, on es col·loquen les fitxes disponibles durant la partida.
  * El faristol té una mida fixa i pot contenir diverses fitxes que el jugador pot utilitzar.
  */
-public class Faristol {
+public class Faristol implements Serializable {
     private final int size;
     private final ArrayList<Fitxa> fitxes;
 

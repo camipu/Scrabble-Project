@@ -1,6 +1,18 @@
 package edu.upc.prop.clusterxx.controladors;
 
-import edu.upc.prop.clusterxx.*;
+import edu.upc.prop.clusterxx.Taulell;
+import edu.upc.prop.clusterxx.Jugador;
+import edu.upc.prop.clusterxx.Jugada;
+import edu.upc.prop.clusterxx.Fitxa;
+import edu.upc.prop.clusterxx.Sac;
+import edu.upc.prop.clusterxx.Torn;
+import edu.upc.prop.clusterxx.persistencia.CtrlPersistencia;
+
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * Classe CtrDomini
@@ -81,6 +93,35 @@ public class CtrlDomini {
     }
 
     /**
+     * Retira una puntuació a les estadístiques del sistema.
+     *
+     * @param jugador Nom del jugador al que retirem la puntuació
+     * @param puntuacio Puntuació retirada al jugador
+     */
+    public void retirarPuntuacio(String jugador, int puntuacio) {
+        ctrEstadistica.retirarPuntuacio(jugador, puntuacio);
+    }
+
+    public String obtenirMillorJugador() {
+        return ctrEstadistica.obtenirMillorJugador();
+    }
+
+    public Map<String, Integer> obtenirPuntuacions(){
+        return ctrEstadistica.obtenirPuntuacions();
+    }
+
+    public void eliminarJugador(String nom) {
+        ctrEstadistica.eliminarJugador(nom);
+    }
+
+    public void actualitzarEstadistiques(Jugador[] jugadors) {
+        for (Jugador j : jugadors) {
+            ctrEstadistica.afegirPuntuacio(j.obtenirNom(), j.obtenirPunts());
+        }
+        ctrEstadistica.desarEstadistiques();
+    }
+
+    /**
      * Inicialitza una nova partida amb els paràmetres especificats.
      * Aquesta acció es delega al controlador de partida.
      *
@@ -92,16 +133,6 @@ public class CtrlDomini {
      */
     public void inicialitzarPartida(int midaTaulell, int midaFaristol, String idioma, String[] nomsJugadors,int[] dificultatsBots){
         ctrlPartida.inicialitzarPartida(midaTaulell, midaFaristol, idioma, nomsJugadors, dificultatsBots);
-    }
-
-    /**
-     * Carrega una partida a partir d’un estat de torn guardat.
-     * Aquesta acció permet reprendre una partida anteriorment iniciada.
-     *
-     * @param torn Torn que conté l’estat de la partida a carregar
-     */
-    public void carregarPartida(Torn torn){
-        ctrlPartida.recuperarTorn(torn);
     }
 
     /**
@@ -234,14 +265,10 @@ public class CtrlDomini {
     /**
      * Realitza una jugada del bot.
      *
-     * @return Una instància de Jugada que es la que acaba de fer el bot
+     * @return Una instància de Jugada que és la que acaba de fer el bot
      */
     public Jugada jugadaBot() {
         return ctrlPartida.jugadaBot();
-    }
-
-    public void guardarPartida() {
-        //no tenim capa de persistència :(
     }
 
     /**
@@ -257,7 +284,47 @@ public class CtrlDomini {
      * @param lletra La lletra escollida pel jugador
      * @return {@code true} si l'operació s'ha pogut fer, {@code false} altrament
      */
-    public boolean setLletraComodi(String fitxa, String lletra) {
-        return ctrlPartida.setLletraComodi(fitxa, lletra);
+    public boolean setLletraComodi(Fitxa fitxa, String lletra) {
+        return ctrlPartida.setLletraComodi(fitxa.obtenirLletra(), lletra);
+    }
+
+
+    public void guardarPartida() {
+        Torn tornActual = ctrlPartida.obtenirTornActual();
+        String nomFitxer = generarNomFitxerAmbData(); // pots fer-ho com a mètode privat aquí també
+        try {
+            CtrlPersistencia.guardarTorn(nomFitxer, tornActual);
+        } catch (IOException e) {
+            throw new RuntimeException("Error al guardar la partida: " + e.getMessage());
+        }
+    }
+
+    public void carregarPartida(String nomFitxer) {
+        try {
+            Torn torn = CtrlPersistencia.carregarTorn(nomFitxer);
+            ctrlPartida.recuperarTornDesDeFitxer(torn);
+        } catch (IOException | ClassNotFoundException e) {
+            throw new RuntimeException("Error al carregar la partida: " + e.getMessage());
+        }
+    }
+
+    private String generarNomFitxerAmbData() {
+        return Arrays.stream(obtenirJugadors())
+                .map(Jugador::obtenirNom)
+                .collect(Collectors.joining("-")) +
+                "_" + java.time.LocalDateTime.now()
+                .format(java.time.format.DateTimeFormatter.ofPattern("yyyy-MM-dd_HH-mm"));
+    }
+
+    public List<String> llistarPartidesGuardades() {
+        return CtrlPersistencia.llistarPartidesGuardades();
+    }
+
+    public void desarEstadistiques() {
+        ctrEstadistica.desarEstadistiques();
+    }
+
+    public void carregarEstadistiques() {
+        ctrEstadistica.carregarEstadistiques();
     }
 }

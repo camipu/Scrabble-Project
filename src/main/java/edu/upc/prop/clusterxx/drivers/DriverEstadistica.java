@@ -1,6 +1,8 @@
 package edu.upc.prop.clusterxx.drivers;
 
 import edu.upc.prop.clusterxx.controladors.CtrEstadistica;
+import edu.upc.prop.clusterxx.controladors.CtrlDomini;
+import edu.upc.prop.clusterxx.persistencia.CtrlPersistencia;
 
 import java.util.Map;
 import java.util.Scanner;
@@ -8,10 +10,14 @@ import java.util.Scanner;
 public class DriverEstadistica {
 
     public static void main(String[] args) {
-        CtrEstadistica ctr = CtrEstadistica.getInstance();
-        Scanner scanner = new Scanner(System.in);
 
+        CtrlDomini ctr = CtrlDomini.getInstance();
+        ctr.carregarEstadistiques();
+
+
+        Scanner scanner = new Scanner(System.in);
         boolean sortir = false;
+
         while (!sortir) {
             System.out.println("\n==== MENÚ D'ESTADÍSTIQUES ====");
             System.out.println("1. Afegir una puntuació");
@@ -28,7 +34,7 @@ public class DriverEstadistica {
             scanner.nextLine();
 
             switch (opcio) {
-                case 1:
+                case 1 -> {
                     System.out.print("Nom del jugador: ");
                     String nom = scanner.nextLine();
                     System.out.print("Puntuació: ");
@@ -36,37 +42,24 @@ public class DriverEstadistica {
                     scanner.nextLine();
                     ctr.afegirPuntuacio(nom, puntuacio);
                     System.out.println("Puntuació afegida correctament.");
-                    break;
-
-                case 2:
+                }
+                case 2 -> {
                     System.out.print("Nom del jugador: ");
-                    nom = scanner.nextLine();
+                    String nom = scanner.nextLine();
                     System.out.print("Puntuació: ");
-                    puntuacio = scanner.nextInt();
+                    int puntuacio = scanner.nextInt();
                     scanner.nextLine();
                     ctr.retirarPuntuacio(nom, puntuacio);
                     System.out.println("Puntuació retirada correctament.");
-                    break;
-
-                case 3:
+                }
+                case 3 -> {
                     String millorJugador = ctr.obtenirMillorJugador();
                     int millorPuntuacio = ctr.obtenirPuntuacioMaxima();
-                    if (millorJugador != null) {
-                        System.out.println("Millor jugador: " + millorJugador + " amb " + millorPuntuacio + " punts");
-                    } else {
-                        System.out.println("No hi ha puntuacions registrades.");
-                    }
-                    break;
-
-                case 4:
-                    System.out.println("Puntuació mitjana: " + ctr.obtenirPuntuacioMitjana());
-                    break;
-
-                case 5:
-                    System.out.println("Puntuació total: " + ctr.obtenirPuntuacioTotal());
-                    break;
-
-                case 6:
+                    System.out.println("Millor jugador: " + millorJugador + " amb " + millorPuntuacio + " punts");
+                }
+                case 4 -> System.out.println("Puntuació mitjana: " + ctr.obtenirPuntuacioMitjana());
+                case 5 -> System.out.println("Puntuació total: " + ctr.obtenirPuntuacioTotal());
+                case 6 -> {
                     Map<String, Integer> puntuacions = ctr.obtenirPuntuacions();
                     if (puntuacions.isEmpty()) {
                         System.out.println("No hi ha puntuacions registrades.");
@@ -74,25 +67,23 @@ public class DriverEstadistica {
                         System.out.println("Llista de puntuacions (ordenades):");
                         puntuacions.entrySet()
                                 .stream()
-                                .sorted((entry1, entry2) -> entry2.getValue() - entry1.getValue())
-                                .forEach(entry -> System.out.println(entry.getKey() + ": " + entry.getValue() + " punts"));
+                                .sorted((e1, e2) -> e2.getValue() - e1.getValue())
+                                .forEach(e -> System.out.println(e.getKey() + ": " + e.getValue() + " punts"));
                     }
-                    break;
-
-                case 7:
+                }
+                case 7 -> {
                     System.out.print("Nom del jugador: ");
-                    nom = scanner.nextLine();
+                    String nom = scanner.nextLine();
                     ctr.eliminarJugador(nom);
                     System.out.println("Jugador eliminat correctament.");
-                    break;
-
-                case 0:
+                }
+                case 0 -> {
                     sortir = true;
-                    System.out.println("Sortint del driver.");
-                    break;
-
-                default:
-                    System.out.println("Opció no vàlida. Intenta-ho de nou.");
+                    // Guardar estadístiques al sortir
+                    ctr.desarEstadistiques(); // <- aquest mètode també crida a CtrlPersistencia.guardarEstadistiques(...)
+                    System.out.println("Estadístiques guardades. Sortint del driver.");
+                }
+                default -> System.out.println("Opció no vàlida. Intenta-ho de nou.");
             }
         }
 

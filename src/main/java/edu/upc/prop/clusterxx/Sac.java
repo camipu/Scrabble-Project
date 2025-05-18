@@ -5,6 +5,7 @@ import com.google.common.collect.Multiset;
 import edu.upc.prop.clusterxx.exceptions.ExcepcioSacBuit;
 import edu.upc.prop.clusterxx.exceptions.ExcepcioSacNoConteLaFitxa;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -17,7 +18,7 @@ import java.util.Set;
  *
  * El sac permet extreure fitxes de manera aleatòria i controlar quantes queden.
  */
-public class Sac {
+public class Sac implements Serializable {
     private final Multiset<Fitxa> fitxes;
     private Set<String> lletresOriginals;
 

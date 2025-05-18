@@ -1,5 +1,7 @@
 package edu.upc.prop.clusterxx;
 
+import java.io.Serializable;
+
 /**
  * Classe Taulell
  *
@@ -8,7 +10,7 @@ package edu.upc.prop.clusterxx;
  *
  * La mida del taulell és configurable i pot variar segons la configuració inicial de la partida.
  */
-public class Taulell {
+public class Taulell implements Serializable {
     private final int size;
     private final Casella[][] taulell;
 

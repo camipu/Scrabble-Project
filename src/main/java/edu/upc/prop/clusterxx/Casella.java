@@ -7,12 +7,14 @@ import edu.upc.prop.clusterxx.EstrategiaPuntuacio.EstrategiaMultiplicadorParaula
 import edu.upc.prop.clusterxx.EstrategiaPuntuacio.EstrategiaMultiplicadorLletra;
 import edu.upc.prop.clusterxx.EstrategiaPuntuacio.EstrategiaNormal;
 
+import java.io.Serializable;
+
 /**
  * Representa una casella del tauler de joc.
  * Cada casella té una posició definida per coordenades (x,y), pot contenir una fitxa
  * i té associada una estratègia de puntuació.
  */
-public class Casella {
+public class Casella implements Serializable {
     private final int x;
     private final int y;
     private Fitxa fitxa;

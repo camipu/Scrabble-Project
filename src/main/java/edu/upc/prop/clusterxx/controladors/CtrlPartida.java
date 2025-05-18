@@ -2,13 +2,12 @@ package edu.upc.prop.clusterxx.controladors;
 
 import edu.upc.prop.clusterxx.*;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
+import edu.upc.prop.clusterxx.persistencia.CtrlPersistencia;
 
 /**
  * Classe CtrlPartida
@@ -153,6 +152,16 @@ public class CtrlPartida {
         historial.retirarTorns(torn);
     }
 
+    public void recuperarTornPersi(Torn nouTorn) {
+        torn = nouTorn.obtenirTorn();
+        acabada = nouTorn.esAcabada();
+        taulell = nouTorn.obtenirTaulell();
+        sac = nouTorn.obtenirSac();
+        jugadors = nouTorn.obtenirJugadors();
+        tornsSenseCanvi = nouTorn.obtenirTorn();
+        List<Casella> casellasTorn = new ArrayList<>();
+    }
+
 
     /**
      * Reinicia l'estat del torn actual a l'estat inicial.
@@ -216,23 +225,7 @@ public class CtrlPartida {
 
         // Ordenar els jugadors per puntuació de major a menor
         ordenarJugadors();
-        guardarEstadistiques();
-    }
-
-
-    /**
-     * Guarda les estadístiques finals dels jugadors al finalitzar la partida.
-     * Afegeix la puntuació de cada jugador al registre d'estadístiques global.
-     */
-    private void guardarEstadistiques() {
-        Estadistiques estadistiques = Estadistiques.getInstance();
-
-        for (Jugador jugador : jugadors) {
-            String nom = jugador.obtenirNom();
-            int puntuacio = jugador.obtenirPunts();
-
-            estadistiques.afegirPuntuacio(puntuacio, nom);
-        }
+        CtrlDomini.getInstance().actualitzarEstadistiques(jugadors);
     }
 
 
@@ -585,6 +578,43 @@ public class CtrlPartida {
         return jugadaActual;
 
     }
+
+//    public void guardarPartida() throws IOException {
+//        Torn tornActual = historial.obtenirTorn(torn);
+//        String nomFitxer = generarNomFitxerAmbData();
+//
+//        CtrlPersistencia.guardarTorn(nomFitxer, tornActual);
+//    }
+
+//    private String generarNomFitxerAmbData() {
+//        String nomsJugadors = Arrays.stream(jugadors)
+//                .map(Jugador::obtenirNom)
+//                .collect(Collectors.joining("-"));
+//
+//        String timestamp = java.time.LocalDateTime.now()
+//                .format(java.time.format.DateTimeFormatter.ofPattern("yyyy-MM-dd_HH-mm"));
+//
+//        return nomsJugadors + "_" + timestamp;
+//    }
+
+//    public void carregarPartida(String nomFitxer) {
+//        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream("data/partides/" + nomFitxer + ".scrabble"))) {
+//            Torn torn = (Torn) ois.readObject();
+//            CtrlPartida.getInstance().recuperarTornPersi(torn);
+//        } catch (IOException | ClassNotFoundException e) {
+//            throw new RuntimeException("No s'ha pogut carregar la partida: " + e.getMessage(), e);
+//        }
+//    }
+
+    public Torn obtenirTornActual() {
+        return historial.obtenirTorn(torn);
+    }
+
+    public void recuperarTornDesDeFitxer(Torn torn) {
+        recuperarTornPersi(torn);
+    }
+
+
 
 
 }
