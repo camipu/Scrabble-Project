@@ -284,8 +284,8 @@ public class CtrlDomini {
      * @param lletra La lletra escollida pel jugador
      * @return {@code true} si l'operació s'ha pogut fer, {@code false} altrament
      */
-    public boolean setLletraComodi(Fitxa fitxa, String lletra) {
-        return ctrlPartida.setLletraComodi(fitxa.obtenirLletra(), lletra);
+    public boolean setLletraComodi(String fitxa, String lletra) {
+        return ctrlPartida.setLletraComodi(fitxa, lletra);
     }
 
 
