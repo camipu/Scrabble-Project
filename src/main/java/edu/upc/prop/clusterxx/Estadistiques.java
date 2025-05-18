@@ -2,6 +2,7 @@ package edu.upc.prop.clusterxx;
 
 import edu.upc.prop.clusterxx.exceptions.ExcepcioEstadistiquesBuides;
 
+import java.io.Serializable;
 import java.util.AbstractMap;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -17,7 +18,7 @@ import java.util.Collections;
  * Controla les estadístiques globals del sistema. Registra i organitza la informació dels jugadors i les seves puntuacions.
  * Té un mapa de puntuacions per jugador, un ranquing ordenat i altres estidisitques com la puntuacio total.
  */
-public class Estadistiques {
+public class Estadistiques implements Serializable {
 
     private Map<String, Integer> puntuacions = new HashMap<>();
     private TreeMap<Integer, Set<String>> ranking = new TreeMap<>(Collections.reverseOrder());
@@ -177,4 +178,11 @@ public class Estadistiques {
     public int getPuntuacioTotal() {
         return puntuacioTotal;
     }
+
+    public void carregarDes(Estadistiques altres) {
+        this.puntuacions = new HashMap<>(altres.puntuacions);
+        this.ranking = new TreeMap<>(altres.ranking);
+        this.puntuacioTotal = altres.puntuacioTotal;
+    }
+
 }

@@ -1,5 +1,6 @@
 package edu.upc.prop.clusterxx.persistencia;
 
+import edu.upc.prop.clusterxx.Estadistiques;
 import edu.upc.prop.clusterxx.Torn;
 
 import java.io.*;
@@ -9,6 +10,8 @@ import java.util.List;
 public class CtrlPersistencia {
 
     private static final String DIRECTORI_PARTIDES = "data/partides/";
+    private static final String DIRECTORI_ESTADISTIQUES = "data/estadistiques/";
+    private static final String FITXER_ESTADISTIQUES = DIRECTORI_ESTADISTIQUES + "estadistiques.scrabble";
 
     public static void guardarTorn(String nomFitxer, Torn torn) throws IOException {
         File directori = new File(DIRECTORI_PARTIDES);
@@ -37,4 +40,32 @@ public class CtrlPersistencia {
         }
         return noms;
     }
+
+    public static void guardarEstadistiques(Estadistiques estadistiques) throws IOException {
+        File directori = new File(DIRECTORI_ESTADISTIQUES);
+        if (!directori.exists()) directori.mkdirs();
+
+        try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(FITXER_ESTADISTIQUES))) {
+            out.writeObject(estadistiques);
+        }
+    }
+
+    public static Estadistiques carregarEstadistiques() {
+        File fitxer = new File(FITXER_ESTADISTIQUES);
+        if (!fitxer.exists()) return Estadistiques.getInstance();
+
+        try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(fitxer))) {
+            Estadistiques carregades = (Estadistiques) in.readObject();
+            Estadistiques instance = Estadistiques.getInstance();
+
+            // Copiar els valors des de 'carregades' a 'instance'
+            instance.carregarDes(carregades); // <-- Aquest mètode el crearem
+
+            return instance;
+        } catch (IOException | ClassNotFoundException e) {
+            System.err.println("Error carregant estadístiques: " + e.getMessage());
+            return Estadistiques.getInstance();
+        }
+    }
+
 }

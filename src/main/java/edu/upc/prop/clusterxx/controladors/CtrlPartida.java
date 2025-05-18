@@ -149,7 +149,7 @@ public class CtrlPartida {
         tornsSenseCanvi = nouTorn.obtenirTorn();
         List<Casella> casellasTorn = new ArrayList<>();
 
-        //historial.retirarTorns(torn);
+        historial.retirarTorns(torn);
     }
 
 
@@ -224,14 +224,11 @@ public class CtrlPartida {
      * Afegeix la puntuació de cada jugador al registre d'estadístiques global.
      */
     private void guardarEstadistiques() {
-        Estadistiques estadistiques = Estadistiques.getInstance();
-
+        CtrEstadistica estadisticaCtrl = CtrEstadistica.getInstance();
         for (Jugador jugador : jugadors) {
-            String nom = jugador.obtenirNom();
-            int puntuacio = jugador.obtenirPunts();
-
-            estadistiques.afegirPuntuacio(puntuacio, nom);
+            estadisticaCtrl.afegirPuntuacio(jugador.obtenirNom(), jugador.obtenirPunts());
         }
+        estadisticaCtrl.desarEstadistiques();
     }
 
 
