@@ -1,4 +1,5 @@
 package edu.upc.prop.clusterxx.controladors;
+import edu.upc.prop.clusterxx.Jugada;
 
 import edu.upc.prop.clusterxx.*;
 import edu.upc.prop.clusterxx.presentacio.vistes.PantallaIniciVista;
@@ -7,6 +8,7 @@ import edu.upc.prop.clusterxx.presentacio.vistes.PartidaVista;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.Arrays;
 import java.util.Locale;
 
 public class CtrlPresentacio {
@@ -145,7 +147,6 @@ public class CtrlPresentacio {
         actualitzarVistes();
     }
 
-
     /**
      * Actualitza les vistes amb les dades actuals del joc.
      * Evita crear nous frames cada vegada.
@@ -164,7 +165,7 @@ public class CtrlPresentacio {
 
 
         // Crea o actualitza la vista de partida
-        partidaVista = new PartidaVista(taulell, jugador);
+        partidaVista = new PartidaVista(taulell, ctrlDomini.obtenirJugadorActual(), Arrays.stream(ctrlDomini.obtenirJugadors()).toList());
         partidaVista.setPassarTornListener(this::passarTorn);
         partidaVista.setColocarListener(e -> colocarFitxa());
         partidaVista.setRetirarFitxaListener(this::retirarFitxa);

@@ -25,6 +25,7 @@ public class PartidaVista extends JPanel {
     private final Jugador jugador;
     private final TaulellVista taulellVista;
     private final JugadorVista jugadorVista;
+    private final List<JPanel> panelsJugadors = new ArrayList<>();
     private final List<JLabel> etiquetesPuntuacions = new ArrayList<>();
     private JPanel panellPuntuacions;
     private JButton botoPassar;
@@ -85,16 +86,6 @@ public class PartidaVista extends JPanel {
     }
 
     /**
-     * Constructor alternatiu per compatibilitat amb codi anterior.
-     *
-     * @param taulell Taulell de la partida
-     * @param jugador Jugador actual
-     */
-    public PartidaVista(Taulell taulell, Jugador jugador) {
-        this(taulell, jugador, List.of(jugador));
-    }
-
-    /**
      * Crea el panell amb els botons de control del joc.
      *
      * @return Panell amb els botons de control
@@ -122,12 +113,8 @@ public class PartidaVista extends JPanel {
         panell.add(botoPassar);
         panell.add(botoRetirarFitxa); // Afegim el nou botó
 
-
         return panell;
     }
-
-
-
 
     /**
      * Crea el panell de puntuacions per a tots els jugadors.
@@ -136,56 +123,100 @@ public class PartidaVista extends JPanel {
      * @return Panell amb les puntuacions dels jugadors
      */
     private JPanel crearPanellPuntuacions(List<Jugador> jugadors) {
+        // Panel exterior que contiene todo
+        JPanel panellExterior = new JPanel();
+        panellExterior.setLayout(new BorderLayout());
+        panellExterior.setBackground(ColorLoader.getInstance().getColorFons());
+        panellExterior.setBorder(crearTitledBorder("Puntuacions"));
+
+        // Panel interno para las puntuaciones con altura fija
         JPanel panell = new JPanel();
         panell.setLayout(new BoxLayout(panell, BoxLayout.Y_AXIS));
         panell.setBackground(ColorLoader.getInstance().getColorFons());
-        panell.setBorder(crearTitledBorder("Puntuacions"));
+
+        // Calculamos una altura apropiada según el número de jugadores
+        int alturaPanel = Math.max(150, jugadors.size() * 40);
+        panell.setPreferredSize(new Dimension(0, alturaPanel));
 
         Font fontPuntuacions = FontLoader.getCustomFont(14f);
+        Font fontPuntuacionsNegreta = FontLoader.getCustomFont(15f).deriveFont(Font.BOLD);
+        Color colorTextNormal = ColorLoader.getInstance().getColorText();
+        Color colorTextActiu = new Color(255, 255, 255);
+        Color colorIndicadorActiu = ColorLoader.getInstance().getColorAccent();
+        Color colorFonsActiu = new Color(
+                colorIndicadorActiu.getRed(),
+                colorIndicadorActiu.getGreen(),
+                colorIndicadorActiu.getBlue(),
+                100); // Semi-transparente
 
         // Per cada jugador, creem una etiqueta amb la seva puntuació
+        panelsJugadors.clear();
+        etiquetesPuntuacions.clear();
+
         for (Jugador j : jugadors) {
             JPanel jugadorPanel = new JPanel();
             jugadorPanel.setLayout(new BorderLayout(5, 5));
             jugadorPanel.setBackground(ColorLoader.getInstance().getColorFons());
-            jugadorPanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+            jugadorPanel.setBorder(BorderFactory.createEmptyBorder(8, 5, 8, 5));
+            jugadorPanel.setMaximumSize(new Dimension(Integer.MAX_VALUE, 40));
 
-            // Indicador de torn actual
+            // Indicador de torn actual (un panel más grande y más visible)
             JPanel indicadorPanel = new JPanel();
-            indicadorPanel.setPreferredSize(new Dimension(15, 15));
-            indicadorPanel.setBackground(j.equals(jugador) ?
-                    ColorLoader.getInstance().getColorAccent() :
-                    ColorLoader.getInstance().getColorFons());
+            indicadorPanel.setPreferredSize(new Dimension(20, 20));
+            indicadorPanel.setBorder(BorderFactory.createLineBorder(
+                    j.equals(jugador) ? colorIndicadorActiu : ColorLoader.getInstance().getColorFons(), 2));
+            indicadorPanel.setBackground(j.equals(jugador) ? colorIndicadorActiu : ColorLoader.getInstance().getColorFons());
+
+            if (j.equals(jugador)) {
+                jugadorPanel.setBackground(colorFonsActiu);
+            }
+
             jugadorPanel.add(indicadorPanel, BorderLayout.WEST);
 
             // Nom del jugador
             JLabel nomLabel = new JLabel(j.obtenirNom());
-            nomLabel.setFont(fontPuntuacions);
-            nomLabel.setForeground(ColorLoader.getInstance().getColorText());
+            nomLabel.setFont(j.equals(jugador) ? fontPuntuacionsNegreta : fontPuntuacions);
+            nomLabel.setForeground(j.equals(jugador) ? colorTextActiu : colorTextNormal);
 
             // Puntuació del jugador
             JLabel puntuacioLabel = new JLabel(String.valueOf(j.obtenirPunts()));
-            puntuacioLabel.setFont(fontPuntuacions);
-            puntuacioLabel.setForeground(ColorLoader.getInstance().getColorAccent());
+            puntuacioLabel.setFont(j.equals(jugador) ? fontPuntuacionsNegreta : fontPuntuacions);
+            puntuacioLabel.setForeground(colorIndicadorActiu);
 
             JPanel infoPanel = new JPanel(new BorderLayout(5, 0));
-            infoPanel.setBackground(ColorLoader.getInstance().getColorFons());
+            infoPanel.setBackground(j.equals(jugador) ? colorFonsActiu : ColorLoader.getInstance().getColorFons());
             infoPanel.add(nomLabel, BorderLayout.WEST);
             infoPanel.add(puntuacioLabel, BorderLayout.EAST);
 
             jugadorPanel.add(infoPanel, BorderLayout.CENTER);
 
+            // Agregamos un borde redondeado si es el jugador actual
+            if (j.equals(jugador)) {
+                jugadorPanel.setBorder(BorderFactory.createCompoundBorder(
+                        BorderFactory.createLineBorder(colorIndicadorActiu, 2),
+                        BorderFactory.createEmptyBorder(6, 3, 6, 3)
+                ));
+            }
+
             panell.add(jugadorPanel);
             panell.add(Box.createVerticalStrut(5));
 
-            // Guardem la referència a l'etiqueta de puntuació per actualitzar-la després
+            // Guardem referències per poder actualitzar després
+            panelsJugadors.add(jugadorPanel);
             etiquetesPuntuacions.add(puntuacioLabel);
         }
 
-        // Afegim un espai expandible al final per alinear els elements a la part superior
-        panell.add(Box.createVerticalGlue());
+        // Afegim un JScrollPane en cas que hi hagi molts jugadors
+        JScrollPane scrollPane = new JScrollPane(panell);
+        scrollPane.setBorder(null);
+        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+        scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        scrollPane.getVerticalScrollBar().setUnitIncrement(16);
+        scrollPane.setBackground(ColorLoader.getInstance().getColorFons());
 
-        return panell;
+        panellExterior.add(scrollPane, BorderLayout.CENTER);
+
+        return panellExterior;
     }
 
     /**
@@ -235,7 +266,6 @@ public class PartidaVista extends JPanel {
         // Aquí es pot implementar la lògica quan es selecciona una casella
         System.out.println("Casella seleccionada a PartidaVista: " + casella);
         casellaSeleccionada = casella;
-
     }
 
     public Fitxa obtenirFitxaSeleccionada() {
@@ -250,7 +280,6 @@ public class PartidaVista extends JPanel {
         //taulellVista.desseleccionarCasella();       // Limpia la casella seleccionada
         jugadorVista.obtenirFaristolVista().desseleccionarFitxa(); // Limpia la fitxa seleccionada
     }
-
 
     /**
      * Obté la casella seleccionada actualment.
@@ -330,24 +359,60 @@ public class PartidaVista extends JPanel {
      * @param jugadorActual Jugador que té el torn actualment
      */
     public void actualitzarPuntuacions(List<Jugador> jugadors, Jugador jugadorActual) {
-        if (jugadors.size() != etiquetesPuntuacions.size()) {
+        if (jugadors.size() != panelsJugadors.size() || jugadors.size() != etiquetesPuntuacions.size()) {
             return; // Els arrays han de tenir la mateixa mida
         }
+
+        Font fontPuntuacions = FontLoader.getCustomFont(14f);
+        Font fontPuntuacionsNegreta = FontLoader.getCustomFont(15f).deriveFont(Font.BOLD);
+        Color colorTextNormal = ColorLoader.getInstance().getColorText();
+        Color colorTextActiu = new Color(255, 255, 255);
+        Color colorIndicadorActiu = ColorLoader.getInstance().getColorAccent();
+        Color colorFonsActiu = new Color(
+                colorIndicadorActiu.getRed(),
+                colorIndicadorActiu.getGreen(),
+                colorIndicadorActiu.getBlue(),
+                100); // Semi-transparente
 
         // Recorrem el panell de puntuacions i actualitzem cada component
         for (int i = 0; i < jugadors.size(); i++) {
             Jugador j = jugadors.get(i);
-            JLabel etiqueta = etiquetesPuntuacions.get(i);
+            JPanel jugadorPanel = panelsJugadors.get(i);
+            JLabel etiquetaPuntuacio = etiquetesPuntuacions.get(i);
 
             // Actualitzem el valor de la puntuació
-            etiqueta.setText(String.valueOf(j.obtenirPunts()));
+            etiquetaPuntuacio.setText(String.valueOf(j.obtenirPunts()));
 
             // Actualitzem l'indicador de torn actual
-            JPanel jugadorPanel = (JPanel) panellPuntuacions.getComponent(i * 2); // Compensem pels Box.createVerticalStrut
             JPanel indicadorPanel = (JPanel) jugadorPanel.getComponent(0);
-            indicadorPanel.setBackground(j.equals(jugadorActual) ?
-                    ColorLoader.getInstance().getColorAccent() :
-                    ColorLoader.getInstance().getColorFons());
+            JPanel infoPanel = (JPanel) jugadorPanel.getComponent(1);
+            JLabel nomLabel = (JLabel) infoPanel.getComponent(0);
+
+            boolean esTornActual = j.equals(jugadorActual);
+
+            // Actualitzem l'indicador
+            indicadorPanel.setBackground(esTornActual ? colorIndicadorActiu : ColorLoader.getInstance().getColorFons());
+            indicadorPanel.setBorder(BorderFactory.createLineBorder(
+                    esTornActual ? colorIndicadorActiu : ColorLoader.getInstance().getColorFons(), 2));
+
+            // Actualitzem el fons del panel
+            jugadorPanel.setBackground(esTornActual ? colorFonsActiu : ColorLoader.getInstance().getColorFons());
+            infoPanel.setBackground(esTornActual ? colorFonsActiu : ColorLoader.getInstance().getColorFons());
+
+            // Actualitzem el text
+            nomLabel.setFont(esTornActual ? fontPuntuacionsNegreta : fontPuntuacions);
+            nomLabel.setForeground(esTornActual ? colorTextActiu : colorTextNormal);
+            etiquetaPuntuacio.setFont(esTornActual ? fontPuntuacionsNegreta : fontPuntuacions);
+
+            // Actualitzem el borde
+            if (esTornActual) {
+                jugadorPanel.setBorder(BorderFactory.createCompoundBorder(
+                        BorderFactory.createLineBorder(colorIndicadorActiu, 2),
+                        BorderFactory.createEmptyBorder(6, 3, 6, 3)
+                ));
+            } else {
+                jugadorPanel.setBorder(BorderFactory.createEmptyBorder(8, 5, 8, 5));
+            }
         }
 
         panellPuntuacions.revalidate();
