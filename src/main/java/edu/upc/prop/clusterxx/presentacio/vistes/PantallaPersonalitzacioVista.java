@@ -216,9 +216,9 @@ public class PantallaPersonalitzacioVista extends JFrame {
         dificultatsBotsCombos.clear();
 
         int numBots = obtenirNumero(numBotsField.getText());
-        if (numBots <= 0) {
+        if (numBots < 0) {
             JOptionPane.showMessageDialog(this,
-                    "Introdueix un nombre vàlid de bots (major que 0)",
+                    "Introdueix un nombre vàlid de bots (major que o igual que 0)",
                     "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }

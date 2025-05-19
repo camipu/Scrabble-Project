@@ -61,6 +61,7 @@ public class CtrlPartida {
      * @throws RuntimeException si no es poden trobar o llegir els fitxers corresponents
      */
     public void inicialitzarDawg(String idioma) {
+        if (idioma.equals("català")) idioma = "catalan";
         List<String> palabras = new ArrayList<>();
         List<String> tokens = new ArrayList<>();
 
@@ -370,6 +371,7 @@ public class CtrlPartida {
      * @throws IllegalArgumentException si hi ha errors de format en el fitxer
      */
     private void inicialitzarSac(String idioma) {
+        if (idioma.equals("català")) idioma = "catalan";
         String nomFitxer = "/" + idioma + "/fitxes" + idioma + ".txt";
         InputStream input = getClass().getResourceAsStream(nomFitxer);
         if (input == null) {
