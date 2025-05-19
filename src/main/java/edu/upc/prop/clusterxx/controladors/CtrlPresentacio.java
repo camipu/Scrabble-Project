@@ -1,9 +1,6 @@
 package edu.upc.prop.clusterxx.controladors;
 
-import edu.upc.prop.clusterxx.Casella;
-import edu.upc.prop.clusterxx.Fitxa;
-import edu.upc.prop.clusterxx.Jugador;
-import edu.upc.prop.clusterxx.Taulell;
+import edu.upc.prop.clusterxx.*;
 import edu.upc.prop.clusterxx.presentacio.vistes.PantallaIniciVista;
 import edu.upc.prop.clusterxx.presentacio.vistes.PantallaPersonalitzacioVista;
 import edu.upc.prop.clusterxx.presentacio.vistes.PartidaVista;
@@ -19,6 +16,7 @@ public class CtrlPresentacio {
     private PantallaPersonalitzacioVista pantallaPersonalitzacioVista;
     private PartidaVista partidaVista;
     private JFrame framePartida;
+    private boolean paraulaValida = false;
 
     /**
      * Retorna la instància única del controlador de presentació.
@@ -80,8 +78,8 @@ public class CtrlPresentacio {
         actualitzarVistes();
 
         // Fa la jugada del bot i torna a actualitzar la vista
-        ctrlDomini.jugadaBot();
-        actualitzarVistes();
+//        if (esJugadorActualBot()) ctrlDomini.jugadaBot();
+//        actualitzarVistes();
     }
 
     /**
@@ -100,12 +98,6 @@ public class CtrlPresentacio {
     public void passarTorn() {
         ctrlDomini.passarTorn();
         actualitzarVistes();
-
-        // Si el següent jugador és un bot, executa la seva jugada automàticament
-        if (esJugadorActualBot()) {
-            ctrlDomini.jugadaBot();
-            actualitzarVistes();
-        }
         System.out.println("Passat torn");
     }
 
@@ -128,9 +120,10 @@ public class CtrlPresentacio {
     public void colocarFitxa() {
         Casella casella = partidaVista.getCasellaSeleccionada();
         Fitxa fitxa = partidaVista.obtenirFitxaSeleccionada();
+        Jugada jugada = null;
 
         if (casella != null && fitxa != null) {
-            ctrlDomini.colocarFitxa(fitxa.obtenirLletra(), casella.obtenirX(), casella.obtenirY());
+            jugada = ctrlDomini.colocarFitxa(fitxa.obtenirLletra(), casella.obtenirX(), casella.obtenirY());
             actualitzarVistes(); // Refresca el tablero y faristol
         } else {
             JOptionPane.showMessageDialog(null,
@@ -138,15 +131,31 @@ public class CtrlPresentacio {
                     "Error",
                     JOptionPane.WARNING_MESSAGE);
         }
+        if (jugada != null) paraulaValida = jugada.getJugadaValida();
     }
+
+    private void commitParaula() {
+        if (paraulaValida) ctrlDomini.commitParaula();
+        else {
+            JOptionPane.showMessageDialog(null,
+                    "La paraula no és vàlida. Torna a intentar-ho.",
+                    "Error",
+                    JOptionPane.WARNING_MESSAGE);
+        }
+        actualitzarVistes();
+    }
+
 
     /**
      * Actualitza les vistes amb les dades actuals del joc.
      * Evita crear nous frames cada vegada.
      */
     private void actualitzarVistes() {
-        Taulell taulell = ctrlDomini.obtenirTaulell();
         Jugador jugador = ctrlDomini.obtenirJugadorActual();
+        if (jugador.esBot()) ctrlDomini.jugadaBot();
+
+        Taulell taulell = ctrlDomini.obtenirTaulell();
+        jugador = ctrlDomini.obtenirJugadorActual();
 
         // Elimina els components anteriors del frame si existeixen
         if (framePartida.getContentPane().getComponentCount() > 0) {
@@ -159,6 +168,7 @@ public class CtrlPresentacio {
         partidaVista.setPassarTornListener(this::passarTorn);
         partidaVista.setColocarListener(e -> colocarFitxa());
         partidaVista.setRetirarFitxaListener(this::retirarFitxa);
+        partidaVista.setValidarJugadaListener(this::commitParaula);
 
         // Afegeix la nova vista al frame
         framePartida.add(partidaVista, BorderLayout.CENTER);

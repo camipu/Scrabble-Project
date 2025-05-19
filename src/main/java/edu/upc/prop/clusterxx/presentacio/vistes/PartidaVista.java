@@ -35,6 +35,7 @@ public class PartidaVista extends JPanel {
     private Casella casellaSeleccionada = null;
     private Character lletraSeleccionada = null;
 
+
     /**
      * Crea una nova vista de partida amb el taulell i jugador especificats.
      *
@@ -267,6 +268,10 @@ public class PartidaVista extends JPanel {
      */
     public void setPassarTornListener(Runnable passarTornAction) {
         botoPassar.addActionListener(e -> passarTornAction.run());
+    }
+
+    public void setValidarJugadaListener(Runnable ValidarJugadaAction) {
+        botoValidarJugada.addActionListener(e -> ValidarJugadaAction.run());
     }
 
     public void setRetirarFitxaListener(Runnable retirarFitxaAction) {
