@@ -175,7 +175,40 @@ public class PantallaPersonalitzacioVista extends JFrame {
         principal.add(confirmarButton);
 
         add(new JScrollPane(principal));
+        // Botó configuració predeterminada
+        JButton botoDefault = new JButton("Configuració Predeterminada");
+        botoDefault.setFont(vt323Font);
+        botoDefault.setBackground(colorLoader.getColorAccent());
+        botoDefault.setFocusPainted(false);
+        botoDefault.setAlignmentX(Component.CENTER_ALIGNMENT);
+        botoDefault.addActionListener(e -> aplicarConfiguracioPredeterminada());
+        principal.add(Box.createRigidArea(new Dimension(0, 10)));
+        principal.add(botoDefault);
+
     }
+
+    private void aplicarConfiguracioPredeterminada() {
+        // Assignar valors bàsics
+        midaTaulellField.setText("15");
+        midaFaristolField.setText("7");
+        idiomaComboBox.setSelectedIndex(0); // Català
+
+        // Bots
+        numBotsField.setText("1");
+        actualitzarBots(); // Això reconstrueix el panell
+        if (!nomsBotsFields.isEmpty()) {
+            nomsBotsFields.get(0).setText("Bot 1");
+            dificultatsBotsCombos.get(0).setSelectedItem(1);
+        }
+
+        // Jugadors
+        numJugadorsField.setText("1");
+        actualitzarJugadors(); // Això reconstrueix el panell
+        if (!nomsJugadorsFields.isEmpty()) {
+            nomsJugadorsFields.get(0).setText("Default");
+        }
+    }
+
 
     private void actualitzarBots() {
         botsPanel.removeAll();
