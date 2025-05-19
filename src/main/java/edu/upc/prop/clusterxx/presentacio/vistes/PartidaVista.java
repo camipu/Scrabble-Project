@@ -28,6 +28,7 @@ public class PartidaVista extends JPanel {
     private final List<JLabel> etiquetesPuntuacions = new ArrayList<>();
     private JPanel panellPuntuacions;
     private JButton botoPassar;
+    private JButton botoRetirarFitxa;
     private JButton botoCanviarFitxes;
     private JButton botoValidarJugada;
     private JButton botoColocar;
@@ -99,7 +100,7 @@ public class PartidaVista extends JPanel {
      */
     private JPanel crearPanellBotons() {
         JPanel panell = new JPanel();
-        panell.setLayout(new GridLayout(4, 1, 0, 10));
+        panell.setLayout(new GridLayout(5, 1, 0, 10)); // De 4 a 5 files
         panell.setBackground(ColorLoader.getInstance().getColorFons());
         panell.setBorder(crearTitledBorder("Controls"));
 
@@ -111,14 +112,30 @@ public class PartidaVista extends JPanel {
         botoColocar = crearBoto("Col·locar", fontBotons, colorFons, colorText);
         botoCanviarFitxes = crearBoto("Canviar fitxes", fontBotons, colorFons, colorText);
         botoPassar = crearBoto("Passar torn", fontBotons, colorFons, colorText);
+        botoRetirarFitxa = crearBoto("Retirar fitxa", fontBotons, colorFons, colorText); // Nou botó
 
+        // Afegim els botons al panell
         panell.add(botoValidarJugada);
         panell.add(botoColocar);
         panell.add(botoCanviarFitxes);
         panell.add(botoPassar);
+        panell.add(botoRetirarFitxa); // Afegim el nou botó
+
+        // Acció associada (ara mateix només fa print)
+        botoRetirarFitxa.addActionListener(e -> retirarFicha());
 
         return panell;
     }
+
+    /**
+     * Acció per retirar una fitxa seleccionada del taulell.
+     * Ara mateix no fa res.
+     */
+    private void retirarFicha() {
+        // Aquesta funció es pot implementar més endavant
+        System.out.println("Retirar fitxa prement!");
+    }
+
 
     /**
      * Crea el panell de puntuacions per a tots els jugadors.
