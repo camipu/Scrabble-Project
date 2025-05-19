@@ -3,12 +3,12 @@ package edu.upc.prop.clusterxx.controladors;
 import edu.upc.prop.clusterxx.Taulell;
 import edu.upc.prop.clusterxx.Jugador;
 import edu.upc.prop.clusterxx.Jugada;
-import edu.upc.prop.clusterxx.Fitxa;
 import edu.upc.prop.clusterxx.Sac;
 import edu.upc.prop.clusterxx.Torn;
+import edu.upc.prop.clusterxx.exceptions.ExcepcioEscriptura;
+import edu.upc.prop.clusterxx.exceptions.ExcepcioLectura;
 import edu.upc.prop.clusterxx.persistencia.CtrlPersistencia;
 
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -296,8 +296,8 @@ public class CtrlDomini {
         String nomFitxer = generarNomFitxerAmbData(); // pots fer-ho com a mètode privat aquí també
         try {
             ctrlPersistencia.guardarTorn(nomFitxer, tornActual);
-        } catch (IOException e) {
-            throw new RuntimeException("Error al guardar la partida: " + e.getMessage());
+        } catch (ExcepcioEscriptura e) {
+            throw new RuntimeException(e);
         }
     }
 
@@ -305,7 +305,7 @@ public class CtrlDomini {
         try {
             Torn torn = ctrlPersistencia.carregarTorn(nomFitxer);
             ctrlPartida.recuperarTornDesDeFitxer(torn);
-        } catch (IOException | ClassNotFoundException e) {
+        } catch (ExcepcioLectura e) {
             throw new RuntimeException("Error al carregar la partida: " + e.getMessage());
         }
     }
