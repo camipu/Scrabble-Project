@@ -205,7 +205,7 @@ public class PantallaPersonalitzacioVista extends JFrame {
         numJugadorsField.setText("1");
         actualitzarJugadors(); // Això reconstrueix el panell
         if (!nomsJugadorsFields.isEmpty()) {
-            nomsJugadorsFields.get(0).setText("Default");
+            nomsJugadorsFields.get(0).setText("Loser");
         }
     }
 
