@@ -1,6 +1,8 @@
 package edu.upc.prop.clusterxx.controladors;
 
 import edu.upc.prop.clusterxx.Estadistiques;
+import edu.upc.prop.clusterxx.exceptions.ExcepcioEscriptura;
+import edu.upc.prop.clusterxx.exceptions.ExcepcioLectura;
 import edu.upc.prop.clusterxx.persistencia.CtrlPersistencia;
 
 import java.io.IOException;
@@ -27,19 +29,27 @@ public class CtrEstadistica {
     }
 
     private CtrEstadistica() {
-        estadistiques = CtrlPersistencia.carregarEstadistiques(); // Carrega des de fitxer
+        try {
+            estadistiques = CtrlPersistencia.carregarEstadistiques(); // Carrega des de fitxer
+        } catch (ExcepcioLectura e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void desarEstadistiques() {
         try {
             CtrlPersistencia.guardarEstadistiques(estadistiques);
-        } catch (IOException e) {
+        } catch (ExcepcioEscriptura e) {
             System.err.println("Error guardant estadístiques: " + e.getMessage());
         }
     }
 
     public void carregarEstadistiques() {
-        this.estadistiques = CtrlPersistencia.carregarEstadistiques();
+        try {
+            this.estadistiques = CtrlPersistencia.carregarEstadistiques();
+        } catch (ExcepcioLectura e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /**

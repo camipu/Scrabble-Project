@@ -77,7 +77,7 @@ public class CtrlPersistencia {
         }
     }
 
-    public static Estadistiques carregarEstadistiques() {
+    public static Estadistiques carregarEstadistiques() throws ExcepcioLectura {
         File fitxer = new File(FITXER_ESTADISTIQUES);
         if (!fitxer.exists()) return Estadistiques.getInstance();
 
@@ -87,8 +87,7 @@ public class CtrlPersistencia {
             instance.carregarDes(carregades); // Aquest mètode ja l’has creat
             return instance;
         } catch (IOException | ClassNotFoundException e) {
-            System.err.println("Error carregant estadístiques: " + e.getMessage());
-            return Estadistiques.getInstance();
+            throw new ExcepcioLectura("No s'han pogut carregar les estadisitquqes", e);
         }
     }
 }
