@@ -12,6 +12,7 @@ public class Jugada {
     private final List<Casella> casellesJugades;
     private int puntuacio;
     private boolean jugadaValida;
+    final private boolean comodi;
 
     /**
      * Constructor de la classe Jugada.
@@ -24,6 +25,7 @@ public class Jugada {
         this.casellesJugades = casellesJugades;
         this.puntuacio = puntuacio;
         this.jugadaValida = jugadaValida;
+        this.comodi = conteComodi(casellesJugades);
     }
     
     /**
@@ -45,6 +47,8 @@ public class Jugada {
         } else {
             this.puntuacio = 0;
         }
+
+        this.comodi = conteComodi(casellesJugades);
     }
     
     /**
@@ -69,6 +73,8 @@ public class Jugada {
         } else {
             this.puntuacio = 0;
         }
+
+        this.comodi = conteComodi(casellesJugades);
     }
 
     /**
@@ -131,5 +137,18 @@ public class Jugada {
      */
     public void setJugadaValida(Boolean jugadaValida) {
         this.jugadaValida = jugadaValida;
+    }
+
+    public boolean conteComodi() {
+        return comodi;
+    }
+
+    private boolean conteComodi(List<Casella> casellesJugades) {
+        for (Casella casella : casellesJugades) {
+            if (casella.obtenirFitxa().esComodi()) {
+                return true;
+            }
+        }
+        return false;
     }
 }

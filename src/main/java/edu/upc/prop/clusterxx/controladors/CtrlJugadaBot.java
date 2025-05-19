@@ -1,14 +1,14 @@
 package edu.upc.prop.clusterxx.controladors;
 
-import edu.upc.prop.clusterxx.Taulell;
-import edu.upc.prop.clusterxx.DAWG;
-import edu.upc.prop.clusterxx.Jugada;
-import edu.upc.prop.clusterxx.Fitxa;
-import edu.upc.prop.clusterxx.Casella;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
+import edu.upc.prop.clusterxx.Casella;
+import edu.upc.prop.clusterxx.DAWG;
+import edu.upc.prop.clusterxx.Fitxa;
+import edu.upc.prop.clusterxx.Jugada;
+import edu.upc.prop.clusterxx.Taulell;
 
 /**
  * Controlador que gestiona la generació de jugades del bot de Scrabble.
@@ -43,18 +43,28 @@ public class CtrlJugadaBot {
             return new Jugada("", new ArrayList<>(), 0, false);
         }
 
-        // Ordenem les jugades segons la puntuació
-        jugadesPossibles.sort((j1, j2) -> Integer.compare(j2.getPuntuacio(), j1.getPuntuacio()));
+        // Ordenem les jugades segons la puntuació, després si contenen comodí (prioritza les que NO en tenen), i després per paraula més curta
+        jugadesPossibles.sort((j1, j2) -> {
+            int cmp = Integer.compare(j2.getPuntuacio(), j1.getPuntuacio());
+            if (cmp == 0) {
+                // Prioritza les jugades que NO contenen comodí
+                boolean j1Comodi = j1.conteComodi();
+                boolean j2Comodi = j2.conteComodi();
+                if (j1Comodi != j2Comodi) {
+                    return Boolean.compare(j1Comodi, j2Comodi); // false < true
+                }
+                // Si segueix l'empat, prioritat a la paraula més curta
+                return Integer.compare(j1.getParaulaFormada().length(), j2.getParaulaFormada().length());
+            }
+            return cmp;
+        });
 
         int mida = jugadesPossibles.size();
-        switch (nivellDificultat) {
-            case 1: // Fàcil: escull la pitjor jugada
-                return jugadesPossibles.get(mida-1);
-            case 2: // Mitjà: escull una jugada intermèdia
-                return jugadesPossibles.get(mida/2);
-            default: // Difícil: escull sempre la millor jugada
-                return jugadesPossibles.get(0);
-        }
+        return switch (nivellDificultat) {
+            case 1 -> jugadesPossibles.get(mida - 1); // Fàcil: escull la pitjor jugada
+            case 2 -> jugadesPossibles.get(mida / 2); // Mitjà: escull una jugada intermèdia
+            default -> jugadesPossibles.get(0); // Difícil: escull sempre la millor jugada
+        };
     }
 
     /**
@@ -156,7 +166,7 @@ public class CtrlJugadaBot {
             if (nodeActual.esFinal()) {
                 Jugada novaJugada = new Jugada(prefix, casellesJugades, dawg, taulell, horitzontal);
                 if (novaJugada.getJugadaValida()) {
-                    if (fitxesRestants.size() == 0) {
+                    if (fitxesRestants.isEmpty()) {
                         novaJugada.setPuntuacio(novaJugada.getPuntuacio()+50);
                     }
                     resultats.add(novaJugada);
