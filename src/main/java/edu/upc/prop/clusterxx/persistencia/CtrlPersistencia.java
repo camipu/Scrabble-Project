@@ -9,6 +9,14 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Classe CtrlPersistencia
+ *
+ * Controlador encarregat de gestionar la persistència de dades del sistema.
+ * Permet desar i carregar partides de Scrabble i estadístiques globals del joc
+ * mitjançant fitxers binaris
+ */
+
 public class CtrlPersistencia {
 
     private static CtrlPersistencia instance;
@@ -17,8 +25,16 @@ public class CtrlPersistencia {
     private static final String DIRECTORI_ESTADISTIQUES = "data/estadistiques/";
     private static final String FITXER_ESTADISTIQUES = DIRECTORI_ESTADISTIQUES + "estadistiques.scrabble";
 
+    /**
+     * Constructor privat per implementar el patró singleton.
+     */
     private CtrlPersistencia() {}
 
+    /**
+     * Retorna la instància única de CtrlPersistencia.
+     *
+     * @return Instància única del controlador de persistència
+     */
     public static CtrlPersistencia getInstance() {
         if (instance == null) {
             instance = new CtrlPersistencia();
@@ -26,6 +42,13 @@ public class CtrlPersistencia {
         return instance;
     }
 
+    /**
+     * Desa l’estat d’un torn de partida en un fitxer.
+     *
+     * @param nomFitxer Nom del fitxer (sense extensió)
+     * @param torn Torn que es vol guardar
+     * @throws ExcepcioEscriptura si hi ha un error durant el procés de guardat
+     */
     public static void guardarTorn(String nomFitxer, Torn torn) throws ExcepcioEscriptura {
         try {
             File directori = new File(DIRECTORI_PARTIDES);
@@ -40,6 +63,13 @@ public class CtrlPersistencia {
         }
     }
 
+    /**
+     * Carrega un torn de partida des d’un fitxer.
+     *
+     * @param nomFitxer Nom del fitxer (sense extensió)
+     * @return Torn desat en el fitxer
+     * @throws ExcepcioLectura si no es troba el fitxer o hi ha un error en llegir-lo
+     */
     public static Torn carregarTorn(String nomFitxer) throws ExcepcioLectura {
         File fitxer = new File(DIRECTORI_PARTIDES + nomFitxer + ".scrabble");
 
@@ -54,6 +84,11 @@ public class CtrlPersistencia {
         }
     }
 
+    /**
+     * Retorna la llista de noms de totes les partides guardades.
+     *
+     * @return Llista de noms de fitxers de partida (sense extensió)
+     */
     public static List<String> llistarPartidesGuardades() {
         File directori = new File(DIRECTORI_PARTIDES);
         File[] fitxers = directori.listFiles((dir, nom) -> nom.endsWith(".scrabble"));
@@ -64,6 +99,12 @@ public class CtrlPersistencia {
         return noms;
     }
 
+    /**
+     * Desa les estadístiques globals en un fitxer.
+     *
+     * @param estadistiques Objecte d’estadístiques a desar
+     * @throws ExcepcioEscriptura si hi ha un error durant el procés de guardat
+     */
     public static void guardarEstadistiques(Estadistiques estadistiques) throws ExcepcioEscriptura {
         try {
             File directori = new File(DIRECTORI_ESTADISTIQUES);
@@ -77,6 +118,13 @@ public class CtrlPersistencia {
         }
     }
 
+    /**
+     * Carrega les estadístiques globals des d’un fitxer.
+     * Si el fitxer no existeix, es retorna una nova instància buida.
+     *
+     * @return Objecte Estadistiques carregat o nou si el fitxer no existeix
+     * @throws ExcepcioLectura si hi ha un error durant la lectura del fitxer
+     */
     public static Estadistiques carregarEstadistiques() throws ExcepcioLectura {
         File fitxer = new File(FITXER_ESTADISTIQUES);
         if (!fitxer.exists()) return Estadistiques.getInstance();
