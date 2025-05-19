@@ -110,6 +110,19 @@ public class CtrlPresentacio {
     }
 
     /**
+     * Acció per retirar una fitxa seleccionada del taulell.
+     * Ara mateix no fa res.
+     */
+    public void retirarFitxa() {
+        // Aquesta funció es pot implementar més endavant
+        Casella casella = partidaVista.getCasellaSeleccionada();
+        ctrlDomini.retirarFitxa(casella.obtenirX(), casella.obtenirY());
+        actualitzarVistes();
+
+    }
+
+
+    /**
      * Col·loca una fitxa al taulell.
      */
     public void colocarFitxa() {
@@ -118,8 +131,6 @@ public class CtrlPresentacio {
 
         if (casella != null && fitxa != null) {
             ctrlDomini.colocarFitxa(fitxa.obtenirLletra(), casella.obtenirX(), casella.obtenirY());
-            partidaVista.desseleccionarFitxa(); // Limpia la selección visual
-            partidaVista.netejarSeleccions();   // Limpia también casella seleccionada, si lo tienes
             actualitzarVistes(); // Refresca el tablero y faristol
         } else {
             JOptionPane.showMessageDialog(null,
@@ -147,6 +158,7 @@ public class CtrlPresentacio {
         partidaVista = new PartidaVista(taulell, jugador);
         partidaVista.setPassarTornListener(this::passarTorn);
         partidaVista.setColocarListener(e -> colocarFitxa());
+        partidaVista.setRetirarFitxaListener(this::retirarFitxa);
 
         // Afegeix la nova vista al frame
         framePartida.add(partidaVista, BorderLayout.CENTER);

@@ -121,20 +121,11 @@ public class PartidaVista extends JPanel {
         panell.add(botoPassar);
         panell.add(botoRetirarFitxa); // Afegim el nou botó
 
-        // Acció associada (ara mateix només fa print)
-        botoRetirarFitxa.addActionListener(e -> retirarFicha());
 
         return panell;
     }
 
-    /**
-     * Acció per retirar una fitxa seleccionada del taulell.
-     * Ara mateix no fa res.
-     */
-    private void retirarFicha() {
-        // Aquesta funció es pot implementar més endavant
-        System.out.println("Retirar fitxa prement!");
-    }
+
 
 
     /**
@@ -276,6 +267,10 @@ public class PartidaVista extends JPanel {
      */
     public void setPassarTornListener(Runnable passarTornAction) {
         botoPassar.addActionListener(e -> passarTornAction.run());
+    }
+
+    public void setRetirarFitxaListener(Runnable retirarFitxaAction) {
+        botoRetirarFitxa.addActionListener(e -> retirarFitxaAction.run());
     }
 
     /**

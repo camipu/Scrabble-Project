@@ -511,6 +511,7 @@ public class CtrlPartida {
         jugadors[torn%jugadors.length].eliminarFitxa(aux);
         casellasTorn.add(taulell.getCasella(fila, columna));
         jugadaActual = taulell.construirJugada(casellasTorn, dawg);
+
         return jugadaActual;
     }
 
@@ -524,10 +525,12 @@ public class CtrlPartida {
         if (taulell.getCasella(fila, columna).esJugada()) {
             throw new IllegalArgumentException("La casella està jugada");
         }
-        taulell.retirarFitxa(fila, columna);
-        casellasTorn.remove(taulell.getCasella(fila, columna));
         jugadors[torn%jugadors.length].afegirFitxa(taulell.obtenirFitxa(fila, columna));
-        jugadaActual = taulell.construirJugada(casellasTorn, dawg);
+        taulell.retirarFitxa(fila, columna);
+
+        casellasTorn.remove(taulell.getCasella(fila, columna));
+        if (!casellasTorn.isEmpty())jugadaActual = taulell.construirJugada(casellasTorn, dawg);
+
         return jugadaActual;
     }
 
