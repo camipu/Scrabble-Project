@@ -1,8 +1,9 @@
 package edu.upc.prop.clusterxx.presentacio.vistes;
 
+import edu.upc.prop.clusterxx.Fitxa;
 import edu.upc.prop.clusterxx.Jugador;
-import edu.upc.prop.clusterxx.presentacio.FontLoader;
 import edu.upc.prop.clusterxx.presentacio.ColorLoader;
+import edu.upc.prop.clusterxx.presentacio.FontLoader;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
@@ -91,6 +92,14 @@ public class JugadorVista extends JPanel {
      */
     public FaristolVista obtenirFaristolVista() {
         return faristolVista;
+    }
+
+    public Fitxa obtenirFitxaSeleccionada() {
+        return faristolVista.obtenirFitxaSeleccionada();
+    }
+
+    public void desseleccionarFitxa() {
+        faristolVista.desseleccionarFitxa();
     }
 
     /**
