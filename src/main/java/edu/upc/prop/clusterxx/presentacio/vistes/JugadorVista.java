@@ -8,6 +8,7 @@ import edu.upc.prop.clusterxx.presentacio.FontLoader;
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
+import java.util.ArrayList;
 
 /**
  * Vista gràfica d'un Jugador, mostrant la seva informació (nom, punts) i el seu faristol.
@@ -85,6 +86,10 @@ public class JugadorVista extends JPanel {
         repaint();
     }
 
+    public ArrayList<Fitxa> getFitxesCanviades(){
+        return faristolVista.getFitxesCanviades();
+    }
+
     /**
      * Retorna la vista del faristol associada a aquest jugador.
      *
@@ -101,6 +106,15 @@ public class JugadorVista extends JPanel {
     public void desseleccionarFitxa() {
         faristolVista.desseleccionarFitxa();
     }
+
+    public boolean getModeCanviFitxes() {
+        return faristolVista.getModeCanviFitxes();
+    }
+
+    public void setModeCanviFitxes(boolean mode) {
+        faristolVista.setModeCanviFitxes(mode);
+    }
+
 
     /**
      * Adapta l'aparença de la vista per destacar quan és el torn del jugador.

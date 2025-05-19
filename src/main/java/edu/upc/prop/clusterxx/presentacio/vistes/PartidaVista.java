@@ -307,13 +307,8 @@ public class PartidaVista extends JPanel {
         botoRetirarFitxa.addActionListener(e -> retirarFitxaAction.run());
     }
 
-    /**
-     * Estableix l'ActionListener pel botó de canviar fitxes.
-     *
-     * @param listener ActionListener a establir
-     */
-    public void setCanviarFitxesListener(ActionListener listener) {
-        botoCanviarFitxes.addActionListener(listener);
+    public ArrayList<Fitxa>  getFitxesCanviades(){
+        return jugadorVista.getFitxesCanviades();
     }
 
     /**
@@ -323,6 +318,18 @@ public class PartidaVista extends JPanel {
      */
     public void setValidarJugadaListener(ActionListener listener) {
         botoValidarJugada.addActionListener(listener);
+    }
+
+    public boolean getModeCanviFitxes() {
+        return jugadorVista.getModeCanviFitxes();
+    }
+
+    public void setCanviarFitxesListener(Runnable listener) {
+        botoCanviarFitxes.addActionListener(e -> listener.run());
+    }
+
+    public void setModeCanviFitxes(boolean mode) {
+        jugadorVista.setModeCanviFitxes(mode);
     }
 
     /**

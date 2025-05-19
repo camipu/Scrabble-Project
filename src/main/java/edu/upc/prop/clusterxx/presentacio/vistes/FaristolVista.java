@@ -2,14 +2,15 @@ package edu.upc.prop.clusterxx.presentacio.vistes;
 
 import edu.upc.prop.clusterxx.Faristol;
 import edu.upc.prop.clusterxx.Fitxa;
-import edu.upc.prop.clusterxx.presentacio.FontLoader;
 import edu.upc.prop.clusterxx.presentacio.ColorLoader;
+import edu.upc.prop.clusterxx.presentacio.FontLoader;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 
 /**
  * Vista gràfica del Faristol, mostrant totes les fitxes disponibles del jugador.
@@ -18,6 +19,8 @@ public class FaristolVista extends JPanel {
 
     private final Faristol faristol;
     private Fitxa fitxaSeleccionada = null;
+    private boolean modeCanviFitxes = false;
+    private final ArrayList<Fitxa> fitxesSeleccionades = new ArrayList<>();
 
     public FaristolVista(Faristol faristol) {
         this.faristol = faristol;
@@ -31,14 +34,14 @@ public class FaristolVista extends JPanel {
         JPanel mainPanel = new JPanel();
         mainPanel.setLayout(new BorderLayout(10, 10));
 
-        // Afegir botó de barrejar amb emoji
-        JButton barrejarButton = new JButton("Barrejar"); // Emoji de barreja
-        barrejarButton.setBackground(ColorLoader.getInstance().getColorSeleccionada()); // Aplicar el color desitjat
-        barrejarButton.setForeground(Color.BLACK); // Color del text blanc
-        barrejarButton.setFont(FontLoader.getCustomFont(16f)); // Font personalitzada per al botó
-        barrejarButton.setPreferredSize(new Dimension(100, 40)); // Mida més petita per al botó
-        barrejarButton.setFocusPainted(false); // Evitar que es mostri el focus en fer clic
-        barrejarButton.setBorder(BorderFactory.createLineBorder(ColorLoader.getInstance().getColorSeleccionada(), 4)); // Borde personalitzat
+        // Afegir botó de barrejar
+        JButton barrejarButton = new JButton("Barrejar");
+        barrejarButton.setBackground(ColorLoader.getInstance().getColorSeleccionada());
+        barrejarButton.setForeground(Color.BLACK);
+        barrejarButton.setFont(FontLoader.getCustomFont(16f));
+        barrejarButton.setPreferredSize(new Dimension(100, 40));
+        barrejarButton.setFocusPainted(false);
+        barrejarButton.setBorder(BorderFactory.createLineBorder(ColorLoader.getInstance().getColorSeleccionada(), 4));
         barrejarButton.addActionListener(e -> barrejarFitxes());
 
         // Panell per als botons
@@ -63,37 +66,47 @@ public class FaristolVista extends JPanel {
      * Esborra i recrea totes les fitxes visuals.
      */
     public void actualitzarVista() {
-        // Esborrem les vistes actuals de les fitxes
-        JPanel fitxesPanel = (JPanel) ((JPanel) getComponent(0)).getComponent(1);  // Panell que conté les fitxes
+        JPanel fitxesPanel = (JPanel) ((JPanel) getComponent(0)).getComponent(1);
         fitxesPanel.removeAll();
 
-        for (Fitxa fitxa : faristol.obtenirFitxes()) { // Recórrer les fitxes
+        for (Fitxa fitxa : faristol.obtenirFitxes()) {
             FitxaVista fitxaVista = new FitxaVista(fitxa);
 
             fitxaVista.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseClicked(MouseEvent e) {
-                    // Si ja n'hi ha una seleccionada, la deseleccionem
-                    if (fitxaSeleccionada != null) {
-                        // Desseleccionem la fitxa visual que estava seleccionada
-                        for (Component component : fitxesPanel.getComponents()) {
-                            if (component instanceof FitxaVista) {
-                                FitxaVista fv = (FitxaVista) component;
-                                if (fv.obtenirFitxa() == fitxaSeleccionada) {
-                                    fv.setSeleccionada(false); // Deseleccionem la fitxa anterior
+                    if (!modeCanviFitxes) {
+                        // Mode normal: només una fitxa seleccionada
+                        if (fitxaSeleccionada != null) {
+                            for (Component component : fitxesPanel.getComponents()) {
+                                if (component instanceof FitxaVista) {
+                                    FitxaVista fv = (FitxaVista) component;
+                                    if (fv.obtenirFitxa() == fitxaSeleccionada) {
+                                        fv.setSeleccionada(false);
+                                    }
                                 }
                             }
                         }
-                    }
 
-                    // Actualitzem la fitxa seleccionada
-                    fitxaSeleccionada = fitxa;
-                    fitxaVista.setSeleccionada(true); // Seleccionem la nova fitxa
-                    System.out.println("Fitxa seleccionada del faristol: " + fitxa.obtenirLletra());
+                        fitxaSeleccionada = fitxa;
+                        fitxaVista.setSeleccionada(true);
+                        System.out.println("Fitxa seleccionada del faristol: " + fitxa.obtenirLletra());
+                    } else {
+                        // Mode canvi de fitxes: selecció múltiple
+                        if (fitxesSeleccionades.contains(fitxa)) {
+                            fitxesSeleccionades.remove(fitxa);
+                            fitxaVista.setSeleccionada(false);
+                            System.out.println("Fitxa desseleccionada per canvi: " + fitxa.obtenirLletra());
+                        } else {
+                            fitxesSeleccionades.add(fitxa);
+                            fitxaVista.setSeleccionada(true);
+                            System.out.println("Fitxa seleccionada per canvi: " + fitxa.obtenirLletra());
+                        }
+                    }
                 }
             });
 
-            fitxesPanel.add(fitxaVista); // Afegim la vista al panell de fitxes
+            fitxesPanel.add(fitxaVista);
         }
 
         fitxesPanel.revalidate();
@@ -104,15 +117,13 @@ public class FaristolVista extends JPanel {
      * Funció per barrejar les fitxes del faristol.
      */
     public void barrejarFitxes() {
-        faristol.barrejarFitxes(); // Cridem el mètode de Faristol per barrejar les fitxes
-        actualitzarVista(); // Actualitzem la vista per mostrar les fitxes en el nou ordre
+        faristol.barrejarFitxes();
+        actualitzarVista();
     }
 
     /**
-     * Retorna la fitxa seleccionada pel jugador.
+     * Retorna la fitxa seleccionada pel jugador en mode normal.
      * Després d'agafar-la, la deselecciona automàticament.
-     *
-     * @return Fitxa seleccionada o null si no n'hi ha cap
      */
     public Fitxa obtenirFitxaSeleccionada() {
         Fitxa seleccionada = fitxaSeleccionada;
@@ -121,9 +132,39 @@ public class FaristolVista extends JPanel {
     }
 
     /**
-     * Deselecciona manualment la fitxa seleccionada, si cal.
+     * Retorna la llista de fitxes seleccionades en mode canvi.
+     */
+    public ArrayList<Fitxa> getFitxesCanviades() {
+        return new ArrayList<>(fitxesSeleccionades);
+    }
+
+    /**
+     * Deselecciona manualment la fitxa seleccionada en mode normal.
      */
     public void desseleccionarFitxa() {
         fitxaSeleccionada = null;
+    }
+
+
+    /**
+     * Deselecciona totes les fitxes seleccionades en mode canvi.
+     */
+    public void desseleccionarFitxesCanvi() {
+        fitxesSeleccionades.clear();
+    }
+
+    public boolean getModeCanviFitxes() {
+        return modeCanviFitxes;
+    }
+
+    /**
+     * Habilita o deshabilita el mode de canvi de fitxes.
+     * @param mode true per activar el mode canvi, false per desactivar-lo
+     */
+    public void setModeCanviFitxes(boolean mode) {
+        this.modeCanviFitxes = mode;
+        fitxaSeleccionada = null;
+        fitxesSeleccionades.clear();
+        actualitzarVista();
     }
 }

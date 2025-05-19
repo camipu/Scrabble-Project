@@ -8,6 +8,7 @@ import edu.upc.prop.clusterxx.presentacio.vistes.PartidaVista;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Locale;
 
@@ -147,6 +148,54 @@ public class CtrlPresentacio {
         actualitzarVistes();
     }
 
+    public void canviarFitxes() {
+        boolean modeActual = partidaVista.getModeCanviFitxes();
+
+        if (!modeActual) {
+            // Activar modo cambio
+            partidaVista.setModeCanviFitxes(true);
+            JOptionPane.showMessageDialog(null,
+                    "Selecciona les fitxes del faristol que vols canviar i torna a prémer el botó.",
+                    "Canvi de fitxes",
+                    JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            // Obtener fichas seleccionadas
+            ArrayList<Fitxa> fitxesSeleccionades = partidaVista.getFitxesCanviades();
+
+            if (fitxesSeleccionades.isEmpty()) {
+                JOptionPane.showMessageDialog(null,
+                        "No s'han seleccionat fitxes per canviar.",
+                        "Error",
+                        JOptionPane.WARNING_MESSAGE);
+                // Desactivar modo igualment per evitar bloqueig
+                partidaVista.setModeCanviFitxes(false);
+                return;
+            }
+
+            // Extraer letras
+            String[] lletres = fitxesSeleccionades.stream()
+                    .map(f -> String.valueOf(f.obtenirLletra()))
+                    .toArray(String[]::new);
+
+            // Realizar cambio
+            ctrlDomini.canviarFitxes(lletres);
+
+            // Limpiar selección y desactivar modo cambio
+            partidaVista.setModeCanviFitxes(false);
+
+            // Actualizar interfaz
+            actualitzarVistes();
+
+            JOptionPane.showMessageDialog(null,
+                    "Fitxes canviades correctament.",
+                    "Canvi completat",
+                    JOptionPane.INFORMATION_MESSAGE);
+        }
+    }
+
+
+
+
     /**
      * Actualitza les vistes amb les dades actuals del joc.
      * Evita crear nous frames cada vegada.
@@ -170,6 +219,8 @@ public class CtrlPresentacio {
         partidaVista.setColocarListener(e -> colocarFitxa());
         partidaVista.setRetirarFitxaListener(this::retirarFitxa);
         partidaVista.setValidarJugadaListener(this::commitParaula);
+        partidaVista.setCanviarFitxesListener(this::canviarFitxes);
+
 
         // Afegeix la nova vista al frame
         framePartida.add(partidaVista, BorderLayout.CENTER);

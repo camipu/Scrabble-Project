@@ -562,7 +562,7 @@ public class DriverPartida {
         System.out.print("Per quina lletra vols substituir el comodí? ");
         while (true) {
             String lletra = sc.nextLine().toUpperCase();
-            if (ctrlDomini.setLletraComodi(fitxa, lletra)) {
+            if (ctrlDomini.setLletraComodi("#", lletra)) {
                 return lletra;
             } else {
                 System.out.println("No hi ha cap paraula amb la lletra '" + lletra + "' al diccionari.");
