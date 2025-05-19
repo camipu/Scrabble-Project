@@ -24,6 +24,7 @@ public class CtrlDomini {
     private static CtrlDomini instance = null;
     private CtrlPartida ctrlPartida = null;
     private CtrEstadistica ctrEstadistica = null;
+    private CtrlPersistencia ctrlPersistencia = null;
 
     /**
      * Retorna la instància única del controlador de domini.
@@ -44,6 +45,7 @@ public class CtrlDomini {
     private CtrlDomini(){
         ctrlPartida = CtrlPartida.getInstance();
         ctrEstadistica = CtrEstadistica.getInstance();
+        ctrlPersistencia = CtrlPersistencia.getInstance();
     }
 
     /**
@@ -293,7 +295,7 @@ public class CtrlDomini {
         Torn tornActual = ctrlPartida.obtenirTornActual();
         String nomFitxer = generarNomFitxerAmbData(); // pots fer-ho com a mètode privat aquí també
         try {
-            CtrlPersistencia.guardarTorn(nomFitxer, tornActual);
+            ctrlPersistencia.guardarTorn(nomFitxer, tornActual);
         } catch (IOException e) {
             throw new RuntimeException("Error al guardar la partida: " + e.getMessage());
         }
@@ -301,7 +303,7 @@ public class CtrlDomini {
 
     public void carregarPartida(String nomFitxer) {
         try {
-            Torn torn = CtrlPersistencia.carregarTorn(nomFitxer);
+            Torn torn = ctrlPersistencia.carregarTorn(nomFitxer);
             ctrlPartida.recuperarTornDesDeFitxer(torn);
         } catch (IOException | ClassNotFoundException e) {
             throw new RuntimeException("Error al carregar la partida: " + e.getMessage());
@@ -317,7 +319,7 @@ public class CtrlDomini {
     }
 
     public List<String> llistarPartidesGuardades() {
-        return CtrlPersistencia.llistarPartidesGuardades();
+        return ctrlPersistencia.llistarPartidesGuardades();
     }
 
     public void desarEstadistiques() {

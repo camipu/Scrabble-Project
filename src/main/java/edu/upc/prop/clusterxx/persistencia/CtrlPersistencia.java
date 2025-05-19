@@ -9,9 +9,21 @@ import java.util.List;
 
 public class CtrlPersistencia {
 
+    private static CtrlPersistencia instance;
+
     private static final String DIRECTORI_PARTIDES = "data/partides/";
     private static final String DIRECTORI_ESTADISTIQUES = "data/estadistiques/";
     private static final String FITXER_ESTADISTIQUES = DIRECTORI_ESTADISTIQUES + "estadistiques.scrabble";
+
+    private CtrlPersistencia() {
+    }
+
+    public static CtrlPersistencia getInstance() {
+        if (instance == null) {
+            instance = new CtrlPersistencia();
+        }
+        return instance;
+    }
 
     public static void guardarTorn(String nomFitxer, Torn torn) throws IOException {
         File directori = new File(DIRECTORI_PARTIDES);
