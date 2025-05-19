@@ -131,7 +131,7 @@ public class CtrlPartida {
         inicialitzarJugadors(nomsJugadors,dificultatsBots,midaFaristol);
         inicialitzarCtrlBot();
         historial = new HistorialJoc(new java.util.Date());
-        passarTorn();
+        passarTornIntern();
     }
 
     /**
@@ -286,12 +286,17 @@ public class CtrlPartida {
      * Incrementa el comptador de torns i de torns sense canvi, afegeix el torn actual a l’historial,
      * i comprova si s’ha d’acabar la partida.
      */
-    public void passarTorn() {
+    private void passarTornIntern() {
         ++torn;
         ++tornsSenseCanvi;
         inicialitzarCasellasTorn();
         historial.afegirTorn(new Torn(sac, taulell, jugadors, torn, acabada, tornsSenseCanvi));
         acabada = esFinalDePartida();
+    }
+
+    public void passarTorn() {
+        resetTorn();
+        passarTornIntern();
     }
 
     /**
@@ -488,7 +493,7 @@ public class CtrlPartida {
         for (Fitxa fitxa : fitxesCanviadesAux) {
             jugadors[torn%jugadors.length].afegirFitxa(fitxa);
         }
-        passarTorn();
+        passarTornIntern();
     }
 
     /**
@@ -554,7 +559,7 @@ public class CtrlPartida {
         }
         if (!casellasTorn.isEmpty()) tornsSenseCanvi = -1;
         rellenarFaristol();
-        passarTorn();
+        passarTornIntern();
     }
 
     /**
