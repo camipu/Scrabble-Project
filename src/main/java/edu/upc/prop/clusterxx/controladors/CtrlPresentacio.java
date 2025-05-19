@@ -10,6 +10,7 @@ import edu.upc.prop.clusterxx.presentacio.vistes.PartidaVista;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.Arrays;
 import java.util.Locale;
 
 public class CtrlPresentacio {
@@ -146,7 +147,7 @@ public class CtrlPresentacio {
      */
     private void actualitzarVistes() {
         Taulell taulell = ctrlDomini.obtenirTaulell();
-        Jugador jugador = ctrlDomini.obtenirJugadorActual();
+        Jugador[] jugadors = ctrlDomini.obtenirJugadors();
 
         // Elimina els components anteriors del frame si existeixen
         if (framePartida.getContentPane().getComponentCount() > 0) {
@@ -155,7 +156,7 @@ public class CtrlPresentacio {
 
 
         // Crea o actualitza la vista de partida
-        partidaVista = new PartidaVista(taulell, jugador);
+        partidaVista = new PartidaVista(taulell, ctrlDomini.obtenirJugadorActual(), Arrays.stream(jugadors).toList());
         partidaVista.setPassarTornListener(this::passarTorn);
         partidaVista.setColocarListener(e -> colocarFitxa());
         partidaVista.setRetirarFitxaListener(this::retirarFitxa);
