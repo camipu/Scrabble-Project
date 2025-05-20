@@ -2,11 +2,13 @@ package edu.upc.prop.clusterxx.controladors;
 import edu.upc.prop.clusterxx.Jugada;
 
 import edu.upc.prop.clusterxx.*;
+import edu.upc.prop.clusterxx.presentacio.vistes.GuanyadorVista;
 import edu.upc.prop.clusterxx.presentacio.vistes.PantallaIniciVista;
 import edu.upc.prop.clusterxx.presentacio.vistes.PantallaPersonalitzacioVista;
 import edu.upc.prop.clusterxx.presentacio.vistes.PartidaVista;
 
 import javax.swing.*;
+import java.util.List;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -47,9 +49,7 @@ public class CtrlPresentacio {
      */
     public void inicialitzarApp() {
         ctrlDomini = CtrlDomini.getInstance();
-        pantallaInici = new PantallaIniciVista(this);
-        // Mostra la finestra
-        pantallaInici.setVisible(true);
+        mostrarPantallaInici();
     }
 
     /**
@@ -100,8 +100,12 @@ public class CtrlPresentacio {
      */
     public void passarTorn() {
         ctrlDomini.passarTorn();
+//        if (ctrlDomini.esFinalDePartida()) {
+//            // Si és el final de la partida, mostra la pantalla de guanyador
+//            mostrarFinalPartida(ctrlDomini.obtenirTaulell(), Arrays.stream(ctrlDomini.obtenirJugadors()).toList());
+//        }
+
         actualitzarVistes();
-        System.out.println("Passat torn");
     }
 
     /**
@@ -202,10 +206,12 @@ public class CtrlPresentacio {
      */
     private void actualitzarVistes() {
         Jugador jugador = ctrlDomini.obtenirJugadorActual();
+        System.out.println("Punts jugador actual: " + jugador.obtenirNom() + " -> " + jugador.obtenirPunts());
         if (jugador.esBot()) ctrlDomini.jugadaBot();
 
         Taulell taulell = ctrlDomini.obtenirTaulell();
         jugador = ctrlDomini.obtenirJugadorActual();
+        System.out.println("Punts jugador actual: " + jugador.obtenirNom() + " -> " + jugador.obtenirPunts());
 
         // Elimina els components anteriors del frame si existeixen
         if (framePartida.getContentPane().getComponentCount() > 0) {
@@ -230,6 +236,51 @@ public class CtrlPresentacio {
         framePartida.setVisible(true);
         framePartida.revalidate();
         framePartida.repaint();
+    }
+
+    // En CtrlPresentacio.java
+
+    /**
+     * Método para mostrar la pantalla final de la partida.
+     *
+     * @param taulell Tablero final de la partida
+     * @param jugadors Lista de jugadores ordenada por puntuación (el primero es el ganador)
+     */
+    public void mostrarFinalPartida(Taulell taulell, List<Jugador> jugadors) {
+        // Crear la vista del ganador
+        GuanyadorVista guanyadorVista = new GuanyadorVista(taulell, jugadors);
+
+        // Configurar listeners para los botones
+        guanyadorVista.setTornarMenuListener(e -> {
+            // Volver al menú principal
+            mostrarPantallaInici();
+        });
+
+        guanyadorVista.setNovaPartidaListener(e -> {
+            // Iniciar una nueva partida
+            configurarPartida();
+        });
+
+        // Mostrar la vista en la ventana principal
+        JFrame frame = new JFrame("Scrabble - Fi de la Partida");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setSize(1200, 800);
+        frame.setLocationRelativeTo(null);
+        frame.setResizable(false);
+        frame.add(guanyadorVista);
+        frame.setVisible(true);
+
+        // Si tienes un frame principal, puedes hacer esto en su lugar:
+        // framePrincipal.getContentPane().removeAll();
+        // framePrincipal.add(guanyadorVista);
+        // framePrincipal.revalidate();
+        // framePrincipal.repaint();
+    }
+
+    private void mostrarPantallaInici() {
+        pantallaInici = new PantallaIniciVista(this);
+        // Mostra la finestra
+        pantallaInici.setVisible(true);
     }
 
     public boolean esJugadorActualBot() {
