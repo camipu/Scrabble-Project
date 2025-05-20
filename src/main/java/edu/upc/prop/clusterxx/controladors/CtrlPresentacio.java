@@ -1,5 +1,4 @@
 package edu.upc.prop.clusterxx.controladors;
-import edu.upc.prop.clusterxx.Jugada;
 
 import edu.upc.prop.clusterxx.*;
 import edu.upc.prop.clusterxx.presentacio.vistes.GuanyadorVista;
@@ -23,12 +22,6 @@ public class CtrlPresentacio {
     private JFrame framePartida;
     private boolean paraulaValida = false;
 
-    /**
-     * Retorna la instància única del controlador de presentació.
-     * Si encara no existeix, la crea.
-     *
-     * @return Instància única de {@code CtrlPresentacio}
-     */
     public static CtrlPresentacio getInstance() {
         if (instance == null) {
             instance = new CtrlPresentacio();
@@ -36,58 +29,26 @@ public class CtrlPresentacio {
         return instance;
     }
 
-    /**
-     * Constructor privat de {@code CtrlPresentacio}.
-     * Inicialitza la interfície d'usuari.
-     */
-    private CtrlPresentacio() {
-        // Inicialització de la interfície d'usuari
-    }
+    private CtrlPresentacio() {}
 
-    /**
-     * Inicialitza l'aplicació, creant les instàncies necessàries per al funcionament del joc.
-     */
     public void inicialitzarApp() {
         ctrlDomini = CtrlDomini.getInstance();
         mostrarPantallaInici();
     }
 
-    /**
-     * Canvia a la pantalla de configuració de partida.
-     */
     public void configurarPartida() {
         pantallaPersonalitzacioVista = new PantallaPersonalitzacioVista(this);
         pantallaInici.setVisible(false);
         pantallaPersonalitzacioVista.setVisible(true);
     }
 
-    /**
-     * Inicialitza una nova partida amb els paràmetres configurats.
-     *
-     * @param midaTaulell Mida del taulell de joc
-     * @param midaFaristol Mida del faristol de fitxes
-     * @param idioma Idioma seleccionat per a la partida
-     * @param nomsJugadors Noms dels jugadors participants
-     * @param dificultatsBots Nivells de dificultat dels bots
-     */
     public void inicialitzarPartida(int midaTaulell, int midaFaristol, String idioma, String[] nomsJugadors, int[] dificultatsBots) {
         ctrlDomini.inicialitzarPartida(midaTaulell, midaFaristol, idioma.toLowerCase(Locale.ROOT), nomsJugadors, dificultatsBots);
         pantallaPersonalitzacioVista.setVisible(false);
-
-        // Inicialitzar frame per a la partida només un cop
         crearFramePartida();
-
-        // Actualitza la vista amb les dades inicials
         actualitzarVistes();
-
-        // Fa la jugada del bot i torna a actualitzar la vista
-//        if (esJugadorActualBot()) ctrlDomini.jugadaBot();
-//        actualitzarVistes();
     }
 
-    /**
-     * Crea el frame principal de la partida.
-     */
     private void crearFramePartida() {
         framePartida = new JFrame("Partida");
         framePartida.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -95,53 +56,69 @@ public class CtrlPresentacio {
         framePartida.setLocationRelativeTo(null);
     }
 
-    /**
-     * Gestiona el pas de torn entre jugadors.
-     */
     public void passarTorn() {
         ctrlDomini.passarTorn();
-//        if (ctrlDomini.esFinalDePartida()) {
-//            // Si és el final de la partida, mostra la pantalla de guanyador
-//            mostrarFinalPartida(ctrlDomini.obtenirTaulell(), Arrays.stream(ctrlDomini.obtenirJugadors()).toList());
-//        }
-
         actualitzarVistes();
     }
 
-    /**
-     * Acció per retirar una fitxa seleccionada del taulell.
-     * Ara mateix no fa res.
-     */
     public void retirarFitxa() {
-        // Aquesta funció es pot implementar més endavant
         Casella casella = partidaVista.getCasellaSeleccionada();
         ctrlDomini.retirarFitxa(casella.obtenirX(), casella.obtenirY());
         actualitzarVistes();
-
     }
 
-
-    /**
-     * Col·loca una fitxa al taulell.
-     */
     public void colocarFitxa() {
         Casella casella = partidaVista.getCasellaSeleccionada();
         Fitxa fitxa = partidaVista.obtenirFitxaSeleccionada();
         Jugada jugada = null;
+        String lletraFitxa = (fitxa != null) ? fitxa.obtenirLletra() : "";
+
+        if (fitxa != null && fitxa.esComodi()) {
+            lletraFitxa = gestionarComodi(fitxa);
+            if (lletraFitxa == null) return; // Cancelado o inválido
+        }
 
         if (casella != null && fitxa != null) {
-            jugada = ctrlDomini.colocarFitxa(fitxa.obtenirLletra(), casella.obtenirX(), casella.obtenirY());
-            actualitzarVistes(); // Refresca el tablero y faristol
+            jugada = ctrlDomini.colocarFitxa(lletraFitxa, casella.obtenirX(), casella.obtenirY());
+            actualitzarVistes();
         } else {
             JOptionPane.showMessageDialog(null,
                     "Selecciona una casella i una fitxa abans de col·locar.",
                     "Error",
                     JOptionPane.WARNING_MESSAGE);
         }
+
         if (jugada != null) paraulaValida = jugada.getJugadaValida();
     }
 
-    private void commitParaula() {
+    private String gestionarComodi(Fitxa fitxa) {
+        String input = JOptionPane.showInputDialog(null,
+                "Has col·locat un comodí.\nEscriu la lletra que vols assignar-li:",
+                "Assignar lletra al comodí",
+                JOptionPane.PLAIN_MESSAGE);
+
+        if (input != null && !input.trim().isEmpty()) {
+            char lletra = Character.toUpperCase(input.trim().charAt(0));
+            String lletraStr = String.valueOf(lletra);
+
+            if (ctrlDomini.setLletraComodi("#", lletraStr)) {
+                return lletraStr;
+            } else {
+                JOptionPane.showMessageDialog(null,
+                        "Introdueix una lletra vàlida.",
+                        "Lletra no vàlida",
+                        JOptionPane.ERROR_MESSAGE);
+            }
+        } else {
+            JOptionPane.showMessageDialog(null,
+                    "Has de seleccionar una lletra per al comodí.",
+                    "Assignació cancel·lada",
+                    JOptionPane.WARNING_MESSAGE);
+        }
+        return null;
+    }
+
+    public void commitParaula() {
         if (paraulaValida) ctrlDomini.commitParaula();
         else {
             JOptionPane.showMessageDialog(null,
@@ -156,14 +133,12 @@ public class CtrlPresentacio {
         boolean modeActual = partidaVista.getModeCanviFitxes();
 
         if (!modeActual) {
-            // Activar modo cambio
             partidaVista.setModeCanviFitxes(true);
             JOptionPane.showMessageDialog(null,
                     "Selecciona les fitxes del faristol que vols canviar i torna a prémer el botó.",
                     "Canvi de fitxes",
                     JOptionPane.INFORMATION_MESSAGE);
         } else {
-            // Obtener fichas seleccionadas
             ArrayList<Fitxa> fitxesSeleccionades = partidaVista.getFitxesCanviades();
 
             if (fitxesSeleccionades.isEmpty()) {
@@ -171,23 +146,16 @@ public class CtrlPresentacio {
                         "No s'han seleccionat fitxes per canviar.",
                         "Error",
                         JOptionPane.WARNING_MESSAGE);
-                // Desactivar modo igualment per evitar bloqueig
                 partidaVista.setModeCanviFitxes(false);
                 return;
             }
 
-            // Extraer letras
             String[] lletres = fitxesSeleccionades.stream()
                     .map(f -> String.valueOf(f.obtenirLletra()))
                     .toArray(String[]::new);
 
-            // Realizar cambio
             ctrlDomini.canviarFitxes(lletres);
-
-            // Limpiar selección y desactivar modo cambio
             partidaVista.setModeCanviFitxes(false);
-
-            // Actualizar interfaz
             actualitzarVistes();
 
             JOptionPane.showMessageDialog(null,
@@ -197,71 +165,39 @@ public class CtrlPresentacio {
         }
     }
 
-
-
-
-    /**
-     * Actualitza les vistes amb les dades actuals del joc.
-     * Evita crear nous frames cada vegada.
-     */
     private void actualitzarVistes() {
         Jugador jugador = ctrlDomini.obtenirJugadorActual();
         System.out.println("Punts jugador actual: " + jugador.obtenirNom() + " -> " + jugador.obtenirPunts());
+
         if (jugador.esBot()) ctrlDomini.jugadaBot();
 
         Taulell taulell = ctrlDomini.obtenirTaulell();
         jugador = ctrlDomini.obtenirJugadorActual();
-        System.out.println("Punts jugador actual: " + jugador.obtenirNom() + " -> " + jugador.obtenirPunts());
 
-        // Elimina els components anteriors del frame si existeixen
         if (framePartida.getContentPane().getComponentCount() > 0) {
             framePartida.getContentPane().removeAll();
         }
 
-
-        // Crea o actualitza la vista de partida
-        partidaVista = new PartidaVista(taulell, ctrlDomini.obtenirJugadorActual(), Arrays.stream(ctrlDomini.obtenirJugadors()).toList());
+        partidaVista = new PartidaVista(taulell, jugador, Arrays.stream(ctrlDomini.obtenirJugadors()).toList());
         partidaVista.setPassarTornListener(this::passarTorn);
         partidaVista.setColocarListener(e -> colocarFitxa());
         partidaVista.setRetirarFitxaListener(this::retirarFitxa);
         partidaVista.setValidarJugadaListener(this::commitParaula);
         partidaVista.setCanviarFitxesListener(this::canviarFitxes);
 
-
-        // Afegeix la nova vista al frame
         framePartida.add(partidaVista, BorderLayout.CENTER);
-
-        // Actualitza el frame
         framePartida.pack();
         framePartida.setVisible(true);
         framePartida.revalidate();
         framePartida.repaint();
     }
 
-    // En CtrlPresentacio.java
-
-    /**
-     * Método para mostrar la pantalla final de la partida.
-     *
-     * @param taulell Tablero final de la partida
-     * @param jugadors Lista de jugadores ordenada por puntuación (el primero es el ganador)
-     */
     public void mostrarFinalPartida(Taulell taulell, List<Jugador> jugadors) {
-        // Crear la vista del ganador
         GuanyadorVista guanyadorVista = new GuanyadorVista(taulell, jugadors);
 
-        // Configurar listeners para los botones
-        guanyadorVista.setTornarMenuListener(e -> {
-            // Volver al menú principal
-            mostrarPantallaInici();
-        });
+        guanyadorVista.setTornarMenuListener(e -> mostrarPantallaInici());
+        guanyadorVista.setNovaPartidaListener(e -> configurarPartida());
 
-        guanyadorVista.setNovaPartidaListener(e -> {
-            // Iniciar una nueva partida
-            configurarPartida();
-        });
-
-        // Mostrar la vista en la ventana principal
         JFrame frame = new JFrame("Scrabble - Fi de la Partida");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(1200, 800);
@@ -269,22 +205,14 @@ public class CtrlPresentacio {
         frame.setResizable(false);
         frame.add(guanyadorVista);
         frame.setVisible(true);
-
-        // Si tienes un frame principal, puedes hacer esto en su lugar:
-        // framePrincipal.getContentPane().removeAll();
-        // framePrincipal.add(guanyadorVista);
-        // framePrincipal.revalidate();
-        // framePrincipal.repaint();
     }
 
     private void mostrarPantallaInici() {
         pantallaInici = new PantallaIniciVista(this);
-        // Mostra la finestra
         pantallaInici.setVisible(true);
     }
 
     public boolean esJugadorActualBot() {
         return ctrlDomini.obtenirJugadorActual().esBot();
     }
-
 }
