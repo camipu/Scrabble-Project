@@ -165,6 +165,7 @@ public class CtrlPresentacio {
         }
     }
 
+
     private void actualitzarVistes() {
         Jugador jugador = ctrlDomini.obtenirJugadorActual();
         System.out.println("Punts jugador actual: " + jugador.obtenirNom() + " -> " + jugador.obtenirPunts());
@@ -184,12 +185,18 @@ public class CtrlPresentacio {
         partidaVista.setRetirarFitxaListener(this::retirarFitxa);
         partidaVista.setValidarJugadaListener(this::commitParaula);
         partidaVista.setCanviarFitxesListener(this::canviarFitxes);
+        // A la classe controladora, pots afegir:
+        partidaVista.setGuardarPartidaListener(this::guardarPartida);
 
         framePartida.add(partidaVista, BorderLayout.CENTER);
         framePartida.pack();
         framePartida.setVisible(true);
         framePartida.revalidate();
         framePartida.repaint();
+    }
+
+    private void guardarPartida() {
+        ctrlDomini.guardarPartida();
     }
 
     public void mostrarFinalPartida(Taulell taulell, List<Jugador> jugadors) {
@@ -211,6 +218,8 @@ public class CtrlPresentacio {
         pantallaInici = new PantallaIniciVista(this);
         pantallaInici.setVisible(true);
     }
+
+
 
     public boolean esJugadorActualBot() {
         return ctrlDomini.obtenirJugadorActual().esBot();

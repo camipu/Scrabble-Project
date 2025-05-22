@@ -226,7 +226,6 @@ public class CtrlPartida {
 
         // Ordenar els jugadors per puntuació de major a menor
         ordenarJugadors();
-        CtrlDomini.getInstance().actualitzarEstadistiques(jugadors);
     }
 
 

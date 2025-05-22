@@ -33,6 +33,7 @@ public class PartidaVista extends JPanel {
     private JButton botoCanviarFitxes;
     private JButton botoValidarJugada;
     private JButton botoColocar;
+    private JButton botoGuardarPartida; // Nou botó per guardar partida
     private Casella casellaSeleccionada = null;
     private Character lletraSeleccionada = null;
 
@@ -66,8 +67,11 @@ public class PartidaVista extends JPanel {
         panellLateral.setBackground(ColorLoader.getInstance().getColorFons());
         panellLateral.setBorder(new EmptyBorder(0, 10, 0, 0));
 
-        // Creem el panell de botons
+        // Creem el panell de botons de control
         JPanel panellBotons = crearPanellBotons();
+
+        // Creem el botó de guardar partida separat
+        JPanel panellGuardar = crearPanellGuardarPartida();
 
         // Creem el panell de puntuacions
         panellPuntuacions = crearPanellPuntuacions(jugadors);
@@ -80,9 +84,31 @@ public class PartidaVista extends JPanel {
         add(taulellVista, BorderLayout.CENTER);
         add(jugadorVista, BorderLayout.SOUTH);
         add(panellLateral, BorderLayout.EAST);
+        add(panellGuardar, BorderLayout.NORTH); // Botó guardar a la part superior
 
         // Establim el torn actiu pel jugador inicial
         jugadorVista.setTornActiu(true);
+    }
+
+    /**
+     * Crea el panell amb el botó de guardar partida.
+     *
+     * @return Panell amb el botó de guardar partida
+     */
+    private JPanel crearPanellGuardarPartida() {
+        JPanel panell = new JPanel();
+        panell.setLayout(new FlowLayout(FlowLayout.CENTER));
+        panell.setBackground(ColorLoader.getInstance().getColorFons());
+        panell.setBorder(new EmptyBorder(0, 0, 10, 0));
+
+        Font fontGuardar = FontLoader.getCustomFont(16f).deriveFont(Font.BOLD);
+        Color colorFonsGuardar = new Color(46, 125, 50); // Verd fosc per destacar
+        Color colorTextGuardar = Color.WHITE;
+
+        botoGuardarPartida = crearBotoEspecial("GUARDAR PARTIDA", fontGuardar, colorFonsGuardar, colorTextGuardar);
+
+        panell.add(botoGuardarPartida);
+        return panell;
     }
 
     /**
@@ -258,6 +284,42 @@ public class PartidaVista extends JPanel {
     }
 
     /**
+     * Crea un botó especial amb estil destacat (per exemple, per guardar partida).
+     *
+     * @param text Text del botó
+     * @param font Font a utilitzar
+     * @param colorFons Color de fons del botó
+     * @param colorText Color del text del botó
+     * @return Botó configurat amb l'estil especial
+     */
+    private JButton crearBotoEspecial(String text, Font font, Color colorFons, Color colorText) {
+        JButton boto = new JButton(text);
+        boto.setFont(font);
+        boto.setBackground(colorFons);
+        boto.setForeground(colorText);
+        boto.setFocusPainted(false);
+        boto.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createLineBorder(colorFons.darker(), 2),
+                BorderFactory.createEmptyBorder(10, 20, 10, 20)
+        ));
+
+        // Efecte hover per al botó especial
+        boto.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                boto.setBackground(colorFons.brighter());
+            }
+
+            @Override
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                boto.setBackground(colorFons);
+            }
+        });
+
+        return boto;
+    }
+
+    /**
      * Gestiona l'event de selecció d'una casella al taulell.
      *
      * @param casella Casella seleccionada
@@ -305,6 +367,15 @@ public class PartidaVista extends JPanel {
 
     public void setRetirarFitxaListener(Runnable retirarFitxaAction) {
         botoRetirarFitxa.addActionListener(e -> retirarFitxaAction.run());
+    }
+
+    /**
+     * Estableix l'ActionListener pel botó de guardar partida.
+     *
+     * @param guardarPartidaAction Runnable a establir
+     */
+    public void setGuardarPartidaListener(Runnable guardarPartidaAction) {
+        botoGuardarPartida.addActionListener(e -> guardarPartidaAction.run());
     }
 
     public ArrayList<Fitxa>  getFitxesCanviades(){

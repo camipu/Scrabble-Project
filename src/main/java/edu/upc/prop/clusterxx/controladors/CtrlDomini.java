@@ -223,6 +223,8 @@ public class CtrlDomini {
      */
     public void acabarPartida() {
         ctrlPartida.acabarPartida();
+        guardarPartida();
+        actualitzarEstadistiques(ctrlPartida.obtenirJugadors());
     }
 
     /**
