@@ -522,7 +522,7 @@ public class CtrlPartida {
         taulell.retirarFitxa(fila, columna);
 
         casellasTorn.remove(taulell.getCasella(fila, columna));
-        if (!casellasTorn.isEmpty())jugadaActual = taulell.construirJugada(casellasTorn, dawg);
+        if (!casellasTorn.isEmpty()) jugadaActual = new Jugada(casellasTorn, dawg, taulell);
 
         return jugadaActual;
     }
