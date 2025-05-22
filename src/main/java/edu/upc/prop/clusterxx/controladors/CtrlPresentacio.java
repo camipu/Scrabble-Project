@@ -1,10 +1,7 @@
 package edu.upc.prop.clusterxx.controladors;
 
 import edu.upc.prop.clusterxx.*;
-import edu.upc.prop.clusterxx.presentacio.vistes.GuanyadorVista;
-import edu.upc.prop.clusterxx.presentacio.vistes.PantallaIniciVista;
-import edu.upc.prop.clusterxx.presentacio.vistes.PantallaPersonalitzacioVista;
-import edu.upc.prop.clusterxx.presentacio.vistes.PartidaVista;
+import edu.upc.prop.clusterxx.presentacio.vistes.*;
 
 import javax.swing.*;
 import java.util.List;
@@ -13,7 +10,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Locale;
 
-public class CtrlPresentacio {
+public class CtrlPresentacio extends Component {
     private static CtrlPresentacio instance = null;
     private CtrlDomini ctrlDomini;
     private PantallaIniciVista pantallaInici;
@@ -188,6 +185,7 @@ public class CtrlPresentacio {
         // A la classe controladora, pots afegir:
         partidaVista.setGuardarPartidaListener(this::guardarPartida);
 
+
         framePartida.add(partidaVista, BorderLayout.CENTER);
         framePartida.pack();
         framePartida.setVisible(true);
@@ -221,7 +219,86 @@ public class CtrlPresentacio {
 
 
 
+
     public boolean esJugadorActualBot() {
         return ctrlDomini.obtenirJugadorActual().esBot();
+    }
+
+    public void mostraSelectorPartides() {
+        // Obtenir la llista de partides guardades
+        List<String> partidesGuardades = ctrlDomini.llistarPartidesGuardades();
+
+        // Verificar si hi ha partides guardades
+        if (partidesGuardades.isEmpty()) {
+            JOptionPane.showMessageDialog(
+                    this,
+                    "No hi ha partides guardades disponibles.",
+                    "Sense partides",
+                    JOptionPane.INFORMATION_MESSAGE
+            );
+            return;
+        }
+
+        // Crear la vista de selecció de partides
+        SelectorPartidesVista vistaSelectorPartides = new SelectorPartidesVista(partidesGuardades);
+
+        JDialog dialog = new JDialog();
+        dialog.setTitle("Carregar Partida");
+        dialog.setModal(true);
+        dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+        dialog.setResizable(false);
+
+        // Variable per guardar la partida seleccionada
+        final int[] partidaSeleccionada = {-1};
+
+        // Configurar listeners de la vista
+        vistaSelectorPartides.setSeleccioListener(index -> {
+            partidaSeleccionada[0] = index;
+            System.out.println("Partida seleccionada: " + partidesGuardades.get(index));
+        });
+
+        vistaSelectorPartides.setCarregarListener(() -> {
+            int index = vistaSelectorPartides.getPartidaSeleccionada();
+            if (index >= 0) {
+                String nomPartida = partidesGuardades.get(index);
+
+                try {
+                    ctrlDomini.carregarPartida(nomPartida);
+
+                    dialog.dispose();
+
+                    crearFramePartida();
+
+                    actualitzarVistes();
+
+                    JOptionPane.showMessageDialog(
+                            this,
+                            "Partida '" + nomPartida + "' carregada correctament!",
+                            "Partida carregada",
+                            JOptionPane.INFORMATION_MESSAGE
+                    );
+
+                } catch (Exception e) {
+                    JOptionPane.showMessageDialog(
+                            dialog,
+                            "Error en carregar la partida: " + e.getMessage(),
+                            "Error de càrrega",
+                            JOptionPane.ERROR_MESSAGE
+                    );
+                }
+            }
+        });
+
+        vistaSelectorPartides.setCancelarListener(() -> {
+            dialog.dispose();
+        });
+
+        // Configurar el diàleg
+        dialog.add(vistaSelectorPartides);
+        dialog.pack();
+        dialog.setLocationRelativeTo(this);
+
+        // Mostrar el diàleg
+        dialog.setVisible(true);
     }
 }

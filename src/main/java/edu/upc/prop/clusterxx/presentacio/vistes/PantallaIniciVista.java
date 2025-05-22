@@ -119,6 +119,14 @@ public class PantallaIniciVista extends JFrame {
             }
         });
 
+        //Afegir ActionListener al botó "Continuar partida"
+        continuarPartidaButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Quan es clica, s'obre la finestra de continuació de partida
+                ctrlPresentacio.mostraSelectorPartides();
+            }
+        });
         // Afegir ActionListener al botó "Sortir"
         sortirButton.addActionListener(new ActionListener() {
             @Override
