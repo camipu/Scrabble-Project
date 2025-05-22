@@ -37,6 +37,7 @@ public class Estadistiques implements Serializable {
         if (instance == null) {
             instance = new Estadistiques();
         }
+        //carregar si hi ha de fitxer
         return instance;
     }
 

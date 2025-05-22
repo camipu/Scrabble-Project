@@ -13,6 +13,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import edu.upc.prop.clusterxx.*;
 
 /**
  * Classe CtrDomini
@@ -25,6 +26,7 @@ public class CtrlDomini {
     private CtrlPartida ctrlPartida = null;
     private CtrEstadistica ctrEstadistica = null;
     private CtrlPersistencia ctrlPersistencia = null;
+
 
     /**
      * Retorna la instància única del controlador de domini.
@@ -192,6 +194,7 @@ public class CtrlDomini {
      */
     public Jugada colocarFitxa(String lletra, int i, int j) {
         return ctrlPartida.colocarFitxa(lletra, i, j);
+
     }
 
     /**

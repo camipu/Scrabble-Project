@@ -9,6 +9,7 @@ public class ColorLoader {
     private final Color colorFonsFitxa = new Color(255, 220, 160); // Color fusta clar
     private final Color colorSeleccionada = new Color(255, 255, 150); // Groc clar per selecció
     private final Color colorText = Color.DARK_GRAY; // Text negre
+    private final Color colorAccent = new Color(220, 100, 50); // Color accent per elements destacats
 
 
     // Colors per als diferents tipus de caselles
@@ -47,6 +48,14 @@ public class ColorLoader {
 
     public Color getColorFonsFitxa() {
         return colorFonsFitxa;
+    }
+    /**
+     * Retorna el color d'accent utilitzat per elements destacats de la interfície.
+     *
+     * @return Color d'accent
+     */
+    public Color getColorAccent() {
+        return colorAccent;
     }
 
     public Color getColorNormal() {

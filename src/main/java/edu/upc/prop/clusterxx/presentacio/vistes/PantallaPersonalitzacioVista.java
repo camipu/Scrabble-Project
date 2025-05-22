@@ -1,12 +1,12 @@
 package edu.upc.prop.clusterxx.presentacio.vistes;
 
+import edu.upc.prop.clusterxx.controladors.CtrlPresentacio;
 import edu.upc.prop.clusterxx.presentacio.ColorLoader;
 import edu.upc.prop.clusterxx.presentacio.FontLoader;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+
 import java.util.ArrayList;
 
 /**
@@ -30,8 +30,10 @@ public class PantallaPersonalitzacioVista extends JFrame {
 
     private final Font vt323Font = FontLoader.getCustomFont(20f);
     private final ColorLoader colorLoader = ColorLoader.getInstance();
+    private CtrlPresentacio ctrlPresentacio;
 
-    public PantallaPersonalitzacioVista() {
+    public PantallaPersonalitzacioVista(CtrlPresentacio ctrlPresentacio) {
+        this.ctrlPresentacio = ctrlPresentacio;
         setTitle("Configuració de la partida");
         setSize(600, 700);
         setLocationRelativeTo(null);
@@ -173,7 +175,40 @@ public class PantallaPersonalitzacioVista extends JFrame {
         principal.add(confirmarButton);
 
         add(new JScrollPane(principal));
+        // Botó configuració predeterminada
+        JButton botoDefault = new JButton("Configuració Predeterminada");
+        botoDefault.setFont(vt323Font);
+        botoDefault.setBackground(colorLoader.getColorAccent());
+        botoDefault.setFocusPainted(false);
+        botoDefault.setAlignmentX(Component.CENTER_ALIGNMENT);
+        botoDefault.addActionListener(e -> aplicarConfiguracioPredeterminada());
+        principal.add(Box.createRigidArea(new Dimension(0, 10)));
+        principal.add(botoDefault);
+
     }
+
+    private void aplicarConfiguracioPredeterminada() {
+        // Assignar valors bàsics
+        midaTaulellField.setText("15");
+        midaFaristolField.setText("7");
+        idiomaComboBox.setSelectedIndex(0); // Català
+
+        // Bots
+        numBotsField.setText("1");
+        actualitzarBots(); // Això reconstrueix el panell
+        if (!nomsBotsFields.isEmpty()) {
+            nomsBotsFields.get(0).setText("Bot 1");
+            dificultatsBotsCombos.get(0).setSelectedItem(1);
+        }
+
+        // Jugadors
+        numJugadorsField.setText("1");
+        actualitzarJugadors(); // Això reconstrueix el panell
+        if (!nomsJugadorsFields.isEmpty()) {
+            nomsJugadorsFields.get(0).setText("Loser");
+        }
+    }
+
 
     private void actualitzarBots() {
         botsPanel.removeAll();
@@ -181,9 +216,9 @@ public class PantallaPersonalitzacioVista extends JFrame {
         dificultatsBotsCombos.clear();
 
         int numBots = obtenirNumero(numBotsField.getText());
-        if (numBots <= 0) {
+        if (numBots < 0) {
             JOptionPane.showMessageDialog(this,
-                    "Introdueix un nombre vàlid de bots (major que 0)",
+                    "Introdueix un nombre vàlid de bots (major que o igual que 0)",
                     "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
@@ -331,31 +366,18 @@ public class PantallaPersonalitzacioVista extends JFrame {
             }
         }
 
-        // Mostrar la informació (per a proves, després es connectaria amb el controlador)
-        System.out.println("Mida taulell: " + midaTaulell);
-        System.out.println("Mida faristol: " + midaFaristol);
-        System.out.println("Idioma: " + idioma);
-        System.out.println("Noms Bots i dificultats:");
-        for (int i = 0; i < nomsBots.length; ++i) {
-            System.out.println("  " + nomsBots[i] + " - Dificultat " + dificultatsBots[i]);
-        }
-        System.out.println("Noms Jugadors:");
-        for (String s : nomsJugadors) {
-            System.out.println("  " + s);
-        }
+        
 
-        // Aquí es connectaria amb el controlador de domini
-        // ctrlDomini.inicialitzarPartida(midaTaulell, midaFaristol, idioma, nomsJugadors, nomsBots, dificultatsBots);
+        ctrlPresentacio.inicialitzarPartida(
+                midaTaulell,
+                midaFaristol,
+                idioma,
+                nomsJugadors,
+                dificultatsBots
+        );
 
         JOptionPane.showMessageDialog(this,
                 "Configuració completada correctament",
                 "Èxit", JOptionPane.INFORMATION_MESSAGE);
-    }
-
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            PantallaPersonalitzacioVista vista = new PantallaPersonalitzacioVista();
-            vista.setVisible(true);
-        });
     }
 }

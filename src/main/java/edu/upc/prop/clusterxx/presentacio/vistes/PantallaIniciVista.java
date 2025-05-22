@@ -1,6 +1,7 @@
 package edu.upc.prop.clusterxx.presentacio.vistes;
 
 import edu.upc.prop.clusterxx.Fitxa;
+import edu.upc.prop.clusterxx.controladors.CtrlPresentacio;
 import edu.upc.prop.clusterxx.presentacio.ColorLoader;
 import edu.upc.prop.clusterxx.presentacio.FontLoader;
 
@@ -20,7 +21,10 @@ public class PantallaIniciVista extends JFrame {
     private Font vt323Font = FontLoader.getCustomFont(36f);
     private Color colorsFons = ColorLoader.getInstance().getColorFons();
 
-    public PantallaIniciVista() {
+    private CtrlPresentacio ctrlPresentacio;
+
+    public PantallaIniciVista(CtrlPresentacio ctrlPresentacio) {
+        this.ctrlPresentacio = ctrlPresentacio;
         setTitle("Scrabble - Pantalla d'Inici");
         setSize(1200, 800);
         setLocationRelativeTo(null);
@@ -111,9 +115,7 @@ public class PantallaIniciVista extends JFrame {
         jugarNovaPartidaButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // Quan es clica, s'obre la finestra de personalització
-                PantallaPersonalitzacioVista pantallaPersonalitzacioVista = new PantallaPersonalitzacioVista();
-                pantallaPersonalitzacioVista.setVisible(true);
+                ctrlPresentacio.configurarPartida();
             }
         });
 
@@ -135,37 +137,38 @@ public class PantallaIniciVista extends JFrame {
         boto.setForeground(Color.BLACK);
         boto.setFocusPainted(false);
         boto.setBorder(BorderFactory.createLineBorder(Color.BLACK, 3));
-
+    
         Dimension midaBoton = new Dimension(w, h);
         boto.setPreferredSize(midaBoton); // Estableix una mida fixa
         boto.setMaximumSize(midaBoton);
         boto.setMinimumSize(midaBoton);
-
+    
         boto.setCursor(new Cursor(Cursor.HAND_CURSOR));
-
+    
+        // Store the original background color
+        Color originalColor = colorFons;
+    
         boto.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
-                boto.setBackground(boto.getBackground().darker());
+                boto.setBackground(originalColor.darker());
+                boto.setForeground(Color.WHITE); // Change text color on hover
+                boto.setBorder(BorderFactory.createLineBorder(Color.WHITE, 3)); // Change border color
             }
             public void mouseExited(java.awt.event.MouseEvent evt) {
-                boto.setBackground(colorFons);
+                boto.setBackground(originalColor);
+                boto.setForeground(Color.BLACK); // Reset text color
+                boto.setBorder(BorderFactory.createLineBorder(Color.BLACK, 3)); // Reset border color
             }
         });
-
+    
         return boto;
     }
+    
 
     private int obtenirPuntsLletra(char lletra) {
         switch (Character.toUpperCase(lletra)) {
             case 'C': return 3;
             default: return 1;
         }
-    }
-
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            PantallaIniciVista vista = new PantallaIniciVista();
-            vista.setVisible(true);
-        });
     }
 }

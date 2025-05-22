@@ -60,6 +60,7 @@ public class CtrlPartida {
      * @throws RuntimeException si no es poden trobar o llegir els fitxers corresponents
      */
     public void inicialitzarDawg(String idioma) {
+        if (idioma.equals("català")) idioma = "catalan";
         List<String> palabras = new ArrayList<>();
         List<String> tokens = new ArrayList<>();
 
@@ -130,7 +131,7 @@ public class CtrlPartida {
         inicialitzarJugadors(nomsJugadors,dificultatsBots,midaFaristol);
         inicialitzarCtrlBot();
         historial = new HistorialJoc(new java.util.Date());
-        passarTorn();
+        passarTornIntern();
     }
 
     /**
@@ -279,12 +280,17 @@ public class CtrlPartida {
      * Incrementa el comptador de torns i de torns sense canvi, afegeix el torn actual a l’historial,
      * i comprova si s’ha d’acabar la partida.
      */
-    public void passarTorn() {
+    private void passarTornIntern() {
         ++torn;
         ++tornsSenseCanvi;
         inicialitzarCasellasTorn();
         historial.afegirTorn(new Torn(sac, taulell, jugadors, torn, acabada, tornsSenseCanvi));
         acabada = esFinalDePartida();
+    }
+
+    public void passarTorn() {
+        resetTorn();
+        passarTornIntern();
     }
 
     /**
@@ -358,6 +364,7 @@ public class CtrlPartida {
      * @throws IllegalArgumentException si hi ha errors de format en el fitxer
      */
     private void inicialitzarSac(String idioma) {
+        if (idioma.equals("català")) idioma = "catalan";
         String nomFitxer = "/" + idioma + "/fitxes" + idioma + ".txt";
         InputStream input = getClass().getResourceAsStream(nomFitxer);
         if (input == null) {
@@ -482,7 +489,7 @@ public class CtrlPartida {
         for (Fitxa fitxa : fitxesCanviadesAux) {
             jugadors[torn%jugadors.length].afegirFitxa(fitxa);
         }
-        passarTorn();
+        passarTornIntern();
     }
 
     /**
@@ -511,10 +518,13 @@ public class CtrlPartida {
         if (taulell.getCasella(fila, columna).esJugada()) {
             throw new IllegalArgumentException("La casella està jugada");
         }
-        taulell.retirarFitxa(fila, columna);
-        casellasTorn.remove(taulell.getCasella(fila, columna));
         jugadors[torn%jugadors.length].afegirFitxa(taulell.obtenirFitxa(fila, columna));
-        return new Jugada(casellasTorn, dawg, taulell);
+        taulell.retirarFitxa(fila, columna);
+
+        casellasTorn.remove(taulell.getCasella(fila, columna));
+        if (!casellasTorn.isEmpty())jugadaActual = taulell.construirJugada(casellasTorn, dawg);
+
+        return jugadaActual;
     }
 
     /**
@@ -547,7 +557,7 @@ public class CtrlPartida {
         }
         if (!casellasTorn.isEmpty()) tornsSenseCanvi = -1;
         rellenarFaristol();
-        passarTorn();
+        passarTornIntern();
     }
 
     /**
