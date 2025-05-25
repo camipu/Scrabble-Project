@@ -32,8 +32,8 @@ public class PantallaPersonalitzacioVista extends JFrame {
     private final ColorLoader colorLoader = ColorLoader.getInstance();
     private CtrlPresentacio ctrlPresentacio;
 
-    public PantallaPersonalitzacioVista(CtrlPresentacio ctrlPresentacio) {
-        this.ctrlPresentacio = ctrlPresentacio;
+    public PantallaPersonalitzacioVista() {
+        this.ctrlPresentacio = CtrlPresentacio.getInstance();
         setTitle("Configuració de la partida");
         setSize(600, 700);
         setLocationRelativeTo(null);

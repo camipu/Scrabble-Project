@@ -34,7 +34,7 @@ public class CtrlPresentacio extends Component {
     }
 
     public void configurarPartida() {
-        pantallaPersonalitzacioVista = new PantallaPersonalitzacioVista(this);
+        pantallaPersonalitzacioVista = new PantallaPersonalitzacioVista();
         pantallaInici.setVisible(false);
         pantallaPersonalitzacioVista.setVisible(true);
     }
