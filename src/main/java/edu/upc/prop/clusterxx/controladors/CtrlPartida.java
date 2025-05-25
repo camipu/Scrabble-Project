@@ -627,6 +627,8 @@ public class CtrlPartida {
         this.ctrlBot = CtrlJugadaBot.getInstance();
         recuperarTornPersi(torn);
         inicialitzarDawg(torn.getIdioma());
+        this.torn = 1;
+
     }
 
 
