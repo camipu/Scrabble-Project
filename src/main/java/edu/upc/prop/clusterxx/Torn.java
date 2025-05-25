@@ -16,6 +16,7 @@ public class Torn implements Serializable {
     private int numTorn;
     private boolean acabada;
     private int tornsSenseCanvis;
+    private String idioma;
 
     /**
      * Crea un nou torn amb una còpia completa de l’estat actual de la partida.
@@ -27,7 +28,7 @@ public class Torn implements Serializable {
      * @param torn Número de torn actual
      * @param acabada Indica si el torn ja s’ha completat
      */
-    public Torn(Sac sac, Taulell taulell, Jugador[] jugadors, int torn, boolean acabada, int tornsSenseCanvis) {
+    public Torn(Sac sac, Taulell taulell, Jugador[] jugadors, int torn, boolean acabada, int tornsSenseCanvis, String idioma) {
         this.sac = new Sac(sac);
         this.taulell = new Taulell(taulell);
         this.jugadors = new Jugador[jugadors.length];
@@ -41,8 +42,10 @@ public class Torn implements Serializable {
         this.numTorn = torn;
         this.acabada = acabada;
         this.tornsSenseCanvis = tornsSenseCanvis;
+        this.idioma = idioma;
     }
 
+    public String getIdioma() {return idioma;}
 
     /**
      * Comprova si el jugador del torn actual és un bot.

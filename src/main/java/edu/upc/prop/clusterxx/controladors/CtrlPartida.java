@@ -2,12 +2,13 @@ package edu.upc.prop.clusterxx.controladors;
 
 import edu.upc.prop.clusterxx.*;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
-import edu.upc.prop.clusterxx.persistencia.CtrlPersistencia;
 
 /**
  * Classe CtrlPartida
@@ -33,6 +34,7 @@ public class CtrlPartida {
     private List<Casella> casellasTorn = new ArrayList<>();
     Jugada jugadaActual = null;
     private int tornsSenseCanvi = -1;
+    String idioma;
 
 
     /**
@@ -123,6 +125,7 @@ public class CtrlPartida {
      */
     public void inicialitzarPartida(int midaTaulell, int midaFaristol, String idioma, String[] nomsJugadors,int[] dificultatsBots) {
         acabada = false;
+        this.idioma = idioma;
         torn = 0;
         inicialitzarTaulell(midaTaulell);
         inicialitzarDawg(idioma);
@@ -283,7 +286,7 @@ public class CtrlPartida {
         ++torn;
         ++tornsSenseCanvi;
         inicialitzarCasellasTorn();
-        historial.afegirTorn(new Torn(sac, taulell, jugadors, torn, acabada, tornsSenseCanvi));
+        historial.afegirTorn(new Torn(sac, taulell, jugadors, torn, acabada, tornsSenseCanvi,idioma));
         acabada = esFinalDePartida();
     }
 
@@ -620,9 +623,11 @@ public class CtrlPartida {
     }
 
     public void recuperarTornDesDeFitxer(Torn torn) {
+        this.historial = new HistorialJoc(new java.util.Date());
+        this.ctrlBot = CtrlJugadaBot.getInstance();
         recuperarTornPersi(torn);
+        inicialitzarDawg(torn.getIdioma());
     }
-
 
 
 

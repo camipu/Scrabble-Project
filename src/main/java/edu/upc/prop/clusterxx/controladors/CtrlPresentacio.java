@@ -60,6 +60,13 @@ public class CtrlPresentacio extends Component {
 
     public void retirarFitxa() {
         Casella casella = partidaVista.getCasellaSeleccionada();
+        if (casella == null) {
+            JOptionPane.showMessageDialog(null,
+                    "Selecciona una casella abans de retirar una fitxa.",
+                    "Error",
+                    JOptionPane.WARNING_MESSAGE);
+            return;
+        }
         ctrlDomini.retirarFitxa(casella.obtenirX(), casella.obtenirY());
         actualitzarVistes();
     }
