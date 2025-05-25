@@ -220,7 +220,7 @@ public class CtrlPresentacio extends Component {
     }
 
     private void mostrarPantallaInici() {
-        pantallaInici = new PantallaIniciVista(this);
+        pantallaInici = new PantallaIniciVista();
         pantallaInici.setVisible(true);
     }
 

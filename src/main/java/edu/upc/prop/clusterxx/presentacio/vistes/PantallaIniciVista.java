@@ -23,8 +23,8 @@ public class PantallaIniciVista extends JFrame {
 
     private CtrlPresentacio ctrlPresentacio;
 
-    public PantallaIniciVista(CtrlPresentacio ctrlPresentacio) {
-        this.ctrlPresentacio = ctrlPresentacio;
+    public PantallaIniciVista() {
+        this.ctrlPresentacio = CtrlPresentacio.getInstance();
         setTitle("Scrabble - Pantalla d'Inici");
         setSize(1200, 800);
         setLocationRelativeTo(null);
