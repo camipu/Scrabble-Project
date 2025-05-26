@@ -1,0 +1,6 @@
+Elements del directori:
+
+- El pdf amb l'entrega 2
+
+- Directori amb els 3 diagrames UML separats
+
